@@ -14,32 +14,30 @@ return array(
 	'forum' => 'Форум',
 	'forums' => 'Форумы',
 	'forums_no' => 'Форумов нет',
+	'forum_and' => 'и',
+
+	'forums_notice' => 'Здесь можно просто пообщаться',
 
 	'forum_header_last_post' => 'Последнее сообщение',
 	'forum_header_answers' => 'Ответов',
 	'forum_header_topics' => 'Тем',
 	'forum_header_views' => 'Просмотров',
+	'forum_header_author' => 'Автор',
 
 	'forum_empty' => 'Не найдено ни одной темы',
 
 	'forum_on_page' => 'На страницу',
 
-	'forum_stat' => 'Статистика форума',
-	'forum_stat_all' => 'Всего топиков/сообщений',
-	'forum_stat_post_today' => 'Сообщений за сегодня',
+	'forum_stats' => 'Статистика форума',
+	'forum_stats_visitors' => 'Сейчас на сайте',
+	'forum_stats_birthday' => 'Дни рождения',
+	'forum_stats_birthday_notice' => 'От души поздравляем, братюня',
+	'forum_stats_post_count' => 'Написано сообщений',
+	'forum_stats_topic_count' => 'Создано тем',
+	'forum_stats_user_count' => 'Зарегистрировано пользователей',
+	'forum_stats_user_last' => 'Последний зарегистрировавшийся пользователь',
 
 	'forum_categories' => 'Категории',
-
-	'forum_topic' => 'Тема',
-	'forum_topics' => 'Темы',
-	'forum_topic_mod_option' => 'Опции модератора',
-	'forum_topic_move' => 'Переместить тему',
-	'forum_topic_move_for' => 'Переместить тему в форум',
-	'forum_topic_close' => 'Закрыть тему',
-	'forum_topic_open' => 'Открыть тему',
-	'forum_topic_delete' => 'Удалить тему',
-	'forum_topic_pin' => '"Поднять" тему',
-	'forum_topic_unpin' => '"Опустить" тему',
 
 	'forum_create' => 'Создать форум',
 	'forum_create_ok' => 'Форум успешно создан',
@@ -90,14 +88,45 @@ return array(
 	'forum_delete_forum' => 'Удалить форум',
 	'forum_delete_category' => 'Удалить категорию',
 
+
+	'forum_topic' => 'Тема',
+	'forum_topic_close' => 'Закрыть тему',
+	'forum_topic_open' => 'Открыть тему',
+	'forum_topic_delete' => 'Удалить тему',
+	'forum_topic_delete_warning' => 'При удалении темы, также все ее сообщения. Продолжайте только в том случае, если вы действительно хотите удалить эту тему. Больше никаких предупреждений не будет.',
+	'forum_topic_pin' => '"Поднять" тему',
+	'forum_topic_unpin' => '"Опустить" тему',
+	'forum_topic_answers' => 'Ответы в тему',
+
+	'forum_topics' => 'Темы',
+	'forum_topics_forum' => 'Темы форума',
+	'forum_topics_pinned' => 'Важные темы',
+	'forum_topic_pinned' => 'Прикреплена',
+	'forum_topic_closed' => 'Тема закрыта',
+	'forum_topic_mod_option' => 'Опции модератора',
+	'forum_topic_move' => 'Переместить тему',
+	'forum_topic_move_for' => 'Переместить тему в форум',
+	'forum_topic_move_error_self' => 'Эта тема итак находится в выбранном форуме!',
+	'forum_topic_move_error_category' => 'Вы не можете перенести тему в категорию',
+	'forum_topic_post_count' => 'Сообщений в теме',
+	'forum_topic_time_acl' => 'Вам нельзя создавать топики',
+	'forum_topic_time_limit' => 'Вам нельзя создавать топики слишком часто',
+
 	'forum_new_topic' => 'Новая тема',
 	'forum_new_topic_for' => 'Создание темы в',
 	'forum_new_topic_title' => 'Название темы',
 	'forum_new_topic_title_notice' => '',
-	'forum_new_topic_title' => 'Название темы',
-	'forum_new_topic_title_notice' => '',
+	'forum_new_topic_title_error' => 'Название должно быть от %%min%% до %%max%% символов',
+	'forum_new_topic_description' => 'Описание',
+	'forum_new_topic_description_notice' => 'Опционально',
+	'forum_new_topic_description_error' => 'Описание темы не должно превышать 100 символов',
+	'forum_new_topic_text' => 'Текст',
+	'forum_new_topic_text_error' => 'Текст должен быть от %%min%% до %%max%% символов',
+	'forum_new_topic_not_allow' => 'Вы не можете создать новую тему',
+
 	'forum_new_topic_pin' => 'Закрепить',
 	'forum_new_topic_close' => 'Закрыть',
+
 
 	'forum_post' => 'Сообщение',
 	'forum_posts' => 'Сообщения',
@@ -107,11 +136,14 @@ return array(
 	'forum_post_create_title_notice' => 'Необязательно',
 	'forum_post_create_title_error' => 'Название сообщения должно быть от 2 до 100 символов',
 	'forum_post_create_text_error' => 'Текст сообщения должен быть от 2 до %%count%% символов',
-	'forum_post_by' => 'от',
+	'forum_post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
+	'forum_post_by' => 'от',//!!
 
 	'forum_reply' => 'Ответ',
 	'forum_reply_for' => 'Ответ в %%topic%%',
-	'forum_reply_notallow' => 'Топик закрыт',
+	'forum_reply_notallow' => 'Тема закрыта',
+	'forum_reply_not_allow' => 'Вы не можете написать в эту тему',
+	'forum_post_edit_for' => 'Редактирование ответа в %%topic%%',
 	'forum_fast_reply' => 'Быстрый ответ',
 
 	'forum_redirect_hits' => 'Переходов',
@@ -121,19 +153,14 @@ return array(
 
 	'forum_not_reading' => 'Новые темы',
 
-	'forum_markread_all' => 'Отметить все темы как прочитанные',
-
 	'forum_acp' => 'Управление форумом',
 	'forum_acp_main' => 'Центр управления',
 	'forum_acp_forums_control' => 'Управление форумами',
 	'forum_acp_forums_list_msg' => 'Внимание, при удалении категории так-же удаляются все форумы и топики, связанные с этой категорией. В скором времени будут функции переноса.',
 
 	'forum_plugin_about' => 'О плагине',
-	'forum_plugin_about_text' => '<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Лицензия Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" align="right" /></a><br />Это произведение доступно по <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">лицензии Creative Commons Attribution-ShareAlike (<i>Атрибуция — С сохранением условий</i>) 3.0 Непортированная</a>.',
+	'forum_plugin_about_text' => '<strong>CC BY-NC (Атрибуция — Некоммерческое использование)</strong><br>Эта лицензия позволяет другим изменять, поправлять и брать за основу ваше произведение некоммерческим образом и хотя их новые произведения должны указывать вас в качестве автора и быть некоммерческими и они не должны лицензировать их производные произведения на тех же условиях.<br><a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank"><img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" title="ARS Mod License" width="88" height="31"></a><br><a href="http://creativecommons.org/licenses/by-nc/3.0" target="_blank">Смотреть общее краткое описание лицензии</a><br><a href="http://creativecommons.org/licenses/by-nc/3.0/legalcode" target="_blank">Смотреть юридический текст</a>',
 
-	'articles' => 'Статей',
-	'comments' => 'Комментариев',
-	'topics' => 'Топиков',
-	'posts' => 'Постов'
 );
+
 ?>

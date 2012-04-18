@@ -16,7 +16,7 @@ if (!class_exists('Plugin')) {
 
 class PluginForum extends Plugin {
 	protected $aInherits=array(
-		'module' => array('ModuleUser'=>'PluginForum_ModuleUser')
+		'module' => array('ModuleACL'=>'PluginForum_ModuleACL')
 	);
 
 	/**

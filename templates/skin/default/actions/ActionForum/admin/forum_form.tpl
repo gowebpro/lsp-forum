@@ -55,6 +55,15 @@
 								<input type="text" id="forum_url" name="forum_url" value="{$_aRequest.forum_url}" class="input-wide" />
 							</td>
 						</tr>
+						<tr>
+							<td width="400">
+								<label for="forum_sort">{$aLang.forum_create_sort}:</label><br />
+								<span class="note">{$aLang.forum_create_sort_notice}</span>
+							</td>
+							<td class="row1">
+								<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort}" class="input-wide" />
+							</td>
+						</tr>
 						{if $sNewType != 'category'}
 						<tr>
 							<td width="400">

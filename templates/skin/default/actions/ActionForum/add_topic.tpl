@@ -76,12 +76,18 @@
 							<span class="note">{$aLang.forum_new_topic_title_notice}</span>
 						</p>
 
+						<p>
+							<label for="topic_description">{$aLang.forum_new_topic_description}:</label><br />
+							<input type="text" id="topic_description" name="topic_description" value="{$_aRequest.topic_description}" class="input-wide" /><br />
+							<span class="note">{$aLang.forum_new_topic_description_notice}</span>
+						</p>
+
 						<textarea name="topic_text" id="topic_text" rows="20" class="input-wide">{$_aRequest.topic_text}</textarea><br />
 
 						{if $oUserCurrent && $oUserCurrent->isAdministrator()}
 						<p>
-							<label><input type="checkbox" name="topic_position" id="topic_position" /> {$aLang.forum_new_topic_pin}</label><br />
-							<label><input type="checkbox" name="topic_status" id="topic_status" /> {$aLang.forum_new_topic_close}</label>
+							<label><input type="checkbox" name="topic_pinned" id="topic_pinned" /> {$aLang.forum_new_topic_pin}</label><br />
+							<label><input type="checkbox" name="topic_close" id="topic_close" /> {$aLang.forum_new_topic_close}</label>
 						</p>
 						{/if}
 

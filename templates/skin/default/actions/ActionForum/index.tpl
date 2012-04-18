@@ -28,21 +28,59 @@
 
 	<div class="shadow"></div>
 
-	{if $oUserCurrent}
-	<div class="clear_fix">
-		<ul class="bottomMenu right">
-			<li><a href="{router page='forum'}markread">{$aLang.forum_markread_all}</a></li>
-		</ul>
-	</div>
-	{/if}
-	
 	{hook run='forum_copyright'}
 
 	<div class="forumStats">
-		<h2>{$aLang.forum_stat}</h2>
+		<h2>{$aLang.forum_stats}</h2>
+		{if $aForumStats.online}
+		<div class="users">
+			<div class="header">{$aLang.forum_stats_visitors}: {$aForumStats.online.count_visitors}</div>
+			<div class="content">
+				{if $aForumStats.online.count_users} {$aForumStats.online.count_users} Пользователей {/if}
+				{if $aForumStats.online.count_users && $aForumStats.online.count_quest}{$aLang.forum_and}{/if}
+				{if $aForumStats.online.count_quest} {$aForumStats.online.count_quest} Гостей {/if}
+				{if $aForumStats.online.users}
+					<div class="user-list">
+					{foreach from=$aForumStats.online.users item=oUser name=online_user}
+						<span>
+							<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="" /></a>
+							<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
+							{if !$smarty.foreach.online_user.last}, {/if}
+						</span>
+					{/foreach}
+					</div>
+				{/if}
+			</div>
+		</div>
+		{/if}
+		{if $aForumStats.bdays}
+		<div class="bdays">
+			<div class="header">{$aLang.forum_stats_birthday}: {$aForumStats.bdays|@count}</div>
+			<div class="content">
+				<div class="user-list">
+				{foreach from=$aForumStats.bdays item=oUser name=bday_user}
+					<span>
+						<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" width="20px" alt="" /></a>
+						<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
+						{if !$smarty.foreach.online_user.last}, {/if}
+					</span>
+				{/foreach}
+				</div>
+				{$aLang.forum_stats_birthday_notice}
+			</div>
+		</div>
+		{/if}
 		<div class="topics">
-			<span class="now">{$aLang.forum_stat_all} &mdash; <span class="sv-count">{$aForumStat.count_all_topics}/{$aForumStat.count_all_posts}</span></span>
-			<span class="small">{$aLang.forum_stat_post_today} &mdash; {$aForumStat.count_today_posts}</span>
+			<div class="header">{$aLang.forum_stats}</div>
+			<div class="content">
+				<div>{$aLang.forum_stats_post_count}: <span class="count">{$aForumStats.count_all_posts}</span></div>
+				<div>{$aLang.forum_stats_topic_count}: <span class="count">{$aForumStats.count_all_topics}</span></div>
+				<div>{$aLang.forum_stats_user_count}: <span class="count">{$aForumStats.count_all_users}</span></div>
+				{if $aForumStats.last_user}
+					{assign var=oUser value=$aForumStats.last_user}
+					<div>{$aLang.forum_stats_user_last}: <span class="count">{$oUser->getLogin()|escape:'html'}</span></div>
+				{/if}
+			</div>
 		</div>
 	</div>
 

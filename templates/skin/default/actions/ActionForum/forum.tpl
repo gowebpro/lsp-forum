@@ -33,20 +33,7 @@
 		{include file="$sTemplatePathPlugin/switcher_top.tpl"}
 		</div>
 
-		<div class="forumHeader forumHeader-sectionPage clear_fix">
-			<div class="leftBg">
-				<h2>{$oForum->getTitle()}</h2>
-			</div>
-			<div class="rightBg">
-				<span class="answers">{$aLang.forum_header_answers|lower}</span>
-				<span class="views">{$aLang.forum_header_views|lower}</span>
-				<span class="lastMsg">{$aLang.forum_header_last_post|lower}</span>
-			</div>
-		</div>
-
-		<div class="tableContainer clear_fix">
-		{include file="$sTemplatePathPlugin/topics_list.tpl"}
-		</div>
+		{include file="$sTemplatePathPlugin/topics.tpl"}
 
 		<div class="shadow"></div>
 
