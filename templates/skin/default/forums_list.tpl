@@ -1,13 +1,11 @@
 {if count($aForums) > 0}
 	<table class="forumBody">
 		{foreach from=$aForums item=oForum}
-			{assign var="oTopic" value=$oForum->getTopic()}
 			{assign var="oPost" value=$oForum->getPost()}
-			{assign var="oUser" value=$oForum->getUser()}
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			<tr>
 				<td class="iconCol">
-					<a class="bbl{if $oTopic && $oTopic->getDateRead()<=$oPost->getDateAdd()} new{/if}" href="{$oForum->getUrlFull()}"></a>
+					<a class="bbl" href="{$oForum->getUrlFull()}"></a>
 				</td>
 				<td class="mainCol">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
@@ -25,11 +23,13 @@
 				{if $oForum->getRedirectOn()}
 					{$aLang.forum_redirect_hits}: {$oForum->getRedirectHits()}
 				{else}
-					{if $oTopic && $oPost}
-					<a class="subj" href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
-					<a class="linkToMsg" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost/"></a><br />
-					<a class="author" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a>
-					<span class="date">@ {date_format date=$oPost->getDateAdd()}</span>
+					{if $oPost}
+						{assign var="oTopic" value=$oPost->getTopic()}
+						{assign var="oPoster" value=$oPost->getUser()}
+						<a class="subj" href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
+						<a class="linkToMsg" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost"></a><br />
+						<a class="author" href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
+						<span class="date">@ {date_format date=$oPost->getDateAdd()}</span>
 					{/if}
 				{/if}
 				</td>

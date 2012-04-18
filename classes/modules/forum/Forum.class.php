@@ -76,12 +76,12 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Посетители
 		 */
-		if (!class_exists('ModuleVisitors')) {
+		if (class_exists('PluginAceBlockManager_ModuleVisitors') && Config::Get('plugin.forum.stats.online')) {
 			$aStats['online']=array();
-			$nCountVisitors=$this->Visitors_GetVisitorsCount(300);
+			$nCountVisitors=$this->PluginAceBlockManager_Visitors_GetVisitorsCount(300);
 			$nCountGuest=$nCountVisitors;
 			$nCountUsers=0;
-			if ($aUsersLast=$this->User_GetUsersByDateLast(Config::Get('block.online.count'))) {
+			if ($aUsersLast=$this->User_GetUsersByDateLast(Config::Get('plugin.forum.stats.users_count'))) {
 				$aStats['online']['users']=array();
 				foreach ($aUsersLast as $oUser) {
 					if ($oUser->isOnline()) {
@@ -103,13 +103,15 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 * Написать запрос, возвращающих пользователей, дата рождения которых
 		 * совпадает с текущей...
 		 */
-		if ($aUsers=$this->User_GetUsers(1,999)) {
-			$aStats['bdays']=array();
+		if (Config::Get('plugin.forum.stats.bdays')) {
+			if ($aUsers=$this->User_GetUsersByFilter(array('activate'=>1),array(),1,999)) {
+				$aStats['bdays']=array();
 
-			foreach ($aUsers['collection'] as $oUser) {
-				if ($sProfileBirthday=$oUser->getProfileBirthday()) {
-					if (date("m-d")==date("m-d",strtotime($sProfileBirthday))) {
-						$aStats['bdays'][]=$oUser;
+				foreach ($aUsers['collection'] as $oUser) {
+					if ($sProfileBirthday=$oUser->getProfileBirthday()) {
+						if (date("m-d")==date("m-d",strtotime($sProfileBirthday))) {
+							$aStats['bdays'][]=$oUser;
+						}
 					}
 				}
 			}
@@ -129,7 +131,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Получаем последнего зарегистрировавшегося
 		 */
-		$aStats['last_user']=null;
+		if (Config::Get('plugin.forum.stats.last_user')) {
+			$aStats['last_user']=null;
+		}
 
 		return $aStats;
 	}

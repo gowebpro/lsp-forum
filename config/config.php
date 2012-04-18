@@ -31,23 +31,32 @@ $config['post_max_length']		= 5000;
  */
 $config['fast_reply']			= true;
 
+/**
+ * Настройки статистики
+ */
+$config['stats'] = array(
+	/* Показывать пользователей онлайн (при наличии модуля Visitors) */
+	'online' => true,
+	/* Максимально отображаемое количество пользователей в списке */
+	'users_count' => 20,
+	/* Показывать блок с именниниками */
+	'bdays' => true,
+	/* Показывать последнего зарегистрировавшегося? */
+	'last_user' => false,
+);
 
 /**
  * Активация плагина
- *
  */
 $config['activate'] = array();
 
 /**
  * Деактивация плагина
- *
  */
-$config['deactivate'] = array();
-
-/**
- * Удаление таблиц при деактивации
- */
-$config['deactivate']['delete'] = false;
+$config['deactivate'] = array(
+	/* Удаление таблиц при деактивации */
+	'delete' => false
+);
 
 
 /**

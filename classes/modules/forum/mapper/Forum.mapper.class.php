@@ -44,6 +44,31 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return false;
 	}
+
+	public function GetCountTopics() {
+		$sql = "SELECT COUNT(*) as count
+				FROM ".Config::Get('db.table.prefix')."forum_topic";
+		if ($aRow=$this->oDb->selectRow($sql)) {
+			return (int)$aRow['count'];
+		}
+		return 0;
+	}
+	public function GetCountPosts() {
+		$sql = "SELECT COUNT(*) as count
+				FROM ".Config::Get('db.table.prefix')."forum_post";
+		if ($aRow=$this->oDb->selectRow($sql)) {
+			return (int)$aRow['count'];
+		}
+		return 0;
+	}
+	public function GetCountUsers() {
+		$sql = "SELECT COUNT(*) as count
+				FROM ".Config::Get('db.table.user');
+		if ($aRow=$this->oDb->selectRow($sql)) {
+			return (int)$aRow['count'];
+		}
+		return 0;
+	}
 }
 
 ?>

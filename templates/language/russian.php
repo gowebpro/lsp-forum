@@ -120,7 +120,6 @@ return array(
 	'forum_new_topic_description' => 'Описание',
 	'forum_new_topic_description_notice' => 'Опционально',
 	'forum_new_topic_description_error' => 'Описание темы не должно превышать 100 символов',
-	'forum_new_topic_text' => 'Текст',
 	'forum_new_topic_text_error' => 'Текст должен быть от %%min%% до %%max%% символов',
 	'forum_new_topic_not_allow' => 'Вы не можете создать новую тему',
 
@@ -135,6 +134,8 @@ return array(
 	'forum_post_create_title' => 'Заголовок сообщения',
 	'forum_post_create_title_notice' => 'Необязательно',
 	'forum_post_create_title_error' => 'Название сообщения должно быть от 2 до 100 символов',
+	'forum_post_create_text' => 'Текст сообщения',
+	'forum_post_create_text_notice' => 'Доступны html-теги',
 	'forum_post_create_text_error' => 'Текст сообщения должен быть от 2 до %%count%% символов',
 	'forum_post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
 	'forum_post_by' => 'от',//!!

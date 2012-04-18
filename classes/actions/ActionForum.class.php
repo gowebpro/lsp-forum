@@ -70,7 +70,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Подключаем CSS
 		 */
-		$this->Viewer_AppendStyle($this->getTemplatePathPlugin().'css/style.css');
+		$this->Viewer_AppendStyle($this->getTemplatePathPlugin().'css/forum.css');
 		/**
 		 * Подключаем JS
 		 */
@@ -270,9 +270,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Счетчик просмотров топика
 		 */
 		$oTopic->setViews((int)$oTopic->getViews()+1);
-		if ($oTopic->getCountPost() <> $iPostsCount) {
-			$oTopic->setCountPost($iPostsCount);
-		}
+		//if ($oTopic->getCountPost() <> $iPostsCount) {
+			//$oTopic->setCountPost($iPostsCount);
+		//}
 		$oTopic->Save();
 		/**
 		 * Загружаем переменные в шаблон
@@ -280,7 +280,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign("oForum",$oForum);
 		$this->Viewer_Assign("oTopic",$oTopic);
 		$this->Viewer_Assign("aPosts",$aPosts);
-		$this->Viewer_Assign("oRead",$oRead);
 		$this->Viewer_Assign("aPaging",$aPaging);
 		/**
 		 * Хлебные крошки
@@ -1301,6 +1300,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('sMenuHeadItemSelect',$this->sMenuHeadItemSelect);
 		$this->Viewer_Assign('sMenuItemSelect',$this->sMenuItemSelect);
 		$this->Viewer_Assign('sMenuSubItemSelect',$this->sMenuSubItemSelect);
+		$this->Viewer_Assign('sTemplatePathPlugin',rtrim($this->getTemplatePathPlugin(),'/'));
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */

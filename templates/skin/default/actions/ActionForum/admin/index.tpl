@@ -6,6 +6,8 @@
 		<h2>{$aLang.forum_acp}</h2>
 	</div>
 
+	{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+
 	<div class="forumBblock">
 		<div class="forumHeader forumHeader-subjectPage">
 			<div class="leftBg">

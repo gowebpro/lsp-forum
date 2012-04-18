@@ -9,6 +9,8 @@
 		</h2>
 	</div>
 
+	{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+
 	<div class="forumBblock">
 		<div class="forumHeader forumHeader-subjectPage">
 			<div class="leftBg">
@@ -36,8 +38,8 @@
 					{foreach from=$aForumsTree item=aItem}
 						{assign var=oForum value=$aItem.entity}
 						<li id="forum-{$oForum->getId()}" style="margin-left:{$aItem.level*20}px">
-							<a href="{router page='forum'}admin/forums/edit/{$oForum->getId()}"><img src="{$sTemplateWebPathPlugin}images/edit.gif" alt="{$aLang.forum_edit}" title="{$aLang.forum_edit}" /></a>
-							<a href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"><img src="{$sTemplateWebPathPlugin}images/delete.gif" alt="{$aLang.forum_delete}" title="{$aLang.forum_delete}" /></a>
+							<a class="icon-edit" title="{$aLang.forum_edit}" href="{router page='forum'}admin/forums/edit/{$oForum->getId()}"></a>
+							<a class="icon-remove" title="{$aLang.forum_delete}" href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"></a>
 							{$oForum->getTitle()}
 						</li>
 					{/foreach}

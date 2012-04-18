@@ -11,7 +11,7 @@
 
 var ls=ls || {}
 
-(function ($) {
+ls.forum = (function ($) {
 	this.fastReply = function(idTopic,el) {
 		var form=$('#fastAnswer'+idTopic);
 		if (form.css('display')=='block') {
@@ -60,4 +60,6 @@ var ls=ls || {}
 			]
 		}
 	};
+
+	return this;
 }).call(ls.forum || {},jQuery);

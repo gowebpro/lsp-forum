@@ -12,7 +12,7 @@
 var ls = ls || {};
 ls.forum = ls.forum || {};
 
-(function ($) {
+ls.forum.admin = (function ($) {
 	deleteForum:function(idForum,sTitle){
 		if (!confirm(ls.lang.get('forum_delete_confirm',{'title':sTitle}) + '?')) return false;
  
@@ -29,5 +29,7 @@ ls.forum = ls.forum || {};
 		});
 
 		return false;
-	}
+	};
+
+	return this;
 }).call(ls.forum.admin || {},jQuery);

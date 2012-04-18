@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_title` varchar(255) default NULL,
 	`post_text` text NOT NULL,
 	`post_text_source` text NOT NULL,
+	`post_text_hash` varchar(32) NOT NULL,
 	PRIMARY KEY (`post_id`),
 	KEY topic_id (`topic_id`),
 	KEY user_id (`user_id`),
