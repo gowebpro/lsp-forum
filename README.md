@@ -1,23 +1,21 @@
-# forum
+Forum from [LiveStreet CMS](http://livestreetcms.com/ "LiveStreet CMS")
+=======================================================================
 
-This is forum plugin for Livestreet CMS.
-
-## IMPORTANT
+ATTENTION
+---------
 
 **To use this plugin requires Livestreet CMS version 0.5.1 or later.**
 
-## Simple Install
+Simple Install
+--------------
 
 To install forum do this:
+* [Download the latest build](https://github.com/Xmk/forum/zipball/master "Download as zip")
+* Unpack archive
+* Rename dir to `forum`
+* Upload to FTP, in the plugins folder
+* Activate plugin
 
-	Download the latest build
-	Rename dir to `forum`
-	Upload
-	Activate plugin
-
-### More details...
-
-
-### License
-
-[CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/ "CC BY-NC 3.0")
+License
+-------
+[ ![CC BY-NC](http://i.creativecommons.org/l/by-nc/3.0/88x31.png "CC BY-NC") ](http://creativecommons.org/licenses/by-nc/3.0/ "CC BY-NC")
