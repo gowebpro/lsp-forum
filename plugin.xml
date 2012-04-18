@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<name>
+		<lang name="default">Forum</lang>
+		<lang name="russian">Форум</lang>
+	</name>
+	<author>
+		<lang name="default">Chiffa</lang>
+		<lang name="russian">Чиффа</lang>
+	</author>
+	<homepage></homepage>
+	<version>1.0a</version>
+	<settings>{forum}admin/</settings>
+	<requires>
+		<livestreet>1.0</livestreet>
+		<plugins>
+		</plugins>
+	</requires>
+	<description>
+		<lang name="default">Forum for Livestreet CMS</lang>
+		<lang name="russian">Форум для Livestreet CMS</lang>
+	</description>
+</plugin>
