@@ -45,6 +45,58 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return false;
 	}
 
+	public function GetCountTopicByForumId($sFid) {
+		$sql = "SELECT COUNT(*) as count
+				FROM ".Config::Get('db.table.prefix')."forum_topic
+				WHERE forum_id = ?
+				";
+		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
+			return $aRow['count'];
+		}
+		return 0;
+	}
+	public function GetCountPostByForumId($sFid) {
+		$sql = "SELECT SUM(topic_count_post) as replies
+				FROM ".Config::Get('db.table.prefix')."forum_topic
+				WHERE forum_id = ?
+				";
+		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
+			return $aRow['replies'];
+		}
+		return 0;
+	}
+	public function GetLastPostByForumId($sFid) {
+		$sql = "SELECT MAX(last_post_id) as last_post
+				FROM ".Config::Get('db.table.prefix')."forum_topic
+				WHERE forum_id = ?
+				";
+		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
+			return $aRow['last_post'];
+		}
+		return null;
+	}
+
+	public function GetCountPostByTopicId($sTid) {
+		$sql = "SELECT COUNT(*) as count
+				FROM ".Config::Get('db.table.prefix')."forum_post
+				WHERE topic_id = ?
+				";
+		if ($aRow=$this->oDb->selectRow($sql,$sTid)) {
+			return $aRow['replies'];
+		}
+		return 0;
+	}
+	public function GetLastPostByTopicId($sTid) {
+		$sql = "SELECT MAX(post_id) as last_post
+				FROM ".Config::Get('db.table.prefix')."forum_post
+				WHERE topic_id = ?
+				";
+		if ($aRow=$this->oDb->selectRow($sql,$sTid)) {
+			return $aRow['last_post'];
+		}
+		return null;
+	}
+
 	public function GetCountTopics() {
 		$sql = "SELECT COUNT(*) as count
 				FROM ".Config::Get('db.table.prefix')."forum_topic";

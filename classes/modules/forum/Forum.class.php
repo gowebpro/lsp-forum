@@ -139,6 +139,42 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Пересчет счетчиков форума
+	 *
+	 * @param	object	$oForum
+	 * @return	object
+	 */
+	public function RecountForum($oForum) {
+		$iCountTopic=$this->oMapperForum->GetCountTopicByForumId($oForum->getId());
+		$iCountPost=$this->oMapperForum->GetCountPostByForumId($oForum->getId());
+		$iLastPostId=$this->oMapperForum->GetLastPostByForumId($oForum->getId());
+
+		$oForum->setCountTopic($iCountTopic);
+		$oForum->setCountPost($iCountPost);
+		$oForum->setLastPostId($iLastPostId);
+		$oForum->Save();
+
+		return $oForum;
+	}
+
+	/**
+	 * Пересчет счетчиков топика
+	 *
+	 * @param	object	$oForum
+	 * @return	object
+	 */
+	public function RecountTopic($oTopic) {
+		$iCountPost=$this->oMapperForum->GetCountPostByTopicId($oTopic->getId());
+		$iLastPostId=$this->oMapperForum->GetLastPostByTopicId($oTopic->getId());
+
+		$oTopic->setCountPost($iCountPost);
+		$oTopic->setLastPostId($iLastPostId);
+		$oTopic->Save();
+
+		return $oTopic;
+	}
+
+	/**
 	 * Парсер текста
 	 */
 	public function TextParse($sText=null) {

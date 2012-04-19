@@ -109,8 +109,8 @@ return array(
 	'forum_topic_move_error_self' => 'Эта тема итак находится в выбранном форуме!',
 	'forum_topic_move_error_category' => 'Вы не можете перенести тему в категорию',
 	'forum_topic_post_count' => 'Сообщений в теме',
-	'forum_topic_time_acl' => 'Вам нельзя создавать топики',
-	'forum_topic_time_limit' => 'Вам нельзя создавать топики слишком часто',
+	'forum_topic_acl' => 'Вам нельзя создавать темы',
+	'forum_topic_time_limit' => 'Вам нельзя создавать темы слишком часто',
 
 	'forum_new_topic' => 'Новая тема',
 	'forum_new_topic_for' => 'Создание темы в',
@@ -144,6 +144,7 @@ return array(
 	'forum_reply_for' => 'Ответ в %%topic%%',
 	'forum_reply_notallow' => 'Тема закрыта',
 	'forum_reply_not_allow' => 'Вы не можете написать в эту тему',
+	'forum_reply_time_limit' => 'Вам нельзя отправлять сообщения слишком часто',
 	'forum_post_edit_for' => 'Редактирование ответа в %%topic%%',
 	'forum_fast_reply' => 'Быстрый ответ',
 

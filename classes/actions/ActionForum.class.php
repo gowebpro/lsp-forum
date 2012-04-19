@@ -102,7 +102,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Пользовательская часть
 		 */
 		$this->AddEvent('index','EventIndex');
-		$this->AddEvent('markread','EventMarkread');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page(\d+))?$/i','EventShowTopic');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i','EventAddPost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
@@ -117,13 +116,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	//	$this->AddEventPreg('/^ajax$/i','/^deleteforum$/','EventAjaxDeleteForum');
 	}
 
-
-	/**
-	 * Отмечаем все что можно прочтенным
-	 */
-	public function EventMarkread() {
-		Router::Location(Router::GetPath('forum'));
-	}
 
 	/**
 	 * Главная страница форума
@@ -294,37 +286,102 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Обработка модераторских действий
 		 */
 		if (isPost('submit_topic_mod')) {
-			$this->Security_ValidateSendForm();
-			/**
-			 * Получаем топик по ID
-			 */
-			if(!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
-				return parent::EventNotFound();
-			}
-			/**
-			 * Действие
-			 */
-			switch (intval(getRequest('code',0))) {
-				case 1:
-					return $this->EventMoveTopic($oTopic);
-				case 2:
-					//cooming soon
-				case 3:
-					$oTopic->setState($oTopic->getState() ? PluginForum_ModuleForum::TOPIC_STATE_OPEN : PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
-					$oTopic->Save();
-					return Router::Location($oTopic->getUrlFull());
-				case 4:
-					$oTopic->setPinned($oTopic->getPinned() ? 0 : 1);
-					$oTopic->Save();
-					return Router::Location($oTopic->getUrlFull());
-			}
+			return $this->submitTopicActions($oTopic);
 		}
+		/**
+		 * Обработка перемещения топика
+		 */
+		if (isPost('submit_topic_move')) {
+			return $this->submitTopicMove($oTopic);
+		}
+		/**
+		 * Обработка удаления топика
+		 */
+		if (isPost('submit_topic_delete')) {
+			return $this->submitTopicDelete($oTopic);
+		}
+	}
+
+	protected function submitTopicActions() {
+		if (!LS::Adm()) {
+			return false;
+		}
+		$this->Security_ValidateSendForm();
+		/**
+		 * Получаем топик по ID
+		 */
+		if(!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
+			return parent::EventNotFound();
+		}
+		$this->_breadcrumbsCreate($oTopic,false);
+		/* */
+		$sKeyByCode=array(
+			1=>'MOVE',
+			2=>'DELETE',
+			3=>'STATE',
+			4=>'PIN'
+		);
+		/**
+		 * Действие
+		 */
+		$iCode=intval(getRequest('code',0));
+		$sAction=strtolower($sKeyByCode[$iCode]);
+		switch ($iCode) {
+			/**
+			 * Переместить топик
+			 */
+			case 1:
+				/**
+				 * Получаем список форумов
+				 */
+				$aForums=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
+				/**
+				 * Дерево форумов
+				 */
+				$aForumsList=create_forum_list($aForums);
+				/**
+				 * Загружаем переменные в шаблон
+				 */
+				$this->Viewer_Assign('aForums',$aForums);
+				$this->Viewer_Assign('aForumsList',$aForumsList);
+				break;
+			/**
+			 * Удалить топик
+			 */
+			case 2:
+				break;
+			/**
+			 * Открыть\закрыть топик
+			 */
+			case 3:
+				$oTopic->setState($oTopic->getState() ? PluginForum_ModuleForum::TOPIC_STATE_OPEN : PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
+				$oTopic->Save();
+				return Router::Location($oTopic->getUrlFull());
+			/**
+			 * Закрепить\открепить топик
+			 */
+			case 4:
+				$oTopic->setPinned($oTopic->getPinned() ? 0 : 1);
+				$oTopic->Save();
+				return Router::Location($oTopic->getUrlFull());
+			default:
+				return parent::EventNotFound();
+		}
+		/**
+		 * Заголовки
+		 */
+		$this->Viewer_SetHtmlTitle('');
+		$this->_addTitle($this->Lang_Get("forum_topic_{$sAction}").': '.$oTopic->getTitle());
+		/**
+		 * Задаем шаблон
+		 */
+		$this->SetTemplateAction("{$sAction}_topic");
 	}
 
 	/**
 	 * Переместить топик
 	 */
-	protected function EventMoveTopic($oTopic) {
+	protected function submitTopicMove($oTopic) {
 		if (!LS::Adm()) {
 			return false;
 		}
@@ -352,8 +409,35 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			$oTopic->setForumId($oForumNew->getId());
 			$oTopic->Save();
-
+			/**
+			 * Обновляем счетчики форумов
+			 */
+			$this->PluginForum_Forum_RecountForum($oForumOld);
+			$this->PluginForum_Forum_RecountForum($oForumNew);
 			Router::Location($oTopic->getUrlFull());
+		} else {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+		}
+	}
+
+	/**
+	 * Удалить топик
+	 */
+	protected function submitTopicDelete($oTopic) {
+		if (!LS::Adm()) {
+			return false;
+		}
+		$this->Security_ValidateSendForm();
+
+		$oForum=$oTopic->getForum();
+
+		if ($this->PluginForum_Forum_DeleteTopic($oTopic)) {
+			/**
+			 * Обновляем свойства форума
+			 */
+			$this->PluginForum_Forum_RecountForum($oForum);
+
+			Router::Location($oForum->getUrlFull());
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
 		}
@@ -844,7 +928,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	/**
 	 * Создание\редактирование форума
 	 */
-	public function _adminForumForm($sType='edit') {
+	protected function _adminForumForm($sType='edit') {
 		/**
 		 * Получаем список форумов
 		 */
@@ -903,7 +987,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	/**
 	 * Удаление форума
 	 */
-	public function _adminForumDelete() {
+	protected function _adminForumDelete() {
 		$sForumId=$this->GetParam(2);
 		if (!$oForumDelete=$this->PluginForum_Forum_GetForumById($sForumId)) {
 			return parent::EventNotFound();

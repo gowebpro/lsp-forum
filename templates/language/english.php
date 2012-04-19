@@ -109,8 +109,8 @@ return array(
 	'forum_topic_move_error_self' => 'Эта тема итак находится в выбранном форуме!',
 	'forum_topic_move_error_category' => 'Вы не можете перенести тему в категорию',
 	'forum_topic_post_count' => 'Сообщений в теме',
-	'forum_topic_time_acl' => 'Вам нельзя создавать топики',
-	'forum_topic_time_limit' => 'Вам нельзя создавать топики слишком часто',
+	'forum_topic_acl' => 'Вам нельзя создавать темы',
+	'forum_topic_time_limit' => 'Вам нельзя создавать темы слишком часто',
 
 	'forum_new_topic' => 'Новая тема',
 	'forum_new_topic_for' => 'Создание темы в',
@@ -120,7 +120,6 @@ return array(
 	'forum_new_topic_description' => 'Описание',
 	'forum_new_topic_description_notice' => 'Опционально',
 	'forum_new_topic_description_error' => 'Описание темы не должно превышать 100 символов',
-	'forum_new_topic_text' => 'Текст',
 	'forum_new_topic_text_error' => 'Текст должен быть от %%min%% до %%max%% символов',
 	'forum_new_topic_not_allow' => 'Вы не можете создать новую тему',
 
@@ -135,6 +134,8 @@ return array(
 	'forum_post_create_title' => 'Заголовок сообщения',
 	'forum_post_create_title_notice' => 'Необязательно',
 	'forum_post_create_title_error' => 'Название сообщения должно быть от 2 до 100 символов',
+	'forum_post_create_text' => 'Текст сообщения',
+	'forum_post_create_text_notice' => 'Доступны html-теги',
 	'forum_post_create_text_error' => 'Текст сообщения должен быть от 2 до %%count%% символов',
 	'forum_post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
 	'forum_post_by' => 'от',//!!
@@ -143,6 +144,7 @@ return array(
 	'forum_reply_for' => 'Ответ в %%topic%%',
 	'forum_reply_notallow' => 'Тема закрыта',
 	'forum_reply_not_allow' => 'Вы не можете написать в эту тему',
+	'forum_reply_time_limit' => 'Вам нельзя отправлять сообщения слишком часто',
 	'forum_post_edit_for' => 'Редактирование ответа в %%topic%%',
 	'forum_fast_reply' => 'Быстрый ответ',
 
