@@ -302,7 +302,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		}
 	}
 
-	protected function submitTopicActions() {
+	protected function submitTopicActions($oTopicF=null) {
 		if (!LS::Adm()) {
 			return false;
 		}

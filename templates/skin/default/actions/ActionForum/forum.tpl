@@ -1,48 +1,44 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 
-<div class="forum clear_fix">
-	{assign var='aSubForums' value=$oForum->getChildren()}
+{assign var='aSubForums' value=$oForum->getChildren()}
 
-	<div class="forumNav">
-		<h2>{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+
+{if $aSubForums}
+	<div class="forums">
+		<section class="forums-list">
+			<header class="forums-header">
+				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+			</header>
+			<div class="forums-content">
+				{include file="$sTemplatePathPlugin/forums_list.tpl" aForums=$aSubForums}
+			</div>
+		</section>
+	</div>
+{/if}
+
+{if $oForum->getCanPost() == 0}
+	<div class="controllers clear_fix">
+		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
+		{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
 	</div>
 
-	<div class="forumBlock">
-		{if $aSubForums}
-		<div class="forumHeader clear_fix">
-			<div class="leftBg">
-				<h2><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()} - {$aLang.forum_subforums}</a></h2>
+	<div class="forums">
+		<section class="forums-list">
+			<header class="forums-header">
+				<h3>{$oForum->getTitle()}</h3>
+			</header>
+			<div class="forums-content">
+				{include file="$sTemplatePathPlugin/topics.tpl"}
 			</div>
-			<div class="rightBg">
-				<span class="lastMsg">{$aLang.forum_header_last_post|lower}</span>
-				<span class="answers">{$aLang.forum_header_answers|lower}</span>
-				<span class="views">{$aLang.forum_header_topics|lower}</span>
-			</div>
-		</div>
-
-		<div class="tableContainer clear_fix">
-			{include file="$sTemplatePathPlugin/forums_list.tpl" aForums=$aSubForums}
-		</div>
-		<div class="shadow"></div>
-		{/if}
-
-		{if $oForum->getCanPost() == 0}
-		<div class="clear_fix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-		{include file="$sTemplatePathPlugin/switcher_top.tpl"}
-		</div>
-
-		{include file="$sTemplatePathPlugin/topics.tpl"}
-
-		<div class="shadow"></div>
-
-		<div class="clear_fix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-		{include file="$sTemplatePathPlugin/switcher_top.tpl"}
-		</div>
-		{/if}
+		</section>
 	</div>
 
-</div>
+	<div class="controllers clear_fix">
+		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
+		{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
+	</div>
+{/if}
+
 {include file='footer.tpl'}

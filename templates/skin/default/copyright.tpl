@@ -1,4 +1,6 @@
-<div class="forumStats right">
-	<span class="small">lsBoard by <span class="sv-count">{$aForumData->author->data|escape:'html'} v.{$aForumData->version|escape:'html'}</span></span>
-	<span class="small">sources on <a href="https://github.com/Xmk/forum" target="_blank">github</a></span>
+<div class="clear_fix">
+	<div class="forum-copyright">
+		<span>LS Board v.{$aForumData->version|escape:'html'} by {$aForumData->author->data|escape:'html'}</span>
+		<span>sources on <a href="https://github.com/Xmk/forum" target="_blank">github</a></span>
+	</div>
 </div>

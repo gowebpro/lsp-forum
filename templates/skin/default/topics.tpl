@@ -1,19 +1,17 @@
-<div class="forumHeader forumHeader-sectionPage clear_fix">
-	<div class="leftBg">
-		<h2>{$oForum->getTitle()}</h2>
-	</div>
-	<div class="rightBg">
-		<span class="answers">{$aLang.forum_header_answers|lower}</span>
-		<span class="views">{$aLang.forum_header_views|lower}</span>
-		<span class="lastMsg">{$aLang.forum_header_last_post|lower}</span>
-	</div>
-</div>
-
-<div class="tableContainer clear_fix">
-	<table class="forumBody forumBody-sectionPage">
+<table class="table table-topics">
+	<thead>
+		<tr>
+			<th class="cell-name" colspan="2"></th>
+			<th class="cell-counter ta-c">{$aLang.forum_header_answers|lower}</th>
+			<th class="cell-author ta-c">{$aLang.forum_header_author|lower}</th>
+			<th class="cell-counter ta-c">{$aLang.forum_header_views|lower}</th>
+			<th class="cell-last-post">{$aLang.forum_header_last_post|lower}</th>
+		</tr>
+	</thead>
+	<tbody>
 	{if count($aPinned) > 0}
 		<tr>
-			<td colspan="5">
+			<td class="cell-subtitle" colspan="6">
 				<strong>{$aLang.forum_topics_pinned}</strong>
 			</td>
 		</tr>
@@ -21,7 +19,7 @@
 	{/if}
 	{if count($aTopics) > 0}
 		<tr>
-			<td colspan="5">
+			<td class="cell-subtitle" colspan="6">
 				<strong>{$aLang.forum_topics_forum}</strong>
 			</td>
 		</tr>
@@ -29,10 +27,10 @@
 	{/if}
 	{if !$aPinned and !$aTopics}
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<div class="empty">{$aLang.forum_empty}</div>
 			</td>
 		</tr>
 	{/if}
-	</table>
-</div>
+	</tbody>
+</table>

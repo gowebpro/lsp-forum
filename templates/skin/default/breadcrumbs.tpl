@@ -1,9 +1,6 @@
-<span><a href="{router page='forum'}">{$aLang.forums}</a></span>
+<a href="{router page='forum'}">{$aLang.forums}</a>
 
 {foreach from=$aBreadcrumbs item=aItem name=breadcrumbs}
-	{if $smarty.foreach.breadcrumbs.last}
-		<a href="{$aItem.url}">{$aItem.title}</a>
-	{else}
-		<span><a href="{$aItem.url}">{$aItem.title}</a></span>
-	{/if}
+	&rarr; <a href="{$aItem.url}">{$aItem.title}</a>
+	{if !$smarty.foreach.breadcrumbs.last}{/if}
 {/foreach}

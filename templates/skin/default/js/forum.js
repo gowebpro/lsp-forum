@@ -32,6 +32,16 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.preview = function(id) {
+		if (BLOG_USE_TINYMCE && tinyMCE) {
+			$("#"+id).val(tinyMCE.activeEditor.getContent());
+		}
+		if ($("#"+id).val() == '') return false;
+		$("#text_preview").show();
+		ls.tools.textPreview(id, false, 'text_preview');
+		return false;
+	};
+
 	this.getMarkitupSettings = function() {
 		return {
 			onShiftEnter:	{keepDefault:false, replaceWith:'<br />\n'},

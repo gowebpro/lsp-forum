@@ -93,7 +93,7 @@ return array(
 	'forum_topic_close' => 'Закрыть тему',
 	'forum_topic_open' => 'Открыть тему',
 	'forum_topic_delete' => 'Удалить тему',
-	'forum_topic_delete_warning' => 'При удалении темы, также все ее сообщения. Продолжайте только в том случае, если вы действительно хотите удалить эту тему. Больше никаких предупреждений не будет.',
+	'forum_topic_delete_warning' => 'При удалении темы, также будут удалены все ее сообщения. Продолжайте только в том случае, если вы действительно хотите удалить эту тему. Больше никаких предупреждений не будет.',
 	'forum_topic_pin' => '"Поднять" тему',
 	'forum_topic_unpin' => '"Опустить" тему',
 	'forum_topic_answers' => 'Ответы в тему',
@@ -136,7 +136,7 @@ return array(
 	'forum_post_create_title_error' => 'Название сообщения должно быть от 2 до 100 символов',
 	'forum_post_create_text' => 'Текст сообщения',
 	'forum_post_create_text_notice' => 'Доступны html-теги',
-	'forum_post_create_text_error' => 'Текст сообщения должен быть от 2 до %%count%% символов',
+	'forum_post_create_text_error' => 'Текст сообщения должен быть от %%min%% до %%max%% символов',
 	'forum_post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
 	'forum_post_by' => 'от',//!!
 

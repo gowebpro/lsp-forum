@@ -18,50 +18,32 @@
 	</script>
 {/if}
 
-<div class="forum">
-	<div class="forumNav">
-		<h2>{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
-	</div>
+<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
-	{include file="$sTemplatePathPlugin/switcher_top.tpl"}
+<h4 class="page-subheader">{$aLang.forum_reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
-	<div class="forumBlock">
-		<div class="forumHeader forumHeader-subjectPage">
-			<div class="leftBg">
-				<h2>{$aLang.forum_reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h2>
-			</div>
-			<div class="rightBg"></div>
-		</div>
+<div class="topic-preview" style="display: none;" id="text_preview"></div>
 
-		<div class="fastAnswer clear_fix">
-			<div class="topic" style="display:none">
-				<div class="content" id="text_preview"></div>
-			</div>
-			<div class="fastAnswerForm">
-				<form action="" method="POST" enctype="multipart/form-data">
-					<fieldset>
-						<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
+<form action="" method="POST" enctype="multipart/form-data" id="form-post-add">
+	{hook run='form_forum_add_post_begin'}
 
-						<p>
-							<label for="post_title">{$aLang.forum_post_create_title}:</label><br />
-							<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
-							<span class="note">{$aLang.forum_post_create_title_notice}</span>
-						</p>
+	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 
-						<p>
-							<label for="post_text">{$aLang.forum_post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.forum_post_create_text_notice}){/if}:</label>
-							<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
-						</p>
+	<p>
+		<label for="post_title">{$aLang.forum_post_create_title}:</label>
+		<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
+		<span class="note">{$aLang.forum_post_create_title_notice}</span>
+	</p>
 
-						<p class="buttons">
-							<input type="submit" name="submit_post_publish" value="{$aLang.topic_create_submit_publish}" class="right" />
-							<input type="submit" name="submit_preview" value="{$aLang.topic_create_submit_preview}" onclick="jQuery('#text_preview').parent().show(); ls.tools.textPreview('post_text',false); return false" />&nbsp;
-						</p>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
+	<p>
+		<label for="post_text">{$aLang.forum_post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.forum_post_create_text_notice}){/if}:</label>
+		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
+	</p>
 
-</div>
+	{hook run='form_forum_add_post_end'}
+
+	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary fl-r">{$aLang.topic_create_submit_publish}</button>
+	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+</form>
+
 {include file='footer.tpl'}

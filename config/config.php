@@ -15,7 +15,7 @@ $config=array();
 /**
  * Количество топиков на страницу
  */
-$config['topic_per_page']		= 20;
+$config['topic_per_page']		= 10;
 /**
  * Количество постов на страницу
  */
