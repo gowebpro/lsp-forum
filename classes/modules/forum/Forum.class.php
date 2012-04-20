@@ -67,6 +67,29 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Получает слудующий по сортировке форум
+	 *
+	 * @param	integer	$iSort
+	 * @param	integer	$sPid
+	 * @param	string	$sWay
+	 * @return	object
+	 */
+	public function GetNextForumBySort($iSort,$sPid,$sWay='up') {
+		$sForumId=$this->oMapperForum->GetNextForumBySort($iSort,$sPid,$sWay);
+		return $this->GetForumById($sForumId);
+	}
+
+	/**
+	 * Получает значение максимальной сортировки
+	 *
+	 * @param	integer	$sPid
+	 * @return	integer
+	 */
+	public function GetMaxSortByPid($sPid) {
+		return $this->oMapperForum->GetMaxSortByPid($sPid);
+	}
+
+	/**
 	 * Получает статистику форума
 	 *
 	* @return	array

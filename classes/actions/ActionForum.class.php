@@ -821,6 +821,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setCanPost(getRequest('forum_sub_can_post') ? 1 : 0 );
 			if (getRequest('forum_sort')) {
 				$oForum->setSort(getRequest('forum_sort'));
+			} else {
+				$oForum->setSort($this->PluginForum_Forum_GetMaxSortByPid($oForum->getParentId())+1);
 			}
 			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
 			if (isPost('forum_redirect_url')) {
@@ -1113,6 +1115,40 @@ class PluginForum_ActionForum extends ActionPlugin {
 	}
 
 	/**
+	 * Изменение сортировки форума
+	 */
+	protected function _adminForumSort() {
+		$sForumId=$this->GetParam(2);
+		if (!$oForum=$this->PluginForum_Forum_GetForumById($sForumId)) {
+			return parent::EventNotFound();
+		}
+
+		$this->Security_ValidateSendForm();
+
+		$sWay=$this->GetParam(3)=='down' ? 'down' : 'up';
+		$iSortOld=$oForum->getSort();
+		if ($oForumPrev=$this->PluginForum_Forum_GetNextForumBySort($iSortOld,$oForum->getParentId(),$sWay)) {
+			$iSortNew=$oForumPrev->getSort();
+			$oForumPrev->setSort($iSortOld);
+			$oForumPrev->Save();
+		} else {
+			if ($sWay=='down') {
+				$iSortNew=$iSortOld+1;
+			} else {
+				$iSortNew=$iSortOld-1;
+			}
+		}
+		/**
+		 * Меняем значения сортировки местами
+		 */
+		$oForum->setSort($iSortNew);
+		$oForum->Save();
+
+		$this->Message_AddNotice($this->Lang_Get('forum_sort_submit_ok'));
+		Router::Location(Router::GetPath('forum').'admin/forums/');
+	}
+
+	/**
 	 * Админка
 	 */
 	public function EventAdmin() {
@@ -1160,6 +1196,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 					 */
 					case 'delete':
 						$this->_adminForumDelete();
+						break;
+					/**
+					 * Изменение сортировки
+					 */
+					case 'sort':
+						$this->_adminForumSort();
 						break;
 					/**
 					 * Список форумов

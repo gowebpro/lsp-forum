@@ -164,6 +164,10 @@ return array(
 	'forum_acp_forums_control' => 'Управление форумами',
 	'forum_acp_forums_list_msg' => 'Внимание, при удалении категории так-же удаляются все форумы и топики, связанные с этой категорией. В скором времени будут функции переноса.',
 
+	'forum_sort_up' => 'Переместить выше',
+	'forum_sort_down' => 'Переместить ниже',
+	'forum_sort_submit_ok' => 'Сортировка изменена',
+
 	'forum_plugin_about' => 'О плагине',
 	'forum_plugin_about_text' => '<strong>CC BY-NC (Атрибуция — Некоммерческое использование)</strong><br>Эта лицензия позволяет другим изменять, поправлять и брать за основу ваше произведение некоммерческим образом и хотя их новые произведения должны указывать вас в качестве автора и быть некоммерческими и они не должны лицензировать их производные произведения на тех же условиях.<br><a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank"><img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" title="ARS Mod License" width="88" height="31"></a><br><a href="http://creativecommons.org/licenses/by-nc/3.0" target="_blank">Смотреть общее краткое описание лицензии</a><br><a href="http://creativecommons.org/licenses/by-nc/3.0/legalcode" target="_blank">Смотреть юридический текст</a>',
 

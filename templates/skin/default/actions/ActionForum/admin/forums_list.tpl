@@ -32,6 +32,8 @@
 						<li id="forum-{$oForum->getId()}" style="margin-left:{$aItem.level*20}px">
 							<a class="icon-edit" title="{$aLang.forum_edit}" href="{router page='forum'}admin/forums/edit/{$oForum->getId()}"></a>
 							<a class="icon-remove" title="{$aLang.forum_delete}" href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"></a>
+							<a class="icon-arrow-up" title="{$aLang.forum_sort_up} ({$oForum->getSort()})" href="{router page='forum'}admin/forums/sort/{$oForum->getId()}/up/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
+							<a class="icon-arrow-down" title="{$aLang.forum_sort_down} ({$oForum->getSort()})" href="{router page='forum'}admin/forums/sort/{$oForum->getId()}/down/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
 							{$oForum->getTitle()}
 						</li>
 					{/foreach}

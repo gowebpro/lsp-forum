@@ -45,6 +45,59 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return false;
 	}
 
+	/**
+	 * Получает слудующий по сортировке форум
+	 *
+	 * @param	integer	$iSort
+	 * @param	integer	$sPid
+	 * @param	string	$sWay
+	 * @return	object
+	 */
+	public function GetNextForumBySort($iSort,$sPid,$sWay) {
+		if ($sWay=='up') {
+			$sWay='<';
+			$sOrder='desc';
+		} else {
+			$sWay='>';
+			$sOrder='asc';
+		}
+		$sPidNULL='';
+		if (is_null($sPid)) {
+			$sPidNULL='forum_parent_id IS NULL and';
+		}
+		$sql = "SELECT forum_id
+				FROM ".Config::Get('db.table.prefix')."forum
+				WHERE { forum_parent_id = ? and } {$sPidNULL} forum_sort {$sWay} ?
+				ORDER BY forum_sort {$sOrder}
+				LIMIT 0,1";
+		if ($aRow=$this->oDb->selectRow($sql,is_null($sPid) ? DBSIMPLE_SKIP : $sPid, $iSort)) {
+			return $aRow['forum_id'];
+		}
+		return null;
+	}
+
+	/**
+	 * Получает значение максимальной сртировки
+	 *
+	 * @param	integer	$sPid
+	 * @return	integer
+	 */
+	public function GetMaxSortByPid($sPid) {
+		$sPidNULL='';
+		if (is_null($sPid)) {
+			$sPidNULL='and forum_parent_id IS NULL';
+		}
+		$sql = "SELECT max(forum_sort) as max_sort
+				FROM ".Config::Get('db.table.prefix')."forum
+				WHERE 1=1
+				{ and forum_parent_id = ? }
+				{$sPidNULL} ";
+		if ($aRow=$this->oDb->selectRow($sql,is_null($sPid) ? DBSIMPLE_SKIP : $sPid)) {
+			return $aRow['max_sort'];
+		}
+		return 0;
+	}
+
 	public function GetCountTopicByForumId($sFid) {
 		$sql = "SELECT COUNT(*) as count
 				FROM ".Config::Get('db.table.prefix')."forum_topic
