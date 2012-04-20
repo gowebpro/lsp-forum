@@ -1,4 +1,5 @@
-{include file='header.tpl' noSidebar=true}
+{assign var="noSidebar" value=true}
+{include file='header.tpl'}
 
 <h2 class="page-header">{$aLang.forums}</h2>
 

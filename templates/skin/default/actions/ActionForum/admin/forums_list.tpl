@@ -1,25 +1,17 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 
-<div class="forum">
-	<div class="forumNav">
-		<h2>
-			<span><a href="{router page='forum'}admin">{$aLang.forum_acp}</a></span>
-			{$aLang.forums}
-		</h2>
-	</div>
+<h2 class="page-header"><a href="{router page='forum'}admin">{$aLang.forum_acp}</a> <span>&raquo;</span> {$aLang.forums}</h2>
 
-	{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
 
-	<div class="forumBblock">
-		<div class="forumHeader forumHeader-subjectPage">
-			<div class="leftBg">
-				<h2>{$aLang.forum_acp_main}</h2>
-			</div>
-			<div class="rightBg"></div>
-		</div>
+<div class="forums">
+	<header class="forums-header">
+		<h3>{$aLang.forum_acp_main}</h3>
+	</header>
 
-		<table class="table">
+	<table class="table">
+		<thead>
 			<tr>
 				<th width="50%">
 					<h3>{$aLang.forum_acp_forums_control}</h3>
@@ -28,10 +20,10 @@
 					<h3>Actions</h3>
 				</th>
 			</tr>
+		</thead>
+		<tbody>
 			<tr>
 				<td>
-					<!--strong>{$aLang.forum_acp_forums_list_msg}</strong-->
-
 					<br/>
 					{if $aForums}
 					<ul id="forums-tree">
@@ -55,9 +47,8 @@
 					</ul>
 				</td>
 			</tr>
-		</table>
-	</div>
-
+		</tbody>
+	</table>
 </div>
 
 {include file='footer.tpl'}

@@ -5,6 +5,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forums-header { padding: 13px 20px; background: #EAF6F9; border-bottom: 1px solid #D2E8EF; position: relative }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
 .forums-content { }
+.forums-content section { padding: 15px }
 
 .table th { background: #EEE; padding: 7px }
 .table td { padding: 7px }
