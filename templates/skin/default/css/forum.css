@@ -54,6 +54,10 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 
 .controllers { margin-bottom: 10px }
 
+.userlist { line-height: 24px }
+.userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
+.userlist span { white-space: nowrap }
+
 a.bbl { background: url(../images/forums-icons.png) no-repeat; background-position: 0 -58px; display: block; width: 31px; height: 29px; margin: auto }
 a.bbl.info { background-position: -31px -58px }
 a.bbl.close { background-position: 0 -87px }

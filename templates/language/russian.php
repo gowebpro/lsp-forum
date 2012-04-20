@@ -31,7 +31,7 @@ return array(
 	'forum_stats' => 'Статистика форума',
 	'forum_stats_visitors' => 'Сейчас на сайте',
 	'forum_stats_birthday' => 'Дни рождения',
-	'forum_stats_birthday_notice' => 'От души поздравляем, братюня',
+	'forum_stats_birthday_notice' => '',
 	'forum_stats_post_count' => 'Написано сообщений',
 	'forum_stats_topic_count' => 'Создано тем',
 	'forum_stats_user_count' => 'Зарегистрировано пользователей',

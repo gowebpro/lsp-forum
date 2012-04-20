@@ -38,7 +38,7 @@
 					{if $aForumStats.online.count_users && $aForumStats.online.count_quest}{$aLang.forum_and}{/if}
 					{if $aForumStats.online.count_quest} {$aForumStats.online.count_quest} Гостей {/if}
 					{if $aForumStats.online.users}
-						<div class="user-list">
+						<div class="userlist">
 						{foreach from=$aForumStats.online.users item=oUser name=online_user}
 							<span>
 								<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="" /></a>
@@ -61,12 +61,12 @@
 			<tr>
 				<td class="cell-icon"><div class="forum-stats-icon-users"></div></td>
 				<td class="cell-content">
-					<div class="user-list">
+					<div class="userlist">
 					{foreach from=$aForumStats.bdays item=oUser name=bday_user}
 						<span>
-							<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" width="20px" alt="" /></a>
+							<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="" /></a>
 							<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
-							{if !$smarty.foreach.online_user.last}, {/if}
+							{if !$smarty.foreach.bday_user.last}, {/if}
 						</span>
 					{/foreach}
 					</div>
