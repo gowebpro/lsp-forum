@@ -248,7 +248,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем посты
 		 */
-		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#page'=>array($iPage,Config::Get('plugin.forum.post_per_page'))));
+		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#page'=>array($iPage,$iPerPage)));
 		$aPosts=$aResult['collection'];
 		$iPostsCount=$aResult['count'];
 		/**
@@ -257,7 +258,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		for ($i=1; $i <= count($aPosts); $i++) {
 			$oPost=$aPosts[$i-1];
 			$iNumber=ceil(($iPage-1)*$iPerPage+$i);
-			if ($bLineMod) $iNumber++;
+			//if ($bLineMod) $iNumber++;
 			$oPost->setNumber($iNumber);
 		}
 		/**

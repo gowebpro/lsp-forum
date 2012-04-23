@@ -5,7 +5,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
-<div class="controllers clear_fix">
+<div id="topic-controls-top" class="controllers clear_fix">
 	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
 	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
 </div>
@@ -42,9 +42,9 @@
 	</footer>
 </div>
 
-<div class="controllers clear_fix">
+<div id="topic-controls-bottom" class="controllers clear_fix">
 	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
-	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
+	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right' bFastAnswer=true}
 </div>
 
 <div id="fastAnswer{$oTopic->getId()}" style="display:none">
