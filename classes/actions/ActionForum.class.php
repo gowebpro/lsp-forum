@@ -759,7 +759,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage='';
-		if ($iCountPage=ceil($oTopic->getCountPost()/Config::Get('plugin.forum.post_per_page'))) {
+		$iPostsCount=(int)$oTopic->getCountPost();
+		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
 			if ($iCountPage > 1) {
 				$sPage="page{$iCountPage}";
 			}
@@ -767,7 +769,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Редирект
 		 */
-		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post{$oLastPost->getId()}");
+		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post-{$oLastPost->getId()}");
 	}
 
 	/**
@@ -795,7 +797,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage='';
-		if ($iCountPage=ceil(((int)$aLeftPosts['count'])/Config::Get('plugin.forum.post_per_page'))) {
+		$iPostsCount=(int)$aLeftPosts['count']+1;
+		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
 			if ($iCountPage > 1) {
 				$sPage="page{$iCountPage}";
 			}
@@ -803,7 +807,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Редирект
 		 */
-		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post{$oPost->getId()}");
+		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post-{$oPost->getId()}");
 	}
 
 
