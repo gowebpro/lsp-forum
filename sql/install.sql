@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	`forum_moder` varchar(250) CHARACTER SET utf8 NOT NULL,
 	`forum_sort` int(11) NOT NULL DEFAULT 0,
 	`forum_can_post` tinyint(1) NOT NULL DEFAULT '0',
+	`forum_quick_reply` tinyint(1) NOT NULL DEFAULT '1',
+	`forum_type` tinyint(1) NOT NULL DEFAULT '1',
 	`forum_password` varchar(32) default NULL,
 	`forum_redirect_url` varchar(250) default '',
 	`forum_redirect_on` tinyint(1) NOT NULL default '0',
@@ -37,8 +39,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_text_source` text NOT NULL,
 	`post_text_hash` varchar(32) NOT NULL,
 	PRIMARY KEY (`post_id`),
-	KEY topic_id (`topic_id`),
-	KEY user_id (`user_id`),
+	KEY `topic_id` (`topic_id`),
+	KEY `user_id` (`user_id`),
 	KEY `post_text_hash` (`post_text_hash`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

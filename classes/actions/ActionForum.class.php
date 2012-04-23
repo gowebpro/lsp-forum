@@ -250,6 +250,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#page'=>array($iPage,Config::Get('plugin.forum.post_per_page'))));
 		$aPosts=$aResult['collection'];
+		$iPostsCount=$aResult['count'];
+		/**
+		 * Номера постов
+		 */
+		for ($i=1; $i <= count($aPosts); $i++) {
+			$oPost=$aPosts[$i-1];
+			$iNumber=ceil(($iPage-1)*$iPerPage+$i);
+			if ($bLineMod) $iNumber++;
+			$oPost->setNumber($iNumber);
+		}
 		/**
 		 * Формируем постраничность
 		 */
@@ -262,9 +272,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Счетчик просмотров топика
 		 */
 		$oTopic->setViews((int)$oTopic->getViews()+1);
-		//if ($oTopic->getCountPost() <> $iPostsCount) {
-			//$oTopic->setCountPost($iPostsCount);
-		//}
+		if ($oTopic->getCountPost() <> $iPostsCount) {
+			$oTopic->setCountPost($iPostsCount);
+		}
 		$oTopic->Save();
 		/**
 		 * Загружаем переменные в шаблон
@@ -272,6 +282,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign("oForum",$oForum);
 		$this->Viewer_Assign("oTopic",$oTopic);
 		$this->Viewer_Assign("aPosts",$aPosts);
+		$this->Viewer_Assign("iPostsCount",$iPostsCount);
 		$this->Viewer_Assign("aPaging",$aPaging);
 		/**
 		 * Хлебные крошки
@@ -818,7 +829,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		} else {
 			$oForum->setDescription(getRequest('forum_description'));
 			$oForum->setParentId(getRequest('forum_parent'));
+			$oForum->setType(getRequest('forum_type'));
 			$oForum->setCanPost(getRequest('forum_sub_can_post') ? 1 : 0 );
+			$oForum->setQuickReply(getRequest('forum_quick_reply') ? 1 : 0 );
 			if (getRequest('forum_sort')) {
 				$oForum->setSort(getRequest('forum_sort'));
 			} else {
@@ -866,7 +879,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		} else {
 			$oForum->setDescription(getRequest('forum_description'));
 			$oForum->setParentId(getRequest('forum_parent'));
+			$oForum->setType(getRequest('forum_type'));
 			$oForum->setCanPost( (int)getRequest('forum_sub_can_post',0,'post') === 1 );
+			$oForum->setQuickReply( (int)getRequest('forum_quick_reply',0,'post') === 1 );
 			$oForum->setSort(getRequest('forum_sort'));
 			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
 			if (isPost('forum_redirect_url')) {
@@ -882,6 +897,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		Router::Location(Router::GetPath('forum').'admin/forums/');
 	}
+
 
 	/**
 	 * Главная страница админцентра
@@ -955,10 +971,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_url']=$oForumEdit->getUrl();
 					$_REQUEST['forum_description']=$oForumEdit->getDescription();
 					$_REQUEST['forum_parent']=$oForumEdit->getParentId();
+					$_REQUEST['forum_type']=$oForumEdit->getType();
 					$_REQUEST['forum_sub_can_post']=$oForumEdit->getType();
 					$_REQUEST['forum_redirect_url']=$oForumEdit->getRedirectUrl();
 					$_REQUEST['forum_redirect_on']=$oForumEdit->getRedirectOn();
 					$_REQUEST['forum_sort']=$oForumEdit->getSort();
+					$_REQUEST['forum_quick_reply']=$oForumEdit->getQuickReply();
 
 					$sNewType=($oForumEdit->getParentId()==0) ? 'category' : 'forum';
 				}
@@ -1037,15 +1055,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 *
 			 * (-1) - выбран пункт меню "удалить топики".
 			 */
-			if($sForumIdNew=getRequest('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
-				if(!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
+			if ($sForumIdNew=getRequest('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
+				if (!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
 					$this->Message_AddError($this->Lang_Get('forum_delete_move_error'),$this->Lang_Get('error'));
 					return;
 				}
 				/**
 				 * Если выбранный форум является удаляемым форум
 				 */
-				if($sForumIdNew==$sForumId) {
+				if ($sForumIdNew==$sForumId) {
 					$this->Message_AddError($this->Lang_Get('forum_delete_move_items_error_self'),$this->Lang_Get('error'));
 					return;
 				}
@@ -1059,7 +1077,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Если выбранный форум является категорией, возвращаем ошибку
 				 */
-				if($oForumNew->getType()==1) {
+				if ($oForumNew->getType()==1) {
 					$this->Message_AddError($this->Lang_Get('forum_delete_move_items_error_category'),$this->Lang_Get('error'));
 					return;
 				}
@@ -1075,7 +1093,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Если выбранный форум является удаляемым форум
 				 */
-				if($sForumIdNew==$sForumId) {
+				if ($sForumIdNew==$sForumId) {
 					$this->Message_AddError($this->Lang_Get('forum_delete_move_childrens_error_self'),$this->Lang_Get('error'));
 					return;
 				}
@@ -1096,7 +1114,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Перемещаем подфорумы
 			 */
-			if($sForumIdNew=getRequest('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
+			if ($sForumIdNew=getRequest('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
 				$this->PluginForum_Forum_MoveForums($sForumId,$sForumIdNew);
 			}
 			/**

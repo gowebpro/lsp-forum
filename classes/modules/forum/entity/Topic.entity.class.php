@@ -23,7 +23,7 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		$aPaging=$oEngine->Viewer_MakePaging(
 			$this->getCountPost(),
 			1,Config::Get('plugin.forum.post_per_page'),4,
-			Router::GetPath('forum')."topic/{$this->getId()}"
+			$this->getUrlFull()
 		);
 		return $aPaging;
 	}

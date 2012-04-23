@@ -16,7 +16,7 @@
  */
 class PluginForum_HookForum extends Hook {
 	public function RegisterHook() {
-		$this->AddHook('template_main_menu','Menu');
+		$this->AddHook('template_main_menu_item','Menu');
 		$this->AddHook('template_forum_copyright','Copyright');
 	}
 
