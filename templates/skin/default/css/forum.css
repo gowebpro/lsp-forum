@@ -1,13 +1,7 @@
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 .forums {}
-.forums .empty {
-	border: 1px solid #eee;
-	border-radius: 10px;
-	padding: 40px 100px;
-	color: #666;
-	background: #F0F0F0
-}
+.forums .body-message { color: #666; text-align: center; background: #F0F0F0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
 .forums-list {}
 .forums-header { padding: 13px 20px; background: #EAF6F9; border-bottom: 1px solid #D2E8EF; position: relative }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }

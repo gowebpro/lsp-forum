@@ -83,12 +83,34 @@
 		</tr>
 		<tr>
 			<td width="400">
+				<label for="forum_type">{$aLang.forum_create_type}:</label>
+				<span class="note">{$aLang.forum_create_type_notice}</span>
+			</td>
+			<td>
+				<select id="forum_type" name="forum_type">
+					<option value="1"{if $_aRequest.forum_type=='1'} selected{/if}>{$aLang.forum_create_type_active}</option>
+					<option value="0"{if $_aRequest.forum_type=='0'} selected{/if}>{$aLang.forum_create_type_archive}</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td width="400">
 				<label for="forum_sub_can_post">{$aLang.forum_create_sub_can_post}:</label>
 				<span class="note">{$aLang.forum_create_sub_can_post_notice}</span>
 			</td>
 			<td>
 				<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_yes" value="1"{if $_aRequest.forum_sub_can_post=='1'} checked{/if}> Yes</label>
 				<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_no" value="0"{if !$_aRequest.forum_sub_can_post || $_aRequest.forum_sub_can_post=='0'} checked{/if}> No</label>
+			</td>
+		</tr>
+		<tr>
+			<td width="400">
+				<label for="forum_quick_reply">{$aLang.forum_create_quick_reply}:</label>
+				<span class="note">{$aLang.forum_create_quick_reply_notice}</span>
+			</td>
+			<td>
+				<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_yes" value="1"{if $_aRequest.forum_quick_reply=='1'} checked{/if}> Yes</label>
+				<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_no" value="0"{if !$_aRequest.forum_quick_reply || $_aRequest.forum_quick_reply=='0'} checked{/if}> No</label>
 			</td>
 		</tr>
 

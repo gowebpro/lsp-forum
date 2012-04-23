@@ -53,8 +53,14 @@ return array(
 	'forum_create_url_error_used' => 'Форум с таким URL уже существует',
 	'forum_create_description' => 'Описание',
 	'forum_create_parent' => 'Выберите родительский форум или категорию',
+	'forum_create_type' => 'Состояние форума',
+	'forum_create_type_notice' => '',
+	'forum_create_type_active' => 'Активный',
+	'forum_create_type_archive' => 'Архив только для чтения',
 	'forum_create_sub_can_post' => 'Сделать форум категорией?',
 	'forum_create_sub_can_post_notice' => 'Если вы выберите <b>«Да»</b>, то форум будет категорией, в нем будут запрещено открытие тем и публикация сообщений, соответственно, все нижеследующие настройки не будут иметь силы.<br><br>Если выберите <b>«Нет»</b>, то форум будет обычным, в нем будут разрешено открытие тем, публикация сообщений (если это разрешено).',
+	'forum_create_quick_reply' => 'Включить форму быстрого ответа для этого форума?',
+	'forum_create_quick_reply_notice' => '',
 
 	'forum_create_sort' => 'Сортировка',
 	'forum_create_sort_notice' => 'Устанавливает сортировку при отображении',
@@ -170,6 +176,8 @@ return array(
 
 	'forum_plugin_about' => 'О плагине',
 	'forum_plugin_about_text' => '<strong>CC BY-NC (Атрибуция — Некоммерческое использование)</strong><br>Эта лицензия позволяет другим изменять, поправлять и брать за основу ваше произведение некоммерческим образом и хотя их новые произведения должны указывать вас в качестве автора и быть некоммерческими и они не должны лицензировать их производные произведения на тех же условиях.<br><a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank"><img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" title="ARS Mod License" width="88" height="31"></a><br><a href="http://creativecommons.org/licenses/by-nc/3.0" target="_blank">Смотреть общее краткое описание лицензии</a><br><a href="http://creativecommons.org/licenses/by-nc/3.0/legalcode" target="_blank">Смотреть юридический текст</a>',
+
+	'forums_welcome' => '<a href="http://test.ars-team.ru/forum/admin/forums/new?type=category">Создать первый форум</a>',
 
 );
 

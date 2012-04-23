@@ -17,11 +17,11 @@
 			</section>
 		{/foreach}
 	{else}
-		<div class="empty">
+		<div class="body-message">
 		{if $oUserCurrent && $oUserCurrent->isAdministrator()}
-			{$aLangs.forums_welcome}
+			{$aLang.forums_welcome}
 		{else}
-			{$aLangs.forums_no}
+			{$aLang.forums_no}
 		{/if}
 		</div>
 	{/if}
