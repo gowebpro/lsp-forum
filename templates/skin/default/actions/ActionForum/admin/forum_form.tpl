@@ -17,7 +17,7 @@
 	</header>
 
 {if $sNewType != 'category' && !$aForums}
-	<div class="">{$aLang.forum_create_warning}</div>
+	<div class="empty">{$aLang.forum_create_warning}</div>
 {else}
 	<form action="" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 

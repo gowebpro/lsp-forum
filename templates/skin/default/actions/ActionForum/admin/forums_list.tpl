@@ -39,7 +39,7 @@
 					{/foreach}
 					</ul>
 					{else}
-						<div align="center">{$aLang.forums_no}</div>
+						<div class="empty">{$aLang.forums_no}</div>
 					{/if}
 				</td>
 				<td>

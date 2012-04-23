@@ -1,9 +1,10 @@
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 .forums {}
-.forums .body-message { color: #666; text-align: center; background: #F0F0F0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
+.forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
+.forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
-.forums-header { padding: 13px 20px; background: #EAF6F9; border-bottom: 1px solid #D2E8EF; position: relative }
+.forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #eee; position: relative }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
 .forums-content { }
 .forums-content section { padding: 15px }
@@ -15,7 +16,6 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .table span.date { color: #434951 }
 .table span.author { display: block; font-weight: bold }
 .table span.author img { vertical-align: middle; width: 20px; height: 20px }
-.table .empty { text-align: center }
 .table .link-to-msg { background: url(../images/icon_link.png) no-repeat; display: inline-block; width: 16px; height: 9px }
 .table .cell-subtitle { font-size: 12px; font-weight: bold; margin-bottom: 20px; background: #F0F0F0; color: #555; padding: 5px 10px 6px }
 .table .cell-icon { width: 1% }
