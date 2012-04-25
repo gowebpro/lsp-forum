@@ -4,9 +4,10 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
-.forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; position: relative }
-.forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
-.forums-content { }
+.forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px dotted #DCE1E6; position: relative }
+.forums-header h3 { font-size: 22px; line-height: 1em; font-weight: normal; font-family: 'PT Sans', sans-serif }
+.forums-header h3 a { text-decoration: none; color: #333 }
+.forums-content {}
 .forums-content section { padding: 15px }
 
 .table th { background: #F1F9F1; padding: 7px; color: #808080 }
@@ -20,12 +21,12 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .table .cell-subtitle { background: #fff5ee; padding: 7px 28px; color: #808080; font-weight: bold }
 .table .cell-icon { width: 1% }
 
-.table.table-forums th.cell-name { width: 62% }
+.table.table-forums th.cell-name { width: 60% }
 .table.table-forums th.cell-counter  { width: 7% }
 .table.table-forums th.cell-last-post { width: 35% }
 .table.table-forums h3 { font-size: 12px; font-weight: bold; margin-bottom: 3px }
 
-.table.table-topics th.cell-name { width: 44% }
+.table.table-topics th.cell-name { width: 42% }
 .table.table-topics th.cell-counter  { width: 7% }
 .table.table-topics th.cell-author  { width: 14% } 
 .table.table-topics th.cell-last-post { width: 22% }
