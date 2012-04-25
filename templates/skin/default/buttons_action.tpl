@@ -3,7 +3,7 @@
 	{if $sMenuSubItemSelect == 'show_topic' && $oTopic}
 		{if !$oTopic->getState()}
 			{if $oForum->getQuickReply() && $bFastAnswer}
-			<button class="button" onclick="return Forum.fastReply({$oTopic->getId()},this)">{$aLang.forum_fast_reply}</button>
+			<button class="button" onclick="return ls.forum.fastReply(this)">{$aLang.forum_fast_reply}</button>
 			{/if}
 			<a href="{$oTopic->getUrlFull()}reply"><button class="button">{$aLang.forum_reply}</button></a>
 		{else}

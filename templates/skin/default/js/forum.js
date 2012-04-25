@@ -12,14 +12,14 @@
 var ls=ls || {}
 
 ls.forum = (function ($) {
-	this.fastReply = function(idTopic,el) {
-		var form=$('#fastAnswer'+idTopic);
+	this.fastReply = function(el) {
+		var form=$('#fast-reply-form');
 		if (form.css('display')=='block') {
 			form.slideUp();
-			$(el).parent('li').removeClass('active');
+			$(el).removeClass('button-primary');
 		} else {
 			form.slideDown();
-			$(el).parent('li').addClass('active');
+			$(el).addClass('button-primary');
 		}
 		return false;
 	};

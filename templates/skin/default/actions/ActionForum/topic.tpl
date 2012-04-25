@@ -47,30 +47,6 @@
 	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right' bFastAnswer=true}
 </div>
 
-<div id="fastAnswer{$oTopic->getId()}" style="display:none">
-	<div class="fastAnswer clear_fix">
-		<div class="topic" style="display:none">
-			<div class="content" id="text_preview"></div>
-		</div>
-		<div class="fastAnswerForm">
-			<form action="{$oTopic->getUrlFull()}reply" method="POST" enctype="multipart/form-data">
-				<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
-
-				<p>
-					<label for="post_title">{$aLang.forum_post_create_title}:</label><br />
-					<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-wide" /><br />
-					<span class="note">{$aLang.forum_post_create_title_notice}</span>
-				</p>
-
-				<textarea name="post_text" id="post_text" rows="20" class="input-wide markItUpEditor">{$_aRequest.post_text}</textarea><br />
-
-				<p class="buttons">
-					<input type="submit" name="submit_post_publish" value="{$aLang.topic_create_submit_publish}" class="right" />
-					<input type="submit" name="submit_preview" value="{$aLang.topic_create_submit_preview}" onclick="jQuery('#text_preview').parent().show(); ls.tools.textPreview('post_text',false); return false" />&nbsp;
-				</p>
-			</form>
-		</div>
-	</div>
-</div>
+{include file="$sTemplatePathPlugin/fast_answer_form.tpl"}
 
 {include file='footer.tpl'}
