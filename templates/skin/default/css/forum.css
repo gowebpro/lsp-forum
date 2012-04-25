@@ -1,3 +1,7 @@
+/* --------------------------------------------
+	‘Œ–”Ã
+-------------------------------------------- */
+
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 .forums {}
@@ -35,6 +39,9 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forum-topic {}
 .forum-topic-footer {}
 
+.forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
+
+/* Post */
 .forum-post { border-bottom: 1px solid #eee; padding: 5px 0; margin: 5px 0 }
 .forum-post-side { float: left; width: 150px; border-right: 1px solid #eee; text-align: center }
 .forum-post-content { float: none; margin-left: 151px; width: auto }
@@ -44,8 +51,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forum-post-body { padding: 10px }
 .forum-post-footer { border-top: 1px solid #eee; margin: 10px 0 }
 
-.forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
-
+/* Stats */
 .forum-stats {}
 .forum-stats .table .cell-icon { width: 60px; text-align: center }
 .forum-stats .table .cell-content { }
@@ -55,6 +61,23 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forum-copyright { float: right; clear: both }
 .forum-copyright span { font-size: 10px; display: block }
 
+/* Icons */
+.forum-icon, .topic-icon { display: block; width: 32px; height: 32px; margin: auto; background-repeat: no-repeat }
+
+.forum-icon { background-image: url(../icons/forum_read.png) }
+.forum-icon.unread { background-image: url(../icons/forum_unread.png) }
+.forum-icon.archive {}
+
+.topic-icon { background-image: url(../icons/topic_read.png) }
+.topic-icon.unread { background-image: url(../icons/topic_unread.png) }
+.topic-icon.close { background-image: url(../icons/topic_close.png) }
+.topic-icon.hot { background-image: url(../icons/topic_hot.png) }
+.topic-icon.hot.unread { background-image: url(../icons/topic_hot_unread.png) }
+.topic-icon.poll { background-image: url(../icons/topic_poll.png) }
+.topic-icon.poll.hot { background-image: url(../icons/topic_poll_hot.png) }
+.topic-icon.poll.unread { background-image: url(../icons/topic_poll_unread.png) }
+
+/* Other */
 .controllers { margin-bottom: 10px }
 
 .userlist { line-height: 24px }
@@ -62,15 +85,6 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .userlist span { white-space: nowrap }
 
 .js-forum-cat-toogler { cursor: pointer }
-
-a.bbl { background: url(../images/forums-icons.png) no-repeat; background-position: 0 -58px; display: block; width: 31px; height: 29px; margin: auto }
-a.bbl.info { background-position: -31px -58px }
-a.bbl.close { background-position: 0 -87px }
-a.bbl.info.close { background-position: -31px -87px }
-a.bbl.new { background-position: 0 0 }
-a.bbl.new.info { background-position: -31px 0 }
-a.bbl.new.close { background-position: 0 -29px }
-a.bbl.new.info.close { background-position: -31px -29px }
 
 /* Clear Fix */
 .clear_fix:after { content: '.'; display: block; height: 0; clear: both; visibility: hidden }

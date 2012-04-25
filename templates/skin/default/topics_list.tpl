@@ -4,7 +4,7 @@
 	{assign var="oPoster" value=$oPost->getUser()}
 	<tr id="topic-{$oTopic->getId()}">
 		<td class="cell-icon">
-			<a class="bbl{if $oTopic->getPinned()} info{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}"></a>
+			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}"></a>
 		</td>
 		<td class="cell-name">
 			<h4>

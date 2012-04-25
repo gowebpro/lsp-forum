@@ -14,7 +14,7 @@
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			<tr>
 				<td class="cell-icon">
-					<a class="bbl" href="{$oForum->getUrlFull()}"></a>
+					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"></a>
 				</td>
 				<td class="cell-name">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
