@@ -10,14 +10,20 @@
 		<div class="forum-post-content">
 			<header class="forum-post-header">
 				{hook run='forum_post_header_begin' post=$oPost}
-				<div class="forum-post-info fl-r">
+				<div class="forum-post-details fl-r">
 					{if $oUserCurrent && $oUserCurrent->isAdministrator() && $oPost->getUserIp()}
-						IP: {$oPost->getUserIp()} |
+						IP: {$oPost->getUserIp()}
+						<span class="divide">|</span>
 					{/if}
 					{$aLang.forum_post} <a href="{$oPost->getUrlFull()}" name="post-{$oPost->getId()}" onclick="return ls.forum.linkToPost({$oPost->getId()})">#{$oPost->getNumber()}</a>
 				</div>
-				<div class="forum-post-date">
+				<div class="forum-post-details">
 					{date_format date=$oPost->getDateAdd()}
+					{if $oPost->getTitle()}
+						<span class="divide">|</span>
+						<strong>{$oPost->getTitle()}</strong>
+					{/if}
+					{hook run='forum_post_header_info_item' post=$oPost}
 				</div>
 				{hook run='forum_post_header_end' post=$oPost}
 			</header>

@@ -12,6 +12,7 @@
 
 <div class="forum-topic">
 	<header class="forums-header">
+		<span class="fl-r">{$aLang.forum_topic_post_count}: {$iPostsCount}</span>
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
 	{foreach from=$aPosts item=oPost}

@@ -1,8 +1,6 @@
 /* --------------------------------------------
-	‘Œ–”Ã
+	–§–û–†–£–ú
 -------------------------------------------- */
-
-h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 .forums {}
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
@@ -23,6 +21,8 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .table .link-to-msg { background: url(../images/icon_link.png) no-repeat; display: inline-block; width: 16px; height: 9px }
 .table .cell-subtitle { background: #fff5ee; padding: 7px 28px; color: #808080; font-weight: bold }
 .table .cell-icon { width: 1% }
+.table .cell-label { width: 400px }
+.table .cell-labeled { }
 
 .table.table-forums th.cell-name { width: 62% }
 .table.table-forums th.cell-counter  { width: 7% }
@@ -46,8 +46,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .forum-post-side { float: left; width: 150px; border-right: 1px solid #eee; text-align: center }
 .forum-post-content { float: none; margin-left: 151px; width: auto }
 .forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px }
-.forum-post-info { color: #222 }
-.forum-post-date { color: #666 }
+.forum-post-details { color: #666 }
 .forum-post-body { padding: 10px }
 .forum-post-footer { border-top: 1px solid #eee; margin: 10px 0 }
 
@@ -85,6 +84,10 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .userlist span { white-space: nowrap }
 
 .js-forum-cat-toogler { cursor: pointer }
+
+span.divide { color: gray; font-weight: normal; padding: 0 2px }
+
+h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 /* Clear Fix */
 .clear_fix:after { content: '.'; display: block; height: 0; clear: both; visibility: hidden }

@@ -17,7 +17,7 @@
 					<h3>{$aLang.forum_acp_forums_control}</h3>
 				</th>
 				<th width="50%">
-					<h3>Actions</h3>
+					<h3>{$aLang.forum_acp_forums_moders}</h3>
 				</th>
 			</tr>
 		</thead>
@@ -25,6 +25,10 @@
 			<tr>
 				<td>
 					<br/>
+					<div class="ta-c mb-30">
+						<a href="{router page='forum'}admin/forums/new?type=forum"><button class="button{if $aForums} button-primary{/if}"{if !$aForums} disabled="disabled"{/if}>{$aLang.forum_create_forum}</button></a>
+						<a href="{router page='forum'}admin/forums/new?type=category"><button class="button{if !$aForums} button-primary{/if}">{$aLang.forum_create_category}</button></a>
+					</div>
 					{if $aForums}
 					<ul id="forums-tree">
 					{foreach from=$aForumsTree item=aItem}
@@ -43,10 +47,7 @@
 					{/if}
 				</td>
 				<td>
-					<ul>
-						<li><a href="{router page='forum'}admin/forums/new?type=forum">{$aLang.forum_create_forum}</a></li>
-						<li><a href="{router page='forum'}admin/forums/new?type=category">{$aLang.forum_create_category}</a></li>
-					</ul>
+					{$aLang.forum_in_progress}
 				</td>
 			</tr>
 		</tbody>

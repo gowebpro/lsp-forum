@@ -9,7 +9,7 @@
 			{assign var='aForums' value=$oCategory->getChildren()}
 			<section class="forums-list">
 				<header class="forums-header">
-					<div class="js-forum-cat-toogler fl-r icon-minus-sign"></div>
+					<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
 					<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
 				</header>
 				<div class="forums-content">
