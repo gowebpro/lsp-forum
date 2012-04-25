@@ -73,3 +73,21 @@ ls.forum = (function ($) {
 
 	return this;
 }).call(ls.forum || {},jQuery);
+
+jQuery(document).ready(function($){
+	ls.hook.run('forum_template_init_start',[],window);
+
+	$('.js-forum-cat-toogler').click(function() {
+		var content=$(this).parent('header').next('.forums-content');
+		if (content.css('display')=='block') {
+			$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
+			content.slideUp();
+		} else {
+			$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
+			content.slideDown();
+		}
+		return false;
+	});
+
+	ls.hook.run('forum_template_init_end',[],window);
+});
