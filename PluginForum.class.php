@@ -23,7 +23,7 @@ class PluginForum extends Plugin {
 	 * Активация плагина
 	 */
 	public function Activate() {
-		if (!$this->isTableExists('prefix_forum_list')) {
+		if (!$this->isTableExists('prefix_forum')) {
 			$this->ExportSQL(dirname(__FILE__).'/sql/install.sql');
 		}
 		return true;

@@ -15,6 +15,7 @@ return array(
 	'forums' => 'Форумы',
 	'forums_no' => 'Форумов нет',
 	'forum_and' => 'и',
+	'forum_in_progress' => 'В разработке',
 
 	'forums_notice' => 'Здесь можно просто пообщаться',
 
@@ -168,6 +169,7 @@ return array(
 	'forum_acp' => 'Управление форумом',
 	'forum_acp_main' => 'Центр управления',
 	'forum_acp_forums_control' => 'Управление форумами',
+	'forum_acp_forums_moders' => 'Управление модераторами',
 	'forum_acp_forums_list_msg' => 'Внимание, при удалении категории так-же удаляются все форумы и топики, связанные с этой категорией. В скором времени будут функции переноса.',
 
 	'forum_sort_up' => 'Переместить выше',
@@ -177,7 +179,12 @@ return array(
 	'forum_plugin_about' => 'О плагине',
 	'forum_plugin_about_text' => '<strong>CC BY-NC (Атрибуция — Некоммерческое использование)</strong><br>Эта лицензия позволяет другим изменять, поправлять и брать за основу ваше произведение некоммерческим образом и хотя их новые произведения должны указывать вас в качестве автора и быть некоммерческими и они не должны лицензировать их производные произведения на тех же условиях.<br><a href="http://creativecommons.org/licenses/by-nc/3.0/" target="_blank"><img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" title="ARS Mod License" width="88" height="31"></a><br><a href="http://creativecommons.org/licenses/by-nc/3.0" target="_blank">Смотреть общее краткое описание лицензии</a><br><a href="http://creativecommons.org/licenses/by-nc/3.0/legalcode" target="_blank">Смотреть юридический текст</a>',
 
-	'forums_welcome' => '<a href="http://test.ars-team.ru/forum/admin/forums/new?type=category">Создать первый форум</a>',
+	'forums_welcome' => '<a href="%%root%%admin/forums/new?type=category">Создать первый форум</a>',
+
+	'forum_topics_declension' => 'Тема;Темы;Тем',
+	'forum_posts_declension' => 'Сообщение;Сообщения;Сообщений',
+	'forum_redirect_hits_declension' => 'Переход;Перехода;Переходов',
+	'forum_views_declension' => 'Просмотр;Просмотра;Просмотров',
 
 );
 

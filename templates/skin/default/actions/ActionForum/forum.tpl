@@ -20,8 +20,8 @@
 
 {if $oForum->getCanPost() == 0}
 	<div id="forum-controls-top" class="controllers clear_fix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
-		{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
+		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
+		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 	</div>
 
 	<div class="forums">
@@ -36,8 +36,8 @@
 	</div>
 
 	<div id="forum-controls-bottom" class="controllers clear_fix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
-		{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
+		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
+		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 	</div>
 {/if}
 

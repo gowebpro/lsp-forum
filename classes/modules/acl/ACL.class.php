@@ -12,7 +12,7 @@
 
 class PluginForum_ModuleACL extends ModuleACL {
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü ñîçäàâàòü òîïèêè
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ ÑĞ¾Ğ·Ğ´Ğ°Ğ²Ğ°Ñ‚ÑŒ Ñ‚Ğ¾Ğ¿Ğ¸ĞºĞ¸
 	 *
 	 * @param Entity_User $oUser
 	 * @return bool
@@ -25,32 +25,32 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü ñîçäàâàòü òîïèê ïî âğåìåíè
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ ÑĞ¾Ğ·Ğ´Ğ°Ğ²Ğ°Ñ‚ÑŒ Ñ‚Ğ¾Ğ¿Ğ¸Ğº Ğ¿Ğ¾ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸
 	 *
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
 	public function CanCreateTopicTime(ModuleUser_EntityUser $oUser) {
 		/**
-		 * Äëÿ àäìèíèñòğàòîğîâ îãğàíè÷åíèå ïî âğåìåíè íå äåéñòâóåò
+		 * Ğ”Ğ»Ñ Ğ°Ğ´Ğ¼Ğ¸Ğ½Ğ¸ÑÑ‚Ñ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ² Ğ¾Ğ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ğµ Ğ¿Ğ¾ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸ Ğ½Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²ÑƒĞµÑ‚
 		 */
 		if ($oUser->isAdministrator()) {
 			return true;
 		}
 		/**
-		 * Îğãàíè÷åíèå ïî âğåìåíè âûêëş÷åíî
+		 * ĞÑ€Ğ³Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ğµ Ğ¿Ğ¾ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸ Ğ²Ñ‹ĞºĞ»ÑÑ‡ĞµĞ½Ğ¾
 		 */
 		if (Config::Get('acl.create.topic.limit_time')==0) {
 			return true;
 		}
 		/**
-		 * Îòêëş÷åíèå îãğàíè÷åíèÿ ïî âğåìåíè ïî ğåéòèíãó
+		 * ĞÑ‚ĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ğµ Ğ¾Ğ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ñ Ğ¿Ğ¾ Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸ Ğ¿Ğ¾ Ñ€ĞµĞ¹Ñ‚Ğ¸Ğ½Ğ³Ñƒ
 		 */
 		if ($oUser->getRating()>=Config::Get('acl.create.topic.limit_time_rating')) {
 			return true;
 		}
 		/**
-		 * Ïğîâåğÿåì, åñëè òîïèê îïóáëèêîâàííûé ìåíüøå ÷åì acl.create.topic.limit_time ñåêóíä íàçàä
+		 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµĞ¼, ĞµÑĞ»Ğ¸ Ñ‚Ğ¾Ğ¿Ğ¸Ğº Ğ¾Ğ¿ÑƒĞ±Ğ»Ğ¸ĞºĞ¾Ğ²Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ğ¼ĞµĞ½ÑŒÑˆĞµ Ñ‡ĞµĞ¼ acl.create.topic.limit_time ÑĞµĞºÑƒĞ½Ğ´ Ğ½Ğ°Ğ·Ğ°Ğ´
 		 */
 		$aTopics = array();//$this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('topic_date_add < ?d' => array(...))));
 
@@ -61,14 +61,14 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü ñîçäàâàòü êîììåíòàğèè â çàêğûòûõ òîïèêàõ
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ ÑĞ¾Ğ·Ğ´Ğ°Ğ²Ğ°Ñ‚ÑŒ ĞºĞ¾Ğ¼Ğ¼ĞµĞ½Ñ‚Ğ°Ñ€Ğ¸Ğ¸ Ğ² Ğ·Ğ°ĞºÑ€Ñ‹Ñ‚Ñ‹Ñ… Ñ‚Ğ¾Ğ¿Ğ¸ĞºĞ°Ñ…
 	 *
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
 	public function CanPostCommentClose(ModuleUser_EntityUser $oUser) {
 		/**
-		 * Äëÿ àäìèíèñòğàòîğîâ îãğàíè÷åíèå íå äåéñòâóåò
+		 * Ğ”Ğ»Ñ Ğ°Ğ´Ğ¼Ğ¸Ğ½Ğ¸ÑÑ‚Ñ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ² Ğ¾Ğ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²ÑƒĞµÑ‚
 		 */
 		if ($oUser->isAdministrator()) {
 			return true;
@@ -77,14 +77,14 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü ñîçäàâàòü êîììåíòàğèè
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ ÑĞ¾Ğ·Ğ´Ğ°Ğ²Ğ°Ñ‚ÑŒ ĞºĞ¾Ğ¼Ğ¼ĞµĞ½Ñ‚Ğ°Ñ€Ğ¸Ğ¸
 	 *
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
 	public function CanPostComment(ModuleUser_EntityUser $oUser) {
 		/**
-		 * Äëÿ àäìèíèñòğàòîğîâ îãğàíè÷åíèå íå äåéñòâóåò
+		 * Ğ”Ğ»Ñ Ğ°Ğ´Ğ¼Ğ¸Ğ½Ğ¸ÑÑ‚Ñ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ² Ğ¾Ğ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ¸Ğµ Ğ½Ğµ Ğ´ĞµĞ¹ÑÑ‚Ğ²ÑƒĞµÑ‚
 		 */
 		if ($oUser->isAdministrator()) {
 			return true;
@@ -94,7 +94,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü çàêğûâàòü\îòêğûâàòü òîïèê
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ Ğ·Ğ°ĞºÑ€Ñ‹Ğ²Ğ°Ñ‚ÑŒ\Ğ¾Ñ‚ĞºÑ€Ñ‹Ğ²Ğ°Ñ‚ÑŒ Ñ‚Ğ¾Ğ¿Ğ¸Ğº
 	 *
 	 * @param Entity_User $oTopic
 	 * @param Entity_User $oUser
@@ -102,7 +102,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 */
 	public function IsAllowClosedTopic($oTopic,ModuleUser_EntityUser $oUser) {
 		/**
-		 * Ğàçğåøàåì åñëè ıòî àäìèí ñàéòà
+		 * Ğ Ğ°Ğ·Ñ€ĞµÑˆĞ°ĞµĞ¼ ĞµÑĞ»Ğ¸ ÑÑ‚Ğ¾ Ğ°Ğ´Ğ¼Ğ¸Ğ½ ÑĞ°Ğ¹Ñ‚Ğ°
 		 */
 		if ($oUser->isAdministrator()) {
 			return true;
@@ -111,7 +111,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Ïğîâåğÿåò ìîæåò ëè ïîëüçîâàòåëü ïğèêğåïëÿòü\îòêğåïëÿòü òîïèê
+	 * ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞµÑ‚ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ»Ğ¸ Ğ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ Ğ¿Ñ€Ğ¸ĞºÑ€ĞµĞ¿Ğ»ÑÑ‚ÑŒ\Ğ¾Ñ‚ĞºÑ€ĞµĞ¿Ğ»ÑÑ‚ÑŒ Ñ‚Ğ¾Ğ¿Ğ¸Ğº
 	 *
 	 * @param Entity_User $oTopic
 	 * @param Entity_User $oUser
@@ -119,7 +119,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 */
 	public function IsAllowPinnedTopic($oTopic,ModuleUser_EntityUser $oUser) {
 		/**
-		 * Ğàçğåøàåì åñëè ıòî àäìèí ñàéòà
+		 * Ğ Ğ°Ğ·Ñ€ĞµÑˆĞ°ĞµĞ¼ ĞµÑĞ»Ğ¸ ÑÑ‚Ğ¾ Ğ°Ğ´Ğ¼Ğ¸Ğ½ ÑĞ°Ğ¹Ñ‚Ğ°
 		 */
 		if ($oUser->isAdministrator()) {
 			return true;

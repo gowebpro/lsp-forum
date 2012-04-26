@@ -17,8 +17,8 @@
 
 {if count($aPosts) > 0}
 <div id="topic-controls-top" class="controllers clear_fix">
-	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
-	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right'}
+	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
+	{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 </div>
 
 <div class="forum-topic">
@@ -63,8 +63,8 @@
 </footer>
 
 <div id="topic-controls-bottom" class="controllers clear_fix">
-	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging sAlign='left'}
-	{include file="$sTemplatePathPlugin/buttons_action.tpl" sAlign='right' bFastAnswer=true}
+	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
+	{include file="$sTemplatePathPlugin/buttons_action.tpl" bFastAnswer=true}
 </div>
 
 {if $oUserCurrent && (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getQuickReply()}

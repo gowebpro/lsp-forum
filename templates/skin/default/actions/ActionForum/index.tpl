@@ -20,7 +20,8 @@
 	{else}
 		<div class="body-message">
 		{if $oUserCurrent && $oUserCurrent->isAdministrator()}
-			{$aLang.forums_welcome}
+			{assign var="sRoot" value='root%%'|cat:$aRouter.forum}
+			{$aLang.forums_welcome|ls_lang:$sRoot}
 		{else}
 			{$aLang.forums_no}
 		{/if}

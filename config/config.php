@@ -27,11 +27,6 @@ $config['post_per_page']		= 10;
 $config['post_max_length']		= 5000;
 
 /**
- * Быстрый ответ в топиках (Вкл\Выкл)
- */
-$config['fast_reply']			= true;
-
-/**
  * Настройки статистики
  */
 $config['stats'] = array(
