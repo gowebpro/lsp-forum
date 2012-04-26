@@ -163,6 +163,31 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Считает инфу по количеству постов и топиков в подфорумах
+	 *
+	 * @param	object	$oRoot
+	 * @return	object
+	 */
+	public function CalcChildren($oRoot) {
+		$aChildren=$oRoot->getChildren();
+
+		if (!empty($aChildren)) {
+			foreach ($aChildren as $oForum) {
+				$oForum=$this->CalcChildren($oForum);
+
+				if ($oForum->getLastPostId() > $oRoot->getLastPostId()) {
+					$oRoot->setLastPostId($oForum->getLastPostId());
+				}
+
+				$oRoot->setCountTopic($oRoot->getCountTopic() + $oForum->getCountTopic());
+				$oRoot->setCountPost($oRoot->getCountPost() + $oForum->getCountPost());
+			}
+		}
+
+		return $oRoot;
+	}
+
+	/**
 	 * Пересчет счетчиков форума
 	 *
 	 * @param	object	$oForum

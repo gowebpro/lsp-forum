@@ -127,6 +127,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$aCategories=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
 		/**
+		 * Калькулирует инфу о счетчиках и последнем сообщении из подфорумов
+		 */
+		if (!empty($aCategories)) {
+			foreach ($aCategories as $oForum) {
+				$oForum=$this->PluginForum_Forum_CalcChildren($oForum);
+			}
+		}
+		/**
 		 * Получаем статистику
 		 */
 		$aForumStats=$this->PluginForum_Forum_GetForumStats();
@@ -174,6 +182,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 			Router::Location($oForum->getRedirectUrl());
 		}
+		/**
+		 * Калькулятор
+		 */
+		$oForum=$this->PluginForum_Forum_CalcChildren($oForum);
 		/**
 		 * Хлебные крошки
 		 */
