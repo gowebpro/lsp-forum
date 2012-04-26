@@ -219,6 +219,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Просмотр топика
 	 */
 	public function EventShowTopic() {
+		$bLineMod=Config::Get('plugin.forum.topic_line_mod');
 		$this->sMenuSubItemSelect='show_topic';
 		/**
 		 * Получаем ID топика из URL
@@ -243,23 +244,32 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем посты
 		 */
+		$aWhere=array();
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
-		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#page'=>array($iPage,$iPerPage)));
+		if ($bLineMod) {
+			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
+			$oHeadPost->setNumber(1);
+			$this->Viewer_Assign("oHeadPost",$oHeadPost);
+			$aWhere=array_merge($aWhere,array('post_id > ?d'=>array($oHeadPost->getId())));
+			$iPerPage--;
+		}
+		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>$aWhere,'#page'=>array($iPage,$iPerPage)));
 		$aPosts=$aResult['collection'];
 		$iPostsCount=$aResult['count'];
+		if ($bLineMod) $iPostsCount++;
 		/**
 		 * Номера постов
 		 */
 		for ($i=1; $i <= count($aPosts); $i++) {
 			$oPost=$aPosts[$i-1];
 			$iNumber=ceil(($iPage-1)*$iPerPage+$i);
-			//if ($bLineMod) $iNumber++;
+			if ($bLineMod) $iNumber++;
 			$oPost->setNumber($iNumber);
 		}
 		/**
 		 * Формируем постраничность
 		 */
-		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,Config::Get('plugin.forum.post_per_page'),4,$oTopic->getUrlFull());
+		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,$iPerPage,4,$oTopic->getUrlFull());
 		/**
 		 * Отмечаем дату прочтения топика
 		 */
@@ -767,6 +777,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$sPage='';
 		$iPostsCount=(int)$oTopic->getCountPost();
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		if (Config::Get('plugin.forum.topic_line_mod')) {
+			$iPostsCount--;
+			$iPerPage--;
+		}
 		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
 			if ($iCountPage > 1) {
 				$sPage="page{$iCountPage}";
@@ -805,6 +819,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$sPage='';
 		$iPostsCount=(int)$aLeftPosts['count']+1;
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		if (Config::Get('plugin.forum.topic_line_mod')) {
+			$iPostsCount--;
+			$iPerPage--;
+		}
 		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
 			if ($iCountPage > 1) {
 				$sPage="page{$iCountPage}";

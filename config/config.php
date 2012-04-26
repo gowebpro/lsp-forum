@@ -46,6 +46,14 @@ $config['stats'] = array(
 );
 
 /**
+ * Режим отображения топика
+ & Варианты:
+ *		true		; Линейный (1 сообщение шапка)
+ *		false		; Обычный
+ */
+$config['topic_line_mod']		= true;
+
+/**
  * Активация плагина
  */
 $config['activate'] = array();
