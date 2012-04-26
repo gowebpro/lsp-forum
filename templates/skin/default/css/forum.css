@@ -54,6 +54,7 @@
 .forum-stats {}
 .forum-stats .table .cell-icon { width: 60px; text-align: center }
 .forum-stats .table .cell-content { }
+.forum-stats .table .cell-content span.count { font-weight: bold }
 .forum-stats-icon-users { width: 48px; height: 48px; background: url(../images/forum-stats.png) no-repeat }
 .forum-stats-icon-stats { width: 48px; height: 48px; background: url(../images/forum-stats.png) no-repeat }
 

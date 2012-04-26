@@ -155,7 +155,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 * Получаем последнего зарегистрировавшегося
 		 */
 		if (Config::Get('plugin.forum.stats.last_user')) {
-			$aStats['last_user']=null;
+			$aLastUsers=$this->User_GetUsersByDateRegister(1);
+			$aStats['last_user']=end($aLastUsers);
 		}
 
 		return $aStats;

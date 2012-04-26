@@ -67,7 +67,7 @@
 					<div>{$aLang.forum_stats_user_count}: <span class="count">{$aForumStats.count_all_users}</span></div>
 					{if $aForumStats.last_user}
 						{assign var=oUser value=$aForumStats.last_user}
-						<div>{$aLang.forum_stats_user_last}: <span class="count">{$oUser->getLogin()|escape:'html'}</span></div>
+						<div>{$aLang.forum_stats_user_last}: <a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></div>
 					{/if}
 				</td>
 			</tr>
