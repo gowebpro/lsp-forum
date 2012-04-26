@@ -237,11 +237,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
-		 * Счетчик просмотров топика
-		 */
-		$oTopic->setViews((int)$oTopic->getViews()+1);
-		$oTopic->Save();
-		/**
 		 * Получаем номер страницы
 		 */
 		$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;
@@ -314,6 +309,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		}
 	}
 
+	/**
+	 * Обработка модераторских действий
+	 */
 	protected function submitTopicActions($oTopicF=null) {
 		if (!LS::Adm()) {
 			return false;
@@ -326,7 +324,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		$this->_breadcrumbsCreate($oTopic,false);
-		/* */
+		/**
+		 * Список ключей действий по их коду
+		 */
 		$sKeyByCode=array(
 			1=>'MOVE',
 			2=>'DELETE',
@@ -537,20 +537,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oTopic=LS::Ent('PluginForum_Forum_Topic');
 		$oTopic->setForumId($oForum->getId());
 		$oTopic->setUserId($this->oUserCurrent->getId());
+		$oTopic->setUserIp(func_getIp());
 		$oTopic->setTitle(getRequest('topic_title'));
 		$oTopic->setDescription(getRequest('topic_description'));
 		$oTopic->setDateAdd(date("Y-m-d H:i:s"));
 
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
-		if (LS::Adm()) {
-			if (isPost('topic_close')) {
+		if (isPost('topic_close')) {
+			if ($this->ACL_IsAllowClosedTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
 			}
 		}
 
 		$oTopic->setPinned(0);
-		if (LS::Adm()) {
-			if (isPost('topic_pinned')) {
+		if (isPost('topic_pinned')) {
+			if ($this->ACL_IsAllowPinnedTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setPinned(1);
 			}
 		}
@@ -584,11 +585,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 * Получаем пост, чтоб подцепить связанные данные
 				 */
 				$oPost=$this->PluginForum_Forum_GetPostById($oPost->getId());
+				/**
+				 * Обновляем данные в топике
+				 */
 				$oTopic->setFirstPostId($oPost->getId());
 				$oTopic->setLastPostId($oPost->getId());
 				$oTopic->setCountPost((int)$oTopic->getCountPost()+1);
 				$oTopic->Save();
-
+				/**
+				 * Обновляем данные в форуме
+				 */
 				$oForum->setLastPostId($oPost->getId());
 				$oForum->setCountTopic((int)$oForum->getCountTopic()+1);
 				$oForum->setCountPost((int)$oForum->getCountPost()+1);
@@ -813,7 +819,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Обработка отправки формы добавления нового форума
-	 *
 	 */
 	protected function submitAddForum() {
 		/**

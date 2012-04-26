@@ -67,6 +67,9 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @return bool
 	 */
 	public function CanPostCommentClose(ModuleUser_EntityUser $oUser) {
+		/**
+		 * Для администраторов ограничение не действует
+		 */
 		if ($oUser->isAdministrator()) {
 			return true;
 		}
@@ -87,6 +90,40 @@ class PluginForum_ModuleACL extends ModuleACL {
 			return true;
 		}
 
+		return false;
+	}
+
+	/**
+	 * Проверяет может ли пользователь закрывать\открывать топик
+	 *
+	 * @param Entity_User $oTopic
+	 * @param Entity_User $oUser
+	 * @return bool
+	 */
+	public function IsAllowClosedTopic($oTopic,ModuleUser_EntityUser $oUser) {
+		/**
+		 * Разрешаем если это админ сайта
+		 */
+		if ($oUser->isAdministrator()) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Проверяет может ли пользователь прикреплять\откреплять топик
+	 *
+	 * @param Entity_User $oTopic
+	 * @param Entity_User $oUser
+	 * @return bool
+	 */
+	public function IsAllowPinnedTopic($oTopic,ModuleUser_EntityUser $oUser) {
+		/**
+		 * Разрешаем если это админ сайта
+		 */
+		if ($oUser->isAdministrator()) {
+			return true;
+		}
 		return false;
 	}
 }

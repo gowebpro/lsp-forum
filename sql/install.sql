@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_topic` (
 	`topic_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`forum_id` int(11) unsigned NOT NULL,
 	`user_id` int(11) unsigned NOT NULL,
+	`topic_user_ip` varchar(20) NOT NULL default '',
 	`topic_title` varchar(255) NOT NULL,
 	`topic_description` varchar(255) default NULL,
 	`topic_date_add` datetime NOT NULL,
