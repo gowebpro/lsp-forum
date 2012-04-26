@@ -80,13 +80,16 @@ jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
 
 	$('.js-forum-cat-toogler').click(function() {
-		var content=$(this).parent('header').next('.forums-content');
+		var header=$(this).parent('header');
+		var content=$(header).next('.forums-content');
 		if (content.css('display')=='block') {
 			$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
-			content.slideUp();
+			$(header).addClass('collapsed');
+			$(content).slideUp();
 		} else {
 			$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
-			content.slideDown();
+			$(header).removeClass('collapsed');
+			$(content).slideDown();
 		}
 		return false;
 	});

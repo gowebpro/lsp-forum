@@ -181,6 +181,11 @@ return array(
 
 	'forums_welcome' => '<a href="http://test.ars-team.ru/forum/admin/forums/new?type=category">Создать первый форум</a>',
 
+	'forum_topics_declension' => 'Тема;Темы;Тем',
+	'forum_posts_declension' => 'Сообщение;Сообщения;Сообщений',
+	'forum_redirect_hits_declension' => 'Переход;Перехода;Переходов',
+	'forum_views_declension' => 'Просмотр;Просмотра;Просмотров',
+
 );
 
 ?>
