@@ -2,14 +2,14 @@
 {include file='header.tpl'}
 
 <h2 class="page-header">
-	<a href="{router page='forum'}admin">{$aLang.forum_acp}</a> <span>&raquo;</span>
-	<a href="{router page='forum'}admin/forums">{$aLang.forums}</a> <span>&raquo;</span>
-	{$aLang.forum_delete}
+	<a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span>
+	<a href="{router page='forum'}admin/forums">{$aLang.plugin.forum.forums}</a> <span>&raquo;</span>
+	{$aLang.plugin.forum.delete}
 </h2>
 
 <div class="forums">
 	<header class="forums-header">
-		<h3>{$aLang.forum_delete} &laquo;{$oForum->getTitle()}&raquo;</h3>
+		<h3>{$aLang.plugin.forum.delete} &laquo;{$oForum->getTitle()}&raquo;</h3>
 	</header>
 
 	<form action="" method="POST" enctype="multipart/form-data">
@@ -18,8 +18,8 @@
 		<table class="table">
 			<tr>
 				<td width="400">
-					<label for="forum_move_id_topics">{$aLang.forum_delete_move_items}:</label>
-					<span class="note">{$aLang.forum_delete_move_items_note}</span>
+					<label for="forum_move_id_topics">{$aLang.plugin.forum.delete_move_items}:</label>
+					<span class="note">{$aLang.plugin.forum.delete_move_items_note}</span>
 				</td>
 				<td>
 					<select id="forum_move_id_topics" name="forum_move_id_topics">
@@ -33,8 +33,8 @@
 			{if $oForum->getChildren()}
 			<tr>
 				<td width="400">
-					<label for="forum_delete_move_childrens">{$aLang.forum_delete_move_childrens}:</label>
-					<span class="note">{$aLang.forum_delete_move_childrens_note}</span>
+					<label for="forum_delete_move_childrens">{$aLang.plugin.forum.delete_move_childrens}:</label>
+					<span class="note">{$aLang.plugin.forum.delete_move_childrens_note}</span>
 				</td>
 				<td>
 					<select id="forum_delete_move_childrens" name="forum_delete_move_childrens">
@@ -49,7 +49,7 @@
 			<tr>
 				<td colspan="2">
 					<div class="ta-c">
-						<button type="submit" name="submit_forum_delete" class="button">{$aLang.forum_delete_forum}</button>
+						<button type="submit" name="submit_forum_delete" class="button">{$aLang.plugin.forum.delete_forum}</button>
 					</div>
 				</td>
 			</tr>

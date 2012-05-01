@@ -1,1 +1,1 @@
-<li{if $sMenuHeadItemSelect=='forum'} class="active"{/if}><a href="{router page='forum'}">{$aLang.forum}</a></li>
+<li{if $sMenuHeadItemSelect=='forum'} class="active"{/if}><a href="{router page='forum'}">{$aLang.plugin.forum.forum}</a></li>

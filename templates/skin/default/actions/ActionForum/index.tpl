@@ -23,7 +23,7 @@
 			{assign var="sRoot" value='root%%'|cat:$aRouter.forum}
 			{$aLang.forums_welcome|ls_lang:$sRoot}
 		{else}
-			{$aLang.forums_no}
+			{$aLang.plugin.forum.clear}
 		{/if}
 		</div>
 	{/if}

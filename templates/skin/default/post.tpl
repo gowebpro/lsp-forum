@@ -15,7 +15,7 @@
 						IP: {$oPost->getUserIp()}
 						<span class="divide">|</span>
 					{/if}
-					{$aLang.forum_post} <a href="{$oPost->getUrlFull()}" name="post-{$oPost->getId()}" onclick="return ls.forum.linkToPost({$oPost->getId()})">#{$oPost->getNumber()}</a>
+					{$aLang.plugin.forum.post} <a href="{$oPost->getUrlFull()}" name="post-{$oPost->getId()}" onclick="return ls.forum.linkToPost({$oPost->getId()})">#{$oPost->getNumber()}</a>
 				</div>
 				<div class="forum-post-details">
 					{date_format date=$oPost->getDateAdd()}

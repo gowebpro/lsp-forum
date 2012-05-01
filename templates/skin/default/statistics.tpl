@@ -1,21 +1,27 @@
 <div class="forum-stats">
 	<header class="forums-header">
-		<h3>{$aLang.forum_stats}</h3>
+		<h3>{$aLang.plugin.forum.stats}</h3>
 	</header>
 	<div class="forums-content">
 		<table class="table">
 			{if $aForumStats.online}
 			<tr>
 				<th colspan="2">
-					{$aLang.forum_stats_visitors}: {$aForumStats.online.count_visitors}
+					{$aLang.plugin.forum.stats_visitors}: {$aForumStats.online.count_visitors}
 				</th>
 			</tr>
 			<tr>
 				<td class="cell-icon"><div class="forum-stats-icon-users"></div></td>
 				<td class="cell-content">
-					{if $aForumStats.online.count_users} {$aForumStats.online.count_users} Пользователей {/if}
-					{if $aForumStats.online.count_users && $aForumStats.online.count_quest}{$aLang.forum_and}{/if}
-					{if $aForumStats.online.count_quest} {$aForumStats.online.count_quest} Гостей {/if}
+					{if $aForumStats.online.count_users}
+						{$aForumStats.online.count_users} {$aForumStats.online.count_users|declension:$aLang.plugin.forum.users_declension:'russian'|lower}
+					{/if}
+					{if $aForumStats.online.count_users && $aForumStats.online.count_quest}
+						{$aLang.plugin.forum.and}
+					{/if}
+					{if $aForumStats.online.count_quest}
+						{$aForumStats.online.count_quest} {$aForumStats.online.count_quest|declension:$aLang.plugin.forum.guest_declension:'russian'|lower}
+					{/if}
 					{if $aForumStats.online.users}
 						<div class="userlist">
 						{foreach from=$aForumStats.online.users item=oUser name=online_user}
@@ -34,7 +40,7 @@
 			{if $aForumStats.bdays}
 			<tr>
 				<th colspan="2">
-					{$aLang.forum_stats_birthday}: {$aForumStats.bdays|@count}
+					{$aLang.plugin.forum.stats_birthday}: {$aForumStats.bdays|@count}
 				</th>
 			</tr>
 			<tr>
@@ -49,25 +55,25 @@
 						</span>
 					{/foreach}
 					</div>
-					{$aLang.forum_stats_birthday_notice}
+					{$aLang.plugin.forum.stats_birthday_notice}
 				</td>
 			</tr>
 			{/if}
 
 			<tr>
 				<th colspan="2">
-					{$aLang.forum_stats}
+					{$aLang.plugin.forum.stats}
 				</th>
 			</tr>
 			<tr>
 				<td class="cell-icon"><div class="forum-stats-icon-stats"></div></td>
 				<td class="cell-content">
-					<div>{$aLang.forum_stats_post_count}: <span class="count">{$aForumStats.count_all_posts}</span></div>
-					<div>{$aLang.forum_stats_topic_count}: <span class="count">{$aForumStats.count_all_topics}</span></div>
-					<div>{$aLang.forum_stats_user_count}: <span class="count">{$aForumStats.count_all_users}</span></div>
+					<div>{$aLang.plugin.forum.stats_post_count}: <span class="count">{$aForumStats.count_all_posts}</span></div>
+					<div>{$aLang.plugin.forum.stats_topic_count}: <span class="count">{$aForumStats.count_all_topics}</span></div>
+					<div>{$aLang.plugin.forum.stats_user_count}: <span class="count">{$aForumStats.count_all_users}</span></div>
 					{if $aForumStats.last_user}
 						{assign var=oUser value=$aForumStats.last_user}
-						<div>{$aLang.forum_stats_user_last}: <a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></div>
+						<div>{$aLang.plugin.forum.stats_user_last}: <a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></div>
 					{/if}
 				</td>
 			</tr>

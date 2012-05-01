@@ -8,7 +8,7 @@
 {if $oConfig->GetValue('plugin.forum.topic_line_mod') && $oHeadPost}
 <div class="forum-topic">
 	<header class="forums-header">
-		<span class="fl-r">{$aLang.forum_topic_post_count}: {$iPostsCount}</span>
+		<span class="fl-r">{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}</span>
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
 	{include file="$sTemplatePathPlugin/post.tpl" oPost=$oHeadPost}
@@ -24,9 +24,9 @@
 <div class="forum-topic">
 	<header class="forums-header">
 		{if $oConfig->GetValue('plugin.forum.topic_line_mod')}
-		<h3>{$aLang.forum_topic_answers}</h3>
+		<h3>{$aLang.plugin.forum.topic_answers}</h3>
 		{else}
-		<span class="fl-r">{$aLang.forum_topic_post_count}: {$iPostsCount}</span>
+		<span class="fl-r">{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}</span>
 		<h3>{$oTopic->getTitle()}</h3>
 		{/if}
 	</header>
@@ -43,18 +43,18 @@
 		<input type="hidden" name="t" value="{$oTopic->getId()}" />
 		<input type="hidden" name="f" value="{$oForum->getId()}" />
 		<select name="code">
-			<option value="-1">{$aLang.forum_topic_mod_option}</option>
-			<option value="1">-{$aLang.forum_topic_move}</option>
-			<option value="2">-{$aLang.forum_topic_delete}</option>
+			<option value="-1">{$aLang.plugin.forum.topic_mod_option}</option>
+			<option value="1">-{$aLang.plugin.forum.topic_move}</option>
+			<option value="2">-{$aLang.plugin.forum.topic_delete}</option>
 			{if $oTopic->getStatus() == '0'}
-			<option value="3">-{$aLang.forum_topic_close}</option>
+			<option value="3">-{$aLang.plugin.forum.topic_close}</option>
 			{else}
-			<option value="3">-{$aLang.forum_topic_open}</option>
+			<option value="3">-{$aLang.plugin.forum.topic_open}</option>
 			{/if}
 			{if $oTopic->getPosition() == '0'}
-			<option value="4">-{$aLang.forum_topic_pin}</option>
+			<option value="4">-{$aLang.plugin.forum.topic_pin}</option>
 			{else}
-			<option value="4">-{$aLang.forum_topic_unpin}</option>
+			<option value="4">-{$aLang.plugin.forum.topic_unpin}</option>
 			{/if}
 		</select>
 		<button type="submit" name="submit_topic_mod" class="button">OK</button>

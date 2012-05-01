@@ -14,7 +14,7 @@ ls.forum = ls.forum || {};
 
 ls.forum.admin = (function ($) {
 	deleteForum = function(idForum,sTitle) {
-		if (!confirm(ls.lang.get('forum_delete_confirm',{'title':sTitle}) + '?')) return false;
+		if (!confirm(ls.lang.get('plugin.forum.delete_confirm',{'title':sTitle}) + '?')) return false;
  
 		var tree=$('#forums-tree');
 		if (!tree) return;

@@ -20,7 +20,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.forum_reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
 <div class="topic-preview" style="display: none;" id="text_preview"></div>
 
@@ -30,13 +30,13 @@
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 
 	<p>
-		<label for="post_title">{$aLang.forum_post_create_title}:</label>
+		<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
 		<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
-		<span class="note">{$aLang.forum_post_create_title_notice}</span>
+		<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 	</p>
 
 	<p>
-		<label for="post_text">{$aLang.forum_post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.forum_post_create_text_notice}){/if}:</label>
+		<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
 		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
 	</p>
 

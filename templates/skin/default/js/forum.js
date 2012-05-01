@@ -26,7 +26,7 @@ ls.forum = (function ($) {
 
 	this.linkToPost = function(idPost) {
 		temp=prompt(
-			ls.lang.get('forum_post_anchor_promt'),
+			ls.lang.get('plugin.forum.post_anchor_promt'),
 			aRouter['forum']+"findpost/"+idPost+"/"
 		);
 		return false;

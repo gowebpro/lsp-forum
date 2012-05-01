@@ -12,7 +12,7 @@
 				<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
 				{if $aSubForums}
 				<p class="details">
-					<strong>{$aLang.forum_subforums}:</strong>
+					<strong>{$aLang.plugin.forum.subforums}:</strong>
 					{foreach from=$aSubForums item=oSubForum name=subforums}
 					<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>{if !$smarty.foreach.subforums.last}, {/if}
 					{/foreach}
@@ -20,12 +20,12 @@
 				{/if}
 			</td>
 			{if $oForum->getRedirectOn()}
-			<td class="ta-c" colspan="2"><span class="lighter"><em>{$oForum->getRedirectHits()} {$oForum->getRedirectHits()|declension:$aLang.forum_redirect_hits_declension:'russian'|lower}</span></p></td>
+			<td class="ta-c" colspan="2"><span class="lighter"><em>{$oForum->getRedirectHits()} {$oForum->getRedirectHits()|declension:$aLang.plugin.forum.redirect_hits_declension:'russian'|lower}</span></p></td>
 			{else}
 			<td class="cell-stats ta-r">
 				<ul>
-					<li><strong>{$oForum->getCountTopic()}</strong> {$oForum->getCountTopic()|declension:$aLang.forum_topics_declension:'russian'|lower}</li>
-					<li><strong>{$oForum->getCountPost()}</strong> {$oForum->getCountPost()|declension:$aLang.forum_posts_declension:'russian'|lower}</li>
+					<li><strong>{$oForum->getCountTopic()}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}</li>
+					<li><strong>{$oForum->getCountPost()}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
 				</ul>
 			</td>
 			<td class="cell-post">
@@ -35,13 +35,13 @@
 					<ul class="last-post">
 						<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|wordwrap:30:" ":true}</a></li>
 						<li>
-							{$aLang.forum_header_author}:
+							{$aLang.plugin.forum.header_author}:
 							<span class="author">
 								<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
 								<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}
 							</span>
 						</li>
-						<li><a class="date" title="{$aLang.forum_header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
+						<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
 					</ul>
 				{/if}
 			</td>
@@ -51,8 +51,8 @@
 {else}
 	<tr>
 		<td colspan="5">
-			<div class="empty">{$aLang.forums_no}</div>
-	</td>
+			<div class="empty">{$aLang.plugin.forum.clear}</div>
+		</td>
 	</tr>
 {/if}
 </table>
