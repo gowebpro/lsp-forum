@@ -16,15 +16,20 @@
  */
 class PluginForum_HookForum extends Hook {
 	public function RegisterHook() {
-		$this->AddHook('template_main_menu_item','Menu');
-		$this->AddHook('template_forum_copyright','Copyright');
+		$this->AddHook('template_main_menu_item','MainMenu');
+		$this->AddHook('template_menu_profile_created_item','MenuProfileCreated');
+		$this->AddHook('template_forum_copyright','ForumCopyright');
 	}
 
-	public function Menu() {
+	public function MainMenu() {
 		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'main_menu.tpl');
 	}
 
-	public function Copyright() {
+	public function MenuProfileCreated() {
+		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'menu.profile_created.tpl');
+	}
+
+	public function ForumCopyright() {
 		$aPlugins=$this->Plugin_GetList();
 		if (!(isset($aPlugins['forum']))) {
 			return;

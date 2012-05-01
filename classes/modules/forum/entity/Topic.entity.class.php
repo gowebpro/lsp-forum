@@ -22,7 +22,8 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		$oForum=$this->getForum();
 		$aPaging=$oEngine->Viewer_MakePaging(
 			$this->getCountPost(),
-			1,Config::Get('plugin.forum.post_per_page'),4,
+			1,Config::Get('plugin.forum.post_per_page'),
+			Config::Get('pagination.pages.count'),
 			$this->getUrlFull()
 		);
 		return $aPaging;

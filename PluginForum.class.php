@@ -16,6 +16,7 @@ if (!class_exists('Plugin')) {
 
 class PluginForum extends Plugin {
 	protected $aInherits=array(
+		'action' => array('ActionProfile'=>'PluginForum_ActionProfile'),
 		'module' => array('ModuleACL'=>'PluginForum_ModuleACL')
 	);
 
@@ -43,6 +44,15 @@ class PluginForum extends Plugin {
 	 * Инициализация плагина
 	 */
 	public function Init() {
+		/**
+		 * Подключаем CSS
+		 */
+		$this->Viewer_AppendStyle(Plugin::GetTemplatePath(__CLASS__).'css/forum.css');
+		/**
+		 * Подключаем JS
+		 */
+		$this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__).'js/forum.js');
+
 		return true;
 	}
 }

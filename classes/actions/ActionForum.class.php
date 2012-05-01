@@ -68,14 +68,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_AddMenu('forum',$this->getTemplatePathPlugin().'menu.forum.tpl');
 		/**
-		 * Подключаем CSS
-		 */
-		$this->Viewer_AppendStyle($this->getTemplatePathPlugin().'css/forum.css');
-		/**
-		 * Подключаем JS
-		 */
-		$this->Viewer_AppendScript($this->getTemplatePathPlugin().'js/forum.js');
-		/**
 		 * Заголовок
 		 */
 		$this->_addTitle($this->Lang_Get('forums'));
@@ -213,7 +205,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Формируем постраничность
 		 */
-		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,Config::Get('plugin.forum.topic_per_page'),4,$oForum->getUrlFull());
+		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,Config::Get('plugin.forum.topic_per_page'),Config::Get('pagination.pages.count'),$oForum->getUrlFull());
 		/**
 		 * Загружаем переменные в шаблон
 		 */
@@ -281,7 +273,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Формируем постраничность
 		 */
-		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,$iPerPage,4,$oTopic->getUrlFull());
+		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,$iPerPage,Config::Get('pagination.pages.count'),$oTopic->getUrlFull());
 		/**
 		 * Отмечаем дату прочтения топика
 		 */
@@ -589,6 +581,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextHash(md5(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setNewTopic(1);
 
 		/**
 		 * Добавляем топик
@@ -1333,7 +1326,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$this->Message_AddError($this->Lang_Get('forum_create_sort_error'),$this->Lang_Get('error'));
 			$bOk=false;
 		}
-	
+
 		/**
 		 * Выполнение хуков
 		 */

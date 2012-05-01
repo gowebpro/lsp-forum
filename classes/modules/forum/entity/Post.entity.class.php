@@ -19,5 +19,9 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	public function getUrlFull() {
 		return Router::GetPath('forum')."findpost/{$this->getId()}/";
 	}
+
+	public function getNumber() {
+		return $this->_getDataOne('post_number') ? $this->_getDataOne('post_number') : $this->getId();
+	}
 }
 ?>

@@ -13,9 +13,9 @@
 			<tr>
 				<td class="cell-icon"><div class="forum-stats-icon-users"></div></td>
 				<td class="cell-content">
-					{if $aForumStats.online.count_users} {$aForumStats.online.count_users} Пользователей {/if}
+					{if $aForumStats.online.count_users} {$aForumStats.online.count_users} РџРѕР»СЊР·РѕРІР°С‚РµР»РµР№ {/if}
 					{if $aForumStats.online.count_users && $aForumStats.online.count_quest}{$aLang.forum_and}{/if}
-					{if $aForumStats.online.count_quest} {$aForumStats.online.count_quest} Гостей {/if}
+					{if $aForumStats.online.count_quest} {$aForumStats.online.count_quest} Р“РѕСЃС‚РµР№ {/if}
 					{if $aForumStats.online.users}
 						<div class="userlist">
 						{foreach from=$aForumStats.online.users item=oUser name=online_user}

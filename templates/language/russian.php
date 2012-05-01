@@ -186,6 +186,9 @@ return array(
 	'forum_redirect_hits_declension' => 'Переход;Перехода;Переходов',
 	'forum_views_declension' => 'Просмотр;Просмотра;Просмотров',
 
+	'user_menu_publication_forum_posts' => 'Сообщения на форуме',
+	'user_menu_publication_forum_topics' => 'Темы на форуме',
+
 );
 
 ?>
