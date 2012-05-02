@@ -18,7 +18,7 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	);
 
 	/**
-	 * Определяем правила валидации
+	 * РћРїСЂРµРґРµР»СЏРµРј РїСЂР°РІРёР»Р° РІР°Р»РёРґР°С†РёРё
 	 */
 	public function Init() {
 		parent::Init();
@@ -28,7 +28,7 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	}
 
 	/**
-	 * Проверка текста на уникальность
+	 * РџСЂРѕРІРµСЂРєР° С‚РµРєСЃС‚Р° РЅР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
 	 *
 	 * @param $sValue
 	 * @param $aParams

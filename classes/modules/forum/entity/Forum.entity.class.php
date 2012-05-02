@@ -19,12 +19,12 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	);
 
 	/**
-	 * Список запрещенных URL
+	 * РЎРїРёСЃРѕРє Р·Р°РїСЂРµС‰РµРЅРЅС‹С… URL
 	 */
 	protected $aBadUrl = array('admin','topic','findpost');
 
 	/**
-	 * Определяем правила валидации
+	 * РћРїСЂРµРґРµР»СЏРµРј РїСЂР°РІРёР»Р° РІР°Р»РёРґР°С†РёРё
 	 */
 	public function Init() {
 		parent::Init();
@@ -37,7 +37,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 
 	/**
-	 * Проверка URL форума
+	 * РџСЂРѕРІРµСЂРєР° URL С„РѕСЂСѓРјР°
 	 *
 	 * @param $sValue
 	 * @param $aParams
@@ -51,7 +51,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 
 	/**
-	 * Проверка URL на уникальность
+	 * РџСЂРѕРІРµСЂРєР° URL РЅР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ
 	 *
 	 * @param $sValue
 	 * @param $aParams
@@ -68,7 +68,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 
 	/**
-	 * Проверка на счет плохих URL'ов
+	 * РџСЂРѕРІРµСЂРєР° РЅР° СЃС‡РµС‚ РїР»РѕС…РёС… URL'РѕРІ
 	 *
 	 * @param $sValue
 	 * @param $aParams

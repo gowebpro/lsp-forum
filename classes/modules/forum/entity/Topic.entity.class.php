@@ -18,7 +18,7 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	);
 
 	/**
-	 * Определяем правила валидации
+	 * РћРїСЂРµРґРµР»СЏРµРј РїСЂР°РІРёР»Р° РІР°Р»РёРґР°С†РёРё
 	 */
 	public function Init() {
 		parent::Init();
