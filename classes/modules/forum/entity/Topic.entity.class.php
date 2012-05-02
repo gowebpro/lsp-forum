@@ -17,6 +17,15 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		'post'=>array('belongs_to','PluginForum_ModuleForum_EntityPost','last_post_id')
 	);
 
+	/**
+	 * Определяем правила валидации
+	 */
+	public function Init() {
+		parent::Init();
+		$this->aValidateRules[]=array('topic_title','string','min'=>2,'max'=>100,'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.new_topic_title'));
+		$this->aValidateRules[]=array('topic_description','string','max'=>100,'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.new_topic_description'));
+	}
+
 	public function getPaging() {
 		$oEngine=Engine::getInstance();
 		$oForum=$this->getForum();

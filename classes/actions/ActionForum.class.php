@@ -47,12 +47,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * @var array
 	 */
 	protected $aTitles=array('before'=>array(),'after'=>array());
-	/**
-	 * Список запрещенных URL
-	 *
-	 * @var array
-	 */
-	protected $aBadUrl=array('new','create','admin');
 
 
 	/**
@@ -545,50 +539,57 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return;
 		}
 		/**
-		 * Проверка корректности полей формы
-		 */
-		if (!($this->checkTopicFields() && $this->checkPostFields())) {
-			return false;
-		}
-
-		/**
 		 * Создаем топик
 		 */
 		$oTopic=LS::Ent('PluginForum_Forum_Topic');
+		/**
+		 * Заполняем поля для валидации
+		 */
 		$oTopic->setForumId($oForum->getId());
 		$oTopic->setUserId($this->oUserCurrent->getId());
 		$oTopic->setUserIp(func_getIp());
 		$oTopic->setTitle(getRequest('topic_title'));
 		$oTopic->setDescription(getRequest('topic_description'));
 		$oTopic->setDateAdd(date("Y-m-d H:i:s"));
-
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 		if (isPost('topic_close')) {
 			if ($this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
 			}
 		}
-
 		$oTopic->setPinned(0);
 		if (isPost('topic_pinned')) {
 			if ($this->ACL_IsAllowPinnedForumTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setPinned(1);
 			}
 		}
-
+		/**
+		 * Проверка корректности полей формы
+		 */
+		if (!$this->checkTopicFields($oTopic)) {
+			return false;
+		}
 		/**
 		 * Первый пост
 		 */
 		$oPost=LS::Ent('PluginForum_Forum_Post');
+		$oPost->_setValidateScenario('topic');
+		/**
+		 * Заполняем поля для валидации
+		 */
 		$oPost->setTitle($oTopic->getTitle());
 		$oPost->setUserId($this->oUserCurrent->getId());
 		$oPost->setUserIp(func_getIp());
 		$oPost->setDateAdd(date("Y-m-d H:i:s"));
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
-		$oPost->setTextHash(md5(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setNewTopic(1);
-
+		/**
+		 * Проверка корректности полей формы
+		 */
+		if (!$this->checkPostFields($oPost)) {
+			return false;
+		}
 		/**
 		 * Добавляем топик
 		 */
@@ -722,15 +723,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return;
 		}
 		/**
-		 * Проверяем поля формы
-		 */
-		if (!$this->checkPostFields()) {
-			return false;
-		}
-		/**
 		 * Создаём
 		 */
 		$oPost=LS::Ent('PluginForum_Forum_Post');
+		$oPost->_setValidateScenario('post');
+		/**
+		 * Заполняем поля для валидации
+		 */
 		$oPost->setTitle(getRequest('post_title'));
 		$oPost->setTopicId($oTopic->getId());
 		$oPost->setUserId($this->oUserCurrent->getId());
@@ -739,6 +738,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setTextHash(md5(getRequest('post_text')));
 		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		/**
+		 * Проверяем поля формы
+		 */
+		if (!$this->checkPostFields($oPost)) {
+			return false;
+		}
 		/**
 		 * Добавляем
 		 */
@@ -857,15 +862,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Редактируем ли мы топик
 		 */
 		$bEditTopic=($oTopic->getFirstPostId() == $oPost->getId());
-
-		if ($bEditTopic && !($this->checkTopicFields() && $this->checkPostFields($oPost))) {
-			return false;
-		}
-		if (!$bEditTopic && !$this->checkPostFields($oPost)) {
-			return false;
-		}
 		/**
-		 * Редактируем
+		 * Заполняем поля для валидации
 		 */
 		if ($bEditTopic) {
 			$oTopic->setTitle(getRequest('topic_title'));
@@ -883,10 +881,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 				}
 			}
 			$oTopic->setDateEdit(date("Y-m-d H:i:s"));
-			$oTopic->Save();
 
+			$oPost->_setValidateScenario('topic');
 			$oPost->setTitle($oTopic->getTitle());
 		} else {
+			$oPost->_setValidateScenario('post');
 			$oPost->setTitle(getRequest('post_title'));
 		}
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
@@ -895,8 +894,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setEditorId($this->oUserCurrent->getId());
 		$oPost->setEditReason(getRequest('post_edit_reason'));
 		/**
+		 * Проверка корректности полей формы
+		 */
+		if ($bEditTopic && !($this->checkTopicFields($oTopic) && $this->checkPostFields($oPost))) {
+			return false;
+		}
+		if (!$bEditTopic && !$this->checkPostFields($oPost)) {
+			return false;
+		}
+		/**
 		 * Обновляем
 		 */
+		if ($bEditTopic) $oTopic->Save();
 		if ($oPost->Save()) {
 			Router::Location($oPost->getUrlFull());
 		} else {
@@ -1039,19 +1048,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Обработка отправки формы добавления нового форума
 	 */
 	protected function submitAddForum() {
-		/**
-		 * Проверяем корректность полей
-		 */
-		if (!$this->checkForumFields()) {
-			return ;
-		}
 		$sNewType=(isPost('forum_type')) ? getRequest('forum_type') : 'forum';
 		/**
 		 * Заполняем свойства
 		 */
 		$oForum=LS::ENT('PluginForum_Forum');
 		$oForum->setTitle(getRequest('forum_title'));
-		$oForum->setUrl(getRequest('forum_url',null));
+		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequest('forum_url',''))));
 		if ($sNewType=='category') {
 			$oForum->setCanPost(1);
 		} else {
@@ -1071,6 +1074,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
 		}
+		/**
+		 * Проверяем корректность полей
+		 */
+		if (!$this->checkForumFields($oForum)) {
+			return ;
+		}
 
 		if ($oForum->Save()) {
 			$this->Message_AddNotice($this->Lang_Get('plugin.forum.create_ok'),null,1);
@@ -1087,12 +1096,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * @param unknown_type $oForum
 	 */
 	protected function submitEditForum($oForum=null) {
-		/**
-		 * Проверяем корректность полей
-		 */
-		if (!$this->checkForumFields($oForum)) {
-			return;
-		}
 		if ($oForum->getId()==getRequest('forum_parent')) {
 			$this->Message_AddError($this->Lang_Get('system_error'));
 			return;
@@ -1102,7 +1105,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Обновляем свойства форума
 		 */
 		$oForum->setTitle(getRequest('forum_title'));
-		$oForum->setUrl(getRequest('forum_url',null));
+		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequest('forum_url',''))));
 		if ($sNewType=='category') {
 			$oForum->setCanPost(1);
 		} else {
@@ -1117,6 +1120,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oForum->setRedirectOn( (int)getRequest('forum_redirect_on',0,'post') === 1 );
 			}
 			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
+		}
+		/**
+		 * Проверяем корректность полей
+		 */
+		if (!$this->checkForumFields($oForum)) {
+			return;
 		}
 
 		if ($oForum->Save()) {
@@ -1351,9 +1360,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Удаляем форум и перенаправляем админа к списку форумов
 			 */
-			$this->Hook_Run('forum_delete_before',array('sForumId'=>$sForumId));
+			$this->Hook_Run('forum_delete_forum_before',array('sForumId'=>$sForumId));
 			if($this->PluginForum_Forum_DeleteForum($oForumDelete)) {
-				$this->Hook_Run('forum_delete_after',array('sForumId'=>$sForumId));
+				$this->Hook_Run('forum_delete_forum_after',array('sForumId'=>$sForumId));
 				$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.delete_success'),$this->Lang_Get('attention'),true);
 				Router::Location(Router::GetPath('forum').'admin/forums/');
 			} else {
@@ -1477,138 +1486,66 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Проверка полей формы создания форума
-	 *
 	 */
-	private function checkForumFields($oForum=null) {
+	private function checkForumFields($oForum) {
 		$this->Security_ValidateSendForm();
 
 		$bOk=true;
 		/**
-		 * Проверяем есть ли заголовок
+		 * Валидация данных
 		 */
-		if (!func_check(getRequest('forum_title',null,'post'),'text',2,100)) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.create_title_error',array('min'=>2,'max'=>100)),$this->Lang_Get('error'));
+		if (!$oForum->_Validate()) {
+			$this->Message_AddError($oForum->_getValidateError(),$this->Lang_Get('error'));
 			$bOk=false;
 		}
-		/**
-		 * Проверяем URL
-		 */
-		if ($sForumUrl=getRequest("forum_url",null,'post')) {
-			$sForumUrl=preg_replace("/\s+/",'_',trim($sForumUrl));
-			if (!func_check($sForumUrl,'login',2,50)) {
-				$this->Message_AddError($this->Lang_Get('plugin.forum.create_url_error',array('min'=>2,'max'=>50)),$this->Lang_Get('error'));
-				$bOk=false;
-			}
-			/**
-			 * Проверяем на счет плохих URL'ов
-			 */
-			if (in_array($sForumUrl,$this->aBadUrl)) {
-				$this->Message_AddError($this->Lang_Get('plugin.forum.create_url_error_badword').' '.implode(',',$this->aBadClubUrl),$this->Lang_Get('error'));
-				$bOk=false;
-			}
-			/**
-			 * А не занят ли URL
-			 */
-			if ($oForumExists=$this->PluginForum_Forum_GetForumByUrl($sForumUrl)) {
-				if (!$oForum || $oForum->getId()!=$oForumExists->getId()) {
-					$this->Message_AddError($this->Lang_Get('plugin.forum.create_url_error_used'),$this->Lang_Get('error'));
-					$bOk=false;
-				}
-			}
-			$_REQUEST["forum_url"]=$sForumUrl;
-		}
-		/**
-		 * Проверяем сортировку
-		 */
-		if (getRequest('forum_sort') and !is_numeric(getRequest('forum_sort'))) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.create_sort_error'),$this->Lang_Get('error'));
-			$bOk=false;
-		}
-		/**
-		 * Преобразуем ограничение по рейтингу в число
-		 */
-		if (getRequest('forum_limit_rating_topic') and !is_numeric(getRequest('forum_limit_rating_topic'))) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.create_rating_error'),$this->Lang_Get('error'));
-			$bOk=false;
-		}
-
 		/**
 		 * Выполнение хуков
 		 */
-		$this->Hook_Run('check_forum_fields',array('bOk'=>&$bOk));
+		$this->Hook_Run('forum_check_forum_fields',array('bOk'=>&$bOk));
 
 		return $bOk;
 	}
 
-
 	/**
 	 * Проверка полей формы создания топика
-	 *
 	 */
-	private function checkTopicFields() {
+	private function checkTopicFields($oTopic) {
 		$this->Security_ValidateSendForm();
 
 		$bOk=true;
 		/**
-		 * Проверяем есть ли заголовок топика
+		 * Валидация данных
 		 */
-		if (!func_check(getRequest('topic_title',null,'post'),'text',2,100)) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.new_topic_title_error',array('min'=>2,'max'=>100)),$this->Lang_Get('error'));
-			$bOk=false;
-		}
-		/**
-		 * Проверяем описание топика
-		 */
-		if (!func_check(getRequest('topic_description',null,'post'),'text',0,100)) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.new_topic_description_error'),$this->Lang_Get('error'));
+		if (!$oTopic->_Validate()) {
+			$this->Message_AddError($oTopic->_getValidateError(),$this->Lang_Get('error'));
 			$bOk=false;
 		}
 		/**
 		 * Выполнение хуков
 		 */
-		$this->Hook_Run('check_topic_fields', array('bOk'=>&$bOk));
+		$this->Hook_Run('forum_check_topic_fields', array('bOk'=>&$bOk));
 
 		return $bOk;
 	}
 
 	/**
 	 * Проверка полей формы создания поста
-	 *
 	 */
-	private function checkPostFields($oPost=null) {
+	private function checkPostFields($oPost) {
 		$this->Security_ValidateSendForm();
 
 		$bOk=true;
 		/**
-		 * Проверяем заголовок поста
+		 * Валидация данных
 		 */
-		if ($sPostTitle=getRequest('post_title',null,'post')) {
-			if (!func_check($sPostTitle,'text',2,100)) {
-				$this->Message_AddError($this->Lang_Get('plugin.forum.post_create_title_error'),$this->Lang_Get('error'));
-				$bOk=false;
-			}
-		}
-		/**
-		 * Проверяем есть ли содержание поста
-		 */
-		$sPostText=$this->PluginForum_Forum_TextParse(getRequest('post_text',null,'post'));
-		if (!func_check($sPostText,'text',5,Config::Get('plugin.forum.post_max_length'))) {
-			$this->Message_AddError($this->Lang_Get('plugin.forum.post_create_text_error',array('min'=>5,'max'=>Config::Get('plugin.forum.post_max_length'))),$this->Lang_Get('error'));
+		if (!$oPost->_Validate()) {
+			$this->Message_AddError($oPost->_getValidateError(),$this->Lang_Get('error'));
 			$bOk=false;
-		}
-		/**
-		 * Проверяем пост на уникальность
-		 */
-		if ($oPostEquivalent=$this->PluginForum_Forum_GetPostByUserIdAndTextHash($this->oUserCurrent->getId(),md5(getRequest('post_text')))) {
-			if (!$oPost || $oPost->getId() != $oPostEquivalent->getId()) {
-				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_create_text_error_unique',array('url'=>$oPostEquivalent->getUrlFull())),$this->Lang_Get('error'));
-				return;
-			}
 		}
 		/**
 		 * Выполнение хуков
 		 */
-		$this->Hook_Run('check_post_fields', array('bOk'=>&$bOk));
+		$this->Hook_Run('forum_check_post_fields', array('bOk'=>&$bOk));
 
 		return $bOk;
 	}
