@@ -14,6 +14,9 @@ return array(
 	'forum' => 'Forum',
 	'forums' => 'Forums',
 
+	'button_edit' => 'Edit',
+	'button_delete' => 'Delete',
+
 	'in_progress' => 'In development',
 	'notice' => 'You can just talk',
 
@@ -103,7 +106,7 @@ return array(
 	'topic_close' => 'Close this topic',
 	'topic_open' => 'Open this topic',
 	'topic_delete' => 'Delete this topic',
-	'topic_delete_warning' => 'При удалении темы, также будут удалены все ее сообщения. Продолжайте только в том случае, если вы действительно хотите удалить эту тему. Больше никаких предупреждений не будет.',
+	'topic_delete_warning' => 'When you delete a theme, and will remove all of its messages. Continue only if you really want to delete this topic. No more warnings will not be.',
 	'topic_pin' => '"Pinned" this topic',
 	'topic_unpin' => '"Unpinned" this topic',
 	'topic_answers' => 'Replies to this topic',
@@ -136,6 +139,9 @@ return array(
 	'new_topic_pin' => 'Pin',
 	'new_topic_close' => 'Close',
 
+	'topic_edit' => 'Editing topic',
+	'topic_edit_not_allow' => 'No access to this action',
+
 
 	'post' => 'Post',
 	'posts' => 'Posts',
@@ -149,13 +155,16 @@ return array(
 	'post_create_text_error' => 'Your message should be between %%min%% to %%max%% characters',
 	'post_create_text_error_unique' => 'You have already written the message with the content',
 	'post_by' => 'from',//!!
+	'post_edit' => 'Edit reply',
+	'post_edit_for' => 'Edit reply in %%topic%%',
+	'post_edit_not_allow' => 'No access to this action',
+	'post_delete_not_allow' => 'No access to this action',
 
 	'reply' => 'Reply',
 	'reply_for' => 'Reply in %%topic%%',
 	'reply_notallow' => 'Locked',
 	'reply_not_allow' => 'You can not write in this topic',
 	'reply_time_limit' => 'You can send messages too often',
-	'post_edit_for' => 'Edit reply in %%topic%%',
 	'fast_reply' => 'Quick Reply',
 
 	'redirect_hits' => 'Jump',

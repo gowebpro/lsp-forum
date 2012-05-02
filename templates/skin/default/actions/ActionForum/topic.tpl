@@ -16,7 +16,7 @@
 {/if}
 
 {if count($aPosts) > 0}
-<div id="topic-controls-top" class="controllers clear_fix">
+<div id="topic-controls-top" class="controllers clearfix">
 	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
 	{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 </div>
@@ -62,7 +62,7 @@
 	</form>
 </footer>
 
-<div id="topic-controls-bottom" class="controllers clear_fix">
+<div id="topic-controls-bottom" class="controllers clearfix">
 	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
 	{include file="$sTemplatePathPlugin/buttons_action.tpl" bFastAnswer=true}
 </div>

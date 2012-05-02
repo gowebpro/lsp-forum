@@ -42,8 +42,8 @@
 
 	{hook run='form_forum_add_post_end'}
 
-	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary fl-r">{$aLang.topic_create_submit_publish}</button>
 	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
 
 {include file='footer.tpl'}

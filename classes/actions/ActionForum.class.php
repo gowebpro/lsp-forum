@@ -96,6 +96,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEvent('index','EventIndex');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page(\d+))?$/i','EventShowTopic');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i','EventAddPost');
+		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i','EventEditPost');
+		$this->AddEventPreg('/^topic$/i','/^delete$/i','/^(\d+)$/i','EventDeletePost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
 		$this->AddEventPreg('/^findpost$/i','/^(\d+)$/i','EventFindPost');
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i','EventShowForum');
@@ -144,6 +146,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Просмотр форума
+	 *
 	 */
 	public function EventShowForum() {
 		$this->sMenuSubItemSelect='show_forum';
@@ -219,8 +222,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->SetTemplateAction('forum');
 	}
 
+
 	/**
 	 * Просмотр топика
+	 *
 	 */
 	public function EventShowTopic() {
 		$bLineMod=Config::Get('plugin.forum.topic_line_mod');
@@ -472,6 +477,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Добавление топика
+	 *
 	 */
 	public function EventAddTopic() {
 		$this->sMenuSubItemSelect='add';
@@ -527,14 +533,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем разрешено ли создавать топики
 		 */
-		if (!$this->ACL_CanCreateTopic($this->oUserCurrent)) {
+		if (!$this->ACL_CanAddForumTopic($oForum,$this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.topic_acl'),$this->Lang_Get('error'));
 			return;
 		}
 		/**
 		 * Проверяем разрешено ли постить комменты по времени
 		 */
-		if (!$this->ACL_CanCreateTopicTime($this->oUserCurrent)) {
+		if (!$this->ACL_CanAddForumTopicTime($this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.topic_time_limit'),$this->Lang_Get('error'));
 			return;
 		}
@@ -558,14 +564,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 		if (isPost('topic_close')) {
-			if ($this->ACL_IsAllowClosedTopic($oTopic,$this->oUserCurrent)) {
+			if ($this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
 			}
 		}
 
 		$oTopic->setPinned(0);
 		if (isPost('topic_pinned')) {
-			if ($this->ACL_IsAllowPinnedTopic($oTopic,$this->oUserCurrent)) {
+			if ($this->ACL_IsAllowPinnedForumTopic($oTopic,$this->oUserCurrent)) {
 				$oTopic->setPinned(1);
 			}
 		}
@@ -626,8 +632,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		}
 	}
 
+
 	/**
 	 * Добавление поста
+	 *
 	 */
 	public function EventAddPost() {
 		$this->sMenuSubItemSelect='reply';
@@ -656,7 +664,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем не закрыто ли обсуждение
 		 */
-		if ($oTopic->getState()==1 and !$this->ACL_CanPostCommentClose($this->oUserCurrent)) {
+		if ($oTopic->getState()==1 and !$this->ACL_CanAddForumPostClose($this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_notallow'),$this->Lang_Get('error'));
 			return Router::Action('error');
 		}
@@ -686,7 +694,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	}
 
 	/**
-	 * Добавление поста
+	 * Обработка формы добавление поста
 	 */
 	protected function submitPostAdd($oForum=null,$oTopic=null) {
 		if (!($oForum && $oTopic)) {
@@ -695,21 +703,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем разрешено ли постить
 		 */
-		if (!$this->ACL_CanPostComment($this->oUserCurrent)) {
+		if (!$this->ACL_CanAddForumPost($this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.topic_acl'),$this->Lang_Get('error'));
 			return;
 		}
 		/**
 		 * Проверяем разрешено ли постить по времени
 		 */
-		if (!$this->ACL_CanPostCommentTime($this->oUserCurrent) and !$this->oUserCurrent->isAdministrator()) {
+		if (!$this->ACL_CanAddForumPostTime($this->oUserCurrent) and !$this->oUserCurrent->isAdministrator()) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_time_limit'),$this->Lang_Get('error'));
 			return;
 		}
 		/**
 		 * Проверяем не закрыто ли обсуждение
 		 */
-		if ($oTopic->getState()==1 and !$this->ACL_CanPostCommentClose($this->oUserCurrent)) {
+		if ($oTopic->getState()==1 and !$this->ACL_CanAddForumPostClose($this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_notallow'),$this->Lang_Get('error'));
 			return;
 		}
@@ -754,6 +762,192 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return Router::Action('error');
 		}
 	}
+
+
+	/**
+	 * Редактирование поста\топика
+	 *
+	 */
+	public function EventEditPost() {
+		/**
+		 * Получаем ID поста из URL
+		 */
+		$sPostId=$this->GetParamEventMatch(1,1);
+		/**
+		 * Получаем пост по ID
+		 */
+		if(!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Relations
+		 */
+		$oTopic=$oPost->getTopic();
+		$oForum=$oTopic->getForum();
+		/**
+		 * Редактируем ли мы топик
+		 */
+		$bEditTopic=($oTopic->getFirstPostId() == $oPost->getId());
+		/**
+		 * Проверяем, есть ли права редактировать данный топик\пост
+		 */
+		if ($bEditTopic) {
+			if (!$this->ACL_IsAllowEditForumTopic($oTopic,$this->oUserCurrent)) {
+				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.topic_edit_not_allow'),$this->Lang_Get('error'));
+				return Router::Action('error');
+			}
+		} else {
+			if (!$this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_edit_not_allow'),$this->Lang_Get('error'));
+				return Router::Action('error');
+			}
+		}
+		/**
+		 * Загружаем перемененные в шаблон
+		 */
+		$this->Viewer_Assign("oForum",$oForum);
+		$this->Viewer_Assign("oTopic",$oTopic);
+		$this->Viewer_Assign("bEditTopic",$bEditTopic);
+		/**
+		 * Хлебные крошки
+		 */
+		$this->_breadcrumbsCreate($oForum);
+		/**
+		 * Заголовки
+		 */
+		if ($bEditTopic) {
+			$this->_addTitle($this->Lang_Get('plugin.forum.topic_edit')." {$oForum->getTitle()}",'after');
+		} else {
+			$this->_addTitle($this->Lang_Get('plugin.forum.post_edit_for',array('topic'=>$oTopic->getTitle())),'after');
+		}
+		/**
+		 * Устанавливаем шаблон вывода
+		 */
+		$this->SetTemplateAction('edit_post');
+		/**
+		 * Была ли отправлена форма с данными
+		 */
+		if (isPost('submit_edit_post')) {
+			return $this->submitPostEdit($oPost);
+		} else {
+			if ($bEditTopic) {
+				$_REQUEST['topic_title']=$oTopic->getTitle();
+				$_REQUEST['topic_description']=$oTopic->getDescription();
+				$_REQUEST['topic_pinned']=$oTopic->getPinned();
+				$_REQUEST['topic_close']=$oTopic->getState();
+			} else {
+				$_REQUEST['post_title']=$oPost->getTitle();
+			}
+			$_REQUEST['post_text']=$oPost->getTextSource();
+		}
+	}
+
+	/**
+	 * Обработка формы редактирования поста
+	 */
+	protected function submitPostEdit($oPost) {
+		if (!$oPost) {
+			return false;
+		}
+		/**
+		 * Relations
+		 */
+		$oTopic=$oPost->getTopic();
+		/**
+		 * Редактируем ли мы топик
+		 */
+		$bEditTopic=($oTopic->getFirstPostId() == $oPost->getId());
+
+		if ($bEditTopic && !($this->checkTopicFields() && $this->checkPostFields($oPost))) {
+			return false;
+		}
+		if (!$bEditTopic && !$this->checkPostFields($oPost)) {
+			return false;
+		}
+		/**
+		 * Редактируем
+		 */
+		if ($bEditTopic) {
+			$oTopic->setTitle(getRequest('topic_title'));
+			$oTopic->setDescription(getRequest('topic_description'));
+			$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
+			if (isPost('topic_close')) {
+				if ($this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
+					$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
+				}
+			}
+			$oTopic->setPinned(0);
+			if (isPost('topic_pinned')) {
+				if ($this->ACL_IsAllowPinnedForumTopic($oTopic,$this->oUserCurrent)) {
+					$oTopic->setPinned(1);
+				}
+			}
+			$oTopic->setDateEdit(date("Y-m-d H:i:s"));
+			$oTopic->Save();
+
+			$oPost->setTitle($oTopic->getTitle());
+		} else {
+			$oPost->setTitle(getRequest('post_title'));
+		}
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
+		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setDateEdit(date("Y-m-d H:i:s"));
+		$oPost->setEditor($this->oUserCurrent->getId());
+		/**
+		 * Обновляем
+		 */
+		if ($oPost->Save()) {
+			Router::Location($oPost->getUrlFull());
+		} else {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
+			return Router::Action('error');
+		}
+	}
+
+
+	/**
+	 * Удаление поста
+	 *
+	 */
+	public function EventDeletePost() {
+		/**
+		 * Получаем ID поста из URL
+		 */
+		$sPostId=$this->GetParamEventMatch(1,1);
+		/**
+		 * Получаем пост по ID
+		 */
+		if(!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Relations
+		 */
+		$oTopic=$oPost->getTopic();
+		$oForum=$oTopic->getForum();
+		/**
+		 * Возможно, мы собрались удалить первый пост?
+		 */
+		if ($oTopic->getFirstPostId() == $oPost->getId()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_delete_not_allow'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Проверяем, есть ли права на редактирование
+		 */
+		if (!$this->ACL_IsAllowDeleteForumPost($oPost,$this->oUserCurrent)) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_delete_not_allow'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+
+		if ($oPost->Delete() && $this->PluginForum_Forum_RecountTopic($oTopic) && $this->PluginForum_Forum_RecountForum($oForum)) {
+			Router::Location($oTopic->getUrlFull() . "lastpost");
+		} else {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+	}
+
 
 	/**
 	 * Последний пост в топике

@@ -21,7 +21,7 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	}
 
 	public function getNumber() {
-		return $this->_getDataOne('post_number') ? $this->_getDataOne('post_number') : $this->getId();
+		return $this->_getDataOne('number') ? $this->_getDataOne('number') : $this->getId();
 	}
 }
 ?>

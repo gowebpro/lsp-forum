@@ -16,10 +16,10 @@ ls.forum = (function ($) {
 		var form=$('#fast-reply-form');
 		if (form.css('display')=='block') {
 			form.slideUp();
-			$(el).removeClass('button-primary');
+			$(el).removeClass('button-orange');
 		} else {
 			form.slideDown();
-			$(el).addClass('button-primary');
+			$(el).addClass('button-orange');
 		}
 		return false;
 	};

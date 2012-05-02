@@ -54,7 +54,7 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		$this->Viewer_Assign('aPaging',$aPaging);
 		$this->Viewer_Assign('aPosts',$aPosts);
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication').' '.$this->oUserProfile->getLogin());
-		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication_forum_topics'));
+		$this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.user_menu_publication_topics'));
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
@@ -87,7 +87,7 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		$this->Viewer_Assign('aPaging',$aPaging);
 		$this->Viewer_Assign('aPosts',$aPosts);
 		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication').' '.$this->oUserProfile->getLogin());
-		$this->Viewer_AddHtmlTitle($this->Lang_Get('user_menu_publication_forum_posts'));
+		$this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.user_menu_publication_posts'));
 		/**
 		 * Устанавливаем шаблон вывода
 		 */

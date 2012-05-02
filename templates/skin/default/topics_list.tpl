@@ -14,16 +14,16 @@
 				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
 				{include file="$sTemplatePathPlugin/paging_post.tpl" aPaging=$oTopic->getPaging()}
 			</h4>
+			{if $oTopic->getDescription()}
+			<p class="lighter">
+				<small>{$oTopic->getDescription()}</small>
+			</p>
+			{/if}
 			<p>
 				{$aLang.plugin.forum.header_author}:
 				<span class="author"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></span>,
 				{date_format date=$oTopic->getDateAdd()}
 			</p>
-			{if $oTopic->getDescription()}
-			<p class="lighter">
-				{$oTopic->getDescription()|wordwrap:30:" ":true }
-			</p>
-			{/if}
 		</td>
 		<td class="cell-stats ta-r">
 			<ul>

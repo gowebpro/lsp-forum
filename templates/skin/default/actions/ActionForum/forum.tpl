@@ -19,7 +19,7 @@
 {/if}
 
 {if $oForum->getCanPost() == 0}
-	<div id="forum-controls-top" class="controllers clear_fix">
+	<div id="forum-controls-top" class="controllers clearfix">
 		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
 		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 	</div>
@@ -35,7 +35,7 @@
 		</section>
 	</div>
 
-	<div id="forum-controls-bottom" class="controllers clear_fix">
+	<div id="forum-controls-bottom" class="controllers clearfix">
 		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
 		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
 	</div>

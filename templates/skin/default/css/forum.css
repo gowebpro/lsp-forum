@@ -46,13 +46,13 @@
 .forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
 
 /* Post */
-.forum-post { border-bottom: 1px solid #eee; padding: 5px 0; margin: 5px 0 }
-.forum-post-side { float: left; width: 150px; border-right: 1px solid #eee; text-align: center }
-.forum-post-content { float: none; margin-left: 151px; width: auto }
-.forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px }
+.forum-post { background: #fafafa; border-bottom: 1px solid #eee; padding: 5px 0 }
+.forum-post-side { float: left; width: 150px; text-align: center }
+.forum-post-content { float: none; margin-left: 151px; border-left: 1px solid #eee; width: auto }
+.forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px 10px }
 .forum-post-details { color: #666 }
-.forum-post-body { padding: 10px }
-.forum-post-footer { border-top: 1px solid #eee; margin: 10px 0 }
+.forum-post-body { padding: 10px; min-height: 80px }
+.forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
 
 /* Stats */
 .forum-stats {}
@@ -82,7 +82,7 @@
 .topic-icon.poll.unread { background-image: url(../icons/topic_poll_unread.png) }
 
 /* Other */
-.controllers { margin-bottom: 10px }
+.controllers { margin: 15px 0 }
 
 .userlist { line-height: 24px }
 .userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
@@ -94,8 +94,27 @@ span.divide { color: gray; font-weight: normal; padding: 0 2px }
 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
-/* Clear Fix */
-.clear_fix:after { content: '.'; display: block; height: 0; clear: both; visibility: hidden }
-* html .clear_fix { height: 1% }
-.clear_fix { display: block }
-.clear { float: none; clear: both }
+/* Buttons */
+.button.button-orange {
+	background: #F6B537;
+	background: -moz-linear-gradient(top,  #F6B537 0%, #EB9719 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6B537), color-stop(100%,#EB9719));
+	background: -webkit-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
+	background: -o-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
+	background: -ms-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
+	background: linear-gradient(top,  #F6B537 0%,#EB9719 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F6B537', endColorstr='#EB9719',GradientType=0 )
+}
+.button.button-orange:hover { background: #EB9719 }
+
+.button.button-red { 
+	background: #DD4B39;
+	background: -moz-linear-gradient(top,  #DD4B39 0%, #D14836 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#DD4B39), color-stop(100%,#D14836));
+	background: -webkit-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
+	background: -o-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
+	background: -ms-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
+	background: linear-gradient(top,  #DD4B39 0%,#D14836 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DD4B39', endColorstr='#D14836',GradientType=0 )
+}
+.button.button-red:hover { background: #D14836 }

@@ -39,6 +39,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_text_source` text NOT NULL,
 	`post_text_hash` varchar(32) NOT NULL,
 	`post_new_topic` tinyint(1) NOT NULL default '0',
+	`post_editor` int(11) unsigned default NULL,
+	`post_edit_reason` varchar(255) default NULL,
 	PRIMARY KEY (`post_id`),
 	KEY `topic_id` (`topic_id`),
 	KEY `user_id` (`user_id`),

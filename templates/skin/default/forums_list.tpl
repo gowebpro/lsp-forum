@@ -33,7 +33,7 @@
 					{assign var="oTopic" value=$oPost->getTopic()}
 					{assign var="oPoster" value=$oPost->getUser()}
 					<ul class="last-post">
-						<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|wordwrap:30:" ":true}</a></li>
+						<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></li>
 						<li>
 							{$aLang.plugin.forum.header_author}:
 							<span class="author">

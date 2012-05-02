@@ -125,8 +125,8 @@
 
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_url">{$aLang.plugin.forum.create_forum_redirect_url}:</label>
-					<span class="note">{$aLang.plugin.forum.create_forum_redirect_url_notice}</span>
+					<label for="forum_redirect_url">{$aLang.plugin.forum.create_redirect_url}:</label>
+					<span class="note">{$aLang.plugin.forum.create_redirect_url_notice}</span>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-wide" />
@@ -134,8 +134,8 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_on">{$aLang.plugin.forum.create_forum_redirect_on}:</label>
-					<span class="note">{$aLang.plugin.forum.create_forum_redirect_on_notice}</span>
+					<label for="forum_redirect_on">{$aLang.plugin.forum.create_redirect_on}:</label>
+					<span class="note">{$aLang.plugin.forum.create_redirect_on_notice}</span>
 				</td>
 				<td class="cell-labeled">
 					<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_yes" value="1"{if $_aRequest.forum_redirect_on=='1'} checked{/if}> Yes</label>

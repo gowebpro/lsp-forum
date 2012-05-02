@@ -14,6 +14,9 @@ return array(
 	'forum' => 'Форум',
 	'forums' => 'Форумы',
 
+	'button_edit' => 'Редактировать',
+	'button_delete' => 'Удалить',
+
 	'in_progress' => 'В разработке',
 	'notice' => 'Здесь можно просто пообщаться',
 
@@ -136,6 +139,9 @@ return array(
 	'new_topic_pin' => 'Закрепить',
 	'new_topic_close' => 'Закрыть',
 
+	'topic_edit' => 'Редактирование темы',
+	'topic_edit_not_allow' => 'Нет доступа к этому действию',
+
 
 	'post' => 'Сообщение',
 	'posts' => 'Сообщения',
@@ -149,13 +155,16 @@ return array(
 	'post_create_text_error' => 'Текст сообщения должен быть от %%min%% до %%max%% символов',
 	'post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
 	'post_by' => 'от',//!!
+	'post_edit' => 'Редактирование ответа',
+	'post_edit_for' => 'Редактирование ответа в %%topic%%',
+	'post_edit_not_allow' => 'Нет доступа к этому действию',
+	'post_delete_not_allow' => 'Нет доступа к этому действию',
 
 	'reply' => 'Ответ',
 	'reply_for' => 'Ответ в %%topic%%',
 	'reply_notallow' => 'Тема закрыта',
 	'reply_not_allow' => 'Вы не можете написать в эту тему',
 	'reply_time_limit' => 'Вам нельзя отправлять сообщения слишком часто',
-	'post_edit_for' => 'Редактирование ответа в %%topic%%',
 	'fast_reply' => 'Быстрый ответ',
 
 	'redirect_hits' => 'Переходов',

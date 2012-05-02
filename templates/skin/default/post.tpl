@@ -1,6 +1,6 @@
 {assign var="oUser" value=$oPost->getUser()}
 <article class="forum-post" id="post-{$oPost->getId()}">
-	<div class="clear_fix">
+	<div class="clearfix">
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 			<div class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></div>
@@ -36,6 +36,18 @@
 			</div>
 		</div>
 	</div>
-	<footer class="forum-post-footer">
+	<footer class="forum-post-footer clearfix">
+		<section class="fl-r">
+			{if $oUserCurrent && $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
+				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange">
+					<span class="icon-edit"></span> {$aLang.plugin.forum.button_edit}
+				</a>
+			{/if}
+			{if $oUserCurrent && $LS->ACL_IsAllowDeleteForumPost($oPost,$oUserCurrent)}
+				<a href="{router page='forum'}topic/delete/{$oPost->getId()}" class="button button-red">
+					<span class="icon-remove"></span> {$aLang.plugin.forum.button_delete}
+				</a>
+			{/if}
+		</section>
 	</footer>
 </article>
