@@ -64,6 +64,9 @@ return array(
 	'create_sub_can_post_notice' => 'If you select <b>"Yes"</b>, then the forum will be a category, it will be allowed to open and publish messages, respectively, all of these settings will have no power.<br><br>If you select <b>"No"</b>, the forum will be normal, it will be allowed to open by publication of the messages (if enabled).',
 	'create_quick_reply' => 'Add a quick reply?',
 	'create_quick_reply_notice' => '',
+	'create_rating' => 'Rating restrictions',
+	'create_rating_notice' => 'Rating, needed by user to post to this forum',
+	'create_rating_error' => 'Rating restrictions should be a numeric value',
 
 	'create_sort' => 'Sorting',
 	'create_sort_notice' => 'Sets the sorting when displaying',

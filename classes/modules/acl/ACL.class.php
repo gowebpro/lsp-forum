@@ -29,6 +29,9 @@ class PluginForum_ModuleACL extends ModuleACL {
 		if ($oUser->getRating() >= $oForum->getLimitRatingTopic()) {
 			return true;
 		}
+		if ($oUser->getRating() >= Config::Get('plugin.forum.acl.create.topic.rating')) {
+			return true;
+		}
 		return false;
 	}
 

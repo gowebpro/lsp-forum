@@ -116,6 +116,15 @@
 					<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_no" value="0"{if $_aRequest.forum_quick_reply=='0'} checked{/if}> No</label>
 				</td>
 			</tr>
+			<tr>
+				<td class="cell-label">
+					<label for="forum_quick_reply">{$aLang.plugin.forum.create_rating}:</label>
+					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
+				</td>
+				<td class="cell-labeled">
+					<input type="text" id="forum_limit_rating_topic|" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
+				</td>
+			</tr>
 
 			<tr>
 				<th colspan="2" class="cell-subtitle ta-c">

@@ -1068,6 +1068,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if (isPost('forum_redirect_url')) {
 				$oForum->setRedirectOn(getRequest('forum_redirect_on') ? 1 : 0 );
 			}
+			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
 		}
 
 		if ($oForum->Save()) {
@@ -1114,6 +1115,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if (isPost('forum_redirect_url')) {
 				$oForum->setRedirectOn( (int)getRequest('forum_redirect_on',0,'post') === 1 );
 			}
+			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
 		}
 
 		if ($oForum->Save()) {
@@ -1204,6 +1206,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_redirect_on']=$oForumEdit->getRedirectOn();
 					$_REQUEST['forum_sort']=$oForumEdit->getSort();
 					$_REQUEST['forum_quick_reply']=$oForumEdit->getQuickReply();
+					$_REQUEST['forum_limit_rating_topic']=$oForumEdit->getLimitRatingTopic();
 
 					$sNewType=($oForumEdit->getParentId()==0) ? 'category' : 'forum';
 				}
@@ -1518,6 +1521,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if (getRequest('forum_sort') and !is_numeric(getRequest('forum_sort'))) {
 			$this->Message_AddError($this->Lang_Get('plugin.forum.create_sort_error'),$this->Lang_Get('error'));
+			$bOk=false;
+		}
+		/**
+		 * Преобразуем ограничение по рейтингу в число
+		 */
+		if (getRequest('forum_limit_rating_topic') and !is_numeric(getRequest('forum_limit_rating_topic'))) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.create_rating_error'),$this->Lang_Get('error'));
 			$bOk=false;
 		}
 
