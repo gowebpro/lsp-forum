@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_text_source` text NOT NULL,
 	`post_text_hash` varchar(32) NOT NULL,
 	`post_new_topic` tinyint(1) NOT NULL default '0',
-	`post_editor` int(11) unsigned DEFAULT NULL,
+	`post_editor_id` int(11) unsigned DEFAULT NULL,
 	`post_edit_reason` varchar(255) DEFAULT NULL,
 	PRIMARY KEY (`post_id`),
 	KEY `topic_id` (`topic_id`),

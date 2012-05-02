@@ -12,8 +12,9 @@
 
 class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	protected $aRelations = array(
+		'topic'=>array('belongs_to','PluginForum_ModuleForum_EntityTopic','topic_id'),
 		'user'=>array('belongs_to','ModuleUser_EntityUser','user_id'),
-		'topic'=>array('belongs_to','PluginForum_ModuleForum_EntityTopic','topic_id')
+		'editor'=>array('belongs_to','ModuleUser_EntityUser','post_editor_id'),
 	);
 
 	public function getUrlFull() {

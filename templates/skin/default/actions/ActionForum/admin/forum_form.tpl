@@ -122,7 +122,7 @@
 					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_limit_rating_topic|" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
+					<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
 				</td>
 			</tr>
 

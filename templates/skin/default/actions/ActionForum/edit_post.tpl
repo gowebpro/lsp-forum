@@ -12,7 +12,7 @@
 	<script>
 		jQuery(function($){
 			ls.lang.load({lang_load name="panel_b,panel_i,panel_u,panel_s,panel_url,panel_url_promt,panel_code,panel_video,panel_image,panel_cut,panel_quote,panel_list,panel_list_ul,panel_list_ol,panel_title,panel_clear_tags,panel_video_promt,panel_list_li,panel_image_promt,panel_user,panel_user_promt"});
-			// Подключаем редактор
+			// РџРѕРґРєР»СЋС‡Р°РµРј СЂРµРґР°РєС‚РѕСЂ
 			$('#post_text').markItUp(ls.forum.getMarkitup());
 		});
 	</script>
@@ -70,6 +70,12 @@
 		<label><input type="checkbox" id="topic_close" name="topic_close" class="input-checkbox" value="1"{if $_aRequest.topic_close==1} checked{/if} />{$aLang.plugin.forum.new_topic_close}</label>
 	</p>
 	{/if}
+
+	<p>
+		<label for="post_edit_reason">{$aLang.plugin.forum.post_edit_reason}:</label>
+		<input type="text" id="post_edit_reason" name="post_edit_reason" value="{$_aRequest.post_edit_reason}" class="input-text input-width-full" /><br />
+		<span class="note">{$aLang.plugin.forum.post_edit_reason_notice}</span>
+	</p>
 
 	{if $bEditTopic}
 		{hook run='form_forum_edit_topic_end'}

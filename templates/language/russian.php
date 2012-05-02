@@ -160,7 +160,10 @@ return array(
 	'post_by' => 'от',//!!
 	'post_edit' => 'Редактирование ответа',
 	'post_edit_for' => 'Редактирование ответа в %%topic%%',
+	'post_edit_reason' => 'Причина редактирования',
+	'post_edit_reason_notice' => 'Обязательное поле',
 	'post_edit_not_allow' => 'Нет доступа к этому действию',
+	'post_editing' => 'Последний раз редактировал пользователь',
 	'post_delete_not_allow' => 'Нет доступа к этому действию',
 
 	'reply' => 'Ответ',

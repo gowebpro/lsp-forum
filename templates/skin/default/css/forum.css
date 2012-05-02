@@ -51,7 +51,10 @@
 .forum-post-content { float: none; margin-left: 151px; border-left: 1px solid #eee; width: auto }
 .forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px 10px }
 .forum-post-details { color: #666 }
-.forum-post-body { padding: 10px; min-height: 80px }
+.forum-post-body { min-height: 80px }
+.forum-post-body .text { padding: 10px }
+.forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #eee; padding: 10px; margin: 10px 0 0 }
+.forum-post-body .reason { background: #eee; padding: 3px 6px }
 .forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
 
 /* Stats */

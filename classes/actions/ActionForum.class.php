@@ -892,7 +892,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setDateEdit(date("Y-m-d H:i:s"));
-		$oPost->setEditor($this->oUserCurrent->getId());
+		$oPost->setEditorId($this->oUserCurrent->getId());
+		$oPost->setEditReason(getRequest('post_edit_reason'));
 		/**
 		 * Обновляем
 		 */

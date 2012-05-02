@@ -160,7 +160,10 @@ return array(
 	'post_by' => 'from',//!!
 	'post_edit' => 'Edit reply',
 	'post_edit_for' => 'Edit reply in %%topic%%',
+	'post_edit_reason' => 'Reason for edit',
+	'post_edit_reason_notice' => 'Required field',
 	'post_edit_not_allow' => 'No access to this action',
+	'post_editing' => 'Last edit',
 	'post_delete_not_allow' => 'No access to this action',
 
 	'reply' => 'Reply',

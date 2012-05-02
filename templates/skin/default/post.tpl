@@ -32,6 +32,20 @@
 				<div class="text">
 					{$oPost->getText()}
 				</div>
+				{if $oPost->getEditorId()}
+					{assign var="oEditor" value=$oPost->getEditor()}
+					<div class="edit">
+						{$aLang.plugin.forum.post_editing}
+						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()}</a>
+						{if $oPost->getDateEdit()}
+							<span class="divide">-</span>
+							{date_format date=$oPost->getDateEdit()}
+						{/if}
+						{if $oPost->getEditReason()}
+							<span class="reason">{$oPost->getEditReason()}</span>
+						{/if}
+					</div>
+				{/if}
 				{hook run='forum_post_content_end' post=$oPost}
 			</div>
 		</div>
