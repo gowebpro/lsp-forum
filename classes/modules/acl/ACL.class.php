@@ -63,7 +63,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Проверяем, если топик опубликованный меньше чем plugin.forum.acl.create.topic.time секунд назад
 		 */
-		$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'topic_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
+		$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d' => array($oUser->getId()),'topic_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
 
 		if (count($aTopics)>0) {
 			return false;
@@ -174,7 +174,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Проверяем, если пост опубликованный меньше чем plugni.forum.acl.create.post.time секунд назад
 		 */
-		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
+		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
 
 		if (count($aPosts)>0) {
 			return false;
