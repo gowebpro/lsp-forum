@@ -63,7 +63,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Проверяем, если топик опубликованный меньше чем plugin.forum.acl.create.topic.time секунд назад
 		 */
-		$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('topic_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
+		$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'topic_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
 
 		if (count($aTopics)>0) {
 			return false;
@@ -137,24 +137,17 @@ class PluginForum_ModuleACL extends ModuleACL {
 
 
 	/**
-	 * Проверяет может ли пользователь создавать комментарии
+	 * Проверяет может ли пользователь оставлять посты
 	 *
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
 	public function CanAddForumPost(ModuleUser_EntityUser $oUser) {
-		/**
-		 * Для администраторов ограничение не действует
-		 */
-		if ($oUser->isAdministrator()) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	/**
-	 * Проверяет может ли пользователь создавать комментарии по времени
+	 * Проверяет может ли пользователь оставлять посты по времени
 	 *
 	 * @param Entity_User $oUser
 	 * @return bool
@@ -181,7 +174,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Проверяем, если пост опубликованный меньше чем plugni.forum.acl.create.post.time секунд назад
 		 */
-		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('post_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
+		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?d' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
 
 		if (count($aPosts)>0) {
 			return false;
@@ -190,7 +183,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Проверяет может ли пользователь создавать комментарии в закрытых топиках
+	 * Проверяет может ли пользователь оставлять посты в закрытых топиках
 	 *
 	 * @param  Entity_User $oUser
 	 * @return bool
@@ -225,7 +218,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		if ($oPost->getUserId()==$oUser->getId()) {
 			//15 минутный тайм-аут
 			$sDateComment=strtotime($oPost->getDateAdd());
-			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.comment.time'))) {
+			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.post.time'))) {
 				return true;
 			}
 		}
@@ -240,7 +233,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	}
 
 	/**
-	 * Проверяет можно или нет пользователю удалять комментарий
+	 * Проверяет можно или нет пользователю удалять пост
 	 *
 	 * @param object $oPost
 	 * @param object $oUser
@@ -258,7 +251,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		if ($oPost->getUserId()==$oUser->getId()) {
 			//15 минутный тайм-аут
 			$sDateComment=strtotime($oPost->getDateAdd());
-			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.comment.time'))) {
+			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.post.time'))) {
 				return true;
 			}
 		}

@@ -633,8 +633,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 					'oForum' => $oForum,
 					'oTopic' => $oTopic,
 					'oPost' => $oPost,
-					'oUserComment' => $this->oUserCurrent,
+					'oUserCurrent' => $this->oUserCurrent,
 				),$aExcludeMail,__CLASS__);
+				/**
+				 * Добавляем автора топика в подписчики на новые ответы к этому топику
+				 */
+				$this->Subscribe_AddSubscribeSimple('topic_new_post',$oTopic->getId(),$this->oUserCurrent->getMail());
 				/**
 				 * Добавляем событие в ленту
 				 */
@@ -723,7 +727,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Проверяем разрешено ли постить
 		 */
 		if (!$this->ACL_CanAddForumPost($this->oUserCurrent)) {
-			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.topic_acl'),$this->Lang_Get('error'));
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_not_allow'),$this->Lang_Get('error'));
 			return;
 		}
 		/**
@@ -737,7 +741,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Проверяем не закрыто ли обсуждение
 		 */
 		if ($oTopic->getState()==1 and !$this->ACL_CanAddForumPostClose($this->oUserCurrent)) {
-			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_notallow'),$this->Lang_Get('error'));
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_not_allow_close'),$this->Lang_Get('error'));
 			return;
 		}
 		/**
@@ -786,11 +790,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Отправка уведомления подписчикам форума
 			 */
-			$this->Subscribe_Send('topic_new_post',$oForum->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
+			$this->Subscribe_Send('topic_new_post',$oTopic->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
 				'oForum' => $oForum,
 				'oTopic' => $oTopic,
 				'oPost' => $oPost,
-				'oUserComment' => $this->oUserCurrent,
+				'oUserCurrent' => $this->oUserCurrent,
 			),$aExcludeMail,__CLASS__);
 			/**
 			 * Добавляем событие в ленту

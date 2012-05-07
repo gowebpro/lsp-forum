@@ -163,8 +163,8 @@ return array(
 
 	'reply' => 'Ответ',
 	'reply_for' => 'Ответ в %%topic%%',
-	'reply_notallow' => 'Тема закрыта',
 	'reply_not_allow' => 'Вы не можете написать в эту тему',
+	'reply_not_allow_close' => 'Тема закрыта',
 	'reply_time_limit' => 'Вам нельзя отправлять сообщения слишком часто',
 	'fast_reply' => 'Быстрый ответ',
 

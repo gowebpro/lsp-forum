@@ -163,8 +163,8 @@ return array(
 
 	'reply' => 'Reply',
 	'reply_for' => 'Reply in %%topic%%',
-	'reply_notallow' => 'Locked',
 	'reply_not_allow' => 'You can not write in this topic',
+	'reply_not_allow_closed' => 'Locked',
 	'reply_time_limit' => 'You can send messages too often',
 	'fast_reply' => 'Quick Reply',
 
