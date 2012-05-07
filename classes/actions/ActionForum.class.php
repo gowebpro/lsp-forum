@@ -627,7 +627,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 */
 				$aExcludeMail=array($this->oUserCurrent->getMail());
 				/**
-				 * Отправка уведомления автору топика
+				 * Отправка уведомления подписчикам темы
 				 */
 				$this->Subscribe_Send('forum_new_topic',$oForum->getId(),'notify.topic_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_topic'),array(
 					'oForum' => $oForum,
@@ -784,7 +784,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			$aExcludeMail=array($this->oUserCurrent->getMail());
 			/**
-			 * Отправка уведомления автору топика
+			 * Отправка уведомления подписчикам форума
 			 */
 			$this->Subscribe_Send('topic_new_post',$oForum->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
 				'oForum' => $oForum,

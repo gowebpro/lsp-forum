@@ -205,6 +205,11 @@ return array(
 	'event_add_topic' => 'Added new topic on the forum',
 	'event_add_post' => 'Added a new post on the forum',
 
+	'subscribe_forum' => 'Subscribe to new themes',
+	'subscribe_topic' => 'Subscribe to new posts',
+
+	'notify_subject_new_topic' => 'New topic on the forum',
+	'notify_subject_new_post' => 'New reply to topic',
 );
 
 ?>
