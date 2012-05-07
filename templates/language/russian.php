@@ -199,6 +199,17 @@ return array(
 	'user_menu_publication_topics' => 'Темы на форуме',
 	'user_menu_publication_posts' => 'Сообщения на форуме',
 
+	'event_type_add_topic' => 'Добавление темы на форум',
+	'event_type_add_post' => 'Добавление сообщения на форум',
+
+	'event_add_topic' => 'Добавил новую тему на форуме',
+	'event_add_post' => 'Добавил новое сообщение на форуме к теме',
+
+	'subscribe_forum' => 'Подписка на новые темы',
+	'subscribe_topic' => 'Подписка на новые сообщения',
+
+	'notify_subject_new_topic' => 'Новая тема на форуме',
+	'notify_subject_new_post' => 'Новый ответ в тему',
 );
 
 ?>

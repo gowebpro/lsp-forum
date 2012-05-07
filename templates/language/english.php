@@ -199,6 +199,12 @@ return array(
 	'user_menu_publication_topics' => 'Topics on the forum',
 	'user_menu_publication_posts' => 'Forum posts',
 
+	'event_type_add_topic' => 'Add a topic to the forum',
+	'event_type_add_post' => 'Add a message to the forum',
+
+	'event_add_topic' => 'Added new topic on the forum',
+	'event_add_post' => 'Added a new post on the forum',
+
 );
 
 ?>

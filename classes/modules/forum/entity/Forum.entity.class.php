@@ -84,6 +84,14 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function getUrlFull() {
 		return Router::GetPath('forum').($this->getUrl() ? $this->getUrl() : $this->getId()).'/';
 	}
+
+	public function getSubscribeNewTopic() {
+		if (!($oUserCurrent=$this->User_GetUserCurrent())) {
+			return null;
+		}
+		return $this->Subscribe_GetSubscribeByTargetAndMail('forum_new_topic',$this->getId(),$oUserCurrent->getMail());
+	}
+
 }
 
 ?>

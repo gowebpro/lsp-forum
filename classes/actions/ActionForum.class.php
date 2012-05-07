@@ -94,10 +94,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^topic$/i','/^delete$/i','/^(\d+)$/i','EventDeletePost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
 		$this->AddEventPreg('/^findpost$/i','/^(\d+)$/i','EventFindPost');
-		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i','EventShowForum');
-		$this->AddEventPreg('/^[\w\-\_]+$/i','/^add$/i','EventAddTopic');
-		$this->AddEventPreg('/^(\d+)$/i','/^(page(\d+))?$/i','EventShowForum');
-		$this->AddEventPreg('/^(\d+)$/i','/^add$/i','EventAddTopic');
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i',array('EventShowForum','forum'));
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^add$/i',array('EventAddTopic','add_topic'));
+		$this->AddEventPreg('/^(\d+)$/i','/^(page(\d+))?$/i',array('EventShowForum','forum'));
+		$this->AddEventPreg('/^(\d+)$/i','/^add$/i',array('EventAddTopic','add_topic'));
 		/**
 		 * AJAX Обработчики
 		 */
@@ -622,6 +622,24 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oForum->setCountPost((int)$oForum->getCountPost()+1);
 				$oForum->Save();
 
+				/**
+				 * Список емайлов на которые не нужно отправлять уведомление
+				 */
+				$aExcludeMail=array($this->oUserCurrent->getMail());
+				/**
+				 * Отправка уведомления автору топика
+				 */
+				$this->Subscribe_Send('forum_new_topic',$oForum->getId(),'notify.topic_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_topic'),array(
+					'oForum' => $oForum,
+					'oTopic' => $oTopic,
+					'oPost' => $oPost,
+					'oUserComment' => $this->oUserCurrent,
+				),$aExcludeMail,__CLASS__);
+				/**
+				 * Добавляем событие в ленту
+				 */
+				$this->Stream_write($oTopic->getUserId(), 'add_forum_topic', $oTopic->getId());
+
 				Router::Location($oTopic->getUrlFull());
 			} else {
 				$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
@@ -760,6 +778,24 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setLastPostId($oPost->getId());
 			$oForum->setCountPost((int)$oForum->getCountPost()+1);
 			$oForum->Save();
+
+			/**
+			 * Список емайлов на которые не нужно отправлять уведомление
+			 */
+			$aExcludeMail=array($this->oUserCurrent->getMail());
+			/**
+			 * Отправка уведомления автору топика
+			 */
+			$this->Subscribe_Send('topic_new_post',$oForum->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
+				'oForum' => $oForum,
+				'oTopic' => $oTopic,
+				'oPost' => $oPost,
+				'oUserComment' => $this->oUserCurrent,
+			),$aExcludeMail,__CLASS__);
+			/**
+			 * Добавляем событие в ленту
+			 */
+			$this->Stream_write($oPost->getUserId(), 'add_forum_post', $oPost->getId());
 
 			Router::Location($oPost->getUrlFull());
 		} else {

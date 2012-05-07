@@ -16,8 +16,14 @@ if (!class_exists('Plugin')) {
 
 class PluginForum extends Plugin {
 	protected $aInherits=array(
-		'action' => array('ActionProfile'=>'PluginForum_ActionProfile'),
-		'module' => array('ModuleACL'=>'PluginForum_ModuleACL')
+		'action' => array(
+			'ActionProfile' => 'PluginForum_ActionProfile'
+		),
+		'module' => array(
+			'ModuleACL' => 'PluginForum_ModuleACL',
+			'ModuleStream' => 'PluginForum_ModuleStream',
+			'ModuleSubscribe' => 'PluginForum_ModuleSubscribe'
+		)
 	);
 
 	/**
@@ -52,6 +58,25 @@ class PluginForum extends Plugin {
 		 * Подключаем JS
 		 */
 		$this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__).'js/forum.js');
+		/**
+		 * Добавляем в подписку новые типы
+		 */
+		$this->Subscribe_AddTargetType('forum_new_topic',array());
+		$this->Subscribe_AddTargetType('topic_new_post',array());
+		/**
+		 * Добавляем в ленту новые типы событий
+		 */
+		$this->Stream_AddEventType('add_forum_topic', array('related' => 'forumTopic','unique'=>true));
+		$this->Stream_AddEventType('add_forum_post', array('related' => 'forumPost','unique'=>true));
+		/**
+		 * Добавляем в ленту текстовки новых типов событий
+		 */
+		$this->Lang_AddMessage('stream_event_type_add_forum_topic', $this->Lang_Get('plugin.forum.event_type_add_topic'));
+		$this->Lang_AddMessage('stream_event_type_add_forum_post', $this->Lang_Get('plugin.forum.event_type_add_post'));
+		/**
+		 * Загружаем в шаблон
+		 */
+		$this->Viewer_Assign('aLang',$this->Lang_GetLangMsg());
 
 		return true;
 	}

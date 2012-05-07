@@ -2,6 +2,7 @@
 {include file='header.tpl'}
 
 {assign var='aSubForums' value=$oForum->getChildren()}
+{assign var='oSubscribeForum' value=$oForum->getSubscribeNewTopic()}
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
@@ -27,6 +28,12 @@
 	<div class="forums">
 		<section class="forums-list">
 			<header class="forums-header">
+				{if $oUserCurrent}
+				<section class="fl-r">
+					<input{if $oSubscribeForum and $oSubscribeForum->getStatus()} checked="checked"{/if} type="checkbox" id="forum_subscribe" class="input-checkbox" onchange="ls.subscribe.toggle('forum_new_topic','{$oForum->getId()}','',this.checked);">
+					<label for="forum_subscribe">{$aLang.plugin.forum.subscribe_forum}</label>
+				</section>
+				{/if}
 				<h3>{$oForum->getTitle()}</h3>
 			</header>
 			<div class="forums-content">

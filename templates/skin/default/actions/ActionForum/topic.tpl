@@ -2,13 +2,19 @@
 {include file='header.tpl'}
 
 {assign var="oForum" value=$oTopic->getForum()}
+{assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
 {if $oConfig->GetValue('plugin.forum.topic_line_mod') && $oHeadPost}
 <div class="forum-topic">
 	<header class="forums-header">
-		<span class="fl-r">{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}</span>
+		{if $oUserCurrent}
+		<section class="fl-r">
+			<input{if $oSubscribeTopic and $oSubscribeTopic->getStatus()} checked="checked"{/if} type="checkbox" id="topic_subscribe" class="input-checkbox" onchange="ls.subscribe.toggle('topic_new_post','{$oTopic->getId()}','',this.checked);">
+			<label for="topic_subscribe">{$aLang.plugin.forum.subscribe_topic}</label>
+		</section>
+		{/if}
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
 	{include file="$sTemplatePathPlugin/post.tpl" oPost=$oHeadPost}
@@ -23,12 +29,20 @@
 
 <div class="forum-topic">
 	<header class="forums-header">
-		{if $oConfig->GetValue('plugin.forum.topic_line_mod')}
+	{if $oConfig->GetValue('plugin.forum.topic_line_mod')}
+		<section class="fl-r">
+			{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}
+		</section>
 		<h3>{$aLang.plugin.forum.topic_answers}</h3>
-		{else}
-		<span class="fl-r">{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}</span>
-		<h3>{$oTopic->getTitle()}</h3>
+	{else}
+		{if $oUserCurrent}
+		<section class="fl-r">
+			<input{if $oSubscribeTopic and $oSubscribeTopic->getStatus()} checked="checked"{/if} type="checkbox" id="topic_subscribe" class="input-checkbox" onchange="ls.subscribe.toggle('topic_new_post','{$oTopic->getId()}','',this.checked);">
+			<label for="topic_subscribe">{$aLang.plugin.forum.subscribe_topic}</label>
+		</section>
 		{/if}
+		<h3>{$oTopic->getTitle()}</h3>
+	{/if}
 	</header>
 	{foreach from=$aPosts item=oPost}
 		{include file="$sTemplatePathPlugin/post.tpl" oPost=$oPost}

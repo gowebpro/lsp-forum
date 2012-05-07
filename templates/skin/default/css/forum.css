@@ -8,6 +8,7 @@
 .forums-list {}
 .forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; position: relative }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
+.forums-header section { margin-left: 10px }
 .forums-header .js-forum-cat-toogler { cursor: pointer; visibility: hidden }
 .forums-header:hover .js-forum-cat-toogler { visibility: visible }
 .forums-header.collapsed { opacity: 0.5 }
