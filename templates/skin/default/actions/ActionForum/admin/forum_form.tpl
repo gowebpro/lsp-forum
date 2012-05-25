@@ -118,7 +118,16 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_quick_reply">{$aLang.plugin.forum.create_rating}:</label>
+					<label for="forum_password">{$aLang.plugin.forum.create_password}:</label>
+					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
+				</td>
+				<td class="cell-labeled">
+					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-100" />
+				</td>
+			</tr>
+			<tr>
+				<td class="cell-label">
+					<label for="forum_limit_rating_topic">{$aLang.plugin.forum.create_rating}:</label>
 					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
 				</td>
 				<td class="cell-labeled">

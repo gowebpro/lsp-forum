@@ -123,11 +123,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (isPost('f_password')) {
 			$sPassword=getRequest('f_password','','post');
 			if (!func_check($sPassword,'text',1,32)) {
-				$this->Message_AddErrorSingle('plugin.forum.pass_blank');
+				$this->Message_AddErrorSingle('plugin.forum.password_blank');
 				return;
 			}
 			if ($sPassword != $oForum->getPassword()) {
-				$this->Message_AddErrorSingle('plugin.forum.pass_wrong');
+				$this->Message_AddErrorSingle('plugin.forum.password_wrong');
 				return;
 			}
 			mySetCookie("chiffaforumpass_{$oForum->getId()}", md5($sPassword));
