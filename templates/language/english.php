@@ -108,6 +108,7 @@ return array(
 	'password_security_notice' => 'You must enter the correct password to access this forum. Check and make sure that your browser supports temporary cookies.',
 	'password_blank' => 'Your password field was not complete',
 	'password_wrong' => 'Sorry, you have entered an incorrect password. Please try again.',
+	'password_submit' => 'Login',
 
 
 	'topic' => 'Tpic',

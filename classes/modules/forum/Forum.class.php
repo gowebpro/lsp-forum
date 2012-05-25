@@ -230,7 +230,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$bAccess=true;
 		if ($oForum->getPassword()) {
 			$bAccess=false;
-			if ($this->oUserCurrent) {
+			if (LS::CurUsr()) {
 				if (forum_compare_password($oForum)) {
 					$bAccess=true;
 				}

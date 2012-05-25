@@ -35,8 +35,27 @@ if (!function_exists('forum_create_list')) {
  * Проверяет введен ли пароль
  */
 function forum_compare_password($oForum) {
-	$sCookiePass=myGetCookie("chiffaforumpass_{$oForum->getId()}");
+	$sCookiePass=fGetCookie("chiffaforumpass_{$oForum->getId()}");
 	return (bool)($sCookiePass == md5($oForum->getPassword()));
+}
+
+
+function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
+	if (!($sName)) return;
+
+	if ($bSticky) $iExpires = time() + (60*60*24*365);
+	else $iExpires = time() + ($iExpiresDays * 86400) + ($iExpiresMinutes * 60) + $iExpiresSeconds;
+
+	if ($iExpires <= time()) $iExpires = false;
+
+	@setcookie($sName,$sValue,$iExpires,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+}
+
+function fGetCookie($sName) {
+	if (isset($_COOKIE[$sName])) {
+		return htmlspecialchars(urldecode(trim($_COOKIE[$sName])));
+	}
+	return false;
 }
 
 ?>

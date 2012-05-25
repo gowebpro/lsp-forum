@@ -123,15 +123,19 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (isPost('f_password')) {
 			$sPassword=getRequest('f_password','','post');
 			if (!func_check($sPassword,'text',1,32)) {
-				$this->Message_AddErrorSingle('plugin.forum.password_blank');
+				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_blank'));
 				return;
 			}
 			if ($sPassword != $oForum->getPassword()) {
-				$this->Message_AddErrorSingle('plugin.forum.password_wrong');
+				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_wrong'));
 				return;
 			}
-			mySetCookie("chiffaforumpass_{$oForum->getId()}", md5($sPassword));
-			Router::Location($oForum->getUrlFull());
+			fSetCookie("chiffaforumpass_{$oForum->getId()}", md5($sPassword));
+			$sBackUrl = $oForum->getUrlFull();
+			if (isset($_SERVER['HTTP_REFERER'])) {
+				$sBackUrl = $_SERVER['HTTP_REFERER'];
+			}
+			Router::Location($sBackUrl);
 		}
 	}
 
@@ -279,6 +283,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
+		 * Хлебные крошки
+		 */
+		//$this->_breadcrumbsCreate($oTopic,true);
+		$this->_breadcrumbsCreate($oForum,false);
+		/**
+		 * Если установлен пароль
+		 */
+		if (!$this->PluginForum_Forum_isForumAuthorization($oForum)) {
+			$this->EventForumLogin($oForum);
+			return;
+		}
+		/**
 		 * Получаем номер страницы
 		 */
 		$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;
@@ -331,11 +347,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign("aPosts",$aPosts);
 		$this->Viewer_Assign("iPostsCount",$iPostsCount);
 		$this->Viewer_Assign("aPaging",$aPaging);
-		/**
-		 * Хлебные крошки
-		 */
-		//$this->_breadcrumbsCreate($oTopic,true);
-		$this->_breadcrumbsCreate($oForum,false);
 		/**
 		 * Задаем шаблон
 		 */
@@ -1289,9 +1300,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_title']=$oForumEdit->getTitle();
 					$_REQUEST['forum_url']=$oForumEdit->getUrl();
 					$_REQUEST['forum_description']=$oForumEdit->getDescription();
-					$_REQUEST['forum_parent']=$oForumEdit->getParentId();
 					$_REQUEST['forum_type']=$oForumEdit->getType();
-					$_REQUEST['forum_sub_can_post']=$oForumEdit->getType();
+					$_REQUEST['forum_parent']=$oForumEdit->getParentId();
+					$_REQUEST['forum_sub_can_post']=$oForumEdit->getCanPost();
 					$_REQUEST['forum_redirect_url']=$oForumEdit->getRedirectUrl();
 					$_REQUEST['forum_redirect_on']=$oForumEdit->getRedirectOn();
 					$_REQUEST['forum_sort']=$oForumEdit->getSort();

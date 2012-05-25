@@ -13,11 +13,11 @@
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 
 	<p>
-		<label for="f_password">{$aLang.forum_password}:</label>
+		<label for="f_password">{$aLang.plugin.forum.password}:</label>
 		<input type="text" id="f_password" name="f_password" value="{$_aRequest.f_password}" class="input-text input-width-full" />
 	</p>
 
-	<button name="submit_password" id="submit_password" class="button button-primary">{$aLang.user_login_submit}</button>
+	<button name="submit_password" id="submit_password" class="button button-primary">{$aLang.plugin.forum.password_submit}</button>
 </form>
 
 {include file='footer.tpl'}
