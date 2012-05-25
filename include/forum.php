@@ -13,8 +13,8 @@
 /**
  * Строит дерево форумов
  */
-if (!function_exists('create_forum_list')) {
-	function create_forum_list($aForums=array(),$aList=array(),$sDepthGuide="") {
+if (!function_exists('forum_create_list')) {
+	function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="") {
 		if (is_array($aForums) && !empty($aForums)) {
 			foreach ($aForums as $oForum) {
 				$aList[] = array(
@@ -23,12 +23,20 @@ if (!function_exists('create_forum_list')) {
 				);
 
 				if ($aSubForums = $oForum->getChildren()) {
-					$aList = create_forum_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE);
+					$aList = forum_create_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE);
 				}
 			}
 		}
 		return $aList;
 	}
+}
+
+/**
+ * Проверяет введен ли пароль
+ */
+function forum_compare_password($oForum) {
+	$sCookiePass=myGetCookie("chiffaforumpass_{$oForum->getId()}");
+	return (bool)($sCookiePass == md5($oForum->getPassword()));
 }
 
 ?>

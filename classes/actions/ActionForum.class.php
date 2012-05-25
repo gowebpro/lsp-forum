@@ -106,6 +106,37 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 
 	/**
+	 * Авторизация на форуме
+	 */
+	protected function EventForumLogin($oForum=null) {
+		/**
+		 * Загружаем переменные в шаблон
+		 */
+		$this->Viewer_Assign('oForum',$oForum);
+		/**
+		 * Устанавливаем шаблон вывода
+		 */
+		$this->SetTemplateAction('login');
+		/**
+		 * Если была отправлена форма с данными
+		 */
+		if (isPost('f_password')) {
+			$sPassword=getRequest('f_password','','post');
+			if (!func_check($sPassword,'text',1,32)) {
+				$this->Message_AddErrorSingle('plugin.forum.pass_blank');
+				return;
+			}
+			if ($sPassword != $oForum->getPassword()) {
+				$this->Message_AddErrorSingle('plugin.forum.pass_wrong');
+				return;
+			}
+			mySetCookie("chiffaforumpass_{$oForum->getId()}", md5($sPassword));
+			Router::Location($oForum->getUrlFull());
+		}
+	}
+
+
+	/**
 	 * Главная страница форума
 	 *
 	 */
@@ -179,6 +210,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Хлебные крошки
 		 */
 		$this->_breadcrumbsCreate($oForum);
+		/**
+		 * Если установлен пароль
+		 */
+		if (!$this->PluginForum_Forum_isForumAuthorization($oForum)) {
+			$this->EventForumLogin($oForum);
+			return;
+		}
 		/**
 		 * Получаем текущую страницу
 		 */
@@ -363,7 +401,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Дерево форумов
 				 */
-				$aForumsList=create_forum_list($aForums);
+				$aForumsList=forum_create_list($aForums);
 				/**
 				 * Загружаем переменные в шаблон
 				 */
@@ -1103,6 +1141,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setType(getRequest('forum_type'));
 			$oForum->setCanPost(getRequest('forum_sub_can_post') ? 1 : 0 );
 			$oForum->setQuickReply(getRequest('forum_quick_reply') ? 1 : 0 );
+			$oForum->setPassword(getRequest('forum_password'));
 			if (getRequest('forum_sort')) {
 				$oForum->setSort(getRequest('forum_sort'));
 			} else {
@@ -1154,6 +1193,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setType(getRequest('forum_type'));
 			$oForum->setCanPost( (int)getRequest('forum_sub_can_post',0,'post') === 1 );
 			$oForum->setQuickReply( (int)getRequest('forum_quick_reply',0,'post') === 1 );
+			$oForum->setPassword(getRequest('forum_password'));
 			$oForum->setSort(getRequest('forum_sort'));
 			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
 			if (isPost('forum_redirect_url')) {
@@ -1203,7 +1243,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Дерево форумов
 			 */
-			$aForumsList=create_forum_list($aForums);
+			$aForumsList=forum_create_list($aForums);
 			$aForumsTree=$this->PluginForum_Forum_buildTree($aForums);
 		}
 		/**
@@ -1233,7 +1273,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Дерево форумов
 		 */
-		$aForumsList=create_forum_list($aForums);
+		$aForumsList=forum_create_list($aForums);
 		/*
 		 * Определяем тип создаваемого\редактируемого объекта (форум\категория)
 		 */
@@ -1256,6 +1296,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_redirect_on']=$oForumEdit->getRedirectOn();
 					$_REQUEST['forum_sort']=$oForumEdit->getSort();
 					$_REQUEST['forum_quick_reply']=$oForumEdit->getQuickReply();
+					$_REQUEST['forum_password']=$oForumEdit->getPassword();
 					$_REQUEST['forum_limit_rating_topic']=$oForumEdit->getLimitRatingTopic();
 
 					$sNewType=($oForumEdit->getParentId()==0) ? 'category' : 'forum';
@@ -1299,7 +1340,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Дерево форумов
 		 */
-		$aForumsList=create_forum_list($aForums);
+		$aForumsList=forum_create_list($aForums);
 		/**
 		 * Загружаем переменные в шаблон
 		 */

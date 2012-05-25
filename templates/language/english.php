@@ -65,6 +65,8 @@ return array(
 	'create_sub_can_post_notice' => 'If you select <b>"Yes"</b>, then the forum will be a category, it will be allowed to open and publish messages, respectively, all of these settings will have no power.<br><br>If you select <b>"No"</b>, the forum will be normal, it will be allowed to open by publication of the messages (if enabled).',
 	'create_quick_reply' => 'Add a quick reply?',
 	'create_quick_reply_notice' => '',
+	'create_password' => 'Require password to visit the forum?',
+	'create_password_notice' => 'You can lock the forum and let him only with a password <br/> You can leave it blank to not use the password at all.',
 	'create_rating' => 'Rating restrictions',
 	'create_rating_notice' => 'Rating, needed by user to post to this forum',
 	'create_redirect_url' => 'URL address to move',
@@ -99,6 +101,11 @@ return array(
 
 	'delete_forum' => 'Delete the forum',
 	'delete_category' => 'Delete a category',
+
+	'password' => 'Password',
+	'password_write' => 'Enter the password',
+	'password_security' => 'This forum is password protected',
+	'password_security_notice' => 'You must enter the correct password to access this forum. Check and make sure that your browser supports temporary cookies.',
 
 
 	'topic' => 'Tpic',

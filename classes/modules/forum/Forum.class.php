@@ -224,6 +224,22 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Проверяем, нужно ли юзеру вводить пароль
+	 */
+	public function isForumAuthorization($oForum) {
+		$bAccess=true;
+		if ($oForum->getPassword()) {
+			$bAccess=false;
+			if ($this->oUserCurrent) {
+				if (forum_compare_password($oForum)) {
+					$bAccess=true;
+				}
+			}
+		}
+		return $bAccess;
+	}
+
+	/**
 	 * Парсер текста
 	 */
 	public function TextParse($sText=null) {
