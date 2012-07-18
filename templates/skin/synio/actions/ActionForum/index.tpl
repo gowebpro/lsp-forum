@@ -9,7 +9,7 @@
 			{assign var='aForums' value=$oCategory->getChildren()}
 			<section class="forums-list">
 				<header class="forums-header">
-					<div class="js-forum-cat-toogler fl-r icon-minus-sign"></div>
+					<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
 					<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
 				</header>
 				<div class="forums-content">
@@ -20,9 +20,10 @@
 	{else}
 		<div class="body-message">
 		{if $oUserCurrent && $oUserCurrent->isAdministrator()}
-			{$aLang.forums_welcome}
+			{assign var="sRoot" value='root%%'|cat:$aRouter.forum}
+			{$aLang.plugin.forum.welcome|ls_lang:$sRoot}
 		{else}
-			{$aLang.forums_no}
+			{$aLang.plugin.forum.clear}
 		{/if}
 		</div>
 	{/if}

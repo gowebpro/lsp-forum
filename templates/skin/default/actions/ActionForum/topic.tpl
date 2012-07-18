@@ -56,19 +56,19 @@
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
 		<input type="hidden" name="t" value="{$oTopic->getId()}" />
 		<input type="hidden" name="f" value="{$oForum->getId()}" />
-		<select name="code">
-			<option value="-1">{$aLang.plugin.forum.topic_mod_option}</option>
-			<option value="1">-{$aLang.plugin.forum.topic_move}</option>
-			<option value="2">-{$aLang.plugin.forum.topic_delete}</option>
-			{if $oTopic->getStatus() == '0'}
-			<option value="3">-{$aLang.plugin.forum.topic_close}</option>
+		<select name="code" class="">
+			<option value="-1"> {$aLang.plugin.forum.topic_mod_option}</option>
+			<option value="1">- {$aLang.plugin.forum.topic_move}</option>
+			<option value="2">- {$aLang.plugin.forum.topic_delete}</option>
+			{if $oTopic->getState()}
+			<option value="3">- {$aLang.plugin.forum.topic_open}</option>
 			{else}
-			<option value="3">-{$aLang.plugin.forum.topic_open}</option>
+			<option value="3">- {$aLang.plugin.forum.topic_close}</option>
 			{/if}
-			{if $oTopic->getPosition() == '0'}
-			<option value="4">-{$aLang.plugin.forum.topic_pin}</option>
+			{if $oTopic->getPinned()}
+			<option value="4">- {$aLang.plugin.forum.topic_unpin}</option>
 			{else}
-			<option value="4">-{$aLang.plugin.forum.topic_unpin}</option>
+			<option value="4">- {$aLang.plugin.forum.topic_pin}</option>
 			{/if}
 		</select>
 		<button type="submit" name="submit_topic_mod" class="button">OK</button>

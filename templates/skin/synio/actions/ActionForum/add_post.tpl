@@ -1,4 +1,4 @@
-{include file='header.tpl' noSidebar=true}
+{include file='header.tpl'}
 
 {if $oConfig->GetValue('view.tinymce')}
 	<script src="{cfg name='path.root.engine_lib'}/external/tinymce-jq/tiny_mce.js"></script>
@@ -13,16 +13,16 @@
 		jQuery(function($){
 			ls.lang.load({lang_load name="panel_b,panel_i,panel_u,panel_s,panel_url,panel_url_promt,panel_code,panel_video,panel_image,panel_cut,panel_quote,panel_list,panel_list_ul,panel_list_ol,panel_title,panel_clear_tags,panel_video_promt,panel_list_li,panel_image_promt,panel_user,panel_user_promt"});
 			// Подключаем редактор
-			$('#post_text').markItUp(ls.forum.getMarkitupSettings());
+			$('#post_text').markItUp(ls.forum.getMarkitup());
 		});
 	</script>
 {/if}
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.forum_reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
-<div class="topic-preview" style="display: none;" id="text_preview"></div>
+<div class="topic-preview clearfix" style="display: none;" id="text_preview"></div>
 
 <form action="" method="POST" enctype="multipart/form-data" id="form-post-add">
 	{hook run='form_forum_add_post_begin'}
@@ -30,20 +30,20 @@
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 
 	<p>
-		<label for="post_title">{$aLang.forum_post_create_title}:</label>
+		<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
 		<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
-		<span class="note">{$aLang.forum_post_create_title_notice}</span>
+		<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 	</p>
 
 	<p>
-		<label for="post_text">{$aLang.forum_post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.forum_post_create_text_notice}){/if}:</label>
+		<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
 		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
 	</p>
 
 	{hook run='form_forum_add_post_end'}
 
-	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary fl-r">{$aLang.topic_create_submit_publish}</button>
 	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
 
 {include file='footer.tpl'}

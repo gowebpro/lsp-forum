@@ -1,5 +1,5 @@
 {if $aPaging and $aPaging.iCountPage>1}
-<div class="pagination{if $sAlign=='left'} fl-l{elseif $sAlign=='right'} fl-r{/if}">
+<div class="pagination fl-l">
 	<ul>
 		{if $aPaging.iCurrentPage>1}<li><a href="{$aPaging.sBaseUrl}/{$aPaging.sGetParams}" title="{$aLang.paging_first}"><i class="icon-step-backward"></i></a></li>{/if}
 

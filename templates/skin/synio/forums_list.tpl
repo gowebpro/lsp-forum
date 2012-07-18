@@ -1,62 +1,58 @@
 <table class="table table-forums">
-	<thead>
+{if count($aForums) > 0}
+	{foreach from=$aForums item=oForum}
+		{assign var="oPost" value=$oForum->getPost()}
+		{assign var='aSubForums' value=$oForum->getChildren()}
 		<tr>
-			<th class="cell-name" colspan="2">{$aLang.forum|lower}</th>
-			<th class="cell-counter ta-c">{$aLang.forum_header_topics|lower}</th>
-			<th class="cell-counter ta-c">{$aLang.forum_header_answers|lower}</th>
-			<th class="cell-last-post">{$aLang.forum_header_last_post|lower}</th>
-		</tr>
-	</thead>
-	<tbody>
-	{if count($aForums) > 0}
-		{foreach from=$aForums item=oForum}
-			{assign var="oPost" value=$oForum->getPost()}
-			{assign var='aSubForums' value=$oForum->getChildren()}
-			<tr>
-				<td class="cell-icon">
-					<a class="bbl" href="{$oForum->getUrlFull()}"></a>
-				</td>
-				<td class="cell-name">
-					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
-					<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
-					{if $aSubForums}
-					<p class="details">
-						<strong>{$aLang.forum_subforums}:</strong>
-						{foreach from=$aSubForums item=oSubForum name=subforums}
-						<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>{if !$smarty.foreach.subforums.last}, {/if}
-						{/foreach}
-					</p>
-					{/if}
-				</td>
-				{if $oForum->getRedirectOn()}
-				<td class="cell-counter ta-c" colspan="3"><strong>{$aLang.forum_redirect_hits}</strong>: {$oForum->getRedirectHits()}</td>
-				{else}
-				<td class="cell-counter ta-c">{$oForum->getCountTopic()}</td>
-				<td class="cell-counter ta-c">{$oForum->getCountPost()}</td>
-				<td class="cell-last-post">
-					{if $oPost}
-						{assign var="oTopic" value=$oPost->getTopic()}
-						{assign var="oPoster" value=$oPost->getUser()}
-						<p class="details">
-							<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|wordwrap:30:" ":true}</a>
-							<a class="link-to-msg" title="{$aLang.forum_to_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost"></a>
-						</p>
-						<span class="author">
-							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" /></a>
-							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
-						</span>
-						<span class="date">@ {date_format date=$oPost->getDateAdd()}</span>
-					{/if}
-				</td>
-				{/if}
-			</tr>
-		{/foreach}
-	{else}
-		<tr>
-			<td colspan="5">
-				<div class="empty">{$aLang.forums_no}</div>
+			<td class="cell-icon">
+				<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"></a>
 			</td>
+			<td class="cell-name">
+				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+				<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
+				{if $aSubForums}
+				<p class="details">
+					<strong>{$aLang.plugin.forum.subforums}:</strong>
+					{foreach from=$aSubForums item=oSubForum name=subforums}
+					<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>{if !$smarty.foreach.subforums.last}, {/if}
+					{/foreach}
+				</p>
+				{/if}
+			</td>
+			{if $oForum->getRedirectOn()}
+			<td class="ta-c" colspan="2"><span class="lighter"><em>{$oForum->getRedirectHits()} {$oForum->getRedirectHits()|declension:$aLang.plugin.forum.redirect_hits_declension:'russian'|lower}</span></p></td>
+			{else}
+			<td class="cell-stats ta-r">
+				<ul>
+					<li><strong>{$oForum->getCountTopic()}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}</li>
+					<li><strong>{$oForum->getCountPost()}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
+				</ul>
+			</td>
+			<td class="cell-post">
+				{if $oPost}
+					{assign var="oTopic" value=$oPost->getTopic()}
+					{assign var="oPoster" value=$oPost->getUser()}
+					<ul class="last-post">
+						<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></li>
+						<li>
+							{$aLang.plugin.forum.header_author}:
+							<span class="author user-avatar">
+								<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
+								<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}
+							</span>
+						</li>
+						<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
+					</ul>
+				{/if}
+			</td>
+			{/if}
 		</tr>
-	{/if}
-	</tbody>
+	{/foreach}
+{else}
+	<tr>
+		<td colspan="5">
+			<div class="empty">{$aLang.plugin.forum.clear}</div>
+		</td>
+	</tr>
+{/if}
 </table>

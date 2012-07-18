@@ -1,7 +1,7 @@
 {if $aPaging and $aPaging.iCountPage>1}
 <span class="goToPage">
 [
-	{$aLang.forum_on_page}:
+	{$aLang.plugin.forum.on_page}:
 	{if $aPaging.iCurrentPage>1}
 	<a href="{$aPaging.sBaseUrl}">1 <<</a>
 	{/if}
