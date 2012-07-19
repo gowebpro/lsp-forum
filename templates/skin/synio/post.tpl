@@ -53,6 +53,7 @@
 			</div>
 		</div>
 	</div>
+	{if !$noFooter}
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
 			{if $oUserCurrent && $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
@@ -67,4 +68,5 @@
 			{/if}
 		</section>
 	</footer>
+	{/if}
 </article>
