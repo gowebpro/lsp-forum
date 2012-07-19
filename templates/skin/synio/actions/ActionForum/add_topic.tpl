@@ -22,8 +22,6 @@
 
 <h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>&raquo;</h4>
 
-<div class="topic-preview clearfix" style="display: none;" id="text_preview"></div>
-
 <form action="" method="POST" enctype="multipart/form-data" id="form-topic-add">
 	{hook run='form_forum_add_topic_begin'}
 
@@ -41,10 +39,14 @@
 		<span class="note">{$aLang.plugin.forum.new_topic_description_notice}</span>
 	</p>
 
-	<p>
-		<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
-		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
-	</p>
+	<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
+	<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
+
+	{if !$oConfig->GetValue('view.tinymce')}
+		{include file='tags_help.tpl' sTagsTargetId="post_text"}
+		<br />
+		<br />
+	{/if}
 
 	{if $oUserCurrent && $oUserCurrent->isAdministrator()}
 	<p>
@@ -55,8 +57,12 @@
 
 	{hook run='form_forum_add_topic_end'}
 
-	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<input type="hidden" name="action_type" value="add_topic" />
+
+	<button name="submit_preview" onclick="return ls.forum.preview('form-topic-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
 	<button name="submit_topic_publish" id="submit_topic_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
+
+<div class="topic-preview" style="display: none;" id="text_preview"></div>
 
 {include file='footer.tpl'}

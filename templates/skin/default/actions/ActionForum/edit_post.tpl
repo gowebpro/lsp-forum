@@ -28,8 +28,6 @@
 {/if}
 </h4>
 
-<div class="topic-preview" style="display: none;" id="text_preview"></div>
-
 <form action="" method="POST" enctype="multipart/form-data" id="form-post-edit">
 	{if $bEditTopic}
 		{hook run='form_forum_edit_topic_begin'}
@@ -64,6 +62,12 @@
 		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
 	</p>
 
+	{if !$oConfig->GetValue('view.tinymce')}
+		{include file='tags_help.tpl' sTagsTargetId="post_text"}
+		<br />
+		<br />
+	{/if}
+
 	{if $oUserCurrent && $bEditTopic && ($oUserCurrent->isAdministrator())}
 	<p>
 		<label><input type="checkbox" id="topic_pinned" name="topic_pinned" class="input-checkbox" value="1"{if $_aRequest.topic_pinned==1} checked{/if} />{$aLang.plugin.forum.new_topic_pin}</label>
@@ -79,12 +83,16 @@
 
 	{if $bEditTopic}
 		{hook run='form_forum_edit_topic_end'}
+		<input type="hidden" name="action_type" value="edit_topic" />
 	{else}
 		{hook run='form_forum_edit_post_end'}
+		<input type="hidden" name="action_type" value="edit_post" />
 	{/if}
 
-	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button name="submit_preview" onclick="return ls.forum.preview('form-post-edit','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
 	<button name="submit_edit_post" id="submit_edit_post" class="button button-orange">{$aLang.topic_create_submit_publish}</button>
 </form>
+
+<div class="topic-preview" style="display: none;" id="text_preview"></div>
 
 {include file='footer.tpl'}

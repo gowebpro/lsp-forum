@@ -1,7 +1,7 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 
-<h2 class="page-header">{$aLang.forums}</h2>
+<h2 class="page-header">{$aLang.plugin.forum.forums}</h2>
 
 <div class="forums">
 	{if $aCategories}

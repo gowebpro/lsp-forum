@@ -1,4 +1,5 @@
 {assign var="oUser" value=$oPost->getUser()}
+
 <article class="forum-post" id="post-{$oPost->getId()}">
 	<div class="clearfix">
 		{if !$noPostSide}

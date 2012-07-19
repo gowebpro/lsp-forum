@@ -101,7 +101,69 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * AJAX Обработчики
 		 */
-	//	$this->AddEventPreg('/^ajax$/i','/^deleteforum$/','EventAjaxDeleteForum');
+		$this->AddEventPreg('/^ajax$/i','/^preview$/','EventAjaxPreview');
+	}
+
+
+	/**
+	 * Предпросмотр
+	 *
+	 */
+	protected function EventAjaxPreview() {
+		$this->Viewer_SetResponseAjax('jsonIframe',false);
+		/**
+		 * Пользователь авторизован?
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('need_authorization'),$this->Lang_Get('error'));
+			return;
+		}
+		/**
+		 * Допустимый тип?
+		 */
+		$sType=getRequest('action_type');
+		$bTopic=in_array($sType,array('add_topic','edit_topic')) ? 1 : 0;
+		$oTopic=null;
+		$oPost=LS::Ent('PluginForum_Forum_Post');
+		/**
+		 * Создаем объект топика для валидации данных
+		 */
+		if ($bTopic) {
+			$oTopic=LS::Ent('PluginForum_Forum_Topic');
+			$oTopic->setTitle(strip_tags(getRequest('topic_title')));
+			$oTopic->setDescription(getRequest('topic_description'));
+			$oTopic->setDateAdd(date("Y-m-d H:i:s"));
+
+			$oPost->_setValidateScenario('topic');
+			$oPost->setTitle(strip_tags($oTopic->getTitle()));
+		} else {
+			$oPost->_setValidateScenario('post');
+			$oPost->setTitle(strip_tags(getRequest('post_title')));
+		}
+		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
+		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setUser($this->oUserCurrent);
+		/**
+		 * Проверка корректности полей формы
+		 */
+		if ($bTopic && !$this->checkTopicFields($oTopic)) {
+			return false;
+		}
+		if (!$this->checkPostFields($oPost)) {
+			return false;
+		}
+		/**
+		 * Рендерим шаблон для предпросмотра топика
+		 */
+		$oViewer=$this->Viewer_GetLocalViewer();
+		$oViewer->Assign('oPost',$oPost);
+		$sTextResult=$oViewer->Fetch($this->getTemplatePathPlugin().'preview.tpl');
+		/**
+		 * Передаем результат в ajax ответ
+		 */
+		$this->Viewer_AssignAjax('sText',$sTextResult);
+		return true;
 	}
 
 

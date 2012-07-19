@@ -12,7 +12,7 @@
 	<version>1.0a</version>
 	<settings>{forum}admin/</settings>
 	<requires>
-		<livestreet>1.0-dev</livestreet>
+		<livestreet>1.0</livestreet>
 		<plugins>
 		</plugins>
 	</requires>

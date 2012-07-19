@@ -32,13 +32,19 @@ ls.forum = (function ($) {
 		return false;
 	};
 
-	this.preview = function(id) {
-		if (BLOG_USE_TINYMCE && tinyMCE) {
-			$("#"+id).val(tinyMCE.activeEditor.getContent());
-		}
-		if ($("#"+id).val() == '') return false;
-		$("#text_preview").show();
-		ls.tools.textPreview(id, false, 'text_preview');
+	this.preview = function(form, preview) {
+		form=$('#'+form);
+		preview=$('#'+preview);
+		var url = aRouter['forum']+'ajax/preview/';
+		ls.hook.marker('previewBefore');
+		ls.ajaxSubmit(url, form, function(result) {
+			if (result.bStateError) {
+				ls.msg.error(null, result.sMsg);
+			} else {
+				preview.show().html(result.sText);
+				ls.hook.run('ls_forum_preview_after',[form, preview, result]);
+			}
+		});
 		return false;
 	};
 

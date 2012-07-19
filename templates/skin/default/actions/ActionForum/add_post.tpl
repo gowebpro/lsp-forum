@@ -22,8 +22,6 @@
 
 <h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
-<div class="topic-preview" style="display: none;" id="text_preview"></div>
-
 <form action="" method="POST" enctype="multipart/form-data" id="form-post-add">
 	{hook run='form_forum_add_post_begin'}
 
@@ -40,10 +38,20 @@
 		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
 	</p>
 
+	{if !$oConfig->GetValue('view.tinymce')}
+		{include file='tags_help.tpl' sTagsTargetId="post_text"}
+		<br />
+		<br />
+	{/if}
+
 	{hook run='form_forum_add_post_end'}
 
-	<button name="submit_preview" onclick="return ls.forum.preview('post_text');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<input type="hidden" name="action_type" value="add_post" />
+
+	<button name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
 	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
+
+<div class="topic-preview" style="display: none;" id="text_preview"></div>
 
 {include file='footer.tpl'}
