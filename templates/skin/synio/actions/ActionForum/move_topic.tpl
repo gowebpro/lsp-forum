@@ -16,7 +16,7 @@
 		</select>
 	</p>
 
-	<button name="submit_topic_move" class="button button-primary">{$aLang.plugin.forum.topic_move}</button>
+	<button type="submit" name="submit_topic_move" class="button button-primary">{$aLang.plugin.forum.topic_move}</button>
 </form>
 
 {include file='footer.tpl'}

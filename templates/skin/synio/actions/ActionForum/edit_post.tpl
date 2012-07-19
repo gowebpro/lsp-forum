@@ -68,8 +68,8 @@
 
 	{if $oUserCurrent && $bEditTopic && ($oUserCurrent->isAdministrator())}
 	<p>
-		<label><input type="checkbox" id="topic_pinned" name="topic_pinned" class="input-checkbox" value="1"{if $_aRequest.topic_pinned==1} checked{/if} />{$aLang.plugin.forum.new_topic_pin}</label>
-		<label><input type="checkbox" id="topic_close" name="topic_close" class="input-checkbox" value="1"{if $_aRequest.topic_close==1} checked{/if} />{$aLang.plugin.forum.new_topic_close}</label>
+		<label><input type="checkbox" id="topic_pinned" name="topic_pinned" class="input-checkbox" value="1"{if $_aRequest.topic_pinned==1} checked{/if} /> {$aLang.plugin.forum.new_topic_pin}</label>
+		<label><input type="checkbox" id="topic_close" name="topic_close" class="input-checkbox" value="1"{if $_aRequest.topic_close==1} checked{/if} /> {$aLang.plugin.forum.new_topic_close}</label>
 	</p>
 	{/if}
 
@@ -87,8 +87,8 @@
 		<input type="hidden" name="action_type" value="edit_post" />
 	{/if}
 
-	<button name="submit_preview" onclick="return ls.forum.preview('form-post-edit','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
-	<button name="submit_edit_post" id="submit_edit_post" class="button button-orange">{$aLang.topic_create_submit_publish}</button>
+	<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-post-edit','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button type="submit" name="submit_edit_post" id="submit_edit_post" class="button button-orange">{$aLang.topic_create_submit_publish}</button>
 </form>
 
 <div class="topic-preview" style="display: none;" id="text_preview"></div>

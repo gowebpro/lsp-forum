@@ -2,7 +2,7 @@
 
 {hook run='forum_preview_show_start' topic=$oTopic}
 
-<article class="forum-post" id="post-{$oPost->getId()}">
+<article class="forum-post forum-post-one mb-10" id="post-{$oPost->getId()}">
 	<div class="clearfix">
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
@@ -10,7 +10,7 @@
 			<div class="nickname"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></div>
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
-		<div class="forum-post-content">
+		<div class="forum-post-content clearfix">
 			<header class="forum-post-header">
 				{hook run='forum_post_header_begin' post=$oPost}
 				<div class="forum-post-details">
@@ -36,4 +36,6 @@
 
 {hook run='forum_preview_show_end' topic=$oTopic}
 
-<button type="submit" name="submit_preview" onclick="jQuery('#text_preview').html('').hide(); return false;" class="button">{$aLang.topic_create_submit_preview_close}</button>
+<div class="mb-10">
+	<button type="submit" name="submit_preview" onclick="jQuery('#text_preview').html('').hide(); return false;" class="button">{$aLang.topic_create_submit_preview_close}</button>
+</div>

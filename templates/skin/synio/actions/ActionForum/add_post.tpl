@@ -46,8 +46,8 @@
 
 	<input type="hidden" name="action_type" value="add_post" />
 
-	<button name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
-	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
+	<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
 
 <div class="topic-preview" style="display: none;" id="text_preview"></div>

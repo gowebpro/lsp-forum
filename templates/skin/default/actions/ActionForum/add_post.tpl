@@ -33,10 +33,8 @@
 		<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 	</p>
 
-	<p>
-		<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
-		<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
-	</p>
+	<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
+	<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
 
 	{if !$oConfig->GetValue('view.tinymce')}
 		{include file='tags_help.tpl' sTagsTargetId="post_text"}
@@ -48,8 +46,8 @@
 
 	<input type="hidden" name="action_type" value="add_post" />
 
-	<button name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
-	<button name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
+	<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
+	<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
 </form>
 
 <div class="topic-preview" style="display: none;" id="text_preview"></div>

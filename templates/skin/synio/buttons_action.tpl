@@ -3,16 +3,16 @@
 	{if $sMenuSubItemSelect == 'show_topic' && $oTopic}
 		{if !$oTopic->getState()}
 			{if $oForum->getQuickReply() && $bFastAnswer}
-			<button class="button" onclick="return ls.forum.fastReply(this)">{$aLang.plugin.forum.fast_reply}</button>
+			<a href="" onclick="return ls.forum.fastReply(this)" class="button">{$aLang.plugin.forum.fast_reply}</a>
 			{/if}
-			<a href="{$oTopic->getUrlFull()}reply"><button class="button">{$aLang.plugin.forum.reply}</button></a>
+			<a href="{$oTopic->getUrlFull()}reply" class="button">{$aLang.plugin.forum.reply}</a>
 		{else}
-			<button class="button" disabled="disabled">{$aLang.plugin.forum.topic_closed}</button>
+			<a href="" class="button" disabled="disabled">{$aLang.plugin.forum.topic_closed}</a>
 		{/if}
 	{/if}
 	{if $sMenuSubItemSelect == 'show_topic' || $sMenuSubItemSelect == 'show_forum'}
 		{if $oForum->getCanPost() == 0}
-			<a href="{$oForum->getUrlFull()}add"><button class="button button-primary">{$aLang.plugin.forum.new_topic}</button></a>
+			<a href="{$oForum->getUrlFull()}add" class="button button-primary">{$aLang.plugin.forum.new_topic}</a>
 		{/if}
 	{/if}
 {else}

@@ -10,7 +10,7 @@
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
 		{/if}
-		<div class="forum-post-content{if $noPostSide} no-side{/if}">
+		<div class="forum-post-content{if $noPostSide} no-side{/if} clearfix">
 			<header class="forum-post-header">
 				{hook run='forum_post_header_begin' post=$oPost}
 				<div class="forum-post-details fl-r">

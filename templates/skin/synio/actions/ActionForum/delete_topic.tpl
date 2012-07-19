@@ -9,7 +9,7 @@
 
 	<div class="system-message-error">{$aLang.plugin.forum.topic_delete_warning}</div>
 
-	<button name="submit_topic_delete" class="button button-primary">{$aLang.plugin.forum.topic_delete}</button>
+	<button type="submit" name="submit_topic_delete" class="button button-primary">{$aLang.plugin.forum.topic_delete}</button>
 </form>
 
 {include file='footer.tpl'}

@@ -47,8 +47,9 @@
 .forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
 
 /* Post */
-.forum-post { background: #fafafa; border-bottom: 1px solid #eee; padding: 5px 0 }
-.forum-post-side { float: left; width: 150px; text-align: center }
+.forum-post { background: #fafafa; border-bottom: 1px solid #eee; padding: 0 0 5px }
+.forum-post-one { border-top: 1px solid #eee }
+.forum-post-side { float: left; width: 150px; text-align: center; padding: 5px }
 .forum-post-content { float: none; margin-left: 151px; border-left: 1px solid #eee; width: auto }
 .forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px 10px }
 .forum-post-details { color: #666 }
