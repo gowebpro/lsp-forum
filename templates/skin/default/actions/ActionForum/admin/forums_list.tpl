@@ -66,7 +66,34 @@
 					{/if}
 				</td>
 				<td>
-					{$aLang.plugin.forum.in_progress}
+					<div class="moder-form">
+						<h3>{$aLang.plugin.forum.moderator_add}:</h3>
+						<form action="{router page='forum'}admin/forums/" method="post" id="forum-moderator-form">
+							<p>
+								<select id="forum_id" name="forum_id" class="input-text input-width-full">
+									<option value="-1">{$aLang.plugin.forum.moderator_select_forum}</option>
+									{foreach from=$aForumsList item=aItem}
+									<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title}</option>
+									{/foreach}
+								</select>
+							</p>
+							<p>
+								<input type="text" id="moder_name" name="moder_name" placeholder="{$aLang.plugin.forum.moderator_select_user}" class="input-text input-width-full autocomplete-users" />
+							</p>
+							<p>
+								<a href="#" class="link-dotted help-link" onclick="jQuery('#moder-form-options').toggle(); return false;">{$aLang.plugin.forum.moderator_options}</a>
+							</p>
+							<div class="moder-options" id="moder-form-options" style="display:none">
+								<label><input type="checkbox" id="opt_viewip" name="opt_viewip" class="input-checkbox" value="1"{if $_aRequest.opt_viewip==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_viewip}</label>
+								<label><input type="checkbox" id="opt_deletepost" name="opt_deletepost" class="input-checkbox" value="1"{if $_aRequest.opt_deletepost==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_deletepost}</label>
+								<label><input type="checkbox" id="opt_deletetopic" name="opt_deletetopic" class="input-checkbox" value="1"{if $_aRequest.opt_deletetopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_deletetopic}</label>
+								<label><input type="checkbox" id="opt_movetopic" name="opt_movetopic" class="input-checkbox" value="1"{if $_aRequest.opt_movetopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_movetopic}</label>
+								<label><input type="checkbox" id="opt_openclosetopic" name="opt_openclosetopic" class="input-checkbox" value="1"{if $_aRequest.opt_openclosetopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_openclosetopic}</label>
+								<label><input type="checkbox" id="opt_pintopic" name="opt_pintopic" class="input-checkbox" value="1"{if $_aRequest.opt_pintopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_pintopic}</label>
+							</div>
+							<button type="submit"  name="forum-moderator-form-submit" id="forum-moderator-form-submit" class="button button-primary" disabled="disabled">OK</button>
+						</form>
+					</div>
 				</td>
 			</tr>
 		</tbody>

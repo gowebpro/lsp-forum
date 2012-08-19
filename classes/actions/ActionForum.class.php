@@ -212,14 +212,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oModerator->setForumId($oForum->getId());
 		$oModerator->setUserId($oUser->getId());
 		$oModerator->setLogin($oUser->getLogin());
-		$oModerator->setViewIp(1);
+		$oModerator->setViewIp( (int)getRequest('opt_viewip',0,'post') === 1 );
 		$oModerator->setAllowReadonly(0);
-		$oModerator->setAllowDeletePost(1);
-		$oModerator->setAllowDeleteTopic(0);
+		$oModerator->setAllowDeletePost( (int)getRequest('opt_deletepost',0,'post') === 1 );
+		$oModerator->setAllowDeleteTopic( (int)getRequest('opt_deletetopic',0,'post') === 1 );
 		$oModerator->setAllowMovePost(0);
-		$oModerator->setAllowMoveTopic(1);
-		$oModerator->setAllowOpencloseTopic(1);
-		$oModerator->setAllowPinTopic(1);
+		$oModerator->setAllowMoveTopic( (int)getRequest('opt_movetopic',0,'post') === 1 );
+		$oModerator->setAllowOpencloseTopic( (int)getRequest('opt_openclosetopic',0,'post') === 1 );
+		$oModerator->setAllowPinTopic( (int)getRequest('opt_pintopic',0,'post') === 1 );
 		$oModerator->setIsActive(1);
 		/**
 		 * Код
