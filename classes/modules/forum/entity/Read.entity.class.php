@@ -12,9 +12,9 @@
 
 class PluginForum_ModuleForum_EntityRead extends EntityORM {
 	protected $aRelations = array(
-		'user'=>array('belongs_to','ModuleUser_EntityUser','user_id'),
-		'topic'=>array('belongs_to','PluginForum_ModuleForum_EntityTopic','topic_id'),
-		'post'=>array('belongs_to','PluginForum_ModuleForum_EntityPost','post_id')
+		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
+		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id'),
+		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','post_id')
 	);
 }
 

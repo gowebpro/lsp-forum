@@ -180,21 +180,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем форум по ID
 		 */
-		if(!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('forum_id')))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('forum_id')))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Получаем юзера по имени
 		 */
-		if(!($oUser=$this->User_GetUserByLogin(getRequest('moder_name')))) {
+		if (!($oUser=$this->User_GetUserByLogin(getRequest('moder_name')))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>getRequest('moder_name'))),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Проверяем модератора на существование
 		 */
-		if($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId())){
+		if ($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId())){
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_add_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
 			return false;
 		}
@@ -270,21 +270,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем форум по ID
 		 */
-		if(!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Получаем юзера по ID
 		 */
-		if(!($oUser=$this->User_GetUserById($sUserId))) {
+		if (!($oUser=$this->User_GetUserById($sUserId))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Проверяем модератора на существование
 		 */
-		if(!($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
+		if (!($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_del_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
 			return false;
 		}
