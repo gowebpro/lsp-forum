@@ -185,6 +185,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return false;
 		}
 		/**
+		 * Если выбранный форум является категорией
+		 */
+		if ($oForum->getCanPost()==1) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.moderator_action_error_forum_cat'),$this->Lang_Get('error'));
+			return;
+		}
+		/**
 		 * Получаем юзера по имени
 		 */
 		if (!($oUser=$this->User_GetUserByLogin(getRequest('moder_name')))) {

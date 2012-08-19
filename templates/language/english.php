@@ -111,7 +111,7 @@ return array(
 	'password_submit' => 'Login',
 
 
-	'topic' => 'Tpic',
+	'topic' => 'Topic',
 	'topic_close' => 'Close this topic',
 	'topic_open' => 'Open this topic',
 	'topic_delete' => 'Delete this topic',
@@ -189,6 +189,19 @@ return array(
 	'acp_main' => 'Control center',
 	'acp_forums_control' => 'Manage forums',
 	'acp_forums_moders' => 'Office of the moderators',
+
+	'moderators' => 'Moderators',
+	'moderators_list' => 'Moderators',
+	'moderators_empty' => 'no moderators',
+	'moderator_add' => 'Add moderator',
+	'moderator_add_ok' => 'Moderator successfully added',
+	'moderator_add_error_exsist' => 'User%% login%% is already a moderator of this forum',
+	'moderator_del' => 'Remove this moderatorа',
+	'moderator_del_ok' => 'Moderator removed',
+	'moderator_del_error_exsist' => 'User%% login%% is the moderator of this forum',
+	'moderator_action_error_forum' => 'Forum is not correct',
+	'moderator_action_error_forum_cat' => 'You can not set a moderator category',
+	'moderator_action_error_user' => 'User%% login%% not found',
 
 	'sort_up' => 'move Up',
 	'sort_down' => 'move Down',
