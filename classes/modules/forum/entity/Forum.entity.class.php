@@ -15,7 +15,8 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		'tree',
 		'user'=>array('belongs_to','ModuleUser_EntityUser','last_user_id'),
 		'topic'=>array('belongs_to','PluginForum_ModuleForum_EntityTopic','last_topic_id'),
-		'post'=>array('belongs_to','PluginForum_ModuleForum_EntityPost','last_post_id')
+		'post'=>array('belongs_to','PluginForum_ModuleForum_EntityPost','last_post_id'),
+		'moderators'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityModerator','moderator_id','db.table.forum_moderator_rel','forum_id')
 	);
 
 	/**

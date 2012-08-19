@@ -102,6 +102,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * AJAX Обработчики
 		 */
 		$this->AddEventPreg('/^ajax$/i','/^preview$/','EventAjaxPreview');
+		$this->AddEventPreg('/^ajax$/i','/^addmoderator$/','EventAjaxAddModerator');
+		$this->AddEventPreg('/^ajax$/i','/^delmoderator$/','EventAjaxDelModerator');
 	}
 
 
@@ -163,6 +165,150 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Передаем результат в ajax ответ
 		 */
 		$this->Viewer_AssignAjax('sText',$sTextResult);
+		return true;
+	}
+
+	/**
+	 * Добавление модератора
+	 *
+	 */
+	protected function EventAjaxAddModerator() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Получаем форум по ID
+		 */
+		if(!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('forum_id')))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Получаем юзера по имени
+		 */
+		if(!($oUser=$this->User_GetUserByLogin(getRequest('moder_name')))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>getRequest('moder_name'))),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Проверяем модератора на существование
+		 */
+		if($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId())){
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_add_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Создаем объект модератора
+		 */
+		$oModerator=LS::Ent('PluginForum_Forum_Moderator');
+		$oModerator->setForumId($oForum->getId());
+		$oModerator->setUserId($oUser->getId());
+		$oModerator->setLogin($oUser->getLogin());
+		$oModerator->setViewIp(1);
+		$oModerator->setAllowReadonly(0);
+		$oModerator->setAllowDeletePost(1);
+		$oModerator->setAllowDeleteTopic(0);
+		$oModerator->setAllowMovePost(0);
+		$oModerator->setAllowMoveTopic(1);
+		$oModerator->setAllowOpencloseTopic(1);
+		$oModerator->setAllowPinTopic(1);
+		$oModerator->setIsActive(1);
+		/**
+		 * Код
+		 */
+		require_once Config::Get('path.root.engine').'/lib/external/XXTEA/encrypt.php';
+		$sCode=$oForum->getId().'_'.$oUser->getId();
+		$sCode=rawurlencode(base64_encode(xxtea_encrypt($sCode,Config::Get('plugin.forum.encrypt'))));
+		$oModerator->setHash($sCode);
+		/**
+		 * Добавляем
+		 */
+		$oModerator->Save();
+		/**
+		 * Свзяка модератор - форум
+		 */
+		$oForum->moderators->add($oModerator);
+		$oForum->Save();
+		/**
+		 * Рендерим шаблон для предпросмотра топика
+		 */
+		$oViewer=$this->Viewer_GetLocalViewer();
+		$oViewer->Assign('oForum',$oForum);
+		$sTextResult=$oViewer->Fetch($this->getTemplatePathPlugin().'actions/ActionForum/admin/list_moderators.tpl');
+		/**
+		 * Передаем результат в ajax ответ
+		 */
+		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
+		$this->Viewer_AssignAjax('sText',$sTextResult);
+		$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.moderator_add_ok'));
+		return true;
+	}
+	/**
+	 * Удаление модератора
+	 *
+	 */
+	protected function EventAjaxDelModerator() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Читаем параметры
+		 */
+		$sHash = getRequest('hash');
+		/**
+		 * Декодируем хэш
+		 */
+		require_once Config::Get('path.root.engine').'/lib/external/XXTEA/encrypt.php';
+		$sModeratorId=xxtea_decrypt(base64_decode(rawurldecode($sHash)),Config::Get('plugin.forum.encrypt'));
+		if (!$sModeratorId) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+			return;
+		}
+		list($sForumId,$sUserId)=explode('_',$sModeratorId);
+		/**
+		 * Получаем форум по ID
+		 */
+		if(!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Получаем юзера по ID
+		 */
+		if(!($oUser=$this->User_GetUserById($sUserId))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Проверяем модератора на существование
+		 */
+		if(!($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_del_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Удаляем связку модератор - форум
+		 */
+		$oForum->moderators->delete($oModer->getId());
+		$oForum->Save();
+		/**
+		 * Удаляем модератора
+		 */
+		$oModer->Delete();
+		/**
+		 * Рендерим шаблон для предпросмотра топика
+		 */
+		$oViewer=$this->Viewer_GetLocalViewer();
+		$oViewer->Assign('oForum',$oForum);
+		$sTextResult=$oViewer->Fetch($this->getTemplatePathPlugin().'actions/ActionForum/admin/list_moderators.tpl');
+		/**
+		 * Передаем результат в ajax ответ
+		 */
+		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
+		$this->Viewer_AssignAjax('sText',$sTextResult);
+		$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.moderator_del_ok'));
 		return true;
 	}
 

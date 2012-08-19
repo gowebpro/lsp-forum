@@ -190,6 +190,18 @@ return array(
 	'acp_forums_control' => 'Управление форумами',
 	'acp_forums_moders' => 'Управление модераторами',
 
+	'moderators' => 'Модераторы',
+	'moderators_list' => 'Список модераторов',
+	'moderators_empty' => 'Модераторов нет',
+	'moderator_add' => 'Добавить модератора в форум',
+	'moderator_add_ok' => 'Модератор успешно добавлен',
+	'moderator_add_error_exsist' => 'Пользователь %%login%% уже является модератором этого форума',
+	'moderator_action_error_forum' => 'Форум выбран непривильно',
+	'moderator_action_error_user' => 'Пользователь %%login%% не найден',
+	'moderator_del' => 'Убрать этого модератора',
+	'moderator_del_ok' => 'Модератор убран',
+	'moderator_del_error_exsist' => 'Пользователь %%login%% не является модератором этого форума',
+
 	'sort_up' => 'Переместить выше',
 	'sort_down' => 'Переместить ниже',
 	'sort_submit_ok' => 'Сортировка изменена',

@@ -12,6 +12,8 @@
 
 $config=array();
 
+$config['encrypt'] = 'ChiffaYo';
+
 /**
  * Количество топиков на страницу
  */
@@ -77,6 +79,8 @@ $config['deactivate'] = array(
 	'delete' => true
 );
 
+
+Config::Set('db.table.forum_moderator_rel', '___db.table.prefix___forum_moderator_rel');
 
 /**
  * Настройки роутера

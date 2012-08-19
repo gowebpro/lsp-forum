@@ -14,16 +14,17 @@
  * Строит дерево форумов
  */
 if (!function_exists('forum_create_list')) {
-	function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="") {
+	function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLevel=0) {
 		if (is_array($aForums) && !empty($aForums)) {
 			foreach ($aForums as $oForum) {
 				$aList[] = array(
 					'id' => $oForum->getId(),
-					'title' => $sDepthGuide . $oForum->getTitle()
+					'title' => $sDepthGuide . $oForum->getTitle(),
+					'level' => $iLevel
 				);
 
 				if ($aSubForums = $oForum->getChildren()) {
-					$aList = forum_create_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE);
+					$aList = forum_create_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE, $iLevel+1);
 				}
 			}
 		}

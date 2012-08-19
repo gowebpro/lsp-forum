@@ -3,6 +3,7 @@
 	{foreach from=$aForums item=oForum}
 		{assign var="oPost" value=$oForum->getPost()}
 		{assign var='aSubForums' value=$oForum->getChildren()}
+		{assign var='aModerators' value=$oForum->getModerators()}
 		<tr>
 			<td class="cell-icon">
 				<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"></a>
@@ -15,6 +16,14 @@
 					<strong>{$aLang.plugin.forum.subforums}:</strong>
 					{foreach from=$aSubForums item=oSubForum name=subforums}
 					<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>{if !$smarty.foreach.subforums.last}, {/if}
+					{/foreach}
+				</p>
+				{/if}
+				{if $aModerators}
+				<p class="details">
+					<strong>{$aLang.plugin.forum.moderators}:</strong>
+					{foreach from=$aModerators item=oModerator name=moderators}
+					<em>{$oModerator->getLogin()}</em>{if !$smarty.foreach.moderators.last}, {/if}
 					{/foreach}
 				</p>
 				{/if}
