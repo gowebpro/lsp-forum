@@ -1,7 +1,6 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 
-{assign var="oForum" value=$oTopic->getForum()}
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
@@ -50,31 +49,39 @@
 </div>
 {/if}
 
+{if $oUserCurrent && ($oUserCurrent->isAdministrator() || $oForum->isModerator())}
 <footer class="forum-topic-footer">
-	{if $oUserCurrent && $oUserCurrent->isAdministrator()}
 	<form name="modform" action="" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
 		<input type="hidden" name="t" value="{$oTopic->getId()}" />
 		<input type="hidden" name="f" value="{$oForum->getId()}" />
 		<select name="code" class="">
 			<option value="-1"> {$aLang.plugin.forum.topic_mod_option}</option>
-			<option value="1">- {$aLang.plugin.forum.topic_move}</option>
-			<option value="2">- {$aLang.plugin.forum.topic_delete}</option>
-			{if $oTopic->getState()}
-			<option value="3">- {$aLang.plugin.forum.topic_open}</option>
-			{else}
-			<option value="3">- {$aLang.plugin.forum.topic_close}</option>
+			{if $oForum->getModMoveTopic()}
+				<option value="1">- {$aLang.plugin.forum.topic_move}</option>
 			{/if}
-			{if $oTopic->getPinned()}
-			<option value="4">- {$aLang.plugin.forum.topic_unpin}</option>
-			{else}
-			<option value="4">- {$aLang.plugin.forum.topic_pin}</option>
+			{if $oForum->getModDeleteTopic()}
+				<option value="2">- {$aLang.plugin.forum.topic_delete}</option>
+			{/if}
+			{if $oForum->getModOpencloseTopic()}
+				{if $oTopic->getState()}
+					<option value="3">- {$aLang.plugin.forum.topic_open}</option>
+				{else}
+					<option value="3">- {$aLang.plugin.forum.topic_close}</option>
+				{/if}
+			{/if}
+			{if $oForum->getModPinTopic()}
+				{if $oTopic->getPinned()}
+					<option value="4">- {$aLang.plugin.forum.topic_unpin}</option>
+				{else}
+					<option value="4">- {$aLang.plugin.forum.topic_pin}</option>
+				{/if}
 			{/if}
 		</select>
 		<button type="submit" name="submit_topic_mod" class="button">OK</button>
-		{/if}
 	</form>
 </footer>
+{/if}
 
 <div id="topic-controls-bottom" class="controllers clearfix">
 	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}

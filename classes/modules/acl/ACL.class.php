@@ -85,6 +85,13 @@ class PluginForum_ModuleACL extends ModuleACL {
 		if ($oUser->isAdministrator()) {
 			return true;
 		}
+		/**
+		 * Если модератор форума
+		 */
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		if ($oModerator && $oModerator->getAllowOpencloseTopic()) {
+			return true;
+		}
 		return false;
 	}
 
@@ -100,6 +107,13 @@ class PluginForum_ModuleACL extends ModuleACL {
 		 * Разрешаем если это админ сайта
 		 */
 		if ($oUser->isAdministrator()) {
+			return true;
+		}
+		/**
+		 * Если модератор форума
+		 */
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		if ($oModerator && $oModerator->getAllowPinTopic()) {
 			return true;
 		}
 		return false;
@@ -126,12 +140,12 @@ class PluginForum_ModuleACL extends ModuleACL {
 			return true;
 		}
 		/**
-		 * Если модер форума
+		 * Если модератор форума
 		 */
-//		$oForumUser = $this->PluginForum_Forum_GetUserItemsByForumIdAndUserId($oTopic->getForumId(),$oUser->getId());
-//		if ($oForumUser and ($oForumUser->getIsModerator())) {
-//			return true;
-//		}
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		if ($oModerator) {
+			return true;
+		}
 		return false;
 	}
 
@@ -175,7 +189,6 @@ class PluginForum_ModuleACL extends ModuleACL {
 		 * Проверяем, если пост опубликованный меньше чем plugni.forum.acl.create.post.time секунд назад
 		 */
 		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
-
 		if (count($aPosts)>0) {
 			return false;
 		}
@@ -213,6 +226,13 @@ class PluginForum_ModuleACL extends ModuleACL {
 			return true;
 		}
 		/**
+		 * Если модератор форума
+		 */
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oPost->getTopic()->getForumId(),$oUser->getId());
+		if ($oModerator) {
+			return true;
+		}
+		/**
 		 * Разрешаем если это автор топика
 		 */
 		if ($oPost->getUserId()==$oUser->getId()) {
@@ -222,13 +242,6 @@ class PluginForum_ModuleACL extends ModuleACL {
 				return true;
 			}
 		}
-		/**
-		 * Если модер форума
-		 */
-//		$oForumUser = $this->PluginForum_Forum_GetUserItemsByForumIdAndUserId($oPost->getForumId(),$oUser->getId());
-//		if ($oForumUser and ($oForumUser->getIsModerator())) {
-//			return true;
-//		}
 		return false;
 	}
 
@@ -246,6 +259,13 @@ class PluginForum_ModuleACL extends ModuleACL {
 			return true;
 		}
 		/**
+		 * Если модератор форума
+		 */
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oPost->getTopic()->getForumId(),$oUser->getId());
+		if ($oModerator && $oModerator->getAllowDeletePost()) {
+			return true;
+		}
+		/**
 		 * Разрешаем если это автор комментария и настройками групп разрешено удалять свои комментарии
 		 */
 		if ($oPost->getUserId()==$oUser->getId()) {
@@ -255,13 +275,6 @@ class PluginForum_ModuleACL extends ModuleACL {
 				return true;
 			}
 		}
-		/**
-		 * Если модер форума
-		 */
-//		$oForumUser = $this->PluginForum_Forum_GetUserItemsByForumIdAndUserId($oPost->getForumId(),$oUser->getId());
-//		if ($oForumUser and ($oForumUser->getIsModerator())) {
-//			return true;
-//		}
 		return false;
 	}
 

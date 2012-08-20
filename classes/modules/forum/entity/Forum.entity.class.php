@@ -11,6 +11,8 @@
 */
 
 class PluginForum_ModuleForum_EntityForum extends EntityORM {
+	protected $_aDataMore = array();
+
 	protected $aRelations = array(
 		self::RELATION_TYPE_TREE,
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','last_user_id'),
@@ -23,6 +25,13 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	 * Список запрещенных URL
 	 */
 	protected $aBadUrl = array('admin','topic','findpost');
+
+	protected function _getDataMore($sKey) {
+		if (isset($this->_aDataMore[$sKey])) {
+			return $this->_aDataMore[$sKey];
+		}
+		return null;
+	}
 
 	/**
 	 * Определяем правила валидации
@@ -93,6 +102,49 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return $this->Subscribe_GetSubscribeByTargetAndMail('forum_new_topic',$this->getId(),$oUserCurrent->getMail());
 	}
 
+	public function isModerator() {
+		return $this->_getDataMore('moderator');
+	}
+	public function getModViewIP() {
+		return $this->_getDataMore('mod_viewip');
+	}
+	public function getModDeletePost() {
+		return $this->_getDataMore('mod_deletepost');
+	}
+	public function getModDeleteTopic() {
+		return $this->_getDataMore('mod_deletetopic');
+	}
+	public function getModMoveTopic() {
+		return $this->_getDataMore('mod_movetopic');
+	}
+	public function getModOpencloseTopic() {
+		return $this->_getDataMore('mod_openclosetopic');
+	}
+	public function getModPinTopic() {
+		return $this->_getDataMore('mod_pintopic');
+	}
+
+	public function setIsModerator($data) {
+		$this->_aDataMore['moderator']=$data;
+	}
+	public function setModViewIP($data) {
+		$this->_aDataMore['mod_viewip']=$data;
+	}
+	public function setModDeletePost($data) {
+		$this->_aDataMore['mod_deletepost']=$data;
+	}
+	public function setModDeleteTopic($data) {
+		$this->_aDataMore['mod_deletetopic']=$data;
+	}
+	public function setModMoveTopic($data) {
+		$this->_aDataMore['mod_movetopic']=$data;
+	}
+	public function setModOpencloseTopic($data) {
+		$this->_aDataMore['mod_openclosetopic']=$data;
+	}
+	public function setModPinTopic($data) {
+		$this->_aDataMore['mod_pintopic']=$data;
+	}
 }
 
 ?>

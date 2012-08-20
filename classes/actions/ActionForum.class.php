@@ -498,6 +498,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
+		 * Формируем права
+		 */
+		$oForum=$this->PluginForum_Forum_BuildModerPerms($oForum);
+		/**
 		 * Хлебные крошки
 		 */
 		//$this->_breadcrumbsCreate($oTopic,true);
@@ -590,15 +594,19 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Обработка модераторских действий
 	 */
 	protected function submitTopicActions($oTopicF=null) {
-		if (!LS::Adm()) {
-			return false;
-		}
 		$this->Security_ValidateSendForm();
 		/**
 		 * Получаем топик по ID
 		 */
 		if(!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
 			return parent::EventNotFound();
+		}
+		/**
+		 * Проверка доступа
+		 */
+		$oForum=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		if (!(LS::Adm() || $oForum->isModerator())) {
+			return false;
 		}
 		$this->_breadcrumbsCreate($oTopic,false);
 		/**
@@ -643,6 +651,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Открыть\закрыть топик
 			 */
 			case 3:
+				/**
+				 * Проверка доступа
+				 */
+				if (!$this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
+					return parent::EventNotFound();
+				}
 				$oTopic->setState($oTopic->getState() ? PluginForum_ModuleForum::TOPIC_STATE_OPEN : PluginForum_ModuleForum::TOPIC_STATE_CLOSE);
 				$oTopic->Save();
 				return Router::Location($oTopic->getUrlFull());
@@ -650,6 +664,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Закрепить\открепить топик
 			 */
 			case 4:
+				/**
+				 * Проверка доступа
+				 */
+				if (!$this->ACL_IsAllowPinnedForumTopic($oTopic,$this->oUserCurrent)) {
+					return parent::EventNotFound();
+				}
 				$oTopic->setPinned($oTopic->getPinned() ? 0 : 1);
 				$oTopic->Save();
 				return Router::Location($oTopic->getUrlFull());
@@ -671,13 +691,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Переместить топик
 	 */
 	protected function submitTopicMove($oTopic) {
-		if (!LS::Adm()) {
-			return false;
-		}
 		$this->Security_ValidateSendForm();
 
-		$oForumOld=$oTopic->getForum();
-
+		$oForumOld=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		/**
+		 * Проверка доступа
+		 */
+		if (!(LS::Adm() || ($oForumOld->isModerator() && $oForumOld->getModMoveTopic()))) {
+			return;
+		}
 		if ($oForumNew=$this->PluginForum_Forum_GetForumById(getRequest('topic_move_id'))) {
 			/**
 			 * Если выбранный форум является удаляемым форум
@@ -713,13 +735,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Удалить топик
 	 */
 	protected function submitTopicDelete($oTopic) {
-		if (!LS::Adm()) {
-			return false;
-		}
 		$this->Security_ValidateSendForm();
 
-		$oForum=$oTopic->getForum();
-
+		$oForum=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		/**
+		 * Проверка доступа
+		 */
+		if (!(LS::Adm() || ($oForum->isModerator() && $oForum->getModDeleteTopic()))) {
+			return;
+		}
 		if ($this->PluginForum_Forum_DeleteTopic($oTopic)) {
 			/**
 			 * Обновляем свойства форума

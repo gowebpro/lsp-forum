@@ -224,6 +224,27 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Формируем права модерирования
+	 *
+	 * @param	object	$oForum
+	 * @return	object
+	 */
+	public function BuildModerPerms($oForum) {
+		$sId = LS::CurUsr() ? LS::CurUsr()->getId() : 0;
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
+
+		$oForum->setIsModerator(LS::Adm() || $oModerator);
+		$oForum->setModViewIP(LS::Adm() || ($oModerator && $oModerator->getViewIp()));
+		$oForum->setModDeletePost(LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
+		$oForum->setModDeleteTopic(LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
+		$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
+		$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
+		$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
+
+		return $oForum;
+	}
+
+	/**
 	 * Проверяем, нужно ли юзеру вводить пароль
 	 */
 	public function isForumAuthorization($oForum) {

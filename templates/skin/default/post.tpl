@@ -14,7 +14,7 @@
 			<header class="forum-post-header">
 				{hook run='forum_post_header_begin' post=$oPost}
 				<div class="forum-post-details fl-r">
-					{if $oUserCurrent && $oUserCurrent->isAdministrator() && $oPost->getUserIp()}
+					{if $oUserCurrent && ($oUserCurrent->isAdministrator() || ($oForum && $oForum->getModViewIP())) && $oPost->getUserIp()}
 						IP: {$oPost->getUserIp()}
 						<span class="divide">|</span>
 					{/if}
