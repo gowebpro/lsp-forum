@@ -87,7 +87,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		if (is_null($sPid)) {
 			$sPidNULL='and forum_parent_id IS NULL';
 		}
-		$sql = "SELECT max(forum_sort) as max_sort
+		$sql = "SELECT MAX(forum_sort) as max_sort
 				FROM ".Config::Get('db.table.prefix')."forum
 				WHERE 1=1
 				{ and forum_parent_id = ? }
@@ -135,7 +135,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 				WHERE topic_id = ?
 				";
 		if ($aRow=$this->oDb->selectRow($sql,$sTid)) {
-			return $aRow['replies'];
+			return $aRow['count'];
 		}
 		return 0;
 	}

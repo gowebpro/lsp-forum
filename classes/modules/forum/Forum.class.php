@@ -188,22 +188,46 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Удаляет посты по массиву объектов
+	 *
+	 * @param	array	$aPosts
+	 * @return	boolean
+	 */
+	public function DeletePosts($aPosts) {
+		if (!is_array($aPosts)) {
+			$aPosts = array($aPosts);
+		}
+		$aTopics=array();
+
+		foreach ($aPosts as $oPost) {
+			$aTopics[$oPost->getTopicId()] = 1;
+			$oPost->Delete();
+		}
+		foreach (array_keys($aTopics) as $sTopicId) {
+			$this->RecountTopic($sTopicId);
+		}
+		return true;
+	}
+
+	/**
 	 * Пересчет счетчиков форума
 	 *
 	 * @param	object	$oForum
 	 * @return	object
 	 */
 	public function RecountForum($oForum) {
+		if (!($oForum instanceof Entity)) {
+			$oForum = $this->GetForumById($oForum);
+		}
+
 		$iCountTopic=$this->oMapperForum->GetCountTopicByForumId($oForum->getId());
 		$iCountPost=$this->oMapperForum->GetCountPostByForumId($oForum->getId());
 		$iLastPostId=$this->oMapperForum->GetLastPostByForumId($oForum->getId());
 
-		$oForum->setCountTopic($iCountTopic);
-		$oForum->setCountPost($iCountPost);
-		$oForum->setLastPostId($iLastPostId);
-		$oForum->Save();
-
-		return $oForum;
+		$oForum->setCountTopic((int)$iCountTopic);
+		$oForum->setCountPost((int)$iCountPost);
+		$oForum->setLastPostId((int)$iLastPostId);
+		return $oForum->Save();
 	}
 
 	/**
@@ -213,14 +237,16 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	object
 	 */
 	public function RecountTopic($oTopic) {
+		if (!($oTopic instanceof Entity)) {
+			$oTopic = $this->GetTopicById($oTopic);
+		}
+
 		$iCountPost=$this->oMapperForum->GetCountPostByTopicId($oTopic->getId());
 		$iLastPostId=$this->oMapperForum->GetLastPostByTopicId($oTopic->getId());
 
-		$oTopic->setCountPost($iCountPost);
-		$oTopic->setLastPostId($iLastPostId);
-		$oTopic->Save();
-
-		return $oTopic;
+		$oTopic->setCountPost((int)$iCountPost);
+		$oTopic->setLastPostId((int)$iLastPostId);
+		return $oTopic->Save();
 	}
 
 	/**

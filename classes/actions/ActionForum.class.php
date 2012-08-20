@@ -401,7 +401,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем форум по URL
 		 */
-		if(!($oForum=$this->PluginForum_Forum_GetForumByUrl($sUrl))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumByUrl($sUrl))) {
 			/**
 			 * Возможно форум запросили по id
 			 */
@@ -488,13 +488,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топик по ID
 		 */
-		if(!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
 		/**
 		 * Получаем форум
 		 */
-		if(!($oForum=$oTopic->getForum())) {
+		if (!($oForum=$oTopic->getForum())) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -598,7 +598,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топик по ID
 		 */
-		if(!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -749,7 +749,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Обновляем свойства форума
 			 */
 			$this->PluginForum_Forum_RecountForum($oForum);
-
 			Router::Location($oForum->getUrlFull());
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
@@ -1255,14 +1254,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем пост по ID
 		 */
-		if(!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
+		if (!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
 			return parent::EventNotFound();
 		}
 		/**
 		 * Relations
 		 */
 		$oTopic=$oPost->getTopic();
-		$oForum=$oTopic->getForum();
 		/**
 		 * Возможно, мы собрались удалить первый пост?
 		 */
@@ -1277,8 +1275,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_delete_not_allow'),$this->Lang_Get('error'));
 			return Router::Action('error');
 		}
-
-		if ($oPost->Delete() && $this->PluginForum_Forum_RecountTopic($oTopic) && $this->PluginForum_Forum_RecountForum($oForum)) {
+		/**
+		 * Удаляем пост
+		 */
+		if ($this->PluginForum_Forum_DeletePosts($oPost)) {
+			/**
+			 * Обновляем счетчик форума
+			 */
+			$this->PluginForum_Forum_RecountForum($oTopic->getForumId());
 			Router::Location($oTopic->getUrlFull() . "lastpost");
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
