@@ -21,7 +21,7 @@
 				{/if}
 				{if $aModerators}
 				<p class="details">
-					<strong>{$aLang.plugin.forum.moderators}:</strong>
+					<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
 					{foreach from=$aModerators item=oModerator name=moderators}
 					<em>{$oModerator->getLogin()}</em>{if !$smarty.foreach.moderators.last}, {/if}
 					{/foreach}

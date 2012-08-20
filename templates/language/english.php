@@ -221,6 +221,7 @@ return array(
 
 	'welcome' => '<a href="%%root%%admin/forums/new?type=category">Create first forum</a>',
 
+	'moderators_declension' => 'Moderator;Moderators;Moderators',
 	'topics_declension' => 'Topic;Topics;Topics',
 	'posts_declension' => 'Post;Posts;Posts',
 	'redirect_hits_declension' => 'Jump;Jumps;Jumps',

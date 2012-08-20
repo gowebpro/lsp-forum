@@ -110,6 +110,8 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .moder-form .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
 /* Buttons */
+a.button { color: #434343 }
+
 .button.button-orange {
 	background: #F6B537;
 	background: -moz-linear-gradient(top,  #F6B537 0%, #EB9719 100%);
