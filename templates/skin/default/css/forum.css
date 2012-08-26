@@ -104,8 +104,8 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 #forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }
 #forums-tree .title { font-weight: bold }
 #forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
-.moder-form { padding: 15px; background: #F8FBFE; border-radius: 5px; margin-bottom: 15px }
-.moder-form .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
+.modal-moderator { width: 500px }
+.modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
 /* Buttons */
 .button.button-orange {

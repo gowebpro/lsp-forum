@@ -1941,10 +1941,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		$bOk=true;
 
-		if (!$this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
-			$this->Message_AddError('ne moder',$this->Lang_Get('error'));
-			return false;
-		}
 		/**
 		 * Валидация данных
 		 */

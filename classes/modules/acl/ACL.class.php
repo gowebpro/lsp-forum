@@ -88,7 +88,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oTopic->getForumId(),$oUser->getId());
 		if ($oModerator && $oModerator->getAllowOpencloseTopic()) {
 			return true;
 		}
@@ -112,7 +112,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oTopic->getForumId(),$oUser->getId());
 		if ($oModerator && $oModerator->getAllowPinTopic()) {
 			return true;
 		}
@@ -142,7 +142,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oTopic->getForumId(),$oUser->getId());
 		if ($oModerator) {
 			return true;
 		}
@@ -228,8 +228,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oTopic = $this->PluginForum_Forum_GetTopicById($oPost->getTopicId());
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oPost->getTopic()->getForumId(),$oUser->getId());
 		if ($oModerator) {
 			return true;
 		}
@@ -262,7 +261,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oPost->getTopic()->getForumId(),$oUser->getId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oPost->getTopic()->getForumId(),$oUser->getId());
 		if ($oModerator && $oModerator->getAllowDeletePost()) {
 			return true;
 		}
