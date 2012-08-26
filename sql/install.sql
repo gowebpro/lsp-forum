@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	PRIMARY KEY (`forum_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `prefix_forum_moderator`
 --
@@ -48,6 +50,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_moderator` (
 	KEY user_id (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `prefix_forum_moderator_rel`
 --
@@ -59,6 +63,8 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_moderator_rel` (
 	KEY `moderator_id` (`moderator_id`),
 	KEY `forum_id` (`forum_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `prefix_forum_post`
@@ -113,21 +119,26 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_topic` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prefix_forum_read`
+-- Table structure for table `prefix_forum_readonly`
 --
 
-CREATE TABLE IF NOT EXISTS `prefix_forum_read` (
+CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
+	`readonly_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`user_id` int(11) unsigned NOT NULL,
-	`topic_id` int(11) unsigned NOT NULL,
+	`moder_id` int(11) unsigned NOT NULL,
 	`post_id` int(11) unsigned NOT NULL,
-	`read_date` datetime NOT NULL,
-	UNIQUE KEY `user_id_topic_id_post_id` (`topic_id`,`user_id`,`post_id`),
+	`readonly_date` datetime NOT NULL,
+	`readonly_line` datetime NOT NULL,
+	`readonly_comment` varchar(250) default NULL,
+	`readonly_activ` tinyint(1) NOT NULL default '1',
+	PRIMARY KEY `readonly_id`,
 	KEY `user_id` (`user_id`),
-	KEY `topic_id` (`topic_id`),
+	KEY `moder_id` (`moder_id`),
 	KEY `post_id` (`post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+
 
 --
 -- Constraints for table `prefix_forum_moderator_rel`

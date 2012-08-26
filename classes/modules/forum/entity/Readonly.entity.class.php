@@ -10,10 +10,10 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleForum_EntityRead extends EntityORM {
+class PluginForum_ModuleForum_EntityReadonly extends EntityORM {
 	protected $aRelations = array(
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
-		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id'),
+		'moder'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityModerator','moder_id'),
 		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','post_id')
 	);
 }

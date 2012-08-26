@@ -228,7 +228,8 @@ class PluginForum_ModuleACL extends ModuleACL {
 		/**
 		 * Если модератор форума
 		 */
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oPost->getTopic()->getForumId(),$oUser->getId());
+		$oTopic = $this->PluginForum_Forum_GetTopicById($oPost->getTopicId());
+		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oTopic->getForumId(),$oUser->getId());
 		if ($oModerator) {
 			return true;
 		}

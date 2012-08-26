@@ -104,6 +104,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^ajax$/i','/^preview$/','EventAjaxPreview');
 		$this->AddEventPreg('/^ajax$/i','/^addmoderator$/','EventAjaxAddModerator');
 		$this->AddEventPreg('/^ajax$/i','/^delmoderator$/','EventAjaxDelModerator');
+		$this->AddEventPreg('/^ajax$/i','/^getmoderator$/','EventAjaxGetModerator');
 	}
 
 
@@ -178,9 +179,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_SetResponseAjax('json');
 		/**
+		 * Обновляем или добавляем
+		 */
+		$sAction = getRequest('moder_form_action');
+		/**
 		 * Получаем форум по ID
 		 */
-		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('forum_id')))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('moder_forum_id')))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
 			return false;
 		}
@@ -201,25 +206,31 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем модератора на существование
 		 */
-		if ($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId())){
+		$oModerator=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId());
+		if ($sAction == 'add' && $oModerator) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_add_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		} elseif ($sAction == 'update' && !$oModerator) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_update_error_not', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Создаем объект модератора
 		 */
-		$oModerator=LS::Ent('PluginForum_Forum_Moderator');
+		if ($sAction == 'add') {
+			$oModerator=LS::Ent('PluginForum_Forum_Moderator');
+		}
 		$oModerator->setForumId($oForum->getId());
 		$oModerator->setUserId($oUser->getId());
 		$oModerator->setLogin($oUser->getLogin());
-		$oModerator->setViewIp( (int)getRequest('opt_viewip',0,'post') === 1 );
+		$oModerator->setViewIp( (int)getRequest('moder_opt_viewip',0,'post') === 1 );
 		$oModerator->setAllowReadonly(0);
-		$oModerator->setAllowDeletePost( (int)getRequest('opt_deletepost',0,'post') === 1 );
-		$oModerator->setAllowDeleteTopic( (int)getRequest('opt_deletetopic',0,'post') === 1 );
+		$oModerator->setAllowDeletePost( (int)getRequest('moder_opt_deletepost',0,'post') === 1 );
+		$oModerator->setAllowDeleteTopic( (int)getRequest('moder_opt_deletetopic',0,'post') === 1 );
 		$oModerator->setAllowMovePost(0);
-		$oModerator->setAllowMoveTopic( (int)getRequest('opt_movetopic',0,'post') === 1 );
-		$oModerator->setAllowOpencloseTopic( (int)getRequest('opt_openclosetopic',0,'post') === 1 );
-		$oModerator->setAllowPinTopic( (int)getRequest('opt_pintopic',0,'post') === 1 );
+		$oModerator->setAllowMoveTopic( (int)getRequest('moder_opt_movetopic',0,'post') === 1 );
+		$oModerator->setAllowOpencloseTopic( (int)getRequest('moder_opt_openclosetopic',0,'post') === 1 );
+		$oModerator->setAllowPinTopic( (int)getRequest('moder_opt_pintopic',0,'post') === 1 );
 		$oModerator->setIsActive(1);
 		/**
 		 * Код
@@ -229,14 +240,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$sCode=rawurlencode(base64_encode(xxtea_encrypt($sCode,Config::Get('plugin.forum.encrypt'))));
 		$oModerator->setHash($sCode);
 		/**
-		 * Добавляем
+		 * Добавляем\сохраняем
 		 */
 		$oModerator->Save();
 		/**
 		 * Свзяка модератор - форум
 		 */
-		$oForum->moderators->add($oModerator);
-		$oForum->Save();
+		if ($sAction == 'add') {
+			$oForum->moderators->add($oModerator);
+			$oForum->Save();
+		}
 		/**
 		 * Рендерим шаблон для предпросмотра топика
 		 */
@@ -248,7 +261,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
 		$this->Viewer_AssignAjax('sText',$sTextResult);
-		$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.moderator_add_ok'));
+		$this->Message_AddNoticeSingle($this->Lang_Get("plugin.forum.moderator_{$sAction}_ok"));
 		return true;
 	}
 	/**
@@ -291,19 +304,19 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем модератора на существование
 		 */
-		if (!($oModer=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
-			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_del_error_exsist', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+		if (!($oModerator=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_del_error_not_found', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
 		 * Удаляем связку модератор - форум
 		 */
-		$oForum->moderators->delete($oModer->getId());
+		$oForum->moderators->delete($oModerator->getId());
 		$oForum->Save();
 		/**
 		 * Удаляем модератора
 		 */
-		$oModer->Delete();
+		$oModerator->Delete();
 		/**
 		 * Рендерим шаблон для предпросмотра топика
 		 */
@@ -316,6 +329,63 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
 		$this->Viewer_AssignAjax('sText',$sTextResult);
 		$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.moderator_del_ok'));
+		return true;
+	}
+	/**
+	 * Извлечение модератора
+	 *
+	 */
+	protected function EventAjaxGetModerator() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Читаем параметры
+		 */
+		$sHash = getRequest('hash');
+		/**
+		 * Декодируем хэш
+		 */
+		require_once Config::Get('path.root.engine').'/lib/external/XXTEA/encrypt.php';
+		$sModeratorId=xxtea_decrypt(base64_decode(rawurldecode($sHash)),Config::Get('plugin.forum.encrypt'));
+		if (!$sModeratorId) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+			return;
+		}
+		list($sForumId,$sUserId)=explode('_',$sModeratorId);
+		/**
+		 * Получаем форум по ID
+		 */
+		if (!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Получаем юзера по ID
+		 */
+		if (!($oUser=$this->User_GetUserById($sUserId))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Получаем модератора
+		 */
+		if (!($oModerator=$this->PluginForum_Forum_GetModeratorByUserIdAndForumId($oUser->getId(),$oForum->getId()))){
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_not_found', array('login'=>$oUser->getLogin())),$this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Передаем результат в ajax ответ
+		 */
+		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
+		$this->Viewer_AssignAjax('sModerName',$oUser->getLogin());
+		$this->Viewer_AssignAjax('bOptViewip',(bool)$oModerator->getViewIp());
+		$this->Viewer_AssignAjax('bOptDeletePost',(bool)$oModerator->getAllowDeletePost());
+		$this->Viewer_AssignAjax('bOptDeleteTopic',(bool)$oModerator->getAllowDeleteTopic());
+		$this->Viewer_AssignAjax('bOptMoveTopic',(bool)$oModerator->getAllowMoveTopic());
+		$this->Viewer_AssignAjax('bOptOpencloseTopic',(bool)$oModerator->getAllowOpencloseTopic());
+		$this->Viewer_AssignAjax('bOptPinTopic',(bool)$oModerator->getAllowPinTopic());
 		return true;
 	}
 
@@ -1870,6 +1940,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Security_ValidateSendForm();
 
 		$bOk=true;
+
+		if (!$this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+			$this->Message_AddError('ne moder',$this->Lang_Get('error'));
+			return false;
+		}
 		/**
 		 * Валидация данных
 		 */
@@ -1958,7 +2033,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */
-		$this->Lang_AddLangJs(array('plugin.forum.post_anchor_promt'));
+		$this->Lang_AddLangJs(
+			array(
+				'plugin.forum.post_anchor_promt',
+				'plugin.forum.moderator_del_confirm'
+			)
+		);
 	}
 }
 
