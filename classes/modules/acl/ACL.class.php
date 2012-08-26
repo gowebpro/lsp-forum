@@ -143,7 +143,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		 * Если модератор форума
 		 */
 		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oTopic->getForumId(),$oUser->getId());
-		if ($oModerator) {
+		if ($oModerator && $oModerator->getAllowEditTopic()) {
 			return true;
 		}
 		return false;
@@ -229,7 +229,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 		 * Если модератор форума
 		 */
 		$oModerator = $this->PluginForum_Forum_GetModeratorByForumIdAndUserId($oPost->getTopic()->getForumId(),$oUser->getId());
-		if ($oModerator) {
+		if ($oModerator && $oModerator->getAllowEditPost()) {
 			return true;
 		}
 		/**

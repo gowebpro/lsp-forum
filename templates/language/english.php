@@ -210,6 +210,8 @@ return array(
 	'moderator_select_user_placeholder' => 'Enter the user`s login',
 	'moderator_options' => 'Moderation options',
 	'moderator_options_viewip' => 'Ability to see the IP, from which the message was written',
+	'moderator_options_editpost' => 'Ability to edit messages',
+	'moderator_options_edittopic' => 'Ability to edit threads',
 	'moderator_options_deletepost' => 'Ability to delete messages',
 	'moderator_options_deletetopic' => 'Ability to delete threads',
 	'moderator_options_movetopic' => 'Ability to move threads',

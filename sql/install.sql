@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	`forum_count_post` int(11) NOT NULL DEFAULT '0',
 	`last_post_id` int(11) unsigned DEFAULT NULL,
 	PRIMARY KEY (`forum_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -31,12 +31,14 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 --
 
 CREATE TABLE IF NOT EXISTS `prefix_forum_moderator` (
-	`moderator_id` int(11) NOT NULL auto_increment,
+	`moderator_id` int(11) unsigned NOT NULL auto_increment,
 	`forum_id` int(11) unsigned NOT NULL,
 	`user_id` int(11) unsigned NOT NULL,
 	`moderator_login` varchar(50) NOT NULL default '',
 	`moderator_view_ip` tinyint(1) default NULL,
 	`moderator_allow_readonly` tinyint(1) default NULL,
+	`moderator_allow_edit_post` tinyint(1) default NULL,
+	`moderator_allow_edit_topic` tinyint(1) default NULL,
 	`moderator_allow_delete_post` tinyint(1) default NULL,
 	`moderator_allow_delete_topic` tinyint(1) default NULL,
 	`moderator_allow_move_post` tinyint(1) default NULL,
@@ -48,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_moderator` (
 	PRIMARY KEY (`moderator_id`),
 	KEY forum_id (`forum_id`),
 	KEY user_id (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -88,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	KEY `topic_id` (`topic_id`),
 	KEY `user_id` (`user_id`),
 	KEY `post_text_hash` (`post_text_hash`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -114,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_topic` (
 	PRIMARY KEY (`topic_id`),
 	KEY `forum_id` (`forum_id`),
 	KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -131,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
 	`readonly_line` datetime NOT NULL,
 	`readonly_comment` varchar(250) default NULL,
 	`readonly_activ` tinyint(1) NOT NULL default '1',
-	PRIMARY KEY `readonly_id`,
+	PRIMARY KEY (`readonly_id`),
 	KEY `user_id` (`user_id`),
 	KEY `moder_id` (`moder_id`),
 	KEY `post_id` (`post_id`)
@@ -141,15 +143,18 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
 
 
 --
--- Constraints for table `prefix_forum_moderator_rel`
---
-
---
 -- Constraints for table `prefix_forum_moderator`
 --
 ALTER TABLE `prefix_forum_moderator`
 	ADD CONSTRAINT `prefix_forum_moderator_fk` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	ADD CONSTRAINT `prefix_forum_moderator_fk1` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `prefix_forum_moderator_rel`
+--
+ALTER TABLE `prefix_forum_moderator_rel`
+	ADD CONSTRAINT `prefix_forum_moderator_rel_fk` FOREIGN KEY (`moderator_id`) REFERENCES `prefix_forum_moderator` (`moderator_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT `prefix_forum_moderator_rel_fk1` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prefix_forum_post`
@@ -166,9 +171,9 @@ ALTER TABLE `prefix_forum_topic`
 	ADD CONSTRAINT `prefix_forum_topic_fk2` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `prefix_forum_read`
+-- Constraints for table `prefix_forum_readonly`
 --
-ALTER TABLE `prefix_forum_read`
-	ADD CONSTRAINT `prefix_forum_read_fk` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `prefix_forum_read_fk1` FOREIGN KEY (`topic_id`) REFERENCES `prefix_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `prefix_forum_read_fk2` FOREIGN KEY (`post_id`) REFERENCES `prefix_forum_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `prefix_forum_readonly`
+	ADD CONSTRAINT `prefix_forum_readonly_fk` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT `prefix_forum_readonly_fk1` FOREIGN KEY (`moder_id`) REFERENCES `prefix_forum_moderator` (`moderator_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	ADD CONSTRAINT `prefix_forum_readonly_fk2` FOREIGN KEY (`post_id`) REFERENCES `prefix_forum_post` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -39,7 +39,7 @@ $config['stats'] = array(
 	/* Показывать блок с именниниками */
 	'bdays' => true,
 	/* Показывать последнего зарегистрировавшегося? */
-	'last_user' => false,
+	'last_user' => true,
 );
 
 /**
@@ -51,7 +51,7 @@ $config['acl']['create']['topic']['time_rating'] = 5;		// рейтинг, выш
 $config['acl']['create']['post']['rating'] = -10;			// порог рейтинга при котором юзер может создавать топики
 $config['acl']['create']['post']['time'] = 60;				// время в секундах между созданием ответов, если 0 то ограничение по времени не будет работать
 $config['acl']['create']['post']['time_rating'] = 5;		// рейтинг, выше которого перестаёт действовать ограничение по времени на создание записей
-$config['acl']['edit']['post']['time'] = 60*60*15;				// время в секундах для возможности редактирования ответа, если 0 то ограничение по времени не будет работать
+$config['acl']['edit']['post']['time'] = 60*60*15;			// время в секундах для возможности редактирования ответа, если 0 то ограничение по времени не будет работать
 $config['acl']['vote']['topic']['rating'] = 1;				// порог рейтинга при котором юзер может голосовать за топик
 $config['acl']['vote']['topic']['time'] = 60*60*24*7;		// ограничение времени голосования за топик
 $config['acl']['vote']['post']['rating'] = 0;				// порог рейтинга при котором юзер может голосовать за пост
@@ -80,7 +80,16 @@ $config['deactivate'] = array(
 );
 
 
+/**
+ * Настройка таблиц
+ */
+Config::Set('db.table.forum', '___db.table.prefix___forum');
+Config::Set('db.table.forum_moderator', '___db.table.prefix___forum_moderator');
 Config::Set('db.table.forum_moderator_rel', '___db.table.prefix___forum_moderator_rel');
+Config::Set('db.table.forum_post', '___db.table.prefix___forum_post');
+Config::Set('db.table.forum_topic', '___db.table.prefix___forum_topic');
+Config::Set('db.table.forum_readonly', '___db.table.prefix___forum_readonly');
+
 
 /**
  * Настройки роутера

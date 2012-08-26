@@ -210,6 +210,8 @@ return array(
 	'moderator_select_user_placeholder' => 'Введите логин пользователя',
 	'moderator_options' => 'Опции модерирования',
 	'moderator_options_viewip' => 'Возможность видеть IP, с которого было написано сообщение',
+	'moderator_options_editpost' => 'Возможность редактировать сообщения',
+	'moderator_options_edittopic' => 'Возможность редактировать темы',
 	'moderator_options_deletepost' => 'Возможность удалять сообщения',
 	'moderator_options_deletetopic' => 'Возможность удалять темы',
 	'moderator_options_movetopic' => 'Возможность перемещать темы',

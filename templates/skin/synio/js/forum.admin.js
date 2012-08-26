@@ -51,6 +51,8 @@ ls.forum.admin = (function ($) {
 		var sForumId = (data&&data.sForumId ? data.sForumId : ''),
 			sModerName = (data&&data.sModerName ? data.sModerName : ''),
 			bOptViewip = (data&&data.bOptViewip ? data.bOptViewip : false),
+			bOptEditPost = (data&&data.bOptEditPost ? data.bOptEditPost : false),
+			bOptEditTopic = (data&&data.bOptEditTopic ? data.bOptEditTopic : false),
 			bOptDeletePost = (data&&data.bOptDeletePost ? data.bOptDeletePost : false),
 			bOptDeleteTopic = (data&&data.bOptDeleteTopic ? data.bOptDeleteTopic : false),
 			bOptMoveTopic = (data&&data.bOptMoveTopic ? data.bOptMoveTopic : false),
@@ -60,6 +62,8 @@ ls.forum.admin = (function ($) {
 		$('#moder_name').val(sModerName);
 		$('#moder_form_options').hide();
 		$('#moder_opt_viewip').attr('checked', bOptViewip);
+		$('#moder_opt_editpost').attr('checked', bOptEditPost);
+		$('#moder_opt_edittopic').attr('checked', bOptEditTopic);
 		$('#moder_opt_deletepost').attr('checked', bOptDeletePost);
 		$('#moder_opt_deletetopic').attr('checked', bOptDeleteTopic);
 		$('#moder_opt_movetopic').attr('checked', bOptMoveTopic);

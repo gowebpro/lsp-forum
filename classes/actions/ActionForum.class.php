@@ -225,6 +225,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oModerator->setLogin($oUser->getLogin());
 		$oModerator->setViewIp( (int)getRequest('moder_opt_viewip',0,'post') === 1 );
 		$oModerator->setAllowReadonly(0);
+		$oModerator->setAllowEditPost( (int)getRequest('moder_opt_editpost',0,'post') === 1 );
+		$oModerator->setAllowEditTopic( (int)getRequest('moder_opt_edittopic',0,'post') === 1 );
 		$oModerator->setAllowDeletePost( (int)getRequest('moder_opt_deletepost',0,'post') === 1 );
 		$oModerator->setAllowDeleteTopic( (int)getRequest('moder_opt_deletetopic',0,'post') === 1 );
 		$oModerator->setAllowMovePost(0);
@@ -381,6 +383,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
 		$this->Viewer_AssignAjax('sModerName',$oUser->getLogin());
 		$this->Viewer_AssignAjax('bOptViewip',(bool)$oModerator->getViewIp());
+		$this->Viewer_AssignAjax('bOptEditPost',(bool)$oModerator->getAllowEditPost());
+		$this->Viewer_AssignAjax('bOptEditTopic',(bool)$oModerator->getAllowEditTopic());
 		$this->Viewer_AssignAjax('bOptDeletePost',(bool)$oModerator->getAllowDeletePost());
 		$this->Viewer_AssignAjax('bOptDeleteTopic',(bool)$oModerator->getAllowDeleteTopic());
 		$this->Viewer_AssignAjax('bOptMoveTopic',(bool)$oModerator->getAllowMoveTopic());
@@ -691,7 +695,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Действие
 		 */
-		$iCode=intval(getRequest('code',0));
+		$iCode=(int)getRequest('code',0);
+		if (!isset($sKeyByCode[$iCode])) {
+			return parent::EventNotFound();
+		}
 		$sAction=strtolower($sKeyByCode[$iCode]);
 		switch ($iCode) {
 			/**
