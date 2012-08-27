@@ -21,6 +21,7 @@ class PluginForum_HookForum extends Hook {
 		$this->AddHook('template_menu_profile_created_item','MenuProfileCreated');
 		$this->AddHook('template_stream_list_event_add_forum_topic','StreamEventAddForumTopic');
 		$this->AddHook('template_stream_list_event_add_forum_post','StreamEventAddForumPost');
+		$this->AddHook('template_block_stream_nav_item','BlockStreamNav');
 	}
 
 
@@ -56,6 +57,8 @@ class PluginForum_HookForum extends Hook {
 		}
 	}
 
+	public function BlockStreamNav() {
+		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'block.stream_nav.tpl');
+	}
 }
-
 ?>

@@ -40,7 +40,7 @@
 .table.table-topics .cell-stats  { width: 15% }
 .table.table-topics .cell-post { width: 150px }
 .table.table-topics .w33 { width: 33% }
-.table.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0 0 5px }
+.table.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
 
 .forum-topic {}
 .forum-topic-footer { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }

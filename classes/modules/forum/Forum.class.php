@@ -290,7 +290,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * Парсер текста
 	 */
 	public function TextParse($sText=null) {
-		if (is_null($sText)) return $sText;
+		if (!is_string($sText)) {
+			return '';
+		}
+		//$this->Text_LoadJevixConfig('forum');
 
 		return $this->Text_Parser($sText);
 	}

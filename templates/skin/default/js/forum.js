@@ -100,5 +100,9 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
+	ls.blocks.options.type.stream_forum = {
+		url: aRouter['forum']+'ajax/getlasttopics/'
+	}
+
 	ls.hook.run('forum_template_init_end',[],window);
 });

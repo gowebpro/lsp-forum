@@ -79,6 +79,12 @@ $config['deactivate'] = array(
 	'delete' => true
 );
 
+/**
+ * Настройка Jevix
+ */
+$aJevix = Config::Get('jevix.default');
+$aJevix['cfgAllowTagParams'][] = array('blockquote', array('post'=>'#int'));
+Config::Set('jevix.forum',$aJevix);
 
 /**
  * Настройка таблиц

@@ -249,6 +249,9 @@ return array(
 
 	'notify_subject_new_topic' => 'New topic on the forum',
 	'notify_subject_new_post' => 'New reply to topic',
+
+	'block_stream' => 'Forum',
+	'block_stream_empty' => 'No messages',
 );
 
 ?>

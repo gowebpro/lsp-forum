@@ -105,6 +105,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^ajax$/i','/^addmoderator$/','EventAjaxAddModerator');
 		$this->AddEventPreg('/^ajax$/i','/^delmoderator$/','EventAjaxDelModerator');
 		$this->AddEventPreg('/^ajax$/i','/^getmoderator$/','EventAjaxGetModerator');
+		$this->AddEventPreg('/^ajax$/i','/^getlasttopics$/','EventAjaxGetLastTopics');
 	}
 
 
@@ -391,6 +392,37 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_AssignAjax('bOptOpencloseTopic',(bool)$oModerator->getAllowOpencloseTopic());
 		$this->Viewer_AssignAjax('bOptPinTopic',(bool)$oModerator->getAllowPinTopic());
 		return true;
+	}
+	/**
+	 * Обработка получения последних топиков
+	 * Используется в блоке "Прямой эфир"
+	 *
+	 */
+	protected function EventAjaxGetLastTopics() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Получаем последние топики
+		 */
+		$aLastTopics=$this->PluginForum_Forum_GetTopicItemsAll(
+			array(
+				'#where'=>array(),
+				'#order'=>array('last_post_id'=>'desc'),
+				'#page'=>array(1,Config::Get('block.stream.row'))
+			)
+		);
+		if (!empty($aLastTopics['collection'])) {
+			$oViewer=$this->Viewer_GetLocalViewer();
+			$oViewer->Assign('aLastTopics',$aLastTopics['collection']);
+			$sTextResult=$oViewer->Fetch($this->getTemplatePathPlugin().'blocks/block.stream_forum.tpl');
+			$this->Viewer_AssignAjax('sText',$sTextResult);
+			return;
+		} else {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.block_stream_empty'),$this->Lang_Get('attention'));
+			return;
+		}
 	}
 
 

@@ -249,6 +249,9 @@ return array(
 
 	'notify_subject_new_topic' => 'Новая тема на форуме',
 	'notify_subject_new_post' => 'Новый ответ в тему',
+
+	'block_stream' => 'Форум',
+	'block_stream_empty' => 'Новых сообщений нет',
 );
 
 ?>
