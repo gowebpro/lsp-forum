@@ -130,5 +130,15 @@ ls.forum.admin = (function ($) {
 		return false;
 	};
 
+	this.permsCheckAll = function(sid,form) {
+		form = $(form);
+
+		return false;
+	};
+
+	this.permsCheckBox = function(sid,maskId,form) {
+		return true;
+	};
+
 	return this;
 }).call(ls.forum.admin || {},jQuery);

@@ -15,6 +15,12 @@ class PluginForum_ModuleForum extends ModuleORM {
 	const TOPIC_STATE_CLOSE		= 1;
 	const TOPIC_STATE_MOVED		= 2;
 	/**
+	 * Глобальные маски
+	 */
+	const MASK_PERM_GUEST		= 1;
+	const MASK_PERM_USER		= 2;
+	const MASK_PERM_ADMIN		= 3;
+	/**
 	 * Префикс подфорумов для дерева
 	 */
 	const DEPTH_GUIDE			= '--';
@@ -174,6 +180,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if (!empty($aChildren)) {
 			foreach ($aChildren as $oForum) {
 				$oForum=$this->CalcChildren($oForum);
+				$oForum=$this->BuildPerms($oForum);
 
 				if ($oForum->getLastPostId() > $oRoot->getLastPostId()) {
 					$oRoot->setLastPostId($oForum->getLastPostId());
@@ -184,7 +191,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 		}
 
-		return $oRoot;
+		return $this->BuildPerms($oRoot);
 	}
 
 	/**
@@ -250,13 +257,14 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
-	 * Формируем права модерирования
+	 * Формируем права доступа
 	 *
 	 * @param	object	$oForum
 	 * @return	object
 	 */
-	public function BuildModerPerms($oForum) {
-		$sId = LS::CurUsr() ? LS::CurUsr()->getId() : 0;
+	public function BuildPerms($oForum) {
+		$oUserCurrent = LS::CurUsr();
+		$sId = $oUserCurrent ? $oUserCurrent->getId() : 0;
 		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
 
 		$oForum->setIsModerator(LS::Adm() || $oModerator);
@@ -266,6 +274,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
 		$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
 		$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
+
+		$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
+
+		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUserCurrent));
+		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUserCurrent));
+		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUserCurrent));
+		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUserCurrent));
 
 		return $oForum;
 	}

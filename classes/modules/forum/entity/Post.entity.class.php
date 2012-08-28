@@ -25,6 +25,9 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 		$this->aValidateRules[]=array('post_title','string','min'=>2,'max'=>100,'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.post_create_title'),'on'=>array('post'));
 		$this->aValidateRules[]=array('post_text_source','string','min'=>5,'max'=>Config::Get('plugin.forum.post_max_length'),'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.post_create_text'),'on'=>array('topic','post'));
 		$this->aValidateRules[]=array('post_text_source','post_unique','on'=>array('topic','post'));
+		if (!$this->User_IsAuthorization()) {
+			$this->aValidateRules[]=array('guest_name','string','min'=>2,'max'=>50,'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.guest_name'),'on'=>array('topic','post'));
+		}
 	}
 
 	/**

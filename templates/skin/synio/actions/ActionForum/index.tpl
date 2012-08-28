@@ -6,16 +6,18 @@
 <div class="forums">
 	{if $aCategories}
 		{foreach from=$aCategories item=oCategory}
-			{assign var='aForums' value=$oCategory->getChildren()}
-			<section class="forums-list">
-				<header class="forums-header">
-					<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
-					<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
-				</header>
-				<div class="forums-content">
-					{include file="$sTemplatePathPlugin/forums_list.tpl"}
-				</div>
-			</section>
+			{if $oCategory->getAllowShow()}
+				{assign var='aForums' value=$oCategory->getChildren()}
+				<section class="forums-list">
+					<header class="forums-header">
+						<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
+						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
+					</header>
+					<div class="forums-content">
+						{include file="$sTemplatePathPlugin/forums_list.tpl"}
+					</div>
+				</section>
+			{/if}
 		{/foreach}
 	{else}
 		<div class="body-message">

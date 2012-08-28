@@ -19,18 +19,20 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @param Entity_User $oUser
 	 * @return bool
 	 */
-	 public function CanAddForumTopic($oForum, ModuleUser_EntityUser $oUser) {
-		/**
-		 * Для администраторов ограничений нет
-		 */
-		if ($oUser->isAdministrator()) {
-			return true;
-		}
-		if ($oUser->getRating() >= $oForum->getLimitRatingTopic()) {
-			return true;
-		}
-		if ($oUser->getRating() >= Config::Get('plugin.forum.acl.create.topic.rating')) {
-			return true;
+	 public function CanAddForumTopic($oForum, $oUser=null) {
+		if ($oUser) {
+			/**
+			 * Для администраторов ограничений нет
+			 */
+			if ($oUser->isAdministrator()) {
+				return true;
+			}
+			if ($oUser->getRating() >= $oForum->getLimitRatingTopic()) {
+				return true;
+			}
+			if ($oUser->getRating() >= Config::Get('plugin.forum.acl.create.topic.rating')) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -41,34 +43,37 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
-	public function CanAddForumTopicTime(ModuleUser_EntityUser $oUser) {
-		/**
-		 * Для администраторов ограничение по времени не действует
-		 */
-		if ($oUser->isAdministrator()) {
-			return true;
-		}
-		/**
-		 * Органичение по времени выключено
-		 */
-		if (Config::Get('plugin.forum.acl.create.topic.time')==0) {
-			return true;
-		}
-		/**
-		 * Отключение ограничения по времени по рейтингу
-		 */
-		if ($oUser->getRating()>=Config::Get('plugin.forum.acl.create.topic.time_rating')) {
-			return true;
-		}
-		/**
-		 * Проверяем, если топик опубликованный меньше чем plugin.forum.acl.create.topic.time секунд назад
-		 */
-		$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d' => array($oUser->getId()),'topic_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
+	public function CanAddForumTopicTime($oUser=null) {
+		if ($oUser) {
+			/**
+			 * Для администраторов ограничение по времени не действует
+			 */
+			if ($oUser->isAdministrator()) {
+				return true;
+			}
+			/**
+			 * Органичение по времени выключено
+			 */
+			if (Config::Get('plugin.forum.acl.create.topic.time')==0) {
+				return true;
+			}
+			/**
+			 * Отключение ограничения по времени по рейтингу
+			 */
+			if ($oUser->getRating()>=Config::Get('plugin.forum.acl.create.topic.time_rating')) {
+				return true;
+			}
+			/**
+			 * Проверяем, если топик опубликованный меньше чем plugin.forum.acl.create.topic.time секунд назад
+			 */
+			$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d' => array($oUser->getId()),'topic_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
 
-		if (count($aTopics)>0) {
-			return false;
+			if (count($aTopics)>0) {
+				return false;
+			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -156,7 +161,7 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
-	public function CanAddForumPost(ModuleUser_EntityUser $oUser) {
+	public function CanAddForumPost($oUser=null) {
 		return true;
 	}
 
@@ -166,31 +171,41 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @param Entity_User $oUser
 	 * @return bool
 	 */
-	public function CanAddForumPostTime(ModuleUser_EntityUser $oUser) {
-		/**
-		 * Для администраторов ограничение по времени не действует
-		 */
-		if ($oUser->isAdministrator()) {
-			return true;
-		}
-		/**
-		 * Органичение по времени выключено
-		 */
-		if (Config::Get('plugin.forum.acl.create.comment.time')==0) {
-			return true;
-		}
-		/**
-		 * Отключение ограничения по времени по рейтингу
-		 */
-		if ($oUser->getRating()>=Config::Get('plugin.forum.acl.create.comment.time_rating')) {
-			return true;
-		}
-		/**
-		 * Проверяем, если пост опубликованный меньше чем plugni.forum.acl.create.post.time секунд назад
-		 */
-		$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
-		if (count($aPosts)>0) {
-			return false;
+	public function CanAddForumPostTime($oUser=null) {
+		if ($oUser) {
+			/**
+			 * Для администраторов ограничение по времени не действует
+			 */
+			if ($oUser->isAdministrator()) {
+				return true;
+			}
+			/**
+			 * Органичение по времени выключено
+			 */
+			if (Config::Get('plugin.forum.acl.create.comment.time')==0) {
+				return true;
+			}
+			/**
+			 * Отключение ограничения по времени по рейтингу
+			 */
+			if ($oUser->getRating()>=Config::Get('plugin.forum.acl.create.comment.time_rating')) {
+				return true;
+			}
+			/**
+			 * Проверяем, если пост опубликованный меньше чем plugni.forum.acl.create.post.time секунд назад
+			 */
+			$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('user_id = ?d'=>array($oUser->getId()),'post_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
+			if (count($aPosts)>0) {
+				return false;
+			}
+		} else {
+			/**
+			 * Для гостей проверяем последние посты по IP
+			 */
+			$aPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('#where'=>array('post_user_ip = ?'=>array(func_getIp()),'post_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.post.time'))))));
+			if (count($aPosts)>0) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -201,11 +216,11 @@ class PluginForum_ModuleACL extends ModuleACL {
 	 * @param  Entity_User $oUser
 	 * @return bool
 	 */
-	public function CanAddForumPostClose(ModuleUser_EntityUser $oUser) {
+	public function CanAddForumPostClose($oUser=null) {
 		/**
 		 * Для администраторов ограничение не действует
 		 */
-		if ($oUser->isAdministrator()) {
+		if ($oUser && $oUser->isAdministrator()) {
 			return true;
 		}
 		return false;

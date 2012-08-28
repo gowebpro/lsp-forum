@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	`forum_quick_reply` tinyint(1) NOT NULL DEFAULT '1',
 	`forum_type` tinyint(1) NOT NULL DEFAULT '1',
 	`forum_password` varchar(32) DEFAULT NULL,
+	`forum_permissions` text DEFAULT NULL,
 	`forum_limit_rating_topic` float(9,3) NOT NULL DEFAULT '0.000',
 	`forum_redirect_url` varchar(250) DEFAULT '',
 	`forum_redirect_on` tinyint(1) NOT NULL DEFAULT '0',
@@ -69,6 +70,27 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_moderator_rel` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prefix_forum_perms`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_perm` (
+	`perm_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`perm_name` varchar(250) NOT NULL default '',
+	PRIMARY KEY (`perm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `prefix_forum_perms`
+--
+
+INSERT INTO `prefix_forum_perm` (`perm_id`, `perm_name`) VALUES
+(1, 'Маска гостей'),
+(2, 'Маска пользователей'),
+(3, 'Маска администраторов');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prefix_forum_post`
 --
 
@@ -83,9 +105,10 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_text` text NOT NULL,
 	`post_text_source` text NOT NULL,
 	`post_text_hash` varchar(32) NOT NULL,
-	`post_new_topic` tinyint(1) NOT NULL default '0',
+	`post_new_topic` tinyint(1) NOT NULL DEFAULT '0',
 	`post_editor_id` int(11) unsigned DEFAULT NULL,
 	`post_edit_reason` varchar(255) DEFAULT NULL,
+	`post_guest_name` varchar(50) DEFAULT NULL,
 	PRIMARY KEY (`post_id`),
 	KEY `topic_id` (`topic_id`),
 	KEY `user_id` (`user_id`),
@@ -160,15 +183,13 @@ ALTER TABLE `prefix_forum_moderator_rel`
 -- Constraints for table `prefix_forum_post`
 --
 ALTER TABLE `prefix_forum_post`
-	ADD CONSTRAINT `prefix_forum_post_fk` FOREIGN KEY (`topic_id`) REFERENCES `prefix_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `prefix_forum_post_fk1` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+	ADD CONSTRAINT `prefix_forum_post_fk` FOREIGN KEY (`topic_id`) REFERENCES `prefix_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prefix_forum_topic`
 --
 ALTER TABLE `prefix_forum_topic`
-	ADD CONSTRAINT `prefix_forum_topic_fk` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `prefix_forum_topic_fk2` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+	ADD CONSTRAINT `prefix_forum_topic_fk` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prefix_forum_readonly`

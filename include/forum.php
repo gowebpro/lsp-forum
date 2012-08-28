@@ -40,6 +40,26 @@ function forum_compare_password($oForum) {
 	return (bool)($sCookiePass == md5($oForum->getPassword()));
 }
 
+/**
+ * Проверяет права доступа
+ */
+function check_perms($aPermissions,$oUser=null) {
+	$sPermId=is_null($oUser)
+		? PluginForum_ModuleForum::MASK_PERM_GUEST
+		: ($oUser->isAdministrator() ? PluginForum_ModuleForum::MASK_PERM_ADMIN : PluginForum_ModuleForum::MASK_PERM_USER);
+	if (!is_array($aPermissions)) {
+		if (is_null($aPermissions) || (string)$aPermissions === '*') {
+			return true;
+		}
+	}
+	$aGroupPermArray=explode(',',(string)$sPermId);
+	foreach ($aGroupPermArray as $sUid) {
+		if (isset($aPermissions[$sUid])) {
+			return true;
+		}
+	}
+	return false;
+}
 
 function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
 	if (!($sName)) return;

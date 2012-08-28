@@ -6,8 +6,13 @@
 	<div class="clearfix">
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
-			<div class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></div>
-			<div class="nickname"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></div>
+			{if $oUser}
+				<div class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></div>
+				<div class="nickname"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></div>
+			{else}
+				<div class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></div>
+				<div class="nickname">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a></div>
+			{/if}
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
 		<div class="forum-post-content clearfix">

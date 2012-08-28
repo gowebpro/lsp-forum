@@ -117,13 +117,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	protected function EventAjaxPreview() {
 		$this->Viewer_SetResponseAjax('jsonIframe',false);
 		/**
-		 * Пользователь авторизован?
-		 */
-		if (!$this->User_IsAuthorization()) {
-			$this->Message_AddErrorSingle($this->Lang_Get('need_authorization'),$this->Lang_Get('error'));
-			return;
-		}
-		/**
 		 * Допустимый тип?
 		 */
 		$sType=getRequest('action_type');
@@ -148,7 +141,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setDateAdd(date("Y-m-d H:i:s"));
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
-		$oPost->setUser($this->oUserCurrent);
+		if (!$this->User_IsAuthorization()) {
+			$oPost->setUser(null);
+			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
+		} else {
+			$oPost->setUser($this->oUserCurrent);
+		}
 		/**
 		 * Проверка корректности полей формы
 		 */
@@ -467,12 +465,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function EventJump() {
 		$this->Security_ValidateSendForm();
-
-		$sForumId=getRequest('f');
 		/**
 		 * Получаем форум по ID
 		 */
-		if (!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('f')))) {
 			return parent::EventNotFound();
 		}
 		Router::Location($oForum->getUrlFull());
@@ -550,6 +546,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$oForum=$this->PluginForum_Forum_CalcChildren($oForum);
 		/**
+		 * Права доступа
+		 */
+		if (!($oForum->getAllowShow() && $oForum->getAllowRead())) {
+			return parent::EventNotFound();
+		}
+		/**
 		 * Хлебные крошки
 		 */
 		$this->_breadcrumbsCreate($oForum);
@@ -626,9 +628,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
-		 * Формируем права
+		 * Права доступа
 		 */
-		$oForum=$this->PluginForum_Forum_BuildModerPerms($oForum);
+		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
+		if (!$oForum->getAllowRead()) {
+			return parent::EventNotFound();
+		}
 		/**
 		 * Хлебные крошки
 		 */
@@ -736,7 +741,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверка доступа
 		 */
-		$oForum=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		$oForum=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
 		if (!(LS::Adm() || $oForum->isModerator())) {
 			return false;
 		}
@@ -828,7 +833,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	protected function submitTopicMove($oTopic) {
 		$this->Security_ValidateSendForm();
 
-		$oForumOld=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		$oForumOld=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
 		/**
 		 * Проверка доступа
 		 */
@@ -872,7 +877,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	protected function submitTopicDelete($oTopic) {
 		$this->Security_ValidateSendForm();
 
-		$oForum=$this->PluginForum_Forum_BuildModerPerms($oTopic->getForum());
+		$oForum=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
 		/**
 		 * Проверка доступа
 		 */
@@ -917,6 +922,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if(!($oForum=$this->PluginForum_Forum_GetForumById($sForumUrl))) {
 				return parent::EventNotFound();
 			}
+		}
+		/**
+		 * Права доступа
+		 */
+		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
+		if (!$oForum->getAllowStart()) {
+			return parent::EventNotFound();
 		}
 		/**
 		 * Загружаем перемененные в шаблон
@@ -1047,7 +1059,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Список емайлов на которые не нужно отправлять уведомление
 				 */
-				$aExcludeMail=array($this->oUserCurrent->getMail());
+				$aExcludeMail=array();
+				if ($this->oUserCurrent) {
+					$aExcludeMail[]=$this->oUserCurrent->getMail();
+				}
 				/**
 				 * Отправка уведомления подписчикам темы
 				 */
@@ -1085,12 +1100,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	public function EventAddPost() {
 		$this->sMenuSubItemSelect='reply';
 		/**
-		 * Проверяем авторизован ли пользователь
-		 */
-		if (!$this->User_IsAuthorization()) {
-			return parent::EventNotFound();
-		}
-		/**
 		 * Получаем ID топика из URL
 		 */
 		$sTopicId=$this->GetParam(0);
@@ -1104,6 +1113,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Получаем форум
 		 */
 		if (!($oForum=$oTopic->getForum())) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Проверям права доступа
+		 */
+		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
+		if (!$oForum->getAllowReply()) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -1155,7 +1171,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверяем разрешено ли постить по времени
 		 */
-		if (!$this->ACL_CanAddForumPostTime($this->oUserCurrent) and !$this->oUserCurrent->isAdministrator()) {
+		if (!$this->ACL_CanAddForumPostTime($this->oUserCurrent)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_time_limit'),$this->Lang_Get('error'));
 			return;
 		}
@@ -1176,12 +1192,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$oPost->setTitle(getRequest('post_title'));
 		$oPost->setTopicId($oTopic->getId());
-		$oPost->setUserId($this->oUserCurrent->getId());
 		$oPost->setUserIp(func_getIp());
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setTextHash(md5(getRequest('post_text')));
 		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		if (!$this->User_IsAuthorization()) {
+			$oPost->setUserId(0);
+			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
+		} else {
+			$oPost->setUserId($this->oUserCurrent->getId());
+		}
 		/**
 		 * Проверяем поля формы
 		 */
@@ -1208,7 +1229,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Список емайлов на которые не нужно отправлять уведомление
 			 */
-			$aExcludeMail=array($this->oUserCurrent->getMail());
+			$aExcludeMail=array();
+			if ($this->oUserCurrent) {
+				$aExcludeMail[]=$this->oUserCurrent->getMail();
+			}
 			/**
 			 * Отправка уведомления подписчикам форума
 			 */
@@ -1897,6 +1921,72 @@ class PluginForum_ActionForum extends ActionPlugin {
 	}
 
 	/**
+	 * Изменение прав доступа
+	 */
+	protected function _adminForumPerms() {
+		$sForumId=$this->GetParam(2);
+		if (!$oForum=$this->PluginForum_Forum_GetForumById($sForumId)) {
+			return parent::EventNotFound();
+		}
+		$aPerms=$this->PluginForum_Forum_GetPermItemsAll();
+		/**
+		 * Загружаем переменные в шаблон
+		 */
+		$this->Viewer_Assign('aPerms',$aPerms);
+		$this->Viewer_Assign('oForum',$oForum);
+		/**
+		 * Устанавливаем шаблон вывода
+		 */
+		$this->SetTemplateAction('admin/forum_perms');
+		/**
+		 * Была ли отправлена форма с данными
+		 */
+		if (isPost('submit_forum_perms')) {
+			$aPermissions=array(
+				'show_perms'=>getRequest('show',array(),'post'),
+				'read_perms'=>getRequest('read',array(),'post'),
+				'reply_perms'=>getRequest('reply',array(),'post'),
+				'start_perms'=>getRequest('start',array(),'post')
+			);
+			$oForum->setPermissions(addslashes(serialize($aPermissions)));
+
+			if ($oForum->Save()) {
+				$this->Message_AddNotice($this->Lang_Get('plugin.forum.perms_submit_ok'),null,1);
+				Router::Location(Router::GetPath('forum').'admin/forums/');
+			} else {
+				$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
+				return;
+			}
+		} else {
+			$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
+			$_REQUEST['show']=isset($aPermissions['show_perms']) ? $aPermissions['show_perms'] : array();
+			$_REQUEST['read']=isset($aPermissions['read_perms']) ? $aPermissions['read_perms'] : array();
+			$_REQUEST['reply']=isset($aPermissions['reply_perms']) ? $aPermissions['reply_perms'] : array();
+			$_REQUEST['start']=isset($aPermissions['start_perms']) ? $aPermissions['start_perms'] : array();
+		}
+	}
+
+
+	/**
+	 * Права доступа
+	 */
+	protected function _adminPerms() {
+		$this->sMenuSubItemSelect='perms';
+		/**
+		 * Получаем список масок
+		 */
+		$aPerms=$this->PluginForum_Forum_GetPermItemsAll();
+		/**
+		 * Загружаем переменные в шаблон
+		 */
+		$this->Viewer_Assign('aPerms',$aPerms);
+		/**
+		 * Устанавливаем шаблон вывода
+		 */
+		$this->SetTemplateAction('admin/perms');
+	}
+
+	/**
 	 * Админка
 	 */
 	public function EventAdmin() {
@@ -1952,6 +2042,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 						$this->_adminForumSort();
 						break;
 					/**
+					 * Права доступа
+					 */
+					case 'perms':
+						$this->_adminForumPerms();
+						break;
+					/**
 					 * Список форумов
 					 */
 					case null:
@@ -1961,6 +2057,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 						return parent::EventNotFound();
 				}
 				$this->sMenuSubItemSelect='forums';
+				break;
+			/**
+			 * Права доступа
+			 */
+			case 'perms':
+				$this->_adminPerms();
 				break;
 			/**
 			 * Главная
@@ -2032,6 +2134,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!$oPost->_Validate()) {
 			$this->Message_AddError($oPost->_getValidateError(),$this->Lang_Get('error'));
 			$bOk=false;
+		}
+		if (!$this->User_IsAuthorization()) {
+			if (!$this->Validate_Validate('captcha',getRequest('guest_captcha'))) {
+				$this->Message_AddError($this->Validate_GetErrorLast(),$this->Lang_Get('error'));
+				$bOk=false;
+			}
 		}
 		/**
 		 * Выполнение хуков

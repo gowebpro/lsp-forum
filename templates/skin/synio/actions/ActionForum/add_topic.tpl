@@ -55,6 +55,8 @@
 	</p>
 	{/if}
 
+	{include file="$sTemplatePathPlugin/guest_block.tpl" event="topic"}
+
 	{hook run='form_forum_add_topic_end'}
 
 	<input type="hidden" name="action_type" value="add_topic" />

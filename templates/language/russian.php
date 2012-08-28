@@ -14,6 +14,8 @@ return array(
 	'forum' => 'Форум',
 	'forums' => 'Форумы',
 
+	'forum_closed' => 'Закрытый форум',
+
 	'button_edit' => 'Редактировать',
 	'button_delete' => 'Удалить',
 
@@ -217,6 +219,22 @@ return array(
 	'moderator_options_movetopic' => 'Возможность перемещать темы',
 	'moderator_options_openclosetopic' => 'Возможность открывать/закрывать темы',
 	'moderator_options_pintopic' => 'Возможность поднимать/опускать темы',
+
+	'guest_prefix' => 'Гость_',
+	'guest_name' => 'Ваше имя',
+	'guest_name_notice' => '',
+	'guest_name_error' => 'Имя должно быть от %%min%% до %%max%% символов',
+	'guest_captcha' => 'Введите цифры и буквы',
+	'guest_captcha_error' => 'Неверный код',
+
+	'perms' => 'Права доступа',
+	'perms_show' => 'Просмотр форума',
+	'perms_read' => 'Чтение тем',
+	'perms_reply' => 'Ответы в темы',
+	'perms_start' => 'Создание тем',
+	'perms_submit' => 'Сохранить',
+	'perms_submit_ok' => 'Права доступа отредактированы',
+	'perms_mask_name' => 'Название маски',
 
 	'sort_up' => 'Переместить выше',
 	'sort_down' => 'Переместить ниже',

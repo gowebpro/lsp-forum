@@ -123,6 +123,18 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function getModPinTopic() {
 		return $this->_getDataMore('mod_pintopic');
 	}
+	public function getAllowShow() {
+		return $this->_aDataMore['allow_show'];
+	}
+	public function getAllowRead() {
+		return $this->_aDataMore['allow_read'];
+	}
+	public function getAllowReply() {
+		return $this->_aDataMore['allow_reply'];
+	}
+	public function getAllowStart() {
+		return $this->_aDataMore['allow_start'];
+	}
 
 	public function setIsModerator($data) {
 		$this->_aDataMore['moderator']=$data;
@@ -144,6 +156,18 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 	public function setModPinTopic($data) {
 		$this->_aDataMore['mod_pintopic']=$data;
+	}
+	public function setAllowShow($data) {
+		$this->_aDataMore['allow_show']=$data;
+	}
+	public function setAllowRead($data) {
+		$this->_aDataMore['allow_read']=$data;
+	}
+	public function setAllowReply($data) {
+		$this->_aDataMore['allow_reply']=$data;
+	}
+	public function setAllowStart($data) {
+		$this->_aDataMore['allow_start']=$data;
 	}
 }
 

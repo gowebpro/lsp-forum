@@ -42,6 +42,9 @@
 						{foreach from=$aForumsTree item=aItem}
 							{assign var=oForum value=$aItem.entity}
 							<li id="forum-{$oForum->getId()}"{if $aItem.level == 0} class="head"{else} style="margin-left:{$aItem.level*25}px"{/if}>
+								{if $aItem.level > 0}
+								<a class="js-tip-help icon-eye-open" title="{$aLang.plugin.forum.perms}" href="{router page='forum'}admin/forums/perms/{$oForum->getId()}"></a>
+								{/if}
 								<a class="js-tip-help icon-edit" title="{$aLang.plugin.forum.edit}" href="{router page='forum'}admin/forums/edit/{$oForum->getId()}"></a>
 								<a class="js-tip-help icon-remove" title="{$aLang.plugin.forum.delete}" href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"></a>
 								<a class="js-tip-help icon-arrow-up" title="{$aLang.plugin.forum.sort_up} ({$oForum->getSort()})" href="{router page='forum'}admin/forums/sort/{$oForum->getId()}/up/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
