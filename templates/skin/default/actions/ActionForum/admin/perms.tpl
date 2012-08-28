@@ -13,10 +13,10 @@
 	<table class="table">
 		<tr>
 			<th width="50%">
-				<h3>{$aLang.forum_perms_mask_name}</h3>
+				<h3>{$aLang.plugin.forum.perms_mask_name}</h3>
 			</th>
 			<th width="50%">
-				<h3>{$aLang.forum_perms_used}</h3>
+				<h3>{$aLang.plugin.forum.perms_used}</h3>
 			</th>
 		</tr>
 		{foreach from=$aPerms item=oPerm}
