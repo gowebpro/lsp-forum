@@ -9,9 +9,9 @@
 	<a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span>
 	<a href="{router page='forum'}admin/forums">{$aLang.plugin.forum.forums}</a> <span>&raquo;</span>
 	{if $sType == 'edit'}
-		{$aLang["forum_edit_"|cat:$sNewType]}
+		{$aLang.plugin.forum["edit_"|cat:$sNewType]}
 	{else}
-		{$aLang["forum_create_"|cat:$sNewType]}
+		{$aLang.plugin.forum["create_"|cat:$sNewType]}
 	{/if}
 </h2>
 
@@ -19,7 +19,7 @@
 
 <div class="forums">
 	<header class="forums-header">
-		<h3>{$aLang.plugin.forum.create}</h3>
+		<h3>{$aLang.plugin.forum.create} &laquo;{$oForum->getTitle()}&raquo;</h3>
 	</header>
 
 	<form action="" method="POST" enctype="multipart/form-data">
