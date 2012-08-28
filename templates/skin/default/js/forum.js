@@ -32,6 +32,15 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.jumpMenu = function(list) {
+		list=$(list);
+		if (list.val() > 0) {
+			list.parent('form').submit();
+			return;
+		}
+		return false;
+	};
+
 	this.preview = function(form, preview) {
 		form=$('#'+form);
 		preview=$('#'+preview);

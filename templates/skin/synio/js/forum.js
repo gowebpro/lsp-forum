@@ -32,6 +32,15 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.jumpMenu = function(list) {
+		list=$(list);
+		if (list.val() > 0) {
+			list.parent('form').submit();
+			return;
+		}
+		return false;
+	};
+
 	this.preview = function(form, preview) {
 		form=$('#'+form);
 		preview=$('#'+preview);
@@ -100,7 +109,7 @@ jQuery(document).ready(function($){
 		return false;
 	});
 
-	ls.blocks.options.type.forum = {
+	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'
 	}
 

@@ -88,6 +88,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Пользовательская часть
 		 */
 		$this->AddEvent('index','EventIndex');
+		$this->AddEvent('jump','EventJump');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page(\d+))?$/i','EventShowTopic');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i','EventAddPost');
 		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i','EventEditPost');
@@ -462,6 +463,23 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 
 	/**
+	 * Переход по форумам
+	 */
+	protected function EventJump() {
+		$this->Security_ValidateSendForm();
+
+		$sForumId=getRequest('f');
+		/**
+		 * Получаем форум по ID
+		 */
+		if (!($oForum=$this->PluginForum_Forum_GetForumById($sForumId))) {
+			return parent::EventNotFound();
+		}
+		Router::Location($oForum->getUrlFull());
+	}
+
+
+	/**
 	 * Главная страница форума
 	 *
 	 */
@@ -563,6 +581,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
+		 * JumpMenu
+		 */
+		$this->AssignJumpMenu();
+		/**
 		 * Формируем постраничность
 		 */
 		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,Config::Get('plugin.forum.topic_per_page'),Config::Get('pagination.pages.count'),$oForum->getUrlFull());
@@ -648,6 +670,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if ($bLineMod) $iNumber++;
 			$oPost->setNumber($iNumber);
 		}
+		/**
+		 * JumpMenu
+		 */
+		$this->AssignJumpMenu();
 		/**
 		 * Формируем постраничность
 		 */
@@ -1482,6 +1508,26 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Редирект
 		 */
 		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post-{$oPost->getId()}");
+	}
+
+
+	/**
+	 * Jump menu
+	 */
+	protected function AssignJumpMenu() {
+		/**
+		 * Получаем список форумов
+		 */
+		$aForums=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
+		/**
+		 * Дерево форумов
+		 */
+		$aJumpList=forum_create_list($aForums);
+		/**
+		 * Загружаем переменные в шаблон
+		 */
+		$this->Viewer_Assign('aJumpForums',$aForums);
+		$this->Viewer_Assign('aJumpList',$aJumpList);
 	}
 
 

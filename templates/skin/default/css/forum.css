@@ -15,6 +15,7 @@
 .forums-header.collapsed:hover { opacity: 0.75 }
 .forums-content { }
 .forums-content section { padding: 15px }
+.forums-footer-block { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
 .table th { background: #F1F9F1; padding: 7px; color: #808080 }
 .table td { padding: 10px }
@@ -39,12 +40,16 @@
 .table.table-topics .cell-stats  { width: 15% }
 .table.table-topics .cell-post { width: 150px }
 .table.table-topics .w33 { width: 33% }
-.table.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 5px }
+.table.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
 
 .forum-topic {}
-.forum-topic-footer { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
 .forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
+
+.forum-legend { width: 100% }
+.forum-legend  .col1 { width: 5% }
+.forum-legend  .col2 { width: 5% }
+.forum-legend  .col3 { width: 90%; text-align: right }
 
 /* Post */
 .forum-post { background: #fafafa; border-bottom: 1px solid #eee; padding: 0 0 5px }

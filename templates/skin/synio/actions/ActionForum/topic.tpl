@@ -50,7 +50,7 @@
 {/if}
 
 {if $oUserCurrent && ($oUserCurrent->isAdministrator() || $oForum->isModerator())}
-<footer class="forum-topic-footer">
+<footer class="forums-footer-block">
 	<form name="modform" action="" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
 		<input type="hidden" name="t" value="{$oTopic->getId()}" />
@@ -91,5 +91,11 @@
 {if $oUserCurrent && (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getQuickReply()}
 	{include file="$sTemplatePathPlugin/fast_answer_form.tpl"}
 {/if}
+
+<footer class="forums-footer-block clearfix">
+	<div class="fl-r">
+		{include file="$sTemplatePathPlugin/jumpmenu.tpl"}
+	</div>
+</footer>
 
 {include file='footer.tpl'}

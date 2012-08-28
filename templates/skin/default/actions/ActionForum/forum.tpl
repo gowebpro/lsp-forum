@@ -48,4 +48,16 @@
 	</div>
 {/if}
 
+<footer class="forums-footer-block">
+	<table class="forum-legend">
+		<tr>
+			<td class="col1"></td>
+			<td class="col2"></td>
+			<td class="col3">
+				{include file="$sTemplatePathPlugin/jumpmenu.tpl"}
+			</td>
+		</tr>
+	</table>
+</footer>
+
 {include file='footer.tpl'}
