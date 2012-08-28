@@ -13,23 +13,6 @@ var ls = ls || {};
 ls.forum = ls.forum || {};
 
 ls.forum.admin = (function ($) {
-	this.deleteForum = function(idForum,sTitle) {
-		if (!confirm(ls.lang.get('plugin.forum.delete_confirm',{'title':sTitle}) + '?')) return false;
-
-		var tree=$('#forums-tree');
-		if (!tree) return;
-
-		ls.ajax(aRouter['forum']+'ajax/deleteforum/',{'idForum':idForum},function(data){
-			if (data.bStateError) {
-				ls.msg.error(data.sMsgTitle,data.sMsg);
-			} else {
-				$('#forum-'+idForum).remove();
-				ls.msg.notice(data.sMsgTitle,data.sMsg);
-			}
-		});
-
-		return false;
-	};
 
 	this.initModerToggler = function() {
 		$('.js-forum-moder-toogler').click(function() {
@@ -130,10 +113,15 @@ ls.forum.admin = (function ($) {
 		return false;
 	};
 
-	this.permsCheckAll = function(sid,form) {
-		form = $(form);
 
-		return false;
+	this.permsCheckAll = function(checkbox,perm,form) {
+		$.each($('#'+form).find('input[type="checkbox"]'),function(k,v){
+			var s = $(v).attr('id');
+			var a = s.replace(/^(.+?)_.+?$/, "$1");
+			if (a == perm) {
+				$(v).attr('checked',($(checkbox).attr('checked')) ? true : false);
+			}
+		});
 	};
 
 	this.permsCheckBox = function(sid,maskId,form) {

@@ -15,47 +15,48 @@
 	</header>
 
 	<form method="POST" id="forum-perms">
-		<table class="table">
+		<table class="table table-perms">
 			<tr>
-				<th class="row1 center">
+				<th class="ta-c">
+					{$aLang.plugin.forum.perms_mask_name}
 				</th>
-				<th class="row1 center" style="background-color:#ECD5D8">
+				<th class="perm-red ta-c">
 					<div>{$aLang.plugin.forum.perms_show}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll('SHOW','forum-perms')" name="show_all" id="show_all" value="1" />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'show','forum-perms')" name="show_all" id="show_all" value="1" />
 				</th>
-				<th class="row1 center" style="background-color:#DBE2DE">
+				<th class="perm-green ta-c">
 					<div>{$aLang.plugin.forum.perms_read}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll('READ','forum-perms')" name="read_all" id="read_all" value="1" />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'read','forum-perms')" name="read_all" id="read_all" value="1" />
 				</th>
-				<th class="row1 center" style="background-color:#DBE6EA">
-						<div>{$aLang.plugin.forum.perms_reply}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll('REPLY','forum-perms')" name="reply_all" id="reply_all" value="1" />
+				<th class="perm-yellow ta-c">
+					<div>{$aLang.plugin.forum.perms_reply}</div>
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'reply','forum-perms')" name="reply_all" id="reply_all" value="1" />
 				</th>
-				<th class="row1 center" style="background-color:#DBE6EA">
+				<th class="perm-blue ta-c">
 					<div>{$aLang.plugin.forum.perms_start}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll('START','forum-perms')" name="start_all" id="start_all" value="1" />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'start','forum-perms')" name="start_all" id="start_all" value="1" />
 				</th>
 			</tr>
 			{foreach from=$aPerms item=oPerm}
 			<tr>
-				<td class="row2 center">
+				<td class="ta-c">
 					{$oPerm->getName()}
 				</td>
-				<td class="row2 center" style="background-color:#ECD5D8">
+				<td class="perm-red">
 					<div>{$aLang.plugin.forum.perms_show}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('SHOW',{$oPerm->getId()},'forum-perms')" name="show[{$oPerm->getId()}]" id="show_{$oPerm->getId()}" value="1"{if $_aRequest.show[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('show',{$oPerm->getId()},'forum-perms')" name="show[{$oPerm->getId()}]" id="show_{$oPerm->getId()}" value="1"{if $_aRequest.show[$oPerm->getId()]} checked{/if} />
 				</td>
-				<td class="row2 center" style="background-color:#DBE2DE">
+				<td class="perm-green">
 					<div>{$aLang.plugin.forum.perms_read}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('READ',{$oPerm->getId()},'forum-perms')" name="read[{$oPerm->getId()}]" id="read_{$oPerm->getId()}" value="1"{if $_aRequest.read[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('read',{$oPerm->getId()},'forum-perms')" name="read[{$oPerm->getId()}]" id="read_{$oPerm->getId()}" value="1"{if $_aRequest.read[$oPerm->getId()]} checked{/if} />
 				</td>
-				<td class="row2 center" style="background-color:#DBE6EA">
+				<td class="perm-yellow">
 					<div>{$aLang.plugin.forum.perms_reply}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('REPLY',{$oPerm->getId()},'forum-perms')" name="reply[{$oPerm->getId()}]" id="reply_{$oPerm->getId()}" value="1"{if $_aRequest.reply[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('reply',{$oPerm->getId()},'forum-perms')" name="reply[{$oPerm->getId()}]" id="reply_{$oPerm->getId()}" value="1"{if $_aRequest.reply[$oPerm->getId()]} checked{/if} />
 				</td>
-				<td class="row2 center" style="background-color:#DBE6EA">
+				<td class="perm-blue">
 					<div>{$aLang.plugin.forum.perms_start}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('START',{$oPerm->getId()},'forum-perms')" name="start[{$oPerm->getId()}]" id="start_{$oPerm->getId()}" value="1"{if $_aRequest.start[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('start',{$oPerm->getId()},'forum-perms')" name="start[{$oPerm->getId()}]" id="start_{$oPerm->getId()}" value="1"{if $_aRequest.start[$oPerm->getId()]} checked{/if} />
 				</td>
 			</tr>
 			{/foreach}

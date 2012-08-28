@@ -112,6 +112,14 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .modal-moderator { width: 500px }
 .modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
+.table-perms {}
+.table-perms td { text-align: center }
+.table-perms td div { font-weight: bold }
+.table-perms .perm-red { background-color: #ECD5D8; color: #E86D7F }
+.table-perms .perm-green { background-color: #CCFFBF; color: #00960C }
+.table-perms .perm-yellow { background-color: #FFFDA7; color: #AFA81D }
+.table-perms .perm-blue { background-color: #DEE0ED; color: #4D589E }
+
 /* Buttons */
 .button.button-orange {
 	background: #F6B537;
