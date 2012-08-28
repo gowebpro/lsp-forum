@@ -88,7 +88,7 @@
 	{include file="$sTemplatePathPlugin/buttons_action.tpl" bFastAnswer=true}
 </div>
 
-{if $oUserCurrent && (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getQuickReply()}
+{if $oUserCurrent && (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getAllowReply() && $oForum->getQuickReply()}
 	{include file="$sTemplatePathPlugin/fast_answer_form.tpl"}
 {/if}
 

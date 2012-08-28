@@ -1070,7 +1070,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					'oForum' => $oForum,
 					'oTopic' => $oTopic,
 					'oPost' => $oPost,
-					'oUserCurrent' => $this->oUserCurrent,
+					'oUser' => $this->oUserCurrent,
 				),$aExcludeMail,__CLASS__);
 				/**
 				 * Добавляем автора топика в подписчики на новые ответы к этому топику
@@ -1240,7 +1240,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				'oForum' => $oForum,
 				'oTopic' => $oTopic,
 				'oPost' => $oPost,
-				'oUserCurrent' => $this->oUserCurrent,
+				'oUser' => $this->oUserCurrent,
 			),$aExcludeMail,__CLASS__);
 			/**
 			 * Добавляем событие в ленту

@@ -42,6 +42,8 @@
 		<br />
 	{/if}
 
+	{include file="$sTemplatePathPlugin/guest_block.tpl" event="post"}
+
 	{hook run='form_forum_add_post_end'}
 
 	<input type="hidden" name="action_type" value="add_post" />

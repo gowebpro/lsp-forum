@@ -32,18 +32,20 @@
 			</ul>
 		</td>
 		<td class="cell-post">
-			{if $oPoster}
 			<ul class="last-post">
 				<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
 				<li>
 					{$aLang.plugin.forum.header_author}:
 					<span class="author">
-						<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
-						<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}
+						{if $oPoster}
+							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
+							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
+						{else}
+							<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+						{/if}
 					</span>
 				</li>
 			</ul>
-			{/if}
 		</td>
 	</tr>
 {/foreach}
