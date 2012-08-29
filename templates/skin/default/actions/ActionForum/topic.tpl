@@ -1,5 +1,6 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
+{include file="$sTemplatePathPlugin/window_post_anchor.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
 

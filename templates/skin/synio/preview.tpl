@@ -7,11 +7,11 @@
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 			{if $oUser}
-				<div class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></div>
-				<div class="nickname"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></div>
+				<section class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></section>
+				<section class="login"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></section>
 			{else}
-				<div class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></div>
-				<div class="nickname">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a></div>
+				<section class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>
+				<section class="login">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a></section>
 			{/if}
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>

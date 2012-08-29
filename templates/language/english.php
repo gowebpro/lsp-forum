@@ -156,6 +156,7 @@ return array(
 
 	'post' => 'Post',
 	'posts' => 'Posts',
+	'post_anchor' => 'Link to post',
 	'post_anchor_promt' => 'Copy a direct link to this message, to save the clipboard',
 	'post_last' => 'Last post',
 	'post_create_title' => 'Post subject',

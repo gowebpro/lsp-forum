@@ -16,19 +16,18 @@ ls.forum = (function ($) {
 		var form=$('#fast-reply-form');
 		if (form.css('display')=='block') {
 			form.slideUp();
-			$(el).removeClass('button-orange');
+			$(el).removeClass('button-primary');
 		} else {
 			form.slideDown();
-			$(el).addClass('button-orange');
+			$(el).addClass('button-primary');
 		}
 		return false;
 	};
 
 	this.linkToPost = function(idPost) {
-		temp=prompt(
-			ls.lang.get('plugin.forum.post_anchor_promt'),
-			aRouter['forum']+"findpost/"+idPost+"/"
-		);
+		var $window = $('#link-to-post');
+		$window.find('#link-to-post-input').val(aRouter['forum']+"findpost/"+idPost+"/").select();
+		$window.jqmShow();
 		return false;
 	};
 
@@ -108,6 +107,8 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});
+
+	$('#link-to-post').jqm();
 
 	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'

@@ -3,7 +3,7 @@
 -------------------------------------------- */
 
 .forums {}
-.forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
+.forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
 .forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; position: relative }
@@ -52,10 +52,20 @@
 .forum-legend  .col3 { width: 90%; text-align: right }
 
 /* Post */
-.forum-post { background: #fafafa; border-bottom: 1px solid #eee; padding: 0 0 5px }
-.forum-post-one { border-top: 1px solid #eee }
-.forum-post-side { float: left; width: 150px; text-align: center; padding: 5px }
-.forum-post-content { float: none; margin-left: 151px; border-left: 1px solid #eee; width: auto }
+.forum-post { background: #fafafa; border-top: 1px solid #dbdbdb; border-bottom: 1px solid #dce1e6; padding: 0 0 5px }
+.forum-post-one { }
+.forum-post-side { float: left; width: 160px }
+.forum-post-side section { text-align: center; padding: 5px }
+.forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }
+.forum-post-side section p span { color: #000 }
+.forum-post-side section.avatar { position: relative }
+.forum-post-side section.avatar .status { position: absolute; top: 5px; left: 30px; color: #fff; padding: 0 5px; font-size: 11px; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
+.forum-post-side section.avatar .status.status-online { background: rgba(80, 200, 40, 0.6) }
+.forum-post-side section.avatar .status.status-offline { background: rgba(200, 0, 0, 0.4) }
+.forum-post-side section.avatar img { border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box }
+.forum-post-side section.login { font-size: 14px; font-weight: bold }
+.forum-post-content { float: none; margin-left: 161px; border-left: 1px solid #eee; width: auto }
+.forum-post-content.no-side { margin-left: 0px; border-left: 0px }
 .forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px 10px }
 .forum-post-details { color: #666 }
 .forum-post-body { min-height: 80px }
@@ -104,13 +114,16 @@ span.divide { color: gray; font-weight: normal; padding: 0 2px }
 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
+/* Modal */
+.modal-post { width: 360px }
+.modal-moderator { width: 500px }
+.modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
+
 /* Admin*/
 #forums-tree {}
 #forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }
 #forums-tree .title { font-weight: bold }
 #forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
-.modal-moderator { width: 500px }
-.modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
 .table-perms {}
 .table-perms td { text-align: center }
