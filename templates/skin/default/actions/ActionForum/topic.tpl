@@ -17,7 +17,7 @@
 		{/if}
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
-	{include file="$sTemplatePathPlugin/post.tpl" oPost=$oHeadPost}
+	{include file="$sTemplatePathPlugin/post.tpl" oPost=$oHeadPost bFirst=true}
 </div>
 {/if}
 
@@ -44,8 +44,8 @@
 		<h3>{$oTopic->getTitle()}</h3>
 	{/if}
 	</header>
-	{foreach from=$aPosts item=oPost}
-		{include file="$sTemplatePathPlugin/post.tpl" oPost=$oPost}
+	{foreach from=$aPosts item=oPost name=posts}
+		{include file="$sTemplatePathPlugin/post.tpl" oPost=$oPost bFirst=$smarty.foreach.posts.first}
 	{/foreach}
 </div>
 {/if}

@@ -1,6 +1,6 @@
 {assign var="oUser" value=$oPost->getUser()}
 
-<article class="forum-post" id="post-{$oPost->getId()}">
+<article class="forum-post{if $bFirst} forum-post-first{/if}" id="post-{$oPost->getId()}">
 	<div class="clearfix">
 		{if !$noPostSide}
 		<aside class="forum-post-side">

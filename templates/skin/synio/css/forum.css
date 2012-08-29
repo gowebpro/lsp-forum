@@ -56,8 +56,8 @@
 .forum-legend  .col3 { width: 90%; text-align: right }
 
 /* Post */
-.forum-post { _background: #fafafa; border-top: 1px solid #dbdbdb; border-bottom: 1px solid #DCE1E6; padding: 0 0 5px }
-.forum-post-one { }
+.forum-post { _background: #fafafa; border-bottom: 1px solid #DCE1E6; padding: 0 0 5px }
+.forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
 .forum-post-side { float: left; width: 160px }
 .forum-post-side section { text-align: center; padding: 5px }
 .forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }

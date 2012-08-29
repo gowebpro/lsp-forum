@@ -277,8 +277,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 		$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
 
-		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUserCurrent));
-		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUserCurrent));
+		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUserCurrent,true));
+		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUserCurrent,true));
 		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUserCurrent));
 		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUserCurrent));
 

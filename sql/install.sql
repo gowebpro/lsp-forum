@@ -80,13 +80,13 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_perm` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `prefix_forum_perms`
+-- Dumping data for table `prefix_forum_perm`
 --
 
 INSERT INTO `prefix_forum_perm` (`perm_id`, `perm_name`) VALUES
-(1, 'Маска гостей'),
-(2, 'Маска пользователей'),
-(3, 'Маска администраторов');
+(1, 'РњР°СЃРєР° РіРѕСЃС‚РµР№'),
+(2, 'РњР°СЃРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№'),
+(3, 'РњР°СЃРєР° Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ');
 
 -- --------------------------------------------------------
 

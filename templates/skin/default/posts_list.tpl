@@ -1,5 +1,5 @@
 <div class="forum-topic">
-{foreach from=$aPosts item=oPost}
+{foreach from=$aPosts item=oPost name=posts}
 	{assign var="oUser" value=$oPost->getUser()}
 	{assign var="oTopic" value=$oPost->getTopic()}
 	{assign var="oForum" value=$oTopic->getForum()}
@@ -11,7 +11,7 @@
 			<a href="{$oTopic->getUrlFull()}">({$oTopic->getCountPost()})</a>
 		</header>
 
-		{include file="$sTemplatePathPlugin/post.tpl" noPostSide=true noFooter=true}
+		{include file="$sTemplatePathPlugin/post.tpl" noPostSide=true noFooter=true bFirst=$smarty.foreach.posts.first}
 	</div>
 {/foreach}
 </div>

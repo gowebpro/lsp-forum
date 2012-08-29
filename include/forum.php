@@ -43,11 +43,14 @@ function forum_compare_password($oForum) {
 /**
  * Проверяет права доступа
  */
-function check_perms($aPermissions,$oUser=null) {
+function check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 	$sPermId=is_null($oUser)
 		? PluginForum_ModuleForum::MASK_PERM_GUEST
 		: ($oUser->isAdministrator() ? PluginForum_ModuleForum::MASK_PERM_ADMIN : PluginForum_ModuleForum::MASK_PERM_USER);
 	if (!is_array($aPermissions)) {
+		if (is_null($aPermissions) && PluginForum_ModuleForum::MASK_PERM_GUEST === $sPermId) {
+			return $bGuestDef;
+		}
 		if (is_null($aPermissions) || (string)$aPermissions === '*') {
 			return true;
 		}

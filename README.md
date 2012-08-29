@@ -4,14 +4,14 @@ Forum from [LiveStreet CMS](http://livestreetcms.com/ "LiveStreet CMS")
 ATTENTION
 ---------
 
-**To use this plugin requires Livestreet CMS version 0.5.1 or later.**
+**To use this plugin requires Livestreet CMS version 1.0 or later.**
 
 Simple Install
 --------------
 
 To install forum do this:
 
-* [Download the latest build](https://github.com/Xmk/forum/zipball/master "Download as zip")
+* [Download the latest build](https://github.com/Xmk/lsplugin-forum/zipball/master "Download as zip")
 * Unpack archive
 * Rename dir to `forum`
 * Upload to FTP, in the plugins folder

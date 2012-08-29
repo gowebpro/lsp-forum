@@ -33,8 +33,8 @@
 				<td>
 					<br/>
 					<div class="ta-c mb-10">
-						<a href="{router page='forum'}admin/forums/new?type=forum" class="button{if $aForums} button-primary{/if}"{if !$aForums} disabled="disabled"{/if}>{$aLang.plugin.forum.create_forum}</a>
-						<a href="{router page='forum'}admin/forums/new?type=category" class="button{if !$aForums} button-primary{else} button-orange{/if}">{$aLang.plugin.forum.create_category}</a>
+						<a href="{router page='forum'}admin/forums/new?type=forum"><button class="button{if $aForums} button-primary{/if}"{if !$aForums} disabled="disabled"{/if}>{$aLang.plugin.forum.create_forum}</button></a>
+						<a href="{router page='forum'}admin/forums/new?type=category"><button class="button{if !$aForums} button-primary{else} button-orange{/if}">{$aLang.plugin.forum.create_category}</button></a>
 					</div>
 					{if $aForums}
 					<div class="mb-20">
