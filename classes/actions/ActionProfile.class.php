@@ -18,8 +18,8 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 
 	protected function RegisterEvent() {
 		parent::RegisterEvent();
-		$this->AddEventPreg('/^.+$/i','/^forum/i','/^topics/i','/^(page(\d+))?$/i','EventForumTopics');
-		$this->AddEventPreg('/^.+$/i','/^forum/i','/^posts$/i','/^(page(\d+))?$/i','EventForumPosts');
+		$this->AddEventPreg('/^.+$/i','/^forum/i','/^topics/i','/^(page([1-9]\d{0,5}))?$/i','EventForumTopics');
+		$this->AddEventPreg('/^.+$/i','/^forum/i','/^posts$/i','/^(page([1-9]\d{0,5}))?$/i','EventForumPosts');
 	}
 
 	/**********************************************************************************

@@ -89,15 +89,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->AddEvent('index','EventIndex');
 		$this->AddEvent('jump','EventJump');
-		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page(\d+))?$/i','EventShowTopic');
+		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page([1-9]\d{0,5}))?$/i','EventShowTopic');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i','EventAddPost');
 		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i','EventEditPost');
 		$this->AddEventPreg('/^topic$/i','/^delete$/i','/^(\d+)$/i','EventDeletePost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
 		$this->AddEventPreg('/^findpost$/i','/^(\d+)$/i','EventFindPost');
-		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page(\d+))?$/i',array('EventShowForum','forum'));
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page([1-9]\d{0,5}))?$/i',array('EventShowForum','forum'));
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^add$/i',array('EventAddTopic','add_topic'));
-		$this->AddEventPreg('/^(\d+)$/i','/^(page(\d+))?$/i',array('EventShowForum','forum'));
+		$this->AddEventPreg('/^(\d+)$/i','/^(page([1-9]\d{0,5}))?$/i',array('EventShowForum','forum'));
 		$this->AddEventPreg('/^(\d+)$/i','/^add$/i',array('EventAddTopic','add_topic'));
 		/**
 		 * AJAX Обработчики
