@@ -30,7 +30,7 @@
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 		<input type="hidden" name="forum_type" value="{$sNewType}" />
 
-		<table class="table">
+		<table class="table table-forum-admin">
 			<tr>
 				<th colspan="2" class="cell-subtitle ta-c">
 					{$aLang.plugin.forum.create_block_main}

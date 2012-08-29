@@ -40,6 +40,15 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.disabledButton = function() {
+		if (ls.blocks.switchTab('login','popup-login')) {
+			$('#window_login_form').jqmShow();
+		} else {
+			window.location=aRouter.login;
+		}
+		return false;
+	};
+
 	this.preview = function(form, preview) {
 		form=$('#'+form);
 		preview=$('#'+preview);

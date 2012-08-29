@@ -17,13 +17,13 @@
 		<h3>{$aLang.plugin.forum.acp_forums_control}</h3>
 	</header>
 
-	<table class="table">
+	<table class="table table-forum-admin">
 		<thead>
 			<tr>
-				<th width="50%">
+				<th class="cell-half">
 					<h3>{$aLang.plugin.forum.acp_forums_control}</h3>
 				</th>
-				<th width="50%">
+				<th class="cell-half">
 					<h3>{$aLang.plugin.forum.in_progress}</h3>
 				</th>
 			</tr>

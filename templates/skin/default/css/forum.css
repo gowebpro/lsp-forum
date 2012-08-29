@@ -17,8 +17,24 @@
 .forums-content section { padding: 15px }
 .forums-footer-block { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
-.table th { background: #F1F9F1; padding: 7px; color: #808080 }
-.table td { padding: 10px }
+.table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
+.table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 10px }
+
+.table-forums .cell-name { width: auto }
+.table-forums .cell-stats  { width: 15% }
+.table-forums .cell-post { width: 200px }
+.table-forums h3 { font-size: 12px; font-weight: bold; margin-bottom: 3px }
+
+.table-topics .cell-name { width: auto }
+.table-topics .cell-stats  { width: 15% }
+.table-topics .cell-post { width: 150px }
+.table-topics .w33 { width: 33% }
+.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
+
+.table-forum-admin .cell-label { width: 400px }
+.table-forum-admin .cell-labeled {}
+.table-forum-admin .cell-half { width: 50% }
+
 .table p.details { color: #666; font-size: 10px; margin: 2px 0 }
 .table p.details a { color: #666; text-decoration: underline }
 .table a.date { color: #434951 }
@@ -27,20 +43,7 @@
 .table .link-to-msg { background: url(../images/icon_link.png) no-repeat; display: inline-block; width: 16px; height: 9px }
 .table .cell-subtitle { background: #fff5ee; padding: 7px 28px; color: #808080; font-weight: bold }
 .table .cell-icon { width: 1% }
-.table .cell-label { width: 400px }
-.table .cell-labeled { }
-.table .last-post {  }
-
-.table.table-forums .cell-name { width: auto }
-.table.table-forums .cell-stats  { width: 15% }
-.table.table-forums .cell-post { width: 200px }
-.table.table-forums h3 { font-size: 12px; font-weight: bold; margin-bottom: 3px }
-
-.table.table-topics .cell-name { width: auto }
-.table.table-topics .cell-stats  { width: 15% }
-.table.table-topics .cell-post { width: 150px }
-.table.table-topics .w33 { width: 33% }
-.table.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
+.table .last-post {}
 
 .forum-topic {}
 
@@ -126,6 +129,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 #forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
 
 .table-perms {}
+.table-perms th { background: #F1F9F1; color: #808080; font-weight: bold }
 .table-perms td { text-align: center }
 .table-perms td div { font-weight: bold }
 .table-perms .perm-red { background-color: #ECD5D8; color: #E86D7F }

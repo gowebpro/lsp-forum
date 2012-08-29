@@ -72,15 +72,15 @@
 			</div>
 		</div>
 	</div>
-	{if !$noFooter}
+	{if $oUserCurrent && !$noFooter}
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
-			{if $oUserCurrent && $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
+			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange">
 					<span class="icon-white icon-edit"></span> {$aLang.plugin.forum.button_edit}
 				</a>
 			{/if}
-			{if $oUserCurrent && $LS->ACL_IsAllowDeleteForumPost($oPost,$oUserCurrent)}
+			{if $LS->ACL_IsAllowDeleteForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/delete/{$oPost->getId()}" class="button button-red">
 					<span class="icon-white icon-remove"></span> {$aLang.plugin.forum.button_delete}
 				</a>

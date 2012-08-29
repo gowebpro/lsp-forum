@@ -8,8 +8,8 @@
 		<lang name="default">Chiffa</lang>
 		<lang name="russian">Чиффа</lang>
 	</author>
-	<homepage></homepage>
-	<version>1.0a</version>
+	<homepage>http://xmk.ars-team.ru</homepage>
+	<version>1.0</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>

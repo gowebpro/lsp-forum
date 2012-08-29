@@ -19,14 +19,18 @@
 
 <div class="forums">
 	<header class="forums-header">
-		<h3>{$aLang.plugin.forum.create} &laquo;{$oForum->getTitle()}&raquo;</h3>
+	{if $sType == 'edit'}
+		<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title}&raquo;</h3>
+	{else}
+		<h3>{$aLang.plugin.forum["create_"|cat:$sNewType]}</h3>
+	{/if}
 	</header>
 
 	<form action="" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 		<input type="hidden" name="forum_type" value="{$sNewType}" />
 
-		<table class="table">
+		<table class="table table-forum-admin">
 			<tr>
 				<th colspan="2" class="cell-subtitle ta-c">
 					{$aLang.plugin.forum.create_block_main}

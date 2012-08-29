@@ -3,7 +3,7 @@
 		<h3>{$aLang.plugin.forum.stats}</h3>
 	</header>
 	<div class="forums-content">
-		<table class="table">
+		<table class="table table-forum-stats">
 			{if $aForumStats.online}
 			<tr>
 				<th colspan="2">

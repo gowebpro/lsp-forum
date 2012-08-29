@@ -10,21 +10,21 @@
 		<h3>{$aLang.plugin.forum.perms}</h3>
 	</header>
 
-	<table class="table">
+	<table class="table table-forum-admin">
 		<tr>
-			<th width="50%">
+			<th class="cell-half cell-subtitle">
 				<h3>{$aLang.plugin.forum.perms_mask_name}</h3>
 			</th>
-			<th width="50%">
+			<th class="cell-half cell-subtitle">
 				<h3>{$aLang.plugin.forum.perms_used}</h3>
 			</th>
 		</tr>
 		{foreach from=$aPerms item=oPerm}
 		<tr>
-			<td class="row1">
+			<td>
 				<strong>{$oPerm->getName()}</strong>
 			</td>
-			<td class="row2">
+			<td>
 				{$aLang.plugin.forum.in_progress}
 			</td>
 		</tr>
