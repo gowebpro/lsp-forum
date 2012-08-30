@@ -282,6 +282,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUserCurrent));
 		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUserCurrent));
 
+		$oForum->setAutorization($this->isForumAuthorization($oForum));
+
 		return $oForum;
 	}
 
@@ -299,6 +301,25 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 		}
 		return $bAccess;
+	}
+
+	public function GetForumsOpenUser($oUser=null,$bIdOnly=false) {
+		$aForums=$this->GetForumItemsAll();
+		/**
+		 * Фильтруем список форумов
+		 */
+		$aRes=array();
+		if (!empty($aForums)) {
+			foreach ($aForums as $oForum) {
+				$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
+				if (check_perms($aPermissions['show_perms'],$oUser,true)
+				and check_perms($aPermissions['read_perms'],$oUser,true)
+				and $this->isForumAuthorization($oForum)) {
+					$aRes[$oForum->getId()]=$oForum;
+				}
+			}
+		}
+		return $bIdOnly ? array_keys($aRes) : $aRes;
 	}
 
 	/**

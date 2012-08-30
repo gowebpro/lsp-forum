@@ -45,7 +45,7 @@
 						{assign var="oTopic" value=$oPost->getTopic()}
 						{assign var="oPoster" value=$oPost->getUser()}
 						<ul class="last-post">
-							{if $oForum->getAllowRead()}
+							{if $oForum->getAllowRead() && $oForum->getAutorization()}
 							<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></li>
 							{else}
 							<li><em>{$aLang.plugin.forum.forum_closed}</em></li>
@@ -61,7 +61,7 @@
 									{/if}
 								</span>
 							</li>
-							{if $oForum->getAllowRead()}
+							{if $oForum->getAllowRead() && $oForum->getAutorization()}
 							<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
 							{else}
 							<li><span title="{$aLang.plugin.forum.header_last_post}">{date_format date=$oPost->getDateAdd()}</span></li>

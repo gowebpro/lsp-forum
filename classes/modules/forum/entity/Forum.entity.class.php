@@ -135,6 +135,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function getAllowStart() {
 		return $this->_aDataMore['allow_start'];
 	}
+	public function getAutorization() {
+		return $this->_aDataMore['autorization'];
+	}
 
 	public function setIsModerator($data) {
 		$this->_aDataMore['moderator']=$data;
@@ -168,6 +171,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 	public function setAllowStart($data) {
 		$this->_aDataMore['allow_start']=$data;
+	}
+	public function setAutorization($data) {
+		$this->_aDataMore['autorization']=$data;
 	}
 }
 

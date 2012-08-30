@@ -403,11 +403,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_SetResponseAjax('json');
 		/**
+		 * Получаем список форумов
+		 */
+		$aForumsId=$this->PluginForum_Forum_GetForumsOpenUser(LS::CurUsr(),true);
+		/**
 		 * Получаем последние топики
 		 */
 		$aLastTopics=$this->PluginForum_Forum_GetTopicItemsAll(
 			array(
-				'#where'=>array(),
+				'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
 				'#order'=>array('last_post_id'=>'desc'),
 				'#page'=>array(1,Config::Get('block.stream.row'))
 			)
