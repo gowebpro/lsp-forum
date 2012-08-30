@@ -180,7 +180,6 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if (!empty($aChildren)) {
 			foreach ($aChildren as $oForum) {
 				$oForum=$this->CalcChildren($oForum);
-				$oForum=$this->BuildPerms($oForum);
 
 				if ($oForum->getLastPostId() > $oRoot->getLastPostId()) {
 					$oRoot->setLastPostId($oForum->getLastPostId());
@@ -191,7 +190,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 		}
 
-		return $this->BuildPerms($oRoot);
+		return $this->BuildPerms($oRoot,true);
 	}
 
 	/**
@@ -262,25 +261,27 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	object	$oForum
 	 * @return	object
 	 */
-	public function BuildPerms($oForum) {
-		$oUserCurrent = LS::CurUsr();
-		$sId = $oUserCurrent ? $oUserCurrent->getId() : 0;
-		$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
+	public function BuildPerms($oForum,$bNoModers=false) {
+		$oUser = LS::CurUsr();
 
-		$oForum->setIsModerator(LS::Adm() || $oModerator);
-		$oForum->setModViewIP(LS::Adm() || ($oModerator && $oModerator->getViewIp()));
-		$oForum->setModDeletePost(LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
-		$oForum->setModDeleteTopic(LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
-		$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
-		$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
-		$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
+		if (!$bNoModers) {
+			$sId = $oUser ? $oUser->getId() : 0;
+			$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
 
+			$oForum->setIsModerator(LS::Adm() || $oModerator);
+			$oForum->setModViewIP(LS::Adm() || ($oModerator && $oModerator->getViewIp()));
+			$oForum->setModDeletePost(LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
+			$oForum->setModDeleteTopic(LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
+			$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
+			$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
+			$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
+		}
 		$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
 
-		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUserCurrent,true));
-		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUserCurrent,true));
-		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUserCurrent));
-		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUserCurrent));
+		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUser,true));
+		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUser,true));
+		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUser));
+		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUser));
 
 		$oForum->setAutorization($this->isForumAuthorization($oForum));
 
