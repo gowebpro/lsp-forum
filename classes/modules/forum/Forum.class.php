@@ -50,7 +50,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function MoveTopics($sForumId,$sForumIdNew) {
 		if ($res=$this->oMapperForum->MoveTopics($sForumId,$sForumIdNew)) {
 			//чистим кеш
-			$this->Cache_Clean();
+			$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityTopic_save'));
 			return $res;
 		}
 		return false;
@@ -66,7 +66,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function MoveForums($sForumId,$sForumIdNew) {
 		if ($res=$this->oMapperForum->MoveForums($sForumId,$sForumIdNew)) {
 			//чистим кеш
-			$this->Cache_Clean();
+			$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityForum_save'));
 			return $res;
 		}
 		return false;

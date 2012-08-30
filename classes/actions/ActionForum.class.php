@@ -749,7 +749,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!(LS::Adm() || $oForum->isModerator())) {
 			return false;
 		}
-		$this->_breadcrumbsCreate($oTopic,false);
 		/**
 		 * Список ключей действий по их коду
 		 */
@@ -2155,27 +2154,34 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 
 	/**
-	 * Хлебные крошки для объектов (форум\топик\пост)
+	 * Хлебные крошки
 	 */
-	private function _breadcrumbsCreate($oItem,$bClear=true) {
-		if (!($oItem instanceof EntityORM)) return;
-
-		if ($bClear) $this->aBreadcrumbs=array();
-
-		$this->aBreadcrumbs[]=array('title'=>$oItem->getTitle(),'url'=>$oItem->getUrlFull(),'obj'=>$oItem);
-
-		if ($oItem->getParentId() && $oParent=$oItem->getParent()) {
-			$this->_breadcrumbsCreate($oParent,false);
+	private function _breadcrumbsCreate() {
+		$aArgs=func_get_args();
+		if (is_object($aArgs[0])) {
+			if (!isset($aArgs[1]) || $aArgs[1]) {
+				$this->aBreadcrumbs=array();
+			}
+			$oItem=$aArgs[0];
+			$this->aBreadcrumbs[]=array(
+				'title'=>$oItem->getTitle(),
+				'url'=>$oItem->getUrlFull(),
+				'obj'=>$oItem
+			);
+			if ($oItem->getParentId() && $oParent=$oItem->getParent()) {
+				$this->_breadcrumbsCreate($oParent,false);
+			}
+		} else {
+			if (!isset($aArgs[2]) || $aArgs[2]) {
+				$this->aBreadcrumbs=array();
+			}
+			$this->aBreadcrumbs[]=array(
+				'title'=>(string)$aArgs[0],
+				'url'=>(string)$aArgs[1]
+			);
 		}
 	}
-	/**
-	 * Хлебные крошки для всего остального
-	 */
-	private function _breadcrumbsAdd($sTitle,$sUrl,$bClear=false) {
-		if ($bClear) $this->aBreadcrumbs=array();
 
-		$this->aBreadcrumbs[]=array('title'=>$sTitle,'url'=>$sUrl);
-	}
 
 	/**
 	 * Заголовки
