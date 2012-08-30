@@ -133,7 +133,7 @@ return array(
 	'topic_move_error_self' => 'This theme is so chosen forum!',
 	'topic_move_error_category' => 'You can not move the topic into the category of',
 	'topic_post_count' => 'Posts in topic',
-	'topic_acl' => 'You may not post new threads',
+	'topic_acl' => 'You lack the ratings to create topics in this forum',
 	'topic_time_limit' => 'You may not post new threads too often',
 
 	'new_topic' => 'New topic',
