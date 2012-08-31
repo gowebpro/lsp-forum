@@ -12,6 +12,12 @@
 
 /**
  * Строит дерево форумов
+ *
+ * @param	array	$aForums
+ * @param	array	$aList
+ * @param	string	$sDepthGuide
+ * @param	integer $iLevel
+ * @return	array
  */
 if (!function_exists('forum_create_list')) {
 	function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLevel=0) {
@@ -34,6 +40,9 @@ if (!function_exists('forum_create_list')) {
 
 /**
  * Проверяет введен ли пароль
+ *
+ * @param	object $oForum
+ * @return	boolean
  */
 function forum_compare_password($oForum) {
 	$sCookiePass=fGetCookie("chiffaforumpass_{$oForum->getId()}");
@@ -42,6 +51,11 @@ function forum_compare_password($oForum) {
 
 /**
  * Проверяет права доступа
+ *
+ * @param	array	$aPermissions
+ * @param	object	$oUser
+ * @param	boolean	$bGuestDef
+ * @return	boolean
  */
 function check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 	$sPermId=is_null($oUser)

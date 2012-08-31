@@ -45,7 +45,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 *
 	 * @param	integer	$sForumId
 	 * @param	integer	$sForumIdNew
-	 * @return bool
+	 * @return	bool
 	 */
 	public function MoveTopics($sForumId,$sForumIdNew) {
 		if ($res=$this->oMapperForum->MoveTopics($sForumId,$sForumIdNew)) {
@@ -61,7 +61,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 *
 	 * @param	integer	$sForumId
 	 * @param	integer	$sForumIdNew
-	 * @return bool
+	 * @return	bool
 	 */
 	public function MoveForums($sForumId,$sForumIdNew) {
 		if ($res=$this->oMapperForum->MoveForums($sForumId,$sForumIdNew)) {
@@ -290,6 +290,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 	/**
 	 * Проверяем, нужно ли юзеру вводить пароль
+	 *
+	 * @param	object	$oForum
+	 * @return	boolean
 	 */
 	public function isForumAuthorization($oForum) {
 		$bAccess=true;
@@ -304,6 +307,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 		return $bAccess;
 	}
 
+	/**
+	 * Возвращает список форумов, открытых для пользователя
+	 *
+	 * @param	object	$oForum
+	 * @param	boolean	$bIdOnly
+	 * @return	array
+	 */
 	public function GetForumsOpenUser($oUser=null,$bIdOnly=false) {
 		$aForums=$this->GetForumItemsAll();
 		/**
@@ -325,6 +335,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 	/**
 	 * Парсер текста
+	 *
+	 * @param	string	$sText
+	 * @return	stiing
 	 */
 	public function TextParse($sText=null) {
 		if (!is_string($sText)) {
