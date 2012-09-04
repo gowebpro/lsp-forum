@@ -1,4 +1,4 @@
-<?
+<?php
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
