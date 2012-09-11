@@ -5,27 +5,26 @@
 	{assign var="sNewType" value='category'}
 {/if}
 
-<h2 class="page-header">
-	<a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span>
-	<a href="{router page='forum'}admin/forums">{$aLang.plugin.forum.forums}</a> <span>&raquo;</span>
-	{if $sType == 'edit'}
-		{$aLang.plugin.forum["edit_"|cat:$sNewType]}
-	{else}
-		{$aLang.plugin.forum["create_"|cat:$sNewType]}
-	{/if}
-</h2>
+<div id="filter-top">
+	<div class="filter-bg"></div>
 
-{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
-
+	<h2 class="page-header" style="background:none">
+		<a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span>
+		<a href="{router page='forum'}admin/forums">{$aLang.plugin.forum.forums}</a> <span>&raquo;</span>
+		{if $sType == 'edit'}
+			{$aLang.plugin.forum["edit_"|cat:$sNewType]}
+		{else}
+			{$aLang.plugin.forum["create_"|cat:$sNewType]}
+		{/if}
+	</h2>
+</div>
+<br /><br />
+<div class="wrapper-content">
+	<div class="mb-30">
+		{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+	</div>
+</div>
 <div class="forums">
-	<header class="forums-header">
-	{if $sType == 'edit'}
-		<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title}&raquo;</h3>
-	{else}
-		<h3>{$aLang.plugin.forum["create_"|cat:$sNewType]}</h3>
-	{/if}
-	</header>
-
 	<form action="" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 		<input type="hidden" name="forum_type" value="{$sNewType}" />
@@ -126,7 +125,7 @@
 					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-text input-width-200" />
+					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
 				</td>
 			</tr>
 			<tr>
@@ -170,9 +169,15 @@
 				<th colspan="2">
 					<div class="ta-c">
 						{if $sType == 'edit'}
-						<button type="submit" name="submit_forum_save" class="button">{$aLang.plugin.forum.edit_submit}</button>
+						<div class="gray">
+							<span class="l44"></span><span class="r44"></span>
+							<button type="submit" name="submit_forum_save">{$aLang.plugin.forum.edit_submit}</button>
+						</div>
 						{else}
-						<button type="submit" name="submit_forum_add" class="button button-primary">{$aLang.plugin.forum.create_submit}</button>
+						<div class="green">
+							<span class="l44"></span><span class="r44"></span>
+							<button type="submit" name="submit_forum_add">{$aLang.plugin.forum.create_submit}</button>
+						</div>
 						{/if}
 					</div>
 				</th>

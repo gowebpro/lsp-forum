@@ -126,7 +126,7 @@
 					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-100" />
+					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
 				</td>
 			</tr>
 			<tr>
@@ -151,7 +151,7 @@
 					<span class="note">{$aLang.plugin.forum.create_redirect_url_notice}</span>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-wide" />
+					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-text input-width-full" />
 				</td>
 			</tr>
 			<tr>

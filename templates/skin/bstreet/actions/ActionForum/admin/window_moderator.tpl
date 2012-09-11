@@ -32,7 +32,10 @@
 
 			<input type="hidden" name="moder_form_action" id="moder_form_action" />
 
-			<button type="button" onclick="return ls.forum.admin.applyModerForm('moder-form')" class="button button-primary">OK</button>
+			<div class="green">
+				<span class="l44"></span><span class="r44"></span>
+				<button type="submit" onclick="return ls.forum.admin.applyModerForm('moder-form')">OK</button>
+			</div>
 		</form>
 	</div>
 </div>

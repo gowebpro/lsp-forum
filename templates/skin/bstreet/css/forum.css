@@ -6,7 +6,7 @@
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
-.forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; border-bottom: 1px solid #EEE; position: relative }
+.forums-header { margin-left: 34px; padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; border-bottom: 1px solid #EEE; position: relative; width: 90% }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
 .forums-header section { margin-left: 10px }
 .forums-header .js-forum-cat-toogler { cursor: pointer; visibility: hidden }
@@ -15,7 +15,7 @@
 .forums-header.collapsed:hover { opacity: 0.75 }
 .forums-content { }
 .forums-content section { padding: 15px }
-.forums-footer-block { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
+.forums-footer-block { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 34px; padding: 10px }
 
 .table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
 .table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 10px }
@@ -55,7 +55,7 @@
 .forum-legend  .col3 { width: 90%; text-align: right }
 
 /* Post */
-.forum-post { background: #fafafa; border-bottom: 1px solid #dce1e6; padding: 0 0 5px }
+.forum-post { background: #fafafa; border-bottom: 1px solid #dce1e6; padding: 0 0 5px; margin: 0 34px }
 .forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
 .forum-post-side { float: left; width: 160px }
 .forum-post-side section { text-align: center; padding: 5px }
@@ -85,7 +85,7 @@
 .forum-stats-icon-stats { width: 64px; height: 64px; background: url(../images/statistics.png) no-repeat center }
 .forum-stats-icon-users { width: 64px; height: 64px; background: url(../images/users.png) no-repeat center }
 
-.forum-copyright { float: right; clear: both }
+.forum-copyright { float: right; clear: both; margin-right: 34px }
 .forum-copyright span { font-size: 10px; display: block }
 
 /* Icons */
@@ -105,7 +105,7 @@
 .topic-icon.poll.unread { background-image: url(../icons/topic_poll_unread.png) }
 
 /* Other */
-.controllers { margin: 15px 0 }
+.controllers { margin: 15px 34px }
 
 .userlist { line-height: 24px }
 .userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
@@ -138,26 +138,26 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .table-perms .perm-blue { background-color: #DEE0ED; color: #4D589E }
 
 /* Buttons */
-.button.button-orange {
-	background: #F6B537;
-	background: -moz-linear-gradient(top,  #F6B537 0%, #EB9719 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6B537), color-stop(100%,#EB9719));
-	background: -webkit-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
-	background: -o-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
-	background: -ms-linear-gradient(top,  #F6B537 0%,#EB9719 100%);
-	background: linear-gradient(top,  #F6B537 0%,#EB9719 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F6B537', endColorstr='#EB9719',GradientType=0 )
-}
-.button.button-orange:hover { background: #EB9719 }
+.button-orange { position: relative; display: table }
+.button-orange.ri { float: right }
+.button-orange .l44 { display: block; width: 16px; height: 40px; background: url(../images/orange-btn.png) no-repeat 0 1px; float: left }
+.button-orange button { display: block; border: 0; font-size: 13px; color: #fff; text-shadow: 0 1px 0 #1f7405; height: 40px; background: url(../images/orange-btn.png) repeat-x 0 -38px; float: left }
+.button-orange input { display: block; border: 0; font-size: 13px; color: #fff; text-shadow: 0 1px 0 #1f7405; height: 40px; background: url(../images/orange-btn.png) repeat-x 0 -38px; float: left }
+.button-orange .r44 { display: block; width: 16px; height: 40px; background: url(../images/orange-btn.png) no-repeat 0 -79px; float: right }
 
-.button.button-red { 
-	background: #DD4B39;
-	background: -moz-linear-gradient(top,  #DD4B39 0%, #D14836 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#DD4B39), color-stop(100%,#D14836));
-	background: -webkit-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
-	background: -o-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
-	background: -ms-linear-gradient(top,  #DD4B39 0%,#D14836 100%);
-	background: linear-gradient(top,  #DD4B39 0%,#D14836 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DD4B39', endColorstr='#D14836',GradientType=0 )
-}
-.button.button-red:hover { background: #D14836 }
+.button-orange:hover .l44 { background-position: 0 -122px }
+.button-orange:hover button { background-position: 0 -161px }
+.button-orange:hover input { background-position: 0 -161px }
+.button-orange:hover .r44 { background-position: 0 -201px }
+
+.button-red { position: relative; display: table }
+.button-red.ri { float: right }
+.button-red .l44 { display: block; width: 16px; height: 40px; background: url(../images/red-btn.png) no-repeat 0 1px; float: left }
+.button-red button { display: block; border: 0; font-size: 13px; color: #fff; text-shadow: 0 1px 0 #1f7405; height: 40px; background: url(../images/red-btn.png) repeat-x 0 -38px; float: left }
+.button-red input { display: block; border: 0; font-size: 13px; color: #fff; text-shadow: 0 1px 0 #1f7405; height: 40px; background: url(../images/red-btn.png) repeat-x 0 -38px; float: left }
+.button-red .r44 { display: block; width: 16px; height: 40px; background: url(../images/red-btn.png) no-repeat 0 -79px; float: right }
+
+.button-red:hover .l44 { background-position: 0 -122px }
+.button-red:hover button { background-position: 0 -161px }
+.button-red:hover input { background-position: 0 -161px }
+.button-red:hover .r44 { background-position: 0 -201px }

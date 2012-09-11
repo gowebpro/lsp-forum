@@ -1,0 +1,38 @@
+{assign var="noSidebar" value=true}
+{include file='header.tpl'}
+
+<div id="filter-top">
+	<div class="filter-bg"></div>
+
+	<h2 class="page-header" style="background:none"><a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span> {$aLang.plugin.forum.perms}</h2>
+</div>
+<br /><br />
+<div class="wrapper-content">
+	<div class="mb-30">
+		{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+	</div>
+</div>
+<div class="forums">
+	<table class="table table-forum-admin">
+		<tr>
+			<th class="cell-half cell-subtitle">
+				<h3>{$aLang.plugin.forum.perms_mask_name}</h3>
+			</th>
+			<th class="cell-half cell-subtitle">
+				<h3>{$aLang.plugin.forum.perms_used}</h3>
+			</th>
+		</tr>
+		{foreach from=$aPerms item=oPerm}
+		<tr>
+			<td>
+				<strong>{$oPerm->getName()}</strong>
+			</td>
+			<td>
+				{$aLang.plugin.forum.in_progress}
+			</td>
+		</tr>
+		{/foreach}
+	</table>
+</div>
+
+{include file='footer.tpl'}

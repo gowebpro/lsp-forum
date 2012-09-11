@@ -7,7 +7,7 @@
 	<div class="modal-content">
 		<form id="moder-form">
 			<p><label for="moder_forum_id">{$aLang.plugin.forum.moderator_select_forum}:</label>
-			<select id="moder_forum_id" name="moder_forum_id" class="input-text input-width-full">
+			<select id="moder_forum_id" name="moder_forum_id" class="input-width-full">
 				<option value="-1">--</option>
 				{foreach from=$aForumsList item=aItem}
 				<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title}</option>
