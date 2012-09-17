@@ -1064,7 +1064,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 */
 				$aExcludeMail=array();
 				if ($this->oUserCurrent) {
+					/**
+					 * Исключаем автора топика из списки рассылки
+					 */
 					$aExcludeMail[]=$this->oUserCurrent->getMail();
+					/**
+					 * Добавляем автора топика в подписчики на новые ответы к этому топику
+					 */
+					$this->Subscribe_AddSubscribeSimple('topic_new_post',$oTopic->getId(),$this->oUserCurrent->getMail());
+					/**
+					 * Добавляем событие в ленту
+					 */
+					$this->Stream_write($oTopic->getUserId(), 'add_forum_topic', $oTopic->getId());
 				}
 				/**
 				 * Отправка уведомления подписчикам темы
@@ -1075,14 +1086,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 					'oPost' => $oPost,
 					'oUser' => $this->oUserCurrent,
 				),$aExcludeMail,__CLASS__);
-				/**
-				 * Добавляем автора топика в подписчики на новые ответы к этому топику
-				 */
-				$this->Subscribe_AddSubscribeSimple('topic_new_post',$oTopic->getId(),$this->oUserCurrent->getMail());
-				/**
-				 * Добавляем событие в ленту
-				 */
-				$this->Stream_write($oTopic->getUserId(), 'add_forum_topic', $oTopic->getId());
 
 				Router::Location($oTopic->getUrlFull());
 			} else {
@@ -1234,7 +1237,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			$aExcludeMail=array();
 			if ($this->oUserCurrent) {
+				/**
+				 * Исключаем автора поста из списка рассылки
+				 */
 				$aExcludeMail[]=$this->oUserCurrent->getMail();
+				/**
+				 * Добавляем событие в ленту
+				 */
+				$this->Stream_write($oPost->getUserId(), 'add_forum_post', $oPost->getId());
 			}
 			/**
 			 * Отправка уведомления подписчикам форума
@@ -1245,10 +1255,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 				'oPost' => $oPost,
 				'oUser' => $this->oUserCurrent,
 			),$aExcludeMail,__CLASS__);
-			/**
-			 * Добавляем событие в ленту
-			 */
-			$this->Stream_write($oPost->getUserId(), 'add_forum_post', $oPost->getId());
 
 			Router::Location($oPost->getUrlFull());
 		} else {
