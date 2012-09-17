@@ -8,6 +8,5 @@
 		{/foreach}
 		</optgroup>
 	</select>
-	<button type="submit" class="button">OK</button>
 </form>
 {/if}
