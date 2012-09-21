@@ -263,6 +263,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function BuildPerms($oForum,$bNoModers=false) {
 		$oUser = LS::CurUsr();
+		$oParent = $oForum->getParentId() ? $this->BuildPerms($oForum->getParent(),true) : null;
 
 		if (!$bNoModers) {
 			$sId = $oUser ? $oUser->getId() : 0;
@@ -284,6 +285,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUser));
 
 		$oForum->setAutorization($this->isForumAuthorization($oForum));
+
+		if ($oParent && !($oParent->getAllowShow())) {
+			$oForum->setAllowShow($oParent->getAllowShow());
+		}
 
 		return $oForum;
 	}
