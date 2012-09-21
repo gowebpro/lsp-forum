@@ -159,6 +159,7 @@ return array(
 	'post_anchor' => 'Link to post',
 	'post_anchor_promt' => 'Copy a direct link to this message, to save the clipboard',
 	'post_last' => 'Last post',
+	'post_last' => 'View last post',
 	'post_create_title' => 'Post subject',
 	'post_create_title_notice' => 'optional',
 	'post_create_title_error' => 'Name of message should be between 2 and 100 characters',
