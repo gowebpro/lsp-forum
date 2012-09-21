@@ -1,1 +1,0 @@
-<li class="js-block-stream-item" data-type="forum"><a href="#">{$aLang.plugin.forum.block_stream}</a></li>
