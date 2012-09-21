@@ -33,7 +33,7 @@
 		</td>
 		<td class="cell-post">
 			<ul class="last-post">
-				<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
+				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
 				<li>
 					{$aLang.plugin.forum.header_author}:
 					<span class="author user-avatar">

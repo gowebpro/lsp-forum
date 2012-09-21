@@ -62,9 +62,9 @@
 								</span>
 							</li>
 							{if $oForum->getAllowRead() && $oForum->getAutorization()}
-							<li><a class="date" title="{$aLang.plugin.forum.header_last_post}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
+							<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
 							{else}
-							<li><span title="{$aLang.plugin.forum.header_last_post}">{date_format date=$oPost->getDateAdd()}</span></li>
+							<li><span title="{$aLang.plugin.forum.post_last_view}">{date_format date=$oPost->getDateAdd()}</span></li>
 							{/if}
 						</ul>
 					{/if}

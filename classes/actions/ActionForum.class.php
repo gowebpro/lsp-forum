@@ -985,7 +985,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oTopic->setForumId($oForum->getId());
 		$oTopic->setUserId($this->oUserCurrent->getId());
 		$oTopic->setUserIp(func_getIp());
-		$oTopic->setTitle(getRequest('topic_title'));
+		$oTopic->setTitle(rtrim(getRequest('topic_title'), '(^A-Za-z0-9!?)'));
 		$oTopic->setDescription(getRequest('topic_description'));
 		$oTopic->setDateAdd(date("Y-m-d H:i:s"));
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
@@ -1078,7 +1078,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$this->Stream_write($oTopic->getUserId(), 'add_forum_topic', $oTopic->getId());
 				}
 				/**
-				 * Отправка уведомления подписчикам темы
+				 * Отправка уведомления подписчикам форума
 				 */
 				$this->Subscribe_Send('forum_new_topic',$oForum->getId(),'notify.topic_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_topic'),array(
 					'oForum' => $oForum,
@@ -1196,7 +1196,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Заполняем поля для валидации
 		 */
-		$oPost->setTitle(getRequest('post_title'));
+		$oPost->setTitle(rtrim(getRequest('post_title'), '(^A-Za-z0-9!?)'));
 		$oPost->setTopicId($oTopic->getId());
 		$oPost->setUserIp(func_getIp());
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
@@ -1247,7 +1247,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Stream_write($oPost->getUserId(), 'add_forum_post', $oPost->getId());
 			}
 			/**
-			 * Отправка уведомления подписчикам форума
+			 * Отправка уведомления подписчикам темы
 			 */
 			$this->Subscribe_Send('topic_new_post',$oTopic->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
 				'oForum' => $oForum,
@@ -1361,7 +1361,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Заполняем поля для валидации
 		 */
 		if ($bEditTopic) {
-			$oTopic->setTitle(getRequest('topic_title'));
+			$oTopic->setTitle(rtrim(getRequest('topic_title'), '(^A-Za-z0-9!?)'));
 			$oTopic->setDescription(getRequest('topic_description'));
 			$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 			if (isPost('topic_close')) {
@@ -1381,7 +1381,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oPost->setTitle($oTopic->getTitle());
 		} else {
 			$oPost->_setValidateScenario('post');
-			$oPost->setTitle(getRequest('post_title'));
+			$oPost->setTitle(rtrim(getRequest('post_title'), '(^A-Za-z0-9!?)'));
 		}
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
@@ -1579,13 +1579,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setCanPost(1);
 		} else {
 			$oForum->setDescription(getRequest('forum_description'));
-			$oForum->setParentId(getRequest('forum_parent'));
-			$oForum->setType(getRequest('forum_type'));
-			$oForum->setCanPost(getRequest('forum_sub_can_post') ? 1 : 0 );
-			$oForum->setQuickReply(getRequest('forum_quick_reply') ? 1 : 0 );
-			$oForum->setPassword(getRequest('forum_password'));
+			$oForum->setParentId((int)getRequest('forum_parent'));
+			$oForum->setType((int)getRequest('forum_type'));
+			$oForum->setCanPost((int)getRequest('forum_sub_can_post') ? 1 : 0 );
+			$oForum->setQuickReply((string)getRequest('forum_quick_reply') ? 1 : 0 );
+			$oForum->setPassword(getRequest('forum_password',null));
 			if (getRequest('forum_sort')) {
-				$oForum->setSort(getRequest('forum_sort'));
+				$oForum->setSort((int)getRequest('forum_sort'));
 			} else {
 				$oForum->setSort($this->PluginForum_Forum_GetMaxSortByPid($oForum->getParentId())+1);
 			}
@@ -1593,7 +1593,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if (isPost('forum_redirect_url')) {
 				$oForum->setRedirectOn(getRequest('forum_redirect_on') ? 1 : 0 );
 			}
-			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
+			$oForum->setLimitRatingTopic((float)getRequest('forum_limit_rating_topic'));
 		}
 		/**
 		 * Проверяем корректность полей
@@ -1631,17 +1631,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setCanPost(1);
 		} else {
 			$oForum->setDescription(getRequest('forum_description'));
-			$oForum->setParentId(getRequest('forum_parent'));
-			$oForum->setType(getRequest('forum_type'));
+			$oForum->setParentId((int)getRequest('forum_parent'));
+			$oForum->setType((int)getRequest('forum_type'));
 			$oForum->setCanPost( (int)getRequest('forum_sub_can_post',0,'post') === 1 );
 			$oForum->setQuickReply( (int)getRequest('forum_quick_reply',0,'post') === 1 );
-			$oForum->setPassword(getRequest('forum_password'));
-			$oForum->setSort(getRequest('forum_sort'));
+			$oForum->setPassword(getRequest('forum_password',null));
+			$oForum->setSort((int)getRequest('forum_sort'));
 			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
 			if (isPost('forum_redirect_url')) {
 				$oForum->setRedirectOn( (int)getRequest('forum_redirect_on',0,'post') === 1 );
 			}
-			$oForum->setLimitRatingTopic(getRequest('forum_limit_rating_topic'));
+			$oForum->setLimitRatingTopic((float)getRequest('forum_limit_rating_topic'));
 		}
 		/**
 		 * Проверяем корректность полей

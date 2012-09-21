@@ -129,3 +129,60 @@ ls.forum.admin = (function ($) {
 
 	return this;
 }).call(ls.forum.admin || {},jQuery);
+
+
+jQuery(document).ready(function($){
+
+	$('#forum_url').keypress(ls.tools.latinecFilter);
+	$('#forum_limit_rating_topic').keypress(ls.tools.floatFilter);
+
+});
+
+
+/**
+ * Вспомогательные функции
+ */
+ls.tools = (function ($) {
+	/**
+	 * Проверка целых чисел
+	 */
+	this.numberFilter = function(e) {
+		e=e || window.event;
+		var code=e.charCode || e.keyCode;
+		if (e.charCode==0) return true;
+		if (code<32) return true;
+		var charCode=String.fromCharCode(code);
+		var allowed='0123456789';
+		if (allowed.indexOf(charCode)==-1) return false;
+	}
+
+	/**
+	 * Проверка чисел с плавающей точкой
+	 */
+	this.floatFilter = function(e) {
+		e=e || window.event;
+		var code=e.charCode || e.keyCode;
+		var o=$(e.target || e.srcElement);
+		if (e.charCode==0) return true;
+		if (code<32) return true;
+		if ((code==46 && o.val().indexOf('.')>=0) || (code==45 && o.val().indexOf('-')>=0)) return false;
+		if ((code==46 && o.val()=="") || (code==45 && o.val()!="")) return false;
+		var charCode=String.fromCharCode(code);
+		var allowed='0123456789.-';
+		if (allowed.indexOf(charCode)==-1) return false;
+	}
+
+	/**
+	 * Проверка латинских символов
+	 */
+	this.latinecFilter = function(e) {
+		e=e || window.event;
+		var code=e.charCode || e.keyCode;
+		if (/[a-zA-Z_]*$/.test(String.fromCharCode(code))) {
+			return true;
+		}
+		return false;
+	}
+
+	return this;
+}).call(ls.tools || {},jQuery);
