@@ -166,7 +166,6 @@ return array(
 	'post_create_text' => 'Text',
 	'post_create_text_notice' => 'Available in html-tags',
 	'post_create_text_error_unique' => 'You have already written the message with the content',
-	'post_by' => 'from',//!!
 	'post_edit' => 'Edit reply',
 	'post_edit_for' => 'Edit reply in %%topic%%',
 	'post_edit_reason' => 'Reason for edit',
@@ -174,6 +173,7 @@ return array(
 	'post_edit_not_allow' => 'No access to this action',
 	'post_editing' => 'Last edit',
 	'post_delete_not_allow' => 'No access to this action',
+	'post_writer' => 'Write',
 
 	'reply' => 'Reply',
 	'reply_for' => 'Reply in %%topic%%',

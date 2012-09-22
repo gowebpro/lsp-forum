@@ -51,7 +51,7 @@
 							<li><em>{$aLang.plugin.forum.forum_closed}</em></li>
 							{/if}
 							<li>
-								{$aLang.plugin.forum.header_author}:
+								{$aLang.plugin.forum.post_writer}:
 								<span class="author user-avatar">
 									{if $oPoster}
 										<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>

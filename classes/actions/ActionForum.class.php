@@ -58,6 +58,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->oUserCurrent=$this->User_GetUserCurrent();
 		/**
+		 * Закрытый режим
+		 */
+		if (!(LS::Adm()) && Config::Get('plugin.forum.close_mode')) {
+			return parent::EventNotFound();
+		}
+		/**
 		 * Меню
 		 */
 		$this->Viewer_AddMenu('forum',$this->getTemplatePathPlugin().'menu.forum.tpl');

@@ -15,6 +15,12 @@ $config=array();
 $config['encrypt'] = 'ChiffaYo';
 
 /**
+ * Закрытый режим
+ * Закрыть раздел от всех, кроме админа
+ */
+$config['close_mode']			= false;
+
+/**
  * Количество топиков на страницу
  */
 $config['topic_per_page']		= 10;

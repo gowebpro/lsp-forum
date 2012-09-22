@@ -166,7 +166,6 @@ return array(
 	'post_create_text' => 'Текст сообщения',
 	'post_create_text_notice' => 'Доступны html-теги',
 	'post_create_text_error_unique' => 'Вы уже писали сообщение с таким содержанием',
-	'post_by' => 'от',//!!
 	'post_edit' => 'Редактирование ответа',
 	'post_edit_for' => 'Редактирование ответа в %%topic%%',
 	'post_edit_reason' => 'Причина редактирования',
@@ -174,6 +173,7 @@ return array(
 	'post_edit_not_allow' => 'Нет доступа к этому действию',
 	'post_editing' => 'Последний раз редактировал пользователь',
 	'post_delete_not_allow' => 'Нет доступа к этому действию',
+	'post_writer' => 'Пишет',
 
 	'reply' => 'Ответ',
 	'reply_for' => 'Ответ в %%topic%%',
