@@ -14,9 +14,10 @@
 .forums-header:hover .js-forum-cat-toogler { visibility: visible }
 .forums-header.collapsed { opacity: 0.5 }
 .forums-header.collapsed:hover { opacity: 0.75 }
-.forums-content { }
+.forums-content { margin-bottom: 10px }
 .forums-content section { padding: 15px }
-.forums-footer-block { border-bottom: 1px solid #eee; border-top: 1px solid #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
+.forums-note { padding: 20px 40px; color: #999; border-width: 1px 0px; border-style: solid; border-color: #DCE1E6; margin-bottom: 10px }
+.forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
 .table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
 .table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 7px }

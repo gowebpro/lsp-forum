@@ -105,14 +105,17 @@ jQuery(document).ready(function($){
 	$('.js-forum-cat-toogler').click(function() {
 		var header=$(this).parent('header');
 		var content=$(header).next('.forums-content');
+		var note=$(content).next('.forums-note');
 		if (content.css('display')=='block') {
 			$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
 			$(header).addClass('collapsed');
 			$(content).slideUp();
+			if (note) $(note).slideDown();
 		} else {
 			$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
 			$(header).removeClass('collapsed');
 			$(content).slideDown();
+			if (note) $(note).slideUp();
 		}
 		return false;
 	});

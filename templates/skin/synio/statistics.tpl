@@ -1,5 +1,6 @@
 <div class="forum-stats">
 	<header class="forums-header">
+		<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
 		<h3>{$aLang.plugin.forum.stats}</h3>
 	</header>
 	<div class="forums-content">
@@ -78,5 +79,17 @@
 				</td>
 			</tr>
 		</table>
+	</div>
+	<div class="forums-note clearfix" style="display:none">
+		<div class="fl-r">
+			<strong>{$aForumStats.count_all_topics}</strong> {$aForumStats.count_all_topics|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}
+			<span>|</span>
+			<strong>{$aForumStats.count_all_posts}</strong> {$aForumStats.count_all_posts|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
+		</div>
+		<div class="fl-l">
+		{if $aForumStats.online}
+			{$aForumStats.online.count_visitors} {$aForumStats.count_all_posts|declension:$aLang.plugin.forum.users_declension:'russian'|lower} {$aLang.user_status_online}
+		{/if}
+		</div>
 	</div>
 </div>
