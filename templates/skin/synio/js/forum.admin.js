@@ -113,12 +113,22 @@ ls.forum.admin = (function ($) {
 		return false;
 	};
 
-	this.permsCheckAll = function(checkbox,perm,form) {
+	this.permsCheckCol = function(perm,form,invert) {
 		$.each($('#'+form).find('input[type="checkbox"]'),function(k,v){
 			var s = $(v).attr('id');
 			var a = s.replace(/^(.+?)_.+?$/, "$1");
 			if (a == perm) {
-				$(v).attr('checked',($(checkbox).attr('checked')) ? true : false);
+				$(v).attr('checked',(invert) ? false : true);
+			}
+		});
+	};
+
+	this.permsCheckRow = function(id,form,invert) {
+		$.each($('#'+form).find('input[type="checkbox"]'),function(k,v){
+			var s = $(v).attr('id');
+			var a = s.replace(/[^0-9]/gi, "");
+			if (a == id) {
+				$(v).attr('checked',(invert) ? false : true);
 			}
 		});
 	};

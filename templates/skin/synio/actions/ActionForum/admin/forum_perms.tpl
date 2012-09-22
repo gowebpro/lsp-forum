@@ -22,25 +22,31 @@
 				</th>
 				<th class="perm-red ta-c">
 					<div>{$aLang.plugin.forum.perms_show}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'show','forum-perms')" name="show_all" id="show_all" value="1" />
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('show','forum-perms')">+</button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('show','forum-perms',1)">-</button>
 				</th>
 				<th class="perm-green ta-c">
 					<div>{$aLang.plugin.forum.perms_read}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'read','forum-perms')" name="read_all" id="read_all" value="1" />
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('read','forum-perms')">+</button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('read','forum-perms',1)">-</button>
 				</th>
 				<th class="perm-yellow ta-c">
 					<div>{$aLang.plugin.forum.perms_reply}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'reply','forum-perms')" name="reply_all" id="reply_all" value="1" />
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms')">+</button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms',1)">-</button>
 				</th>
 				<th class="perm-blue ta-c">
 					<div>{$aLang.plugin.forum.perms_start}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckAll(this,'start','forum-perms')" name="start_all" id="start_all" value="1" />
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('start','forum-perms')">+</button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckCol('start','forum-perms',1)">-</button>
 				</th>
 			</tr>
 			{foreach from=$aPerms item=oPerm}
 			<tr>
 				<td class="ta-c">
 					{$oPerm->getName()}
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms')">+</button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms',1)">-</button>
 				</td>
 				<td class="perm-red">
 					<div>{$aLang.plugin.forum.perms_show}</div>
