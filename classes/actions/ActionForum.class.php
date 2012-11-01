@@ -608,6 +608,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign("aTopics",$aTopics);
 		$this->Viewer_Assign("oForum",$oForum);
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_show',array('oForum'=>$oForum));
+		/**
 		 * Устанавливаем шаблон вывода
 		 */
 		$this->SetTemplateAction('forum');
@@ -713,6 +717,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign("aPosts",$aPosts);
 		$this->Viewer_Assign("iPostsCount",$iPostsCount);
 		$this->Viewer_Assign("aPaging",$aPaging);
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_topic_show',array('oTopic'=>$oTopic));
 		/**
 		 * Задаем шаблон
 		 */
@@ -940,6 +948,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_topic_add_show');
+		/**
 		 * Загружаем перемененные в шаблон
 		 */
 		$this->Viewer_Assign("oForum",$oForum);
@@ -1034,6 +1046,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return false;
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_topic_add_before', array('oTopic'=>$oTopic,'oPost'=>$oPost,'oForum'=>$oForum));
+		/**
 		 * Добавляем топик
 		 */
 		if ($oTopic->Add()) {
@@ -1046,6 +1062,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Добавляет первый пост
 			 */
 			if ($oPost->Add()) {
+				$this->Hook_Run('forum_topic_add_after', array('oTopic'=>$oTopic,'oPost'=>$oPost,'oForum'=>$oForum));
 				/**
 				 * Получаем пост, чтоб подцепить связанные данные
 				 */
@@ -1142,6 +1159,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return Router::Action('error');
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_post_add_show');
+		/**
 		 * Загружаем перемененные в шаблон
 		 */
 		$this->Viewer_Assign("oForum",$oForum);
@@ -1222,9 +1243,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return false;
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_post_add_before',array('oPost'=>$oPost,'oTopic'=>$oTopic,'oForum'=>$oForum));
+		/**
 		 * Добавляем
 		 */
 		if ($oPost->Add()) {
+			$this->Hook_Run('forum_post_add_after',array('oPost'=>$oPost,'oTopic'=>$oTopic,'oForum'=>$oForum));
 			/**
 			 * Обновляем инфу в топике
 			 */
@@ -1308,6 +1334,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 				return Router::Action('error');
 			}
 		}
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_post_edit_show',array('oPost'=>$oPost));
 		/**
 		 * Загружаем перемененные в шаблон
 		 */
@@ -1407,7 +1437,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Обновляем
 		 */
 		if ($bEditTopic) $oTopic->Save();
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_post_edit_before',array('oPost'=>$oPost));
+		/**
+		 * Сохраняем пост
+		 */
 		if ($oPost->Save()) {
+			$this->Hook_Run('forum_post_edit_after',array('oPost'=>$oPost));
 			Router::Location($oPost->getUrlFull());
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
@@ -1418,7 +1456,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Удаление поста
-	 *
+	 * TODO: Перевесить на ajax с возможностью быстрого восстановления
 	 */
 	public function EventDeletePost() {
 		/**
@@ -1450,9 +1488,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return Router::Action('error');
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_post_delete_before',array('oPost'=>$oPost));
+		/**
 		 * Удаляем пост
 		 */
 		if ($this->PluginForum_Forum_DeletePosts($oPost)) {
+			$this->Hook_Run('forum_post_delete_after',array('oPost'=>$oPost));
 			/**
 			 * Обновляем счетчик форума
 			 */
@@ -1607,8 +1650,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!$this->checkForumFields($oForum)) {
 			return ;
 		}
-
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_add_before',array('oForum'=>$oForum));
+		/**
+		 * Добавляем форум
+		 */
 		if ($oForum->Save()) {
+			$this->Hook_Run('forum_add_after',array('oForum'=>$oForum));
 			$this->Message_AddNotice($this->Lang_Get('plugin.forum.create_ok'),null,1);
 		} else {
 			$this->Message_AddError($this->Lang_Get('system_error'),null,1);
@@ -1655,8 +1705,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!$this->checkForumFields($oForum)) {
 			return;
 		}
-
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_edit_before',array('oForum'=>$oForum));
+		/**
+		 * Сохраняем форум
+		 */
 		if ($oForum->Save()) {
+			$this->Hook_Run('forum_add_after',array('oForum'=>$oForum));
 			$this->Message_AddNotice($this->Lang_Get('plugin.forum.edit_ok'),null,1);
 		} else {
 			$this->Message_AddError($this->Lang_Get('system_error'),null,1);
@@ -1761,6 +1818,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_form',array('sShowType'=>$sType,'sType'=>$sNewType));
+		/**
 		 * Загружаем переменные в шаблон
 		 */
 		$this->Viewer_Assign('aForums',$aForums);
@@ -1795,6 +1856,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('oForum',$oForumDelete);
 		$this->Viewer_Assign('aForums',$aForums);
 		$this->Viewer_Assign('aForumsList',$aForumsList);
+		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_delete_show');
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
@@ -1887,11 +1952,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->PluginForum_Forum_MoveForums($sForumId,$sForumIdNew);
 			}
 			/**
+			 * Вызов хуков
+			 */
+			$this->Hook_Run('forum_delete_before',array('oForum'=>$oForumDelete));
+			/**
 			 * Удаляем форум и перенаправляем админа к списку форумов
 			 */
-			$this->Hook_Run('forum_delete_forum_before',array('sForumId'=>$sForumId));
 			if($this->PluginForum_Forum_DeleteForum($oForumDelete)) {
-				$this->Hook_Run('forum_delete_forum_after',array('sForumId'=>$sForumId));
+				$this->Hook_Run('forum_delete_after',array('oForum'=>$oForumDelete));
 				$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.delete_success'),$this->Lang_Get('attention'),true);
 				Router::Location(Router::GetPath('forum').'admin/forums/');
 			} else {
@@ -1950,6 +2018,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('aPerms',$aPerms);
 		$this->Viewer_Assign('oForum',$oForum);
 		/**
+		 * Вызов хуков
+		 */
+		$this->Hook_Run('forum_perms_show',array('oForum'=>$oForum));
+		/**
 		 * Устанавливаем шаблон вывода
 		 */
 		$this->SetTemplateAction('admin/forum_perms');
@@ -1964,7 +2036,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 				'start_perms'=>getRequest('start',array(),'post')
 			);
 			$oForum->setPermissions(addslashes(serialize($aPermissions)));
-
+			/**
+			 * Сохраняем форум
+			 */
 			if ($oForum->Save()) {
 				$this->Message_AddNotice($this->Lang_Get('plugin.forum.perms_submit_ok'),null,1);
 				Router::Location(Router::GetPath('forum').'admin/forums/');
