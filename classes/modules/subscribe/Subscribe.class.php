@@ -10,7 +10,7 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleSubscribe extends ModuleSubscribe {
+class PluginForum_ModuleSubscribe extends PluginForum_Inherit_ModuleSubscribe {
 
 	/**
 	 * Проверка объекта подписки с типом "forum_new_topic"

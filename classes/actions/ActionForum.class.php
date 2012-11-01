@@ -1593,7 +1593,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if (getRequest('forum_sort')) {
 				$oForum->setSort((int)getRequest('forum_sort'));
 			} else {
-				$oForum->setSort($this->PluginForum_Forum_GetMaxSortByPid($oForum->getParentId())+1);
+				$oForum->setSort((int)$this->PluginForum_Forum_GetMaxSortByPid($oForum->getParentId())+1);
 			}
 			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
 			if (isPost('forum_redirect_url')) {

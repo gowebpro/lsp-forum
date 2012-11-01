@@ -10,7 +10,7 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleACL extends ModuleACL {
+class PluginForum_ModuleACL extends PluginForum_Inherit_ModuleACL {
 
 	/**
 	 * Проверяет может ли пользователь создавать топики

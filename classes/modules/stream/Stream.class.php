@@ -10,7 +10,7 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleStream extends ModuleStream {
+class PluginForum_ModuleStream extends PluginForum_Inherit_ModuleStream {
 
 	/**
 	 * Получает список топиков
