@@ -17,6 +17,10 @@ To install forum do this:
 * Upload to FTP, in the plugins folder
 * Activate plugin
 
+Wiki
+----
+[Go to wiki](https://github.com/Xmk/lsplugin-forum/wiki)
+
 License
 -------
 [ ![CC BY-NC](http://i.creativecommons.org/l/by-nc/3.0/88x31.png "CC BY-NC") ](http://creativecommons.org/licenses/by-nc/3.0/ "CC BY-NC")

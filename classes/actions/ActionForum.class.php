@@ -1719,7 +1719,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Сохраняем форум
 		 */
 		if ($oForum->Save()) {
-			$this->Hook_Run('forum_add_after',array('oForum'=>$oForum));
+			$this->Hook_Run('forum_edit_after',array('oForum'=>$oForum));
 			$this->Message_AddNotice($this->Lang_Get('plugin.forum.edit_ok'),null,1);
 		} else {
 			$this->Message_AddError($this->Lang_Get('system_error'),null,1);
