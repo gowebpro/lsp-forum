@@ -6,7 +6,7 @@
 		<span class="note">{$aLang.plugin.forum.guest_name_notice}</span>
 	</p>
 
-	{hookb run="popup_registration_captcha"}
+	{hookb run="forum_guest_captcha"}
 	<p>
 		<label for="guest_captcha">{$aLang.plugin.forum.guest_captcha}</label>
 		<img src="{cfg name='path.root.engine_lib'}/external/kcaptcha/index.php?{$_sPhpSessionName}={$_sPhpSessionId}" 
