@@ -349,7 +349,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if (false === ($data = $this->Cache_Get("topic_views_{$oTopic->getId()}"))) {
 			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($oTopic->getId());
 			if (!$oView) {
-				$oView = LS::ENT('PluginForum_Forum_Vew');
+				$oView = LS::ENT('PluginForum_Forum_TopicView');
 				$oView->setTopicId($oTopic->getId());
 			}
 			$oView->setTopicViews($oView->getTopicViews()+1);

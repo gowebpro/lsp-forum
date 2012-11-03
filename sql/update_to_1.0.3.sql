@@ -18,7 +18,7 @@ ALTER TABLE `prefix_forum_topic_view`
 --  Dumping data for table `prefix_forum_topic_view`
 --
 INSERT INTO `prefix_forum_topic_view` (`topic_id`, `topic_views`)
-SELECT `t.topic_id`, `t.topic_views`
+SELECT t.`topic_id`, t.`topic_views`
 FROM `prefix_forum_topic` as t;
 
 --

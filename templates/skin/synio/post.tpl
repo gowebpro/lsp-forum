@@ -1,7 +1,7 @@
 {assign var="oUser" value=$oPost->getUser()}
 
 <article class="forum-post{if $bFirst} forum-post-first{/if}" id="post-{$oPost->getId()}">
-	<div class="clearfix">
+	<div class="forum-post-wrap {if !$noPostSide}clearfix{/if}">
 		{if !$noPostSide}
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
@@ -29,7 +29,7 @@
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
 		{/if}
-		<div class="forum-post-content{if $noPostSide} no-side{/if} clearfix">
+		<div class="forum-post-content{if $noPostSide} no-side{/if}">
 			<header class="forum-post-header">
 				{hook run='forum_post_header_begin' post=$oPost}
 				<div class="forum-post-details fl-r">

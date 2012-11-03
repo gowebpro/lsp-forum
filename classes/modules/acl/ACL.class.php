@@ -64,11 +64,9 @@ class PluginForum_ModuleACL extends PluginForum_Inherit_ModuleACL {
 			 * Проверяем, если топик опубликованный меньше чем plugin.forum.acl.create.topic.time секунд назад
 			 */
 			$aTopics = $this->PluginForum_Forum_GetTopicItemsByFilter(array('#where'=>array('user_id = ?d' => array($oUser->getId()),'topic_date_add >= ?' => array(date("Y-m-d H:i:s",time()-Config::Get('plugin.forum.acl.create.topic.time'))))));
-
-			if (count($aTopics)>0) {
-				return false;
+			if (empty($aTopics)) {
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -248,7 +246,6 @@ class PluginForum_ModuleACL extends PluginForum_Inherit_ModuleACL {
 		 * Разрешаем если это автор топика
 		 */
 		if ($oPost->getUserId()==$oUser->getId()) {
-			//15 минутный тайм-аут
 			$sDateComment=strtotime($oPost->getDateAdd());
 			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.post.time'))) {
 				return true;
@@ -281,7 +278,6 @@ class PluginForum_ModuleACL extends PluginForum_Inherit_ModuleACL {
 		 * Разрешаем если это автор комментария и настройками групп разрешено удалять свои комментарии
 		 */
 		if ($oPost->getUserId()==$oUser->getId()) {
-			//15 минутный тайм-аут
 			$sDateComment=strtotime($oPost->getDateAdd());
 			if ($sDateComment>(time()-Config::Get('plugin.forum.acl.edit.post.time'))) {
 				return true;

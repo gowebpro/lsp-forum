@@ -16,7 +16,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	 *
 	 * @param	integer	$sForumId
 	 * @param	integer	$sForumIdNew
-	 * @return bool
+	 * @return	bool
 	 */
 	public function MoveTopics($sForumId,$sForumIdNew) {
 		$sql = 'UPDATE '.Config::Get('db.table.forum_topic').'
@@ -27,13 +27,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return false;
 	}
-
 	/**
 	 * Перемещает подфорумы в другой форум
 	 *
 	 * @param	integer	$sForumId
 	 * @param	integer	$sForumIdNew
-	 * @return bool
+	 * @return	bool
 	 */
 	public function MoveForums($sForumId,$sForumIdNew) {
 		$sql = 'UPDATE '.Config::Get('db.table.forum').'
@@ -51,7 +50,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	 * @param	integer	$iSort
 	 * @param	integer	$sPid
 	 * @param	string	$sWay
-	 * @return	object
+	 * @return	string
 	 */
 	public function GetNextForumBySort($iSort,$sPid,$sWay) {
 		if ($sWay=='up') {
@@ -75,7 +74,6 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return null;
 	}
-
 	/**
 	 * Получает значение максимальной сртировки
 	 *
@@ -98,7 +96,13 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return 0;
 	}
 
-	public function GetCountTopicByForumId($sFid) {
+	/**
+	 * Получает количество тем в форуме по ID
+	 *
+	 * @param	integer	$sFid
+	 * @return	integer
+	 */
+	 public function GetCountTopicByForumId($sFid) {
 		$sql = 'SELECT COUNT(*) as count
 				FROM '.Config::Get('db.table.forum_topic').'
 				WHERE forum_id = ?';
@@ -107,6 +111,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
+	/**
+	 * Получает количество постов в форуме по ID
+	 *
+	 * @param	integer	$sFid
+	 * @return	integer
+	 */
 	public function GetCountPostByForumId($sFid) {
 		$sql = 'SELECT SUM(topic_count_post) as replies
 				FROM '.Config::Get('db.table.forum_topic').'
@@ -116,6 +126,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
+	/**
+	 * Получает последний пост в форуме по ID
+	 *
+	 * @param	integer	$sFid
+	 * @return	string
+	 */
 	public function GetLastPostByForumId($sFid) {
 		$sql = 'SELECT MAX(last_post_id) as last_post
 				FROM '.Config::Get('db.table.forum_topic').'
@@ -126,6 +142,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return null;
 	}
 
+	/**
+	 * Получает количество постов в топике по ID
+	 *
+	 * @param	integer	$sTid
+	 * @return	integer
+	 */
 	public function GetCountPostByTopicId($sTid) {
 		$sql = 'SELECT COUNT(*) as count
 				FROM '.Config::Get('db.table.forum_post').'
@@ -135,6 +157,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
+	/**
+	 * Получает последний пост в топике по ID
+	 *
+	 * @param	integer	$sTid
+	 * @return	string
+	 */
 	public function GetLastPostByTopicId($sTid) {
 		$sql = 'SELECT MAX(post_id) as last_post
 				FROM '.Config::Get('db.table.forum_post').'
@@ -145,6 +173,11 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return null;
 	}
 
+	/**
+	 * Получает количество топиков
+	 *
+	 * @return	integer
+	 */
 	public function GetCountTopics() {
 		$sql = 'SELECT COUNT(*) as count
 				FROM '.Config::Get('db.table.forum_topic');
@@ -153,7 +186,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
-	public function GetCountPosts() {
+	/**
+	 * Получает количество постов
+	 *
+	 * @return	integer
+	 */
+	 public function GetCountPosts() {
 		$sql = 'SELECT COUNT(*) as count
 				FROM '.Config::Get('db.table.forum_post');
 		if ($aRow=$this->oDb->selectRow($sql)) {
@@ -161,6 +199,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
+	/**
+	 * Получает количество пользователей
+	 *
+	 * @param	integer	$sPid
+	 * @return	integer
+	 */
 	public function GetCountUsers() {
 		$sql = 'SELECT COUNT(*) as count
 				FROM '.Config::Get('db.table.user');
@@ -171,13 +215,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	}
 
 	/**
-	 * Перемещает топики в другой форум
+	 * Обновление просмотров топика
 	 *
-	 * @param	integer	$sForumId
-	 * @param	integer	$sForumIdNew
-	 * @return bool
+	 * @param	PluginForum_ModuleForum_EntityTopicView	$oView
+	 * @return	bool
 	 */
-	public function UpdateTopicViews($oView) {
+	public function UpdateTopicViews(PluginForum_ModuleForum_EntityTopicView $oView) {
 		$sql = 'UPDATE '.Config::Get('db.table.forum_topic_view').'
 				SET topic_views = ?d
 				WHERE topic_id = ?d';
