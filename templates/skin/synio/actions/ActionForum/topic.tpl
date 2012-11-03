@@ -31,7 +31,7 @@
 	<header class="forums-header">
 	{if $oConfig->GetValue('plugin.forum.topic_line_mod')}
 		<section class="fl-r">
-			{$aLang.plugin.forum.topic_post_count}: {$iPostsCount}
+			{$aLang.plugin.forum.topic_post_count}: {$iPostsCount|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}
 		</section>
 		<h3>{$aLang.plugin.forum.topic_answers}</h3>
 	{else}

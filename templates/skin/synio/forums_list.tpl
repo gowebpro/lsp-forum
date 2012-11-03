@@ -32,12 +32,12 @@
 					{/if}
 				</td>
 				{if $oForum->getRedirectOn()}
-				<td class="ta-c" colspan="2"><span class="lighter"><em>{$oForum->getRedirectHits()} {$oForum->getRedirectHits()|declension:$aLang.plugin.forum.redirect_hits_declension:'russian'|lower}</span></p></td>
+				<td class="ta-c" colspan="2"><span class="lighter"><em>{$oForum->getRedirectHits()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$oForum->getRedirectHits()|declension:$aLang.plugin.forum.redirect_hits_declension:'russian'|lower}</span></p></td>
 				{else}
 				<td class="cell-stats ta-r">
 					<ul>
-						<li><strong>{$oForum->getCountTopic()}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}</li>
-						<li><strong>{$oForum->getCountPost()}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
+						<li><strong>{$oForum->getCountTopic()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}</li>
+						<li><strong>{$oForum->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
 					</ul>
 				</td>
 				<td class="cell-post">

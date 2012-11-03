@@ -27,8 +27,8 @@
 		</td>
 		<td class="cell-stats ta-r">
 			<ul>
-				<li><strong>{$oTopic->getCountPost()}</strong> {$oTopic->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
-				<li><strong>{$oTopic->getViews()}</strong> {$oTopic->getViews()|declension:$aLang.plugin.forum.views_declension:'russian'|lower}</li>
+				<li><strong>{$oTopic->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oTopic->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}</li>
+				<li><strong>{$oTopic->getViews()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oTopic->getViews()|declension:$aLang.plugin.forum.views_declension:'russian'|lower}</li>
 			</ul>
 		</td>
 		<td class="cell-post">

@@ -80,6 +80,11 @@ class PluginForum extends Plugin {
 		 * Загружаем в шаблон
 		 */
 		$this->Viewer_Assign('aLang',$this->Lang_GetLangMsg());
+		/**
+		 * Подключаем нашу директорию плагинов для Smarty
+		 */
+		$oSmarty = $this->Viewer_GetSmartyObject();
+		$oSmarty->addPluginsDir(Config::Get('plugin.forum.path_smarty_plug'));
 
 		return true;
 	}

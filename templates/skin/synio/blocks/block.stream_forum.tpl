@@ -17,7 +17,7 @@
 			</p>
 			<a href="{$oForum->getUrlFull()}" class="stream-blog">{$oForum->getTitle()|escape:'html'}</a> &rarr;
 			<a href="{$oPost->getUrlFull()}" class="stream-topic">{$oTopic->getTitle()|escape:'html'}</a>
-			<span class="block-item-comments"><i class="icon-synio-comments-small"></i>{$oTopic->getCountPost()}</span>
+			<span class="block-item-comments"><i class="icon-synio-comments-small"></i>{$oTopic->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span>
 		</li>
 	{/foreach}
 </ul>

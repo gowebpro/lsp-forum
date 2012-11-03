@@ -17,7 +17,7 @@
 
 			<p>
 				<time datetime="{date_format date=$oPost->getDateAdd() format='c'}">{date_format date=$oPost->getDateAdd() hours_back="12" minutes_back="60" now="60" day="day H:i" format="j F Y, H:i"}</time> |
-				{$oTopic->getCountPost()} {$oTopic->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
+				{$oTopic->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$oTopic->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
 			</p>
 		</li>
 	{/foreach}

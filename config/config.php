@@ -72,6 +72,17 @@ $config['acl']['vote']['post']['time'] = 60*60*24*1;		// ограничение 
 $config['topic_line_mod']		= true;
 
 /**
+ * Формат чисел
+ * Символ, используемый в качестве разделителя триад в больших числах
+ & Варианты:
+ *		false		; Форматирование выключено
+ *		' '			; Пробел
+ *		'.'			; Точка
+ *		','			; Запятая
+ */
+$config['number_format']		= ',';
+
+/**
  * Активация плагина
  */
 $config['activate'] = array();
@@ -83,6 +94,11 @@ $config['deactivate'] = array(
 	/* Удаление таблиц при деактивации */
 	'delete' => false
 );
+
+/**
+ * Папка плагинов для Smarty
+ */
+$config['path_smarty_plug'] = '___path.root.server___/plugins/forum/smarty_plugs';
 
 /**
  * Настройка Jevix
