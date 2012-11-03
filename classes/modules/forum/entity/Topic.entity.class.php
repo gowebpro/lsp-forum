@@ -14,7 +14,8 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	protected $aRelations = array(
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
 		'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id'),
-		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id')
+		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
+		//'view'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityView','topic_id')
 	);
 
 	/**
@@ -49,6 +50,16 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		return $this->Subscribe_GetSubscribeByTargetAndMail('topic_new_post',$this->getId(),$oUserCurrent->getMail());
 	}
 
+	public function getViews() {
+		//if ($oView = $this->getView()) {
+		$oView = null;
+		if (false === ($data = $this->Cache_Get("topic_views_{$this->getId()}"))) {
+			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($this->getId());
+		} else {
+			$oView = $data['obj'];
+		}
+		return $oView ? $oView->getTopicViews() : 0;
+	}
 }
 
 ?>

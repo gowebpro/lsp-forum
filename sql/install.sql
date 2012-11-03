@@ -144,6 +144,18 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_topic` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prefix_forum_topic_view`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_topic_view` (
+	`topic_id` int(11) unsigned NOT NULL,
+	`topic_views` int(11) unsigned NOT NULL,
+	KEY `topic_id` (`topic_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prefix_forum_readonly`
 --
 
@@ -190,6 +202,12 @@ ALTER TABLE `prefix_forum_post`
 --
 ALTER TABLE `prefix_forum_topic`
 	ADD CONSTRAINT `prefix_forum_topic_fk` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `prefix_forum_topic_view`
+--
+ALTER TABLE `prefix_forum_topic_view`
+	ADD CONSTRAINT `prefix_forum_topic_view_fk` FOREIGN KEY (`topic_id`) REFERENCES `prefix_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prefix_forum_readonly`

@@ -19,9 +19,9 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	 * @return bool
 	 */
 	public function MoveTopics($sForumId,$sForumIdNew) {
-		$sql = "UPDATE ".Config::Get('db.table.forum_topic')."
+		$sql = 'UPDATE '.Config::Get('db.table.forum_topic').'
 				SET forum_id = ?d
-				WHERE forum_id = ?d";
+				WHERE forum_id = ?d';
 		if ($this->oDb->query($sql,$sForumIdNew,$sForumId)) {
 			return true;
 		}
@@ -36,9 +36,9 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	 * @return bool
 	 */
 	public function MoveForums($sForumId,$sForumIdNew) {
-		$sql = "UPDATE ".Config::Get('db.table.forum')."
+		$sql = 'UPDATE '.Config::Get('db.table.forum').'
 				SET forum_parent_id = ?d
-				WHERE forum_parent_id = ?d";
+				WHERE forum_parent_id = ?d';
 		if ($this->oDb->query($sql,$sForumIdNew,$sForumId)) {
 			return true;
 		}
@@ -65,11 +65,11 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		if (is_null($sPid)) {
 			$sPidNULL='forum_parent_id IS NULL and';
 		}
-		$sql = "SELECT forum_id
-				FROM ".Config::Get('db.table.forum')."
-				WHERE { forum_parent_id = ? and } {$sPidNULL} forum_sort {$sWay} ?
-				ORDER BY forum_sort {$sOrder}
-				LIMIT 0,1";
+		$sql = 'SELECT forum_id
+				FROM '.Config::Get('db.table.forum').'
+				WHERE { forum_parent_id = ? and } '.$sPidNULL.' forum_sort '.$sWay.' ?
+				ORDER BY forum_sort '.$sOrder.'
+				LIMIT 0,1';
 		if ($aRow=$this->oDb->selectRow($sql,is_null($sPid) ? DBSIMPLE_SKIP : $sPid, $iSort)) {
 			return $aRow['forum_id'];
 		}
@@ -87,11 +87,11 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		if (is_null($sPid)) {
 			$sPidNULL='and forum_parent_id IS NULL';
 		}
-		$sql = "SELECT MAX(forum_sort) as max_sort
-				FROM ".Config::Get('db.table.forum')."
+		$sql = 'SELECT MAX(forum_sort) as max_sort
+				FROM '.Config::Get('db.table.forum').'
 				WHERE 1=1
-				{ and forum_parent_id = ? }
-				{$sPidNULL} ";
+				{ and forum_parent_id = ? }'.
+				$sPidNULL;
 		if ($aRow=$this->oDb->selectRow($sql,is_null($sPid) ? DBSIMPLE_SKIP : $sPid)) {
 			return $aRow['max_sort'];
 		}
@@ -99,30 +99,27 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	}
 
 	public function GetCountTopicByForumId($sFid) {
-		$sql = "SELECT COUNT(*) as count
-				FROM ".Config::Get('db.table.forum_topic')."
-				WHERE forum_id = ?
-				";
+		$sql = 'SELECT COUNT(*) as count
+				FROM '.Config::Get('db.table.forum_topic').'
+				WHERE forum_id = ?';
 		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
 			return $aRow['count'];
 		}
 		return 0;
 	}
 	public function GetCountPostByForumId($sFid) {
-		$sql = "SELECT SUM(topic_count_post) as replies
-				FROM ".Config::Get('db.table.forum_topic')."
-				WHERE forum_id = ?
-				";
+		$sql = 'SELECT SUM(topic_count_post) as replies
+				FROM '.Config::Get('db.table.forum_topic').'
+				WHERE forum_id = ?';
 		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
 			return $aRow['replies'];
 		}
 		return 0;
 	}
 	public function GetLastPostByForumId($sFid) {
-		$sql = "SELECT MAX(last_post_id) as last_post
-				FROM ".Config::Get('db.table.forum_topic')."
-				WHERE forum_id = ?
-				";
+		$sql = 'SELECT MAX(last_post_id) as last_post
+				FROM '.Config::Get('db.table.forum_topic').'
+				WHERE forum_id = ?';
 		if ($aRow=$this->oDb->selectRow($sql,$sFid)) {
 			return $aRow['last_post'];
 		}
@@ -130,20 +127,18 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	}
 
 	public function GetCountPostByTopicId($sTid) {
-		$sql = "SELECT COUNT(*) as count
-				FROM ".Config::Get('db.table.forum_post')."
-				WHERE topic_id = ?
-				";
+		$sql = 'SELECT COUNT(*) as count
+				FROM '.Config::Get('db.table.forum_post').'
+				WHERE topic_id = ?';
 		if ($aRow=$this->oDb->selectRow($sql,$sTid)) {
 			return $aRow['count'];
 		}
 		return 0;
 	}
 	public function GetLastPostByTopicId($sTid) {
-		$sql = "SELECT MAX(post_id) as last_post
-				FROM ".Config::Get('db.table.forum_post')."
-				WHERE topic_id = ?
-				";
+		$sql = 'SELECT MAX(post_id) as last_post
+				FROM '.Config::Get('db.table.forum_post').'
+				WHERE topic_id = ?';
 		if ($aRow=$this->oDb->selectRow($sql,$sTid)) {
 			return $aRow['last_post'];
 		}
@@ -151,28 +146,45 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 	}
 
 	public function GetCountTopics() {
-		$sql = "SELECT COUNT(*) as count
-				FROM ".Config::Get('db.table.forum_topic');
+		$sql = 'SELECT COUNT(*) as count
+				FROM '.Config::Get('db.table.forum_topic');
 		if ($aRow=$this->oDb->selectRow($sql)) {
 			return (int)$aRow['count'];
 		}
 		return 0;
 	}
 	public function GetCountPosts() {
-		$sql = "SELECT COUNT(*) as count
-				FROM ".Config::Get('db.table.forum_post');
+		$sql = 'SELECT COUNT(*) as count
+				FROM '.Config::Get('db.table.forum_post');
 		if ($aRow=$this->oDb->selectRow($sql)) {
 			return (int)$aRow['count'];
 		}
 		return 0;
 	}
 	public function GetCountUsers() {
-		$sql = "SELECT COUNT(*) as count
-				FROM ".Config::Get('db.table.user');
+		$sql = 'SELECT COUNT(*) as count
+				FROM '.Config::Get('db.table.user');
 		if ($aRow=$this->oDb->selectRow($sql)) {
 			return (int)$aRow['count'];
 		}
 		return 0;
+	}
+
+	/**
+	 * Перемещает топики в другой форум
+	 *
+	 * @param	integer	$sForumId
+	 * @param	integer	$sForumIdNew
+	 * @return bool
+	 */
+	public function UpdateTopicViews($oView) {
+		$sql = 'UPDATE '.Config::Get('db.table.forum_topic_view').'
+				SET topic_views = ?d
+				WHERE topic_id = ?d';
+		if ($this->oDb->query($sql,$oView->getTopicViews(),$oView->getTopicId())) {
+			return true;
+		}
+		return false;
 	}
 }
 

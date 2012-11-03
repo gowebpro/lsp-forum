@@ -136,7 +136,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oTopic=LS::Ent('PluginForum_Forum_Topic');
 			$oTopic->setTitle(strip_tags(getRequest('topic_title')));
 			$oTopic->setDescription(getRequest('topic_description'));
-			$oTopic->setDateAdd(date("Y-m-d H:i:s"));
+			$oTopic->setDateAdd(date('Y-m-d H:i:s'));
 
 			$oPost->_setValidateScenario('topic');
 			$oPost->setTitle(strip_tags($oTopic->getTitle()));
@@ -144,7 +144,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oPost->_setValidateScenario('post');
 			$oPost->setTitle(strip_tags(getRequest('post_title')));
 		}
-		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		$oPost->setDateAdd(date('Y-m-d H:i:s'));
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		if (!$this->User_IsAuthorization()) {
@@ -269,7 +269,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_AssignAjax('sForumId',$oForum->getId());
 		$this->Viewer_AssignAjax('sText',$sTextResult);
-		$this->Message_AddNoticeSingle($this->Lang_Get("plugin.forum.moderator_{$sAction}_ok"));
+		$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.moderator_'.$sAction.'_ok'));
 		return true;
 	}
 	/**
@@ -460,7 +460,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_wrong'));
 				return;
 			}
-			fSetCookie("chiffaforumpass_{$oForum->getId()}", md5($sPassword));
+			fSetCookie('chiffaforumpass_'.$oForum->getId(), md5($sPassword));
 			$sBackUrl = $oForum->getUrlFull();
 			if (isset($_SERVER['HTTP_REFERER'])) {
 				$sBackUrl = $_SERVER['HTTP_REFERER'];
@@ -603,10 +603,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем переменные в шаблон
 		 */
-		$this->Viewer_Assign("aPaging",$aPaging);
-		$this->Viewer_Assign("aPinned",$aPinned);
-		$this->Viewer_Assign("aTopics",$aTopics);
-		$this->Viewer_Assign("oForum",$oForum);
+		$this->Viewer_Assign('aPaging',$aPaging);
+		$this->Viewer_Assign('aPinned',$aPinned);
+		$this->Viewer_Assign('aTopics',$aTopics);
+		$this->Viewer_Assign('oForum',$oForum);
 		/**
 		 * Вызов хуков
 		 */
@@ -672,7 +672,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if ($bLineMod) {
 			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
 			$oHeadPost->setNumber(1);
-			$this->Viewer_Assign("oHeadPost",$oHeadPost);
+			$this->Viewer_Assign('oHeadPost',$oHeadPost);
 			$aWhere=array_merge($aWhere,array('post_id > ?d'=>array($oHeadPost->getId())));
 			$iPerPage--;
 		}
@@ -697,26 +697,32 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Формируем постраничность
 		 */
 		$aPaging=$this->Viewer_MakePaging($aResult['count'],$iPage,$iPerPage,Config::Get('pagination.pages.count'),$oTopic->getUrlFull());
-		/**
-		 * Отмечаем дату прочтения топика
-		 */
 
-		/**
-		 * Счетчик просмотров топика
-		 */
-		$oTopic->setViews((int)$oTopic->getViews()+1);
-		if ($oTopic->getCountPost() <> $iPostsCount) {
-			$oTopic->setCountPost($iPostsCount);
+		if ($this->User_IsAuthorization()) {
+			/**
+			 * Отмечаем дату прочтения топика
+			 */
+
+			/**
+			 * Счетчик просмотров топика
+			 */
+			$this->PluginForum_Forum_UpdateTopicViews($oTopic);
+			/**
+			 * Check
+			 */
+			if ($oTopic->getCountPost() <> $iPostsCount) {
+				$oTopic->setCountPost($iPostsCount);
+				$oTopic->Save();
+			}
 		}
-		$oTopic->Save();
 		/**
 		 * Загружаем переменные в шаблон
 		 */
-		$this->Viewer_Assign("oForum",$oForum);
-		$this->Viewer_Assign("oTopic",$oTopic);
-		$this->Viewer_Assign("aPosts",$aPosts);
-		$this->Viewer_Assign("iPostsCount",$iPostsCount);
-		$this->Viewer_Assign("aPaging",$aPaging);
+		$this->Viewer_Assign('oForum',$oForum);
+		$this->Viewer_Assign('oTopic',$oTopic);
+		$this->Viewer_Assign('aPosts',$aPosts);
+		$this->Viewer_Assign('iPostsCount',$iPostsCount);
+		$this->Viewer_Assign('aPaging',$aPaging);
 		/**
 		 * Вызов хуков
 		 */
@@ -837,11 +843,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Заголовки
 		 */
 		$this->Viewer_SetHtmlTitle('');
-		$this->_addTitle($this->Lang_Get("plugin.forum.topic_{$sAction}").': '.$oTopic->getTitle());
+		$this->_addTitle($this->Lang_Get('plugin.forum.topic_'.$sAction).': '.$oTopic->getTitle());
 		/**
 		 * Задаем шаблон
 		 */
-		$this->SetTemplateAction("{$sAction}_topic");
+		$this->SetTemplateAction($sAction.'_topic');
 	}
 
 	/**
@@ -954,7 +960,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем перемененные в шаблон
 		 */
-		$this->Viewer_Assign("oForum",$oForum);
+		$this->Viewer_Assign('oForum',$oForum);
 		/**
 		 * Хлебные крошки
 		 */
@@ -962,7 +968,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Заголовки
 		 */
-		$this->_addTitle($this->Lang_Get('plugin.forum.new_topic_for')." {$oForum->getTitle()}",'after');
+		$this->_addTitle($this->Lang_Get('plugin.forum.new_topic_for').' '.$oForum->getTitle(),'after');
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
@@ -1005,7 +1011,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oTopic->setUserIp(func_getIp());
 		$oTopic->setTitle(rtrim(getRequest('topic_title'), '(^A-Za-z0-9!?)'));
 		$oTopic->setDescription(getRequest('topic_description'));
-		$oTopic->setDateAdd(date("Y-m-d H:i:s"));
+		$oTopic->setDateAdd(date('Y-m-d H:i:s'));
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 		if (isPost('topic_close')) {
 			if ($this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
@@ -1035,7 +1041,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setTitle($oTopic->getTitle());
 		$oPost->setUserId($this->oUserCurrent->getId());
 		$oPost->setUserIp(func_getIp());
-		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		$oPost->setDateAdd(date('Y-m-d H:i:s'));
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setNewTopic(1);
@@ -1165,8 +1171,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем перемененные в шаблон
 		 */
-		$this->Viewer_Assign("oForum",$oForum);
-		$this->Viewer_Assign("oTopic",$oTopic);
+		$this->Viewer_Assign('oForum',$oForum);
+		$this->Viewer_Assign('oTopic',$oTopic);
 		/**
 		 * Хлебные крошки
 		 */
@@ -1229,7 +1235,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
 		$oPost->setTextHash(md5(getRequest('post_text')));
-		$oPost->setDateAdd(date("Y-m-d H:i:s"));
+		$oPost->setDateAdd(date('Y-m-d H:i:s'));
 		if (!$this->User_IsAuthorization()) {
 			$oPost->setUserId(0);
 			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
@@ -1341,9 +1347,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем перемененные в шаблон
 		 */
-		$this->Viewer_Assign("oForum",$oForum);
-		$this->Viewer_Assign("oTopic",$oTopic);
-		$this->Viewer_Assign("bEditTopic",$bEditTopic);
+		$this->Viewer_Assign('oForum',$oForum);
+		$this->Viewer_Assign('oTopic',$oTopic);
+		$this->Viewer_Assign('bEditTopic',$bEditTopic);
 		/**
 		 * Хлебные крошки
 		 */
@@ -1352,7 +1358,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Заголовки
 		 */
 		if ($bEditTopic) {
-			$this->_addTitle($this->Lang_Get('plugin.forum.topic_edit')." {$oForum->getTitle()}",'after');
+			$this->_addTitle($this->Lang_Get('plugin.forum.topic_edit').' '.$oForum->getTitle(),'after');
 		} else {
 			$this->_addTitle($this->Lang_Get('plugin.forum.post_edit_for',array('topic'=>$oTopic->getTitle())),'after');
 		}
@@ -1411,7 +1417,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$oTopic->setPinned(1);
 				}
 			}
-			$oTopic->setDateEdit(date("Y-m-d H:i:s"));
+			$oTopic->setDateEdit(date('Y-m-d H:i:s'));
 
 			$oPost->_setValidateScenario('topic');
 			$oPost->setTitle($oTopic->getTitle());
@@ -1421,7 +1427,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		}
 		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
 		$oPost->setTextSource(getRequest('post_text'));
-		$oPost->setDateEdit(date("Y-m-d H:i:s"));
+		$oPost->setDateEdit(date('Y-m-d H:i:s'));
 		$oPost->setEditorId($this->oUserCurrent->getId());
 		$oPost->setEditReason(getRequest('post_edit_reason'));
 		/**
@@ -1500,7 +1506,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Обновляем счетчик форума
 			 */
 			$this->PluginForum_Forum_RecountForum($oTopic->getForumId());
-			Router::Location($oTopic->getUrlFull() . "lastpost");
+			Router::Location($oTopic->getUrlFull() . 'lastpost');
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
 			return Router::Action('error');

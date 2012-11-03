@@ -19,23 +19,21 @@
  * @param	integer $iLevel
  * @return	array
  */
-if (!function_exists('forum_create_list')) {
-	function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLevel=0) {
-		if (is_array($aForums) && !empty($aForums)) {
-			foreach ($aForums as $oForum) {
-				$aList[] = array(
-					'id' => $oForum->getId(),
-					'title' => $sDepthGuide . $oForum->getTitle(),
-					'level' => $iLevel
-				);
+function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLevel=0) {
+	if (is_array($aForums) && !empty($aForums)) {
+		foreach ($aForums as $oForum) {
+			$aList[] = array(
+				'id' => $oForum->getId(),
+				'title' => $sDepthGuide . $oForum->getTitle(),
+				'level' => $iLevel
+			);
 
-				if ($aSubForums = $oForum->getChildren()) {
-					$aList = forum_create_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE, $iLevel+1);
-				}
+			if ($aSubForums = $oForum->getChildren()) {
+				$aList = forum_create_list($aSubForums, $aList, $sDepthGuide . PluginForum_ModuleForum::DEPTH_GUIDE, $iLevel+1);
 			}
 		}
-		return $aList;
 	}
+	return $aList;
 }
 
 /**
@@ -78,22 +76,25 @@ function check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 	return false;
 }
 
-function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
-	if (!($sName)) return;
+if (!function_exists('fSetCookie')) {
+	function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
+		if (!($sName)) return;
 
-	if ($bSticky) $iExpires = time() + (60*60*24*365);
-	else $iExpires = time() + ($iExpiresDays * 86400) + ($iExpiresMinutes * 60) + $iExpiresSeconds;
+		if ($bSticky) $iExpires = time() + (60*60*24*365);
+		else $iExpires = time() + ($iExpiresDays * 86400) + ($iExpiresMinutes * 60) + $iExpiresSeconds;
 
-	if ($iExpires <= time()) $iExpires = false;
+		if ($iExpires <= time()) $iExpires = false;
 
-	@setcookie($sName,$sValue,$iExpires,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
-}
-
-function fGetCookie($sName) {
-	if (isset($_COOKIE[$sName])) {
-		return htmlspecialchars(urldecode(trim($_COOKIE[$sName])));
+		@setcookie($sName,$sValue,$iExpires,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
 	}
-	return false;
+}
+if (!function_exists('fGetCookie')) {
+	function fGetCookie($sName) {
+		if (isset($_COOKIE[$sName])) {
+			return htmlspecialchars(urldecode(trim($_COOKIE[$sName])));
+		}
+		return false;
+	}
 }
 
 ?>

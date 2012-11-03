@@ -99,6 +99,7 @@ Config::Set('db.table.forum_moderator', '___db.table.prefix___forum_moderator');
 Config::Set('db.table.forum_moderator_rel', '___db.table.prefix___forum_moderator_rel');
 Config::Set('db.table.forum_post', '___db.table.prefix___forum_post');
 Config::Set('db.table.forum_topic', '___db.table.prefix___forum_topic');
+Config::Set('db.table.forum_topic_view', '___db.table.prefix___forum_topic_view');
 Config::Set('db.table.forum_readonly', '___db.table.prefix___forum_readonly');
 
 

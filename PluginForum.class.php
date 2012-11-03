@@ -33,6 +33,9 @@ class PluginForum extends Plugin {
 		if (!$this->isTableExists('prefix_forum')) {
 			$this->ExportSQL(dirname(__FILE__).'/sql/install.sql');
 		}
+		if (!$this->isTableExists('prefix_forum_topic_view')) {
+			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.0.3.sql');
+		}
 		return true;
 	}
 

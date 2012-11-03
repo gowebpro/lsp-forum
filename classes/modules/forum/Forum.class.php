@@ -138,7 +138,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 				foreach ($aUsers['collection'] as $oUser) {
 					if ($sProfileBirthday=$oUser->getProfileBirthday()) {
-						if (date("m-d")==date("m-d",strtotime($sProfileBirthday))) {
+						if (date('m-d')==date('m-d',strtotime($sProfileBirthday))) {
 							$aStats['bdays'][]=$oUser;
 						}
 					}
@@ -336,6 +336,37 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 		}
 		return $bIdOnly ? array_keys($aRes) : $aRes;
+	}
+
+	/**
+	 * Обновление просмотров топика
+	 * Данные в БД обновляются раз в 10 минут
+	 * TODO:
+	 * Для возможности связанности данных нужно
+	 * обновлять в БД ручками, сбрасывать кеш
+	 */
+	public function UpdateTopicViews($oTopic) {
+		if (false === ($data = $this->Cache_Get("topic_views_{$oTopic->getId()}"))) {
+			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($oTopic->getId());
+			if (!$oView) {
+				$oView = LS::ENT('PluginForum_Forum_Vew');
+				$oView->setTopicId($oTopic->getId());
+			}
+			$oView->setTopicViews($oView->getTopicViews()+1);
+			$data = array(
+				'obj' => $oView,
+				'time' => time()
+			);
+		} else {
+			$data['obj']->setTopicViews($data['obj']->getTopicViews()+1);
+		}
+		if (!Config::Get('sys.cache.use') or $data['time']<time()-60*10) {
+			$data['time'] = time();
+			$this->oMapperForum->UpdateTopicViews($data['obj']);
+			//чистим кеш
+			$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityView_save'));
+		}
+		$this->Cache_Set($data, "topic_views_{$oTopic->getId()}", array(), 60*60*24);
 	}
 
 	/**
