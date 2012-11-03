@@ -1,7 +1,7 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 
-{assign var='aSubForums' value=$oForum->getChildren()}
+{* assign var='aSubForums' value=$oForum->getChildren() *}
 {assign var='oSubscribeForum' value=$oForum->getSubscribeNewTopic()}
 
 <h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>

@@ -593,6 +593,23 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
+		 * Сортировка подфорумов
+		 * https://github.com/Xmk/lsplugin-forum/issues/26
+		 */
+		$aSubForums = array();
+		if ($oForum->getChildren()) {
+			$aChildrens = array();
+			$aChildSort = array();
+			foreach ($oForum->getChildren() as $oChildren) {
+				$aChildrens[$oChildren->getId()] = $oChildren;
+				$aChildSort[$oChildren->getId()] = $oChildren->getSort();
+			}
+			asort($aChildSort, SORT_NUMERIC);
+			foreach ($aChildSort as $sId => $iSort) {
+				$aSubForums[] = $aChildrens[$sId];
+			}
+		}
+		/**
 		 * JumpMenu
 		 */
 		$this->AssignJumpMenu();
@@ -606,6 +623,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('aPaging',$aPaging);
 		$this->Viewer_Assign('aPinned',$aPinned);
 		$this->Viewer_Assign('aTopics',$aTopics);
+		$this->Viewer_Assign('aSubForums',$aSubForums);
 		$this->Viewer_Assign('oForum',$oForum);
 		/**
 		 * Вызов хуков
