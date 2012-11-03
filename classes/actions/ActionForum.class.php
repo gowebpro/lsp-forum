@@ -1917,7 +1917,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Если выбранный форум является категорией, возвращаем ошибку
 				 */
-				if ($oForumNew->getType()==1) {
+				if ($oForumNew->getCanPost()) {
 					$this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_items_error_category'),$this->Lang_Get('error'));
 					return;
 				}
