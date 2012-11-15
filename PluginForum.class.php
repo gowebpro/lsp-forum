@@ -22,7 +22,8 @@ class PluginForum extends Plugin {
 		'module' => array(
 			'ModuleACL' => 'PluginForum_ModuleACL',
 			'ModuleStream' => 'PluginForum_ModuleStream',
-			'ModuleSubscribe' => 'PluginForum_ModuleSubscribe'
+			'ModuleSubscribe' => 'PluginForum_ModuleSubscribe',
+			'ModuleText' => 'PluginForum_ModuleText'
 		)
 	);
 

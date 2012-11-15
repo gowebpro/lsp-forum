@@ -14,13 +14,23 @@ var ls=ls || {}
 ls.forum = (function ($) {
 	this.fastReply = function(el) {
 		var form=$('#fast-reply-form');
-		if (form.css('display')=='block') {
+		if (form.is(":visible")) {
 			form.slideUp();
 			$(el).removeClass('button-primary');
 		} else {
 			form.slideDown();
 			$(el).addClass('button-primary');
 		}
+		return false;
+	};
+
+	this.replyPost = function(idPost) {
+		var fast_form=$('#fast-reply-form');
+		if (fast_form.is(":hidden")) {
+			fast_form.slideDown();
+		}
+		$.markItUp({target: $('#post_text'), replaceWith: '\n<ls reply="'+idPost+'" />'} );
+		$.scrollTo(fast_form, 1000, {offset: -220});
 		return false;
 	};
 
@@ -32,7 +42,7 @@ ls.forum = (function ($) {
 	};
 
 	this.jumpMenu = function(list) {
-		list=$(list);
+		list = $(list);
 		if (list.val() > 0) {
 			list.parent('form').submit();
 			return;
@@ -63,6 +73,26 @@ ls.forum = (function ($) {
 			}
 		});
 		return false;
+	};
+
+	this.getMarkitupMini = function() {
+		return {
+			onShiftEnter:	{keepDefault:false, replaceWith:'<br />\n'},
+			onCtrlEnter:	{keepDefault:false, openWith:'\n<p>', closeWith:'</p>'},
+			onTab:			{keepDefault:false, replaceWith:'    '},
+			markupSet: [
+				{name: ls.lang.get('panel_b'), className:'editor-bold', key:'B', openWith:'(!(<strong>|!|<b>)!)', closeWith:'(!(</strong>|!|</b>)!)' },
+				{name: ls.lang.get('panel_i'), className:'editor-italic', key:'I', openWith:'(!(<em>|!|<i>)!)', closeWith:'(!(</em>|!|</i>)!)'  },
+				{name: ls.lang.get('panel_s'), className:'editor-stroke', key:'S', openWith:'<s>', closeWith:'</s>' },
+				{name: ls.lang.get('panel_quote'), className:'editor-quote', key:'Q', replaceWith: function(m) { if (m.selectionOuter) return '<blockquote>'+m.selectionOuter+'</blockquote>'; else if (m.selection) return '<blockquote>'+m.selection+'</blockquote>'; else return '<blockquote></blockquote>' } },
+				{separator:'---------------' },
+				{name: ls.lang.get('panel_image'), className:'editor-picture', key:'P', beforeInsert: function(h) { jQuery('#window_upload_img').jqmShow(); } },
+				{name: ls.lang.get('panel_url'), className:'editor-link', key:'L', openWith:'<a href="[!['+ls.lang.get('panel_url_promt')+':!:http://]!]"(!( title="[![Title]!]")!)>', closeWith:'</a>', placeHolder:'Your text to link...' },
+				{name: ls.lang.get('panel_user'), className:'editor-user', replaceWith:'<ls user="[!['+ls.lang.get('panel_user_promt')+']!]" />' },
+				{separator:'---------------' },
+				{name: ls.lang.get('panel_clear_tags'), className:'editor-clean', replaceWith: function(markitup) { return markitup.selection.replace(/<(.*?)>/g, "") } },
+			]
+		}
 	};
 
 	this.getMarkitup = function() {
@@ -106,7 +136,7 @@ jQuery(document).ready(function($){
 		var header=$(this).parent('header');
 		var content=$(header).next('.forums-content');
 		var note=$(content).next('.forums-note');
-		if (content.css('display')=='block') {
+		if (content.is(":visible")) {
 			$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
 			$(header).addClass('collapsed');
 			$(content).slideUp();

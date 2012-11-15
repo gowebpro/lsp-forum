@@ -90,10 +90,8 @@ $config['activate'] = array();
 /**
  * Деактивация плагина
  */
-$config['deactivate'] = array(
-	/* Удаление таблиц при деактивации */
-	'delete' => false
-);
+$config['deactivate']['delete'] = false; //Удаление таблиц при деактивации
+
 
 /**
  * Папка плагинов для Smarty
@@ -103,9 +101,15 @@ $config['path_smarty_plug'] = '___path.root.server___/plugins/forum/smarty_plugs
 /**
  * Настройка Jevix
  */
-$aJevix = Config::Get('jevix.default');
-$aJevix['cfgAllowTagParams'][] = array('blockquote', array('post'=>'#int'));
-Config::Set('jevix.forum',$aJevix);
+$aJevix = array(
+	'cfgAllowTagParams' => array(
+		array(
+			'ls',
+			array('user'=>'#text', 'reply' => '#int')
+		)
+	)
+);
+Config::Set('jevix.forum', array_merge(Config::Get('jevix.default'), $aJevix));
 
 /**
  * Настройка таблиц

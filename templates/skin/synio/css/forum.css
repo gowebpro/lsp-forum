@@ -50,7 +50,7 @@
 .forum-topic {}
 
 .forum-fast-reply { padding: 20px 130px; background: #F1F9F1 }
-
+.forum-fast-reply .mce-editor { height: 200px }
 .forum-legend { width: 100% }
 .forum-legend  .col1 { width: 5% }
 .forum-legend  .col2 { width: 5% }
@@ -118,6 +118,11 @@
 span.divide { color: gray; font-weight: normal; padding: 0 2px }
 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
+
+/* Text */
+.text blockquote .quote-head { font-size: 12px; padding: 8px 10px; background: #F6F6F6; background: -moz-linear-gradient(top, #F6F6F6 0%, #E5E5E5 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6F6F6), color-stop(100%,#E5E5E5)); margin: -10px -15px; border-top: 1px solid #EDEDF2; border-right: 1px solid #EDEDF2; font-weight: bold }
+.text blockquote .quote-text { padding: 15px 0px }
+.text blockquote .quote-text pre { padding: 10px 0; border: 1px solid #f0f0f0 }
 
 /* Modal */
 .modal-post { width: 360px }

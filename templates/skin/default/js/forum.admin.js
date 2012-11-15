@@ -18,7 +18,7 @@ ls.forum.admin = (function ($) {
 		$('.js-forum-moder-toogler').click(function() {
 			var forumId = parseInt($(this).attr('id').replace('toggler-moder-list-',''));
 			var list=$('#moder-list-'+forumId);
-			if (list.css('display')=='block') {
+			if (list.is(":visible")) {
 				$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
 				$(list).slideUp();
 			} else {

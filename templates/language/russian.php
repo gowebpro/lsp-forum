@@ -18,6 +18,7 @@ return array(
 
 	'button_edit' => 'Редактировать',
 	'button_delete' => 'Удалить',
+	'button_reply' => 'Ответить',
 
 	'in_progress' => 'В разработке',
 	'notice' => 'Здесь можно просто пообщаться',
@@ -174,6 +175,7 @@ return array(
 	'post_editing' => 'Последний раз редактировал пользователь',
 	'post_delete_not_allow' => 'Нет доступа к этому действию',
 	'post_writer' => 'Пишет',
+	'post_view' => 'Просмотр сообщения',
 
 	'reply' => 'Ответ',
 	'reply_for' => 'Ответ в %%topic%%',

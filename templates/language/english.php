@@ -18,6 +18,7 @@ return array(
 
 	'button_edit' => 'Edit',
 	'button_delete' => 'Delete',
+	'button_reply' => 'Reply',
 
 	'in_progress' => 'In development',
 	'notice' => 'You can just talk',
@@ -174,6 +175,7 @@ return array(
 	'post_editing' => 'Last edit',
 	'post_delete_not_allow' => 'No access to this action',
 	'post_writer' => 'Write',
+	'post_view' => 'View post',
 
 	'reply' => 'Reply',
 	'reply_for' => 'Reply in %%topic%%',

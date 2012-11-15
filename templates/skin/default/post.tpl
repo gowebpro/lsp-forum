@@ -75,6 +75,9 @@
 	{if $oUserCurrent && !$noFooter}
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
+			<a href="{$oTopic->getUrlFull()}reply" class="button" onclick="return ls.forum.replyPost({$oPost->getId()})">
+				<span class="icon-comment"></span> {$aLang.plugin.forum.button_reply}
+			</a>
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange">
 					<span class="icon-white icon-edit"></span> {$aLang.plugin.forum.button_edit}

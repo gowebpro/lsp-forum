@@ -1,6 +1,23 @@
 <div class="topic-preview" style="display: none;" id="text_preview"></div>
 
 <div class="forum-fast-reply" style="display:none" id="fast-reply-form">
+{if $oConfig->GetValue('view.tinymce')}
+	<script src="{cfg name='path.root.engine_lib'}/external/tinymce-jq/tiny_mce.js"></script>
+	<script>
+		jQuery(function($){
+			tinyMCE.init(ls.settings.getTinymce());
+		});
+	</script>
+{else}
+	{include file='window_load_img.tpl' sToLoad='post_text'}
+	<script>
+		jQuery(function($){
+			ls.lang.load({lang_load name="panel_b,panel_i,panel_s,panel_url,panel_url_promt,panel_image,panel_quote,panel_clear_tags,panel_image_promt,panel_user_promt"});
+			// Подключаем редактор
+			$('#post_text').markItUp(ls.forum.getMarkitupMini());
+		});
+	</script>
+{/if}
 	<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
 	<form action="{$oTopic->getUrlFull()}reply" method="POST" enctype="multipart/form-data" id="form-fast-reply">

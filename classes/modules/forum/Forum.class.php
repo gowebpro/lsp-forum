@@ -376,13 +376,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	stiing
 	 */
 	public function TextParse($sText=null) {
-		if (!is_string($sText)) {
-			return '';
-		}
-		//$this->Text_LoadJevixConfig('forum');
-
+		$this->Text_LoadJevixConfig('forum');
 		return $this->Text_Parser($sText);
 	}
+
 }
 
 ?>
