@@ -109,7 +109,7 @@ $aJevix = array(
 		)
 	)
 );
-Config::Set('jevix.forum', array_merge(Config::Get('jevix.default'), $aJevix));
+Config::Set('jevix.forum', array_merge_recursive(Config::Get('jevix.default'), $aJevix));
 
 /**
  * Настройка таблиц
