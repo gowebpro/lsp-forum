@@ -277,6 +277,7 @@ return array(
 	'notify_subject_new_post' => 'New reply to topic',
 
 	'create_menu_topic' => 'topic in forum',
+	'write_topic' => 'Topic in forum',
 
 	'block_stream' => 'Forum',
 	'block_stream_empty' => 'No messages',

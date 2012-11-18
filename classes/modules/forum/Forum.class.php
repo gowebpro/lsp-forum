@@ -341,9 +341,6 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Обновление просмотров топика
 	 * Данные в БД обновляются раз в 10 минут
-	 * TODO:
-	 * Для возможности связанности данных нужно
-	 * обновлять в БД ручками, сбрасывать кеш
 	 */
 	public function UpdateTopicViews($oTopic) {
 		if (false === ($data = $this->Cache_Get("topic_views_{$oTopic->getId()}"))) {

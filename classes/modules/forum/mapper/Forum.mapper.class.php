@@ -213,22 +213,6 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
-
-	/**
-	 * Обновление просмотров топика
-	 *
-	 * @param	PluginForum_ModuleForum_EntityTopicView	$oView
-	 * @return	bool
-	 */
-	public function UpdateTopicViews(PluginForum_ModuleForum_EntityTopicView $oView) {
-		$sql = 'UPDATE '.Config::Get('db.table.forum_topic_view').'
-				SET topic_views = ?d
-				WHERE topic_id = ?d';
-		if ($this->oDb->query($sql,$oView->getTopicViews(),$oView->getTopicId())) {
-			return true;
-		}
-		return false;
-	}
 }
 
 ?>
