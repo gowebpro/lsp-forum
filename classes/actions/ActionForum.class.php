@@ -949,44 +949,67 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!$this->User_IsAuthorization()) {
 			return parent::EventNotFound();
 		}
+		$oForum=null;
 		/**
 		 * Получаем URL форума из эвента
 		 */
 		$sForumUrl=$this->sCurrentEvent;
 		/**
-		 * Получаем форум по URL
+		 * Создаем ли мы тему не из форума
 		 */
-		if (!($oForum=$this->PluginForum_Forum_GetForumByUrl($sForumUrl))) {
+		if ($sForumUrl != 'topic') {
 			/**
-			 * Возможно форум запросили по id
+			 * Получаем форум по URL
 			 */
-			if(!($oForum=$this->PluginForum_Forum_GetForumById($sForumUrl))) {
+			if (!($oForum=$this->PluginForum_Forum_GetForumByUrl($sForumUrl))) {
+				/**
+				 * Возможно форум запросили по id
+				 */
+				if(!($oForum=$this->PluginForum_Forum_GetForumById($sForumUrl))) {
+					return parent::EventNotFound();
+				}
+			}
+			/**
+			 * Права доступа
+			 */
+			$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
+			if (!$oForum->getAllowStart()) {
 				return parent::EventNotFound();
 			}
-		}
-		/**
-		 * Права доступа
-		 */
-		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
-		if (!$oForum->getAllowStart()) {
-			return parent::EventNotFound();
+			/**
+			 * Загружаем перемененные в шаблон
+			 */
+			$this->Viewer_Assign('oForum',$oForum);
+			/**
+			 * Хлебные крошки
+			 */
+			$this->_breadcrumbsCreate($oForum);
+			/**
+			 * Заголовки
+			 */
+			$this->_addTitle($this->Lang_Get('plugin.forum.new_topic_for').' '.$oForum->getTitle(),'after');
+		} else {
+			/**
+			 * Получаем список форумов
+			 */
+			$aForums=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
+			/**
+			 * Дерево форумов
+			 */
+			$aForumsTree=$this->PluginForum_Forum_buildTree($aForums);
+			/**
+			 * Загружаем переменные в шаблон
+			 */
+			$this->Viewer_Assign('aForumsTree',$aForumsTree);
+			/**
+			 * Заголовки
+			 */
+			$this->_addTitle($this->Lang_Get('plugin.forum.new_topic'),'after');
 		}
 		/**
 		 * Вызов хуков
 		 */
 		$this->Hook_Run('forum_topic_add_show');
-		/**
-		 * Загружаем перемененные в шаблон
-		 */
-		$this->Viewer_Assign('oForum',$oForum);
-		/**
-		 * Хлебные крошки
-		 */
-		$this->_breadcrumbsCreate($oForum);
-		/**
-		 * Заголовки
-		 */
-		$this->_addTitle($this->Lang_Get('plugin.forum.new_topic_for').' '.$oForum->getTitle(),'after');
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
@@ -995,6 +1018,15 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Проверяем отправлена ли форма с данными(хотяб одна кнопка)
 		 */
 		if (isPost('submit_topic_publish')) {
+			if (!$oForum) {
+				/**
+				 * Определяем в какой форум делаем запись
+				 */
+				$iForumId=getRequest('forum_id', 0);
+				if ($iForumId > 0) {
+					$oForum=$this->PluginForum_Forum_GetForumById($iForumId);
+				}
+			}
 			return $this->submitTopicAdd($oForum);
 		}
 	}
@@ -1003,6 +1035,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Обрабатываем форму добавления топика
 	 */
 	protected function submitTopicAdd($oForum) {
+		if (is_null($oForum)) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.new_topic_forum_error_unknown'),$this->Lang_Get('error'));
+			return;
+		}
 		/**
 		 * Проверяем разрешено ли создавать топики
 		 */
@@ -1391,6 +1427,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return $this->submitPostEdit($oPost);
 		} else {
 			if ($bEditTopic) {
+				$_REQUEST['forum_id']=$oTopic->getForumId();
 				$_REQUEST['topic_title']=$oTopic->getTitle();
 				$_REQUEST['topic_description']=$oTopic->getDescription();
 				$_REQUEST['topic_pinned']=$oTopic->getPinned();

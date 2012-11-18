@@ -1,4 +1,10 @@
-{include file='header.tpl'}
+{if $oForum}
+	{include file='header.tpl'}
+	<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+	<h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>&raquo;</h4>
+{else}
+	{include file='header.tpl' menu_content='create'}
+{/if}
 
 {if $oConfig->GetValue('view.tinymce')}
 	<script src="{cfg name='path.root.engine_lib'}/external/tinymce-jq/tiny_mce.js"></script>
@@ -18,14 +24,34 @@
 	</script>
 {/if}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
-
-<h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>&raquo;</h4>
-
 <form action="" method="POST" enctype="multipart/form-data" id="form-topic-add">
 	{hook run='form_forum_add_topic_begin'}
 
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
+
+	{if !$oForum}
+	<p>
+		<label for="forum_id">{$aLang.plugin.forum.new_topic_forum}</label>
+		<select name="forum_id" id="forum_id" class="input-width-full">
+			{foreach from=$aForumsTree key=sId item=aItem}
+				{assign var=oForum value=$aItem.entity}
+				{assign var=bOpenOG value=false}
+				{if $aItem.level == 0}
+					{if !$bOpenOG}
+						<optgroup label="{$oForum->getTitle()|escape:'html'}">
+						{assign var=bOpenOG value=true}
+					{else}
+						</optgroup>
+						{assign var=bOpenOG value=false}
+					{/if}
+				{else}
+					<option value="{$sId}"{if $_aRequest.forum_id==$sId} selected{/if}>{$oForum->getTitle()|escape:'html'}</option>
+				{/if}
+			{/foreach}
+		</select>
+		<small class="note">{$aLang.plugin.forum.new_topic_forum_notice}</small>
+	</p>
+	{/if}
 
 	<p>
 		<label for="topic_title">{$aLang.plugin.forum.new_topic_title}:</label>

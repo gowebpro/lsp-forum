@@ -139,6 +139,9 @@ return array(
 
 	'new_topic' => 'New topic',
 	'new_topic_for' => 'Creating a theme of',
+	'new_topic_forum' => 'Forum',
+	'new_topic_forum_notice' => '',
+	'new_topic_forum_error_unknown' => 'You must choose a forum',
 	'new_topic_title' => 'Topic title',
 	'new_topic_title_notice' => '',
 	'new_topic_title_error' => 'The title should be between %%min%% and %%max%% characters',
@@ -272,6 +275,8 @@ return array(
 
 	'notify_subject_new_topic' => 'New topic on the forum',
 	'notify_subject_new_post' => 'New reply to topic',
+
+	'create_menu_topic' => 'topic in forum',
 
 	'block_stream' => 'Forum',
 	'block_stream_empty' => 'No messages',

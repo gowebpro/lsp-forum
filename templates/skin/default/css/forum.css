@@ -129,6 +129,12 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .modal-moderator { width: 500px }
 .modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px;  border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
+.modal.modal-write .write-list li.write-item-type-forum .write-item-image {
+	*background: url(../images/write.png) no-repeat;
+	background-position: -230px 0
+}
+.modal.modal-write .write-list li.write-item-type-forum:hover  .write-item-image { background-position: -230px -115px }
+
 /* Admin*/
 #forums-tree {}
 #forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }

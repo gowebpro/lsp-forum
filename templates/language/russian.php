@@ -139,6 +139,9 @@ return array(
 
 	'new_topic' => 'Новая тема',
 	'new_topic_for' => 'Создание темы в',
+	'new_topic_forum' => 'Форум',
+	'new_topic_forum_notice' => '',
+	'new_topic_forum_error_unknown' => 'Вы должны выбрать форум',
 	'new_topic_title' => 'Название темы',
 	'new_topic_title_notice' => '',
 	'new_topic_title_error' => 'Название должно быть от %%min%% до %%max%% символов',
@@ -272,6 +275,9 @@ return array(
 
 	'notify_subject_new_topic' => 'Новая тема на форуме',
 	'notify_subject_new_post' => 'Новый ответ в тему',
+
+	'create_menu_topic' => 'тему на форуме',
+	'write_topic' => 'Тема на форум',
 
 	'block_stream' => 'Форум',
 	'block_stream_empty' => 'Новых сообщений нет',
