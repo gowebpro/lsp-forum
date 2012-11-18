@@ -362,9 +362,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 		if (!Config::Get('sys.cache.use') or $data['time']<time()-60*10) {
 			$data['time'] = time();
-			$this->oMapperForum->UpdateTopicViews($data['obj']);
-			//чистим кеш
-			$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityView_save'));
+			$data['obj']->Save();
 		}
 		$this->Cache_Set($data, "topic_views_{$oTopic->getId()}", array(), 60*60*24);
 	}
