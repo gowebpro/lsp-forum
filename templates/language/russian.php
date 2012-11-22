@@ -275,6 +275,7 @@ return array(
 
 	'notify_subject_new_topic' => 'Новая тема на форуме',
 	'notify_subject_new_post' => 'Новый ответ в тему',
+	'notify_subject_reply' => 'Ответ на сообщение',
 
 	'create_menu_topic' => 'тему на форуме',
 	'write_topic' => 'Тема на форум',

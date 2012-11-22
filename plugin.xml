@@ -9,7 +9,7 @@
 		<lang name="russian">Чиффа</lang>
 	</author>
 	<homepage>http://xmk.ars-team.ru</homepage>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>

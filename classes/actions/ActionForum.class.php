@@ -1347,6 +1347,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 				'oPost' => $oPost,
 				'oUser' => $this->oUserCurrent,
 			),$aExcludeMail,__CLASS__);
+			/**
+			 * Отправка уведомления на отвеченные посты
+			 */
+			$this->PluginForum_Forum_SendNotifyReply($oPost,$aExcludeMail);
 
 			Router::Location($oPost->getUrlFull());
 		} else {
@@ -1659,9 +1663,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function AssignJumpMenu() {
 		/**
+		 * Получаем список id форумов, открытых для юзера
+		 */
+	//	$aForumsId=$this->PluginForum_Forum_GetForumsOpenUser(LS::CurUsr(),true);
+		/**
 		 * Получаем список форумов
 		 */
-		$aForums=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
+		$aForums=$this->PluginForum_Forum_LoadTreeOfForum(
+			array(
+			//	'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
+				'#order'=>array('forum_sort'=>'asc')
+			)
+		);
 		/**
 		 * Дерево форумов
 		 */

@@ -364,6 +364,34 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$this->Cache_Set($data, "topic_views_{$oTopic->getId()}", array(), 60*60*24);
 	}
 
+	public function SendNotifyReply($oReply,$aExcludeMail=array()) {
+		if ($oReply) {
+			if (preg_match_all("@(<ls reply=(?:\"|')(.*)(?:\"|').*>)@Ui",$oReply->getTextSource(),$aMatch)) {
+				$aIds = array_values($aMatch[2]);
+				/**
+				 * Получаем список постов
+				 */
+				$aPosts = $this->GetPostItemsByArrayPostId((array)$aIds);
+				/**
+				 * Отправка
+				 */
+				$sTemplate = 'notify.reply.tpl';
+				$sSendTitle = $this->Lang_Get('plugin.forum.notify_subject_reply');
+				$aSendContent = array(
+					'oUser' => $oReply->getUser(),
+					'oTopic' => $oReply->getTopic(),
+					'oPost' => $oReply
+				);
+				foreach ($aPosts as $oPost) {
+					$oUser = $oPost->getUser();
+					$sMail = $oUser->getMail();
+					if (!$sMail || in_array($sMail, (array)$aExcludeMail)) continue;
+					$this->Notify_Send($sMail, $sTemplate, $sSendTitle, $aSendContent, __CLASS__);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Парсер текста
 	 *

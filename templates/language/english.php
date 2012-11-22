@@ -275,6 +275,7 @@ return array(
 
 	'notify_subject_new_topic' => 'New topic on the forum',
 	'notify_subject_new_post' => 'New reply to topic',
+	'notify_subject_reply' => 'Reply to post',
 
 	'create_menu_topic' => 'topic in forum',
 	'write_topic' => 'Topic in forum',
