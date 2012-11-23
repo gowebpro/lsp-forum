@@ -83,6 +83,11 @@ $config['topic_line_mod']		= true;
 $config['number_format']		= ',';
 
 /**
+ * Заменять кучу восклицательных и вопросительных знаков
+ */
+$config['title_format']			= true;
+
+/**
  * Активация плагина
  */
 $config['activate'] = array();
