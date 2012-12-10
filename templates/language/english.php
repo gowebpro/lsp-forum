@@ -88,6 +88,7 @@ return array(
 	'edit' => 'Edit forum',
 	'edit_ok' => 'The changes are saved',
 	'edit_submit' => 'Save',
+	'edit_submit_next_perms' => 'Save and set access rights',
 
 	'edit_forum' => 'Edit forum',
 	'edit_category' => 'Edit category',
@@ -244,6 +245,7 @@ return array(
 	'perms_reply' => 'Replies in Topics',
 	'perms_start' => 'Creating topics',
 	'perms_submit' => 'Save',
+	'perms_submit_next_edit' => 'Save and edit forum',
 	'perms_submit_ok' => 'Access rights changed',
 	'perms_mask_name' => 'Name of mask',
 

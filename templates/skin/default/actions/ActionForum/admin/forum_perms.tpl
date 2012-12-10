@@ -71,6 +71,7 @@
 				<th colspan="5">
 					<div class="ta-c">
 						<button type="submit" name="submit_forum_perms" class="button button-primary">{$aLang.plugin.forum.perms_submit}</button>
+						<button type="submit" name="submit_forum_perms_next_edit" class="button">{$aLang.plugin.forum.perms_submit_next_edit}</button>
 					</div>
 				</th>
 			</tr>

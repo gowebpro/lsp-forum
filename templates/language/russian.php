@@ -88,6 +88,7 @@ return array(
 	'edit' => 'Редактировать форум',
 	'edit_ok' => 'Изменения сохранены',
 	'edit_submit' => 'Сохранить изменения',
+	'edit_submit_next_perms' => 'Сохранить и настроить права доступа',
 
 	'edit_forum' => 'Редактировать форум',
 	'edit_category' => 'Редактировать категорию',
@@ -244,6 +245,7 @@ return array(
 	'perms_reply' => 'Ответы в темы',
 	'perms_start' => 'Создание тем',
 	'perms_submit' => 'Сохранить',
+	'perms_submit_next_edit' => 'Сохранить и редактировать форум',
 	'perms_submit_ok' => 'Права доступа отредактированы',
 	'perms_mask_name' => 'Название маски',
 

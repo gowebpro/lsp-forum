@@ -1826,8 +1826,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		} else {
 			$this->Message_AddError($this->Lang_Get('system_error'),null,1);
 		}
-
-		Router::Location(Router::GetPath('forum').'admin/forums/');
+		if (isPost('submit_forum_save_next_perms')) {
+			Router::Location(Router::GetPath('forum')."admin/forums/perms/{$oForum->getId()}");
+		} else {
+			Router::Location(Router::GetPath('forum').'admin/forums/');
+		}
 	}
 
 
@@ -1896,7 +1899,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if ($sType=='edit') {
 			if ($oForumEdit=$this->PluginForum_Forum_GetForumById($this->GetParam(2))) {
-				if (isPost('submit_forum_save')) {
+				if (isPost('submit_forum_save') || isPost('submit_forum_save_next_perms')) {
 					$this->submitEditForum($oForumEdit);
 				} else {
 					$_REQUEST['forum_title']=$oForumEdit->getTitle();
@@ -2137,7 +2140,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Была ли отправлена форма с данными
 		 */
-		if (isPost('submit_forum_perms')) {
+		if (isPost('submit_forum_perms') || isPost('submit_forum_perms_next_edit')) {
 			$aPermissions=array(
 				'show_perms'=>getRequest('show',array(),'post'),
 				'read_perms'=>getRequest('read',array(),'post'),
@@ -2150,7 +2153,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			if ($oForum->Save()) {
 				$this->Message_AddNotice($this->Lang_Get('plugin.forum.perms_submit_ok'),null,1);
-				Router::Location(Router::GetPath('forum').'admin/forums/');
+				if (isPost('submit_forum_perms_next_edit')) {
+					Router::Location(Router::GetPath('forum')."admin/forums/edit/{$oForum->getId()}");
+				} else {
+					Router::Location(Router::GetPath('forum').'admin/forums/');
+				}
 			} else {
 				$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
 				return;

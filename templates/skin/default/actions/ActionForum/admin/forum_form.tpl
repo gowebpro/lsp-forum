@@ -188,6 +188,7 @@
 					<div class="ta-c">
 						{if $sType == 'edit'}
 						<button type="submit" name="submit_forum_save" class="button">{$aLang.plugin.forum.edit_submit}</button>
+						<button type="submit" name="submit_forum_save_next_perms" class="button">{$aLang.plugin.forum.edit_submit_next_perms}</button>
 						{else}
 						<button type="submit" name="submit_forum_add" class="button button-primary">{$aLang.plugin.forum.create_submit}</button>
 						{/if}
