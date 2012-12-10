@@ -8,6 +8,7 @@
 </h2>
 
 {include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+{assign var="bCategory" value=$oForum->getCanPost()}
 
 <div class="forums">
 	<header class="forums-header">
@@ -32,13 +33,13 @@
 				</th>
 				<th class="perm-yellow ta-c">
 					<div>{$aLang.plugin.forum.perms_reply}</div>
-					<button type="button" class="button button-primary" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms')"><i class="icon-white icon-plus"></i></button>
-					<button type="button" class="button button-red" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms',1)"><i class="icon-white icon-minus"></i></button>
+					<button type="button" class="button button-primary" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms')"{if $bCategory} disabled="disabled"{/if}><i class="icon-white icon-plus"></i></button>
+					<button type="button" class="button button-red" onclick="ls.forum.admin.permsCheckCol('reply','forum-perms',1)"{if $bCategory} disabled="disabled"{/if}><i class="icon-white icon-minus"></i></button>
 				</th>
 				<th class="perm-blue ta-c">
 					<div>{$aLang.plugin.forum.perms_start}</div>
-					<button type="button" class="button button-primary" onclick="ls.forum.admin.permsCheckCol('start','forum-perms')"><i class="icon-white icon-plus"></i></button>
-					<button type="button" class="button button-red" onclick="ls.forum.admin.permsCheckCol('start','forum-perms',1)"><i class="icon-white icon-minus"></i></button>
+					<button type="button" class="button button-primary" onclick="ls.forum.admin.permsCheckCol('start','forum-perms')"{if $bCategory} disabled="disabled"{/if}><i class="icon-white icon-plus"></i></button>
+					<button type="button" class="button button-red" onclick="ls.forum.admin.permsCheckCol('start','forum-perms',1)"{if $bCategory} disabled="disabled"{/if}><i class="icon-white icon-minus"></i></button>
 				</th>
 			</tr>
 			{foreach from=$aPerms item=oPerm}
@@ -58,11 +59,11 @@
 				</td>
 				<td class="perm-yellow">
 					<div>{$aLang.plugin.forum.perms_reply}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('reply',{$oPerm->getId()},'forum-perms')" name="reply[{$oPerm->getId()}]" id="reply_{$oPerm->getId()}" value="1"{if $_aRequest.reply[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('reply',{$oPerm->getId()},'forum-perms')" name="reply[{$oPerm->getId()}]" id="reply_{$oPerm->getId()}" value="1"{if $_aRequest.reply[$oPerm->getId()]} checked{/if}{if $bCategory} disabled="disabled"{/if} />
 				</td>
 				<td class="perm-blue">
 					<div>{$aLang.plugin.forum.perms_start}</div>
-					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('start',{$oPerm->getId()},'forum-perms')" name="start[{$oPerm->getId()}]" id="start_{$oPerm->getId()}" value="1"{if $_aRequest.start[$oPerm->getId()]} checked{/if} />
+					<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('start',{$oPerm->getId()},'forum-perms')" name="start[{$oPerm->getId()}]" id="start_{$oPerm->getId()}" value="1"{if $_aRequest.start[$oPerm->getId()]} checked{/if}{if $bCategory} disabled="disabled"{/if} />
 				</td>
 			</tr>
 			{/foreach}

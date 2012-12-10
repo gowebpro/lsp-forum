@@ -91,6 +91,21 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return true;
 	}
 
+	public function getTyped() {
+		if (!$this->getType()) return 'archive';
+		if ($this->getRedirectOn()) return 'link';
+		$suffix = $this->getPassword()?'_closed':'';
+		return ($this->getCanPost() ? 'category' : 'forum' . $suffix);
+	}
+
+	public function getIconPath($iSize=48) {
+		if ($sPath=$this->getIcon()) {
+			return preg_replace("#_\d{1,3}x\d{1,3}(\.\w{3,4})$#", ((($iSize==0)?'':"_{$iSize}x{$iSize}") . "\\1"),$sPath);
+		} else {
+			return Plugin::GetTemplateWebPath(__CLASS__)."icons/{$this->getTyped()}_icon_{$iSize}x{$iSize}.png";
+		}
+	}
+
 	public function getUrlFull() {
 		return Router::GetPath('forum').($this->getUrl() ? $this->getUrl() : $this->getId()).'/';
 	}

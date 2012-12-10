@@ -403,6 +403,81 @@ class PluginForum_ModuleForum extends ModuleORM {
 		return $this->Text_Parser($sText);
 	}
 
+	/**
+	 * Загружает иконку для форума
+	 *
+	 * @param array $aFile	Массив $_FILES при загрузке аватара
+	 * @param PluginForum_ModuleForum_EntityForum $oForum	Форум
+	 * @return bool
+	 */
+	public function UploadIcon($aFile, $oForum) {
+		if(!is_array($aFile) || !isset($aFile['tmp_name'])) {
+			return false;
+		}
+
+		$sFileTmp = Config::Get('sys.cache.dir').func_generator();
+		if (!move_uploaded_file($aFile['tmp_name'], $sFileTmp)) {
+			return false;
+		}
+		$sPath = Config::Get('plugin.forum.path_uploads_forum');
+		$sPath = str_replace(Config::Get('path.root.server'), '', "/{$sPath}/{$oForum->getId()}/");
+		$aParams = $this->Image_BuildParams('avatar');
+
+		$oImage = $this->Image_CreateImageObject($sFileTmp);
+		/**
+		 * Если объект изображения не создан,
+		 * возвращаем ошибку
+		 */
+		if($sError=$oImage->get_last_error()) {
+			// Вывод сообщения об ошибки, произошедшей при создании объекта изображения
+			// $this->Message_AddError($sError,$this->Lang_Get('error'));
+			@unlink($sFileTmp);
+			return false;
+		}
+		/**
+		 * Срезаем квадрат
+		 */
+		$oImage = $this->Image_CropSquare($oImage);
+
+		$aSize = Config::Get('plugin.forum.icon_size');
+		rsort($aSize, SORT_NUMERIC);
+		$sSizeBig = array_shift($aSize);
+		if ($oImage && $sFileAvatar = $this->Image_Resize($sFileTmp, $sPath, "forum_icon_{$oForum->getId()}_{$sSizeBig}x{$sSizeBig}", Config::Get('view.img_max_width'), Config::Get('view.img_max_height'), $sSizeBig, $sSizeBig, false, $aParams, $oImage)) {
+			foreach ($aSize as $iSize) {
+				if ($iSize == 0) {
+					$this->Image_Resize($sFileTmp, $sPath, "forum_icon_{$oForum->getId()}", Config::Get('view.img_max_width'), Config::Get('view.img_max_height'), null, null, false, $aParams, $oImage);
+				} else {
+					$this->Image_Resize($sFileTmp, $sPath, "forum_icon_{$oForum->getId()}_{$iSize}x{$iSize}", Config::Get('view.img_max_width'), Config::Get('view.img_max_height'), $iSize, $iSize, false, $aParams, $oImage);
+				}
+			}
+			@unlink($sFileTmp);
+			/**
+			 * Если все нормально, возвращаем расширение загруженного аватара
+			 */
+			return $this->Image_GetWebPath($sFileAvatar);
+		}
+		@unlink($sFileTmp);
+		/**
+		 * В случае ошибки, возвращаем false
+		 */
+		return false;
+	}
+	/**
+	 * Удаляет иконку форума с сервера
+	 *
+	 * @param PluginForum_ModuleForum_EntityForum $oForum	Блог
+	 */
+	public function DeleteIcon($oForum) {
+		/**
+		 * Если иконка есть, удаляем ее и ее рейсайзы
+		 */
+		if($oForum->getIcon()) {
+			$aSize = Config::Get('plugin.forum.icon_size');
+			foreach ($aSize as $iSize) {
+				$this->Image_RemoveFile($this->Image_GetServerPath($oForum->getIconPath($iSize)));
+			}
+		}
+	}
 }
 
 ?>

@@ -88,6 +88,12 @@ $config['number_format']		= ',';
 $config['title_format']			= true;
 
 /**
+ * Список размеров иконок для форума
+ */
+$config['icon_size']			= array(64,48,32,0);
+
+
+/**
  * Активация плагина
  */
 $config['activate'] = array();
@@ -99,9 +105,15 @@ $config['deactivate']['delete'] = false; //Удаление таблиц при 
 
 
 /**
- * Папка плагинов для Smarty
+ * Настройка путей
  */
-$config['path_smarty_plug'] = '___path.root.server___/plugins/forum/smarty_plugs';
+$config['path_plugin']			= '___path.root.server___/plugins/forum';
+
+$config['path_smarty_plug']		= '___plugin.forum.path_plugin___/smarty_plugs';// Папка плагинов для Smarty
+
+$config['path_uploads']			= '___plugin.forum.path_plugin___/uploads';		//Путь для загрузок
+$config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//Путь для загрузок
+
 
 /**
  * Настройка Jevix

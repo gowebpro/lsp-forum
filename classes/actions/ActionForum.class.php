@@ -96,8 +96,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEvent('index','EventIndex');
 		$this->AddEvent('jump','EventJump');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page([1-9]\d{0,5}))?$/i','EventShowTopic');
-		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i','EventAddPost');
-		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i','EventEditPost');
+		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i',array('EventAddPost','add_post'));
+		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i',array('EventEditPost','edit_post'));
 		$this->AddEventPreg('/^topic$/i','/^delete$/i','/^(\d+)$/i','EventDeletePost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
 		$this->AddEventPreg('/^findpost$/i','/^(\d+)$/i','EventFindPost');
@@ -1702,6 +1702,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oForum=LS::ENT('PluginForum_Forum');
 		$oForum->setTitle(forum_parse_title(getRequest('forum_title')));
 		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequest('forum_url',''))));
+		$oForum->setIcon(null);
 		if ($sNewType=='category') {
 			$oForum->setCanPost(1);
 		} else {
@@ -1721,6 +1722,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oForum->setRedirectOn(getRequest('forum_redirect_on') ? 1 : 0 );
 			}
 			$oForum->setLimitRatingTopic((float)getRequest('forum_limit_rating_topic'));
+			/**
+			 * Загружаем иконку
+			 */
+			if (isset($_FILES['forum_icon']) && is_uploaded_file($_FILES['forum_icon']['tmp_name'])) {
+				if ($sPath = $this->PluginForum_Forum_UploadIcon($_FILES['forum_icon'],$oForum)) {
+					$oForum->setIcon($sPath);
+				} else {
+					$this->Message_AddError($this->Lang_Get('plugin.forum.create_icon_error'),$this->Lang_Get('error'));
+					return false;
+				}
+			}
 		}
 		/**
 		 * Проверяем корректность полей
@@ -1776,6 +1788,24 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oForum->setRedirectOn( (int)getRequest('forum_redirect_on',0,'post') === 1 );
 			}
 			$oForum->setLimitRatingTopic((float)getRequest('forum_limit_rating_topic'));
+			/**
+			 * Загружаем иконку
+			 */
+			if (isset($_FILES['forum_icon']) && is_uploaded_file($_FILES['forum_icon']['tmp_name'])) {
+				if ($sPath = $this->PluginForum_Forum_UploadIcon($_FILES['forum_icon'],$oForum)) {
+					$oForum->setIcon($sPath);
+				} else {
+					$this->Message_AddError($this->Lang_Get('plugin.forum.create_icon_error'),$this->Lang_Get('error'));
+					return false;
+				}
+			}
+			/**
+			 * Удаляем иконку
+			 */
+			if (isset($_REQUEST['forum_icon_delete'])) {
+				$this->PluginForum_Forum_DeleteIcon($oForum);
+				$oForum->setIcon(null);
+			}
 		}
 		/**
 		 * Проверяем корректность полей
@@ -1883,6 +1913,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_limit_rating_topic']=$oForumEdit->getLimitRatingTopic();
 
 					$sNewType=($oForumEdit->getParentId()==0) ? 'category' : 'forum';
+					$this->Viewer_Assign('oForumEdit', $oForumEdit);
 				}
 			} else {
 				return parent::EventNotFound();

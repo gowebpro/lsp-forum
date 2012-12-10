@@ -77,6 +77,10 @@ return array(
 	'create_redirect_on' => 'Switch forum to move?',
 	'create_redirect_on_notice' => 'If you select <b>"Yes"</b> the following blocks of settings will have no effect, as a forum will be only a reference. Already existing topics within the forum will not be available!',
 	'create_submit' => 'Create',
+	'create_icon' => 'Forum icon',
+	'create_icon_notice' => '',
+	'create_icon_error' => 'Can\'t upload icon',
+	'create_icon_delete' => 'Delete',
 
 	'create_forum' => 'Make a forum',
 	'create_category' => 'Create a category',

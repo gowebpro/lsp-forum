@@ -21,8 +21,26 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	`forum_redirect_hits` int(11) NOT NULL DEFAULT '0',
 	`forum_count_topic` int(11) NOT NULL DEFAULT '0',
 	`forum_count_post` int(11) NOT NULL DEFAULT '0',
+	`forum_icon` varchar(250) DEFAULT NULL,
 	`last_post_id` int(11) unsigned DEFAULT NULL,
 	PRIMARY KEY (`forum_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prefix_forum_marker`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_marker` (
+	`marker_type` varchar(32) NOT NULL,
+	`user_id` int(11) unsigned DEFAULT NULL,
+	`last_post_id` int(11) unsigned DEFAULT NULL,
+	`marker_date` datetime DEFAULT NULL,
+	`marker_read_array` mediumtext,
+	UNIQUE KEY `marker_key` (`marker_type`, `user_id`),
+	KEY `marker_last_update` (`marker_last_update`),
+	KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -176,6 +194,12 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
 
 -- --------------------------------------------------------
 
+
+--
+-- Constraints for table `prefix_forum_marker`
+--
+ALTER TABLE `prefix_forum_marker`
+	ADD CONSTRAINT `prefix_forum_marker_fk` FOREIGN KEY (`user_id`) REFERENCES `prefix_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `prefix_forum_moderator`

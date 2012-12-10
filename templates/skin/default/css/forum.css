@@ -91,11 +91,11 @@
 .forum-copyright span { font-size: 10px; display: block }
 
 /* Icons */
-.forum-icon, .topic-icon { display: block; width: 32px; height: 32px; margin: auto; background-repeat: no-repeat }
-
-.forum-icon { background-image: url(../icons/forum_read.png) }
-.forum-icon.unread { background-image: url(../icons/forum_unread.png) }
-.forum-icon.archive {}
+.forum-icon, .topic-icon { display: block; margin: auto; background-repeat: no-repeat }
+.forum-icon { width: 48px; height: 48px }
+.forum-icon.unread { }
+.forum-icon.archive { }
+.topic-icon { width: 32px; height: 32px }
 
 .topic-icon { background-image: url(../icons/topic_read.png) }
 .topic-icon.unread { background-image: url(../icons/topic_unread.png) }

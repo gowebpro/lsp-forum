@@ -20,7 +20,7 @@
 {/if}
 	<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
-	<form action="{$oTopic->getUrlFull()}reply" method="POST" enctype="multipart/form-data" id="form-fast-reply">
+	<form action="{$oTopic->getUrlFull()}reply/" method="POST" enctype="multipart/form-data" id="form-fast-reply">
 		{hook run='form_forum_fast_reply_begin'}
 
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />

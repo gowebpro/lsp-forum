@@ -164,6 +164,23 @@
 					<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_no" value="0"{if !$_aRequest.forum_redirect_on || $_aRequest.forum_redirect_on=='0'} checked{/if}> No</label>
 				</td>
 			</tr>
+			<tr>
+				<td class="cell-label">
+					<label for="forum_icon">{$aLang.plugin.forum.create_icon}:</label>
+					<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
+				</td>
+				<td class="cell-labeled">
+					{if $oForumEdit and $oForumEdit->getIcon()}
+					<div class="avatar-edit">
+						{foreach from=$oConfig->GetValue('plugin.forum.icon_size') item=iSize}
+							{if $iSize}<img src="{$oForumEdit->getIconPath({$iSize})}">{/if}
+						{/foreach}
+						<label><input type="checkbox" id="forum_icon_delete" name="forum_icon_delete" value="on" class="input-checkbox"> {$aLang.plugin.forum.create_icon_delete}</label>
+					</div>
+					{/if}
+					<input type="file" name="forum_icon" id="forum_icon">
+				</td>
+			</tr>
 			{/if}
 
 			<tr>

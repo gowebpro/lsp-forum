@@ -7,7 +7,7 @@
 			{assign var='aModerators' value=$oForum->getModerators()}
 			<tr>
 				<td class="cell-icon">
-					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"></a>
+					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" /></a>
 				</td>
 				<td class="cell-name">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
