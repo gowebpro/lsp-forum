@@ -383,10 +383,11 @@ class PluginForum_ModuleForum extends ModuleORM {
 					'oPost' => $oReply
 				);
 				foreach ($aPosts as $oPost) {
-					$oUser = $oPost->getUser();
-					$sMail = $oUser->getMail();
-					if (!$sMail || in_array($sMail, (array)$aExcludeMail)) continue;
-					$this->Notify_Send($sMail, $sTemplate, $sSendTitle, $aSendContent, __CLASS__);
+					if ($oUser = $oPost->getUser()) {
+						$sMail = $oUser->getMail();
+						if (!$sMail || in_array($sMail, (array)$aExcludeMail)) continue;
+						$this->Notify_Send($sMail, $sTemplate, $sSendTitle, $aSendContent, __CLASS__);
+					}
 				}
 			}
 		}
