@@ -14,6 +14,13 @@ $config=array();
 
 $config['encrypt'] = 'ChiffaYo';
 
+
+/**
+ * Если вы внесли пожертвование http://livestreetcms.com/profile/Chiffa/donate/
+ * ставим true
+ */
+$config['donator']				= false;
+
 /**
  * Закрытый режим
  * Закрыть раздел от всех, кроме админа

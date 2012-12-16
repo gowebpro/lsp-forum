@@ -29,6 +29,9 @@ class PluginForum_HookForum extends Hook {
 
 
 	public function ForumCopyright() {
+		if (Config::Get('plugin.forum.donator')) {
+			return;
+		}
 		$aPlugins=$this->Plugin_GetList();
 		if (!(isset($aPlugins['forum']))) {
 			return;
