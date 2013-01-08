@@ -118,8 +118,12 @@ return array(
 	'password_wrong' => 'Введенный пароль неверный. Повторите попытку.',
 	'password_submit' => 'Войти',
 
+	'forum_read' => 'Не прочитанных тем нет',
+	'forum_unread' => 'Есть не прочитанные темы',
 
 	'topic' => 'Тема',
+	'topic_read' => 'Тема прочитана',
+	'topic_unread' => 'Тема не прочитана',
 	'topic_close' => 'Закрыть тему',
 	'topic_open' => 'Открыть тему',
 	'topic_delete' => 'Удалить тему',

@@ -527,6 +527,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 *
 	 */
 	public function EventShowForum() {
+	/*	if (LS::Adm()) {
+			$oUsr=LS::CurUsr();
+			$aMarkData = $this->Session_Get("mark{$oUsr->getId()}");
+			$aMarkData = unserialize(stripslashes($aMarkData));
+			print_r($aMarkData);
+		}*/
 		$this->sMenuSubItemSelect='show_forum';
 		/**
 		 * Получаем URL форума из эвента
@@ -722,13 +728,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		if ($this->User_IsAuthorization()) {
 			/**
-			 * Отмечаем дату прочтения топика
-			 */
-
-			/**
-			 * Счетчик просмотров топика
+			 * Счетчик просмотров топика и маркировка
 			 */
 			$this->PluginForum_Forum_UpdateTopicViews($oTopic);
+			$this->PluginForum_Forum_MarkTopic($oTopic);
 			/**
 			 * Check
 			 */

@@ -290,6 +290,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 			$oForum->setAllowShow($oParent->getAllowShow());
 		}
 
+		// markers
+		$oForum->setMarker($this->GetMarker($oForum));
+
 		return $oForum;
 	}
 
@@ -477,6 +480,86 @@ class PluginForum_ModuleForum extends ModuleORM {
 			foreach ($aSize as $iSize) {
 				$this->Image_RemoveFile($this->Image_GetServerPath($oForum->getIconPath($iSize)));
 			}
+		}
+	}
+
+	public function MarkTopic($oTopic) {
+		$oUser = $this->User_GetUserCurrent();
+		$oForum = $oTopic->getForum();
+		if ($oUser && $oForum) {
+			$sUserId = $oUser->getId();
+			$sForumId = $oForum->getId();
+			// build mark data
+			$aMarkData = $this->Session_Get("mark{$sUserId}");
+			$aMarkData = unserialize(stripslashes($aMarkData));
+			if (!isset($aMarkData[$sForumId])) {
+				$aMarkData[$sForumId]['user_id'] = $sUserId;
+				$aMarkData[$sForumId]['forum_id'] = $sForumId;
+				$aMarkData[$sForumId]['marker_read_array'] = array();
+				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
+			}
+			// build topic data
+			$aMarkTopic = array();
+			$aMarkTopic['i'] = $oTopic->getCountPost();
+			// re-write
+			if (isset($aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()])) {
+				$aMarkTopicOld = $aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()];
+				$iCountDiff = $oTopic->getCountPost() - (int)$aMarkTopicOld['i'];
+				$aMarkData[$sForumId]['marker_count_item'] = (int)$aMarkData[$sForumId]['marker_count_item'] - $iCountDiff;
+			} else {
+				$aMarkData[$sForumId]['marker_count_item'] = (int)$aMarkData[$sForumId]['marker_count_item'] - $oTopic->getCountPost();
+			}
+			// build forum data
+			$aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()] = $aMarkTopic;
+			$aMarkData[$sForumId]['marker_date'] = date('Y-m-d H:i:s');
+			// save
+			$this->Session_Set("mark{$sUserId}", addslashes(serialize($aMarkData)));
+		}
+	}
+
+	public function GetMarker($oForum) {
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$aData = $this->Session_Get("mark{$oUser->getId()}");
+			$aData = unserialize(stripslashes($aData));
+			if (isset($aData[$oForum->getId()])) {
+				$oMarker = LS::Ent('PluginForum_Forum_Marker', $aData[$oForum->getId()]);
+				return $oMarker;
+			}
+		}
+		return null;
+	}
+
+	public function SaveMarkers() {
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$aData = $this->Session_Get("mark{$oUser->getId()}");
+			$aData = unserialize(stripslashes($aData));
+			foreach ((array)$aData as $sForumId => $aForumData) {
+				$aForumData['marker_read_array'] = addslashes(serialize($aForumData['marker_read_array']));
+				if ($oMarker = $this->GetMarkerByUserIdAndForumId($aForumData['user_id'], $aForumData['forum_id'])) {
+					$oMarker->setReadArray($aForumData['marker_read_array']);
+					$oMarker->setDate($aForumData['marker_date']);
+					$oMarker->setCountItem($aForumData['marker_count_item']);
+					$oMarker->Update();
+				} else {
+					$oMarker = LS::Ent('PluginForum_Forum_Marker', $aForumData);
+					$oMarker->Add();
+				}
+			}
+			$this->Session_Drop("mark{$oUser->getId()}");
+		}
+	}
+	public function LoadMarkers() {
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$aData = array();
+			$aMarkers = $this->GetMarkerItemsByUserId($oUser->getId());
+			foreach ((array)$aMarkers as $oMarker) {
+				$aData[$oMarker->getForumId()]['user_id'] = $oMarker->getUserId();
+				$aData[$oMarker->getForumId()]['forum_id'] = $oMarker->getForumId();
+				$aData[$oMarker->getForumId()]['marker_read_array'] = unserialize(stripslashes($oMarker->getReadArray()));
+				$aData[$oMarker->getForumId()]['marker_date'] = $oMarker->getDate();
+				$aData[$oMarker->getForumId()]['marker_count_item'] = $oMarker->getCountItem();
+			}
+			$this->Session_Set("mark{$oUser->getId()}", addslashes(serialize($aData)));
 		}
 	}
 }

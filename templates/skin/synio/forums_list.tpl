@@ -2,12 +2,13 @@
 {if count($aForums) > 0}
 	{foreach from=$aForums item=oForum}
 		{if $oForum->getAllowShow()}
-			{assign var="oPost" value=$oForum->getPost()}
+			{assign var='oPost' value=$oForum->getPost()}
+			{assign var='oMarker' value=$oForum->getMarker()}
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			{assign var='aModerators' value=$oForum->getModerators()}
-			<tr>
+			<tr{if !($oMarker && $oMarker->checkRead()) && !$oForum->getRedirectOn()} class="unread"{/if}>
 				<td class="cell-icon">
-					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" /></a>
+					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if !($oMarker && $oMarker->checkRead())}{$aLang.plugin.forum.forum_unread}{else}{$aLang.plugin.forum.forum_read}{/if}"{/if}/></a>
 				</td>
 				<td class="cell-name">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>

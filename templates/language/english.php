@@ -118,8 +118,12 @@ return array(
 	'password_wrong' => 'Sorry, you have entered an incorrect password. Please try again.',
 	'password_submit' => 'Login',
 
+	'forum_read' => 'No unread topics',
+	'forum_unread' => 'Unread topics',
 
 	'topic' => 'Topic',
+	'topic_read' => 'Topic read',
+	'topic_unread' => 'Topic unread',
 	'topic_close' => 'Close this topic',
 	'topic_open' => 'Open this topic',
 	'topic_delete' => 'Delete this topic',

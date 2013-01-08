@@ -32,6 +32,9 @@
 .table-topics .cell-post { width: 180px }
 .table-topics .w33 { width: 33% }
 .table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
+.table-topics h4 a { color: #404040 }
+.table-topics h4 a:hover { color: #000 }
+.table-topics .unread h4 a { font-weight: bold }
 
 .table-forum-admin .cell-label { width: 400px }
 .table-forum-admin .cell-labeled {}
@@ -94,19 +97,15 @@
 /* Icons */
 .forum-icon, .topic-icon { display: block; margin: auto; background-repeat: no-repeat }
 .forum-icon { width: 48px; height: 48px }
-.forum-icon.unread { }
 .forum-icon.archive { }
-.topic-icon { width: 32px; height: 32px }
+.unread .forum-icon img { opacity: .5 }
 
-
-.topic-icon { background-image: url(../icons/topic_read.png) }
-.topic-icon.unread { background-image: url(../icons/topic_unread.png) }
+.topic-icon { width: 32px; height: 32px; background-image: url(../icons/topic_read.png) }
 .topic-icon.close { background-image: url(../icons/topic_close.png) }
 .topic-icon.hot { background-image: url(../icons/topic_hot.png) }
-.topic-icon.hot.unread { background-image: url(../icons/topic_hot_unread.png) }
 .topic-icon.poll { background-image: url(../icons/topic_poll.png) }
 .topic-icon.poll.hot { background-image: url(../icons/topic_poll_hot.png) }
-.topic-icon.poll.unread { background-image: url(../icons/topic_poll_unread.png) }
+.unread .topic-icon { opacity: .5; *background-image: url(../icons/topic_unread.png) }
 
 /* Other */
 .controllers { margin: 15px 0 }

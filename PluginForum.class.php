@@ -37,7 +37,7 @@ class PluginForum extends Plugin {
 		if (!$this->isTableExists('prefix_forum_topic_view')) {
 			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.0.3.sql');
 		}
-		if (!$this->isTableExists('prefix_forum_markread')) {
+		if (!$this->isTableExists('prefix_forum_marker')) {
 			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.1.sql');
 		}
 		return true;

@@ -1,10 +1,11 @@
 {foreach from=$aTopics item=oTopic}
-	{assign var="oUser" value=$oTopic->getUser()}
-	{assign var="oPost" value=$oTopic->getPost()}
-	{assign var="oPoster" value=$oPost->getUser()}
-	<tr id="topic-{$oTopic->getId()}">
+	{assign var='oUser' value=$oTopic->getUser()}
+	{assign var='oPost' value=$oTopic->getPost()}
+	{assign var='oPoster' value=$oPost->getUser()}
+	{assign var='oMarker' value=$oForum->getMarker()}
+	<tr id="topic-{$oTopic->getId()}"{if !($oMarker && $oMarker->checkTopic($oTopic))} class="unread"{/if}>
 		<td class="cell-icon">
-			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}"></a>
+			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}" title="{if !($oMarker && $oMarker->checkTopic($oTopic))}{$aLang.plugin.forum.topic_unread}{else}{$aLang.plugin.forum.topic_read}{/if}"></a>
 		</td>
 		<td class="cell-name">
 			<h4>
