@@ -527,12 +527,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 *
 	 */
 	public function EventShowForum() {
-	/*	if (LS::Adm()) {
-			$oUsr=LS::CurUsr();
-			$aMarkData = $this->Session_Get("mark{$oUsr->getId()}");
-			$aMarkData = unserialize(stripslashes($aMarkData));
-			print_r($aMarkData);
-		}*/
 		$this->sMenuSubItemSelect='show_forum';
 		/**
 		 * Получаем URL форума из эвента
