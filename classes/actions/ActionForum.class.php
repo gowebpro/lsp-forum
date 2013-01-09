@@ -464,7 +464,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_wrong'));
 				return;
 			}
-			fSetCookie('chiffaforumpass_'.$oForum->getId(), md5($sPassword));
+			fSetCookie('CfFP'.$oForum->getId(), md5($sPassword));
 			$sBackUrl = $oForum->getUrlFull();
 			if (isset($_SERVER['HTTP_REFERER'])) {
 				$sBackUrl = $_SERVER['HTTP_REFERER'];

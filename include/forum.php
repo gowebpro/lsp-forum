@@ -43,7 +43,7 @@ function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLev
  * @return	boolean
  */
 function forum_compare_password($oForum) {
-	$sCookiePass=fGetCookie("chiffaforumpass_{$oForum->getId()}");
+	$sCookiePass=fGetCookie("CfFP{$oForum->getId()}");
 	return (bool)($sCookiePass == md5($oForum->getPassword()));
 }
 
@@ -88,11 +88,11 @@ if (!function_exists('fSetCookie')) {
 	function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
 		if (!($sName)) return;
 
-		if ($bSticky) $iExpires = time() + (60*60*24*365);
-		else $iExpires = time() + ($iExpiresDays * 86400) + ($iExpiresMinutes * 60) + $iExpiresSeconds;
-
-		if ($iExpires <= time()) $iExpires = false;
-
+		$iExpires = time() + (60*60*24*365);
+		if (!$bSticky) {
+			$iExpires = time() + ($iExpiresDays * 86400) + ($iExpiresMinutes * 60) + $iExpiresSeconds;
+		//	if ($iExpires <= time()) $iExpires = false;
+		}
 		@setcookie($sName,$sValue,$iExpires,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
 	}
 }
