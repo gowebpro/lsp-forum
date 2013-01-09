@@ -496,13 +496,14 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$aMarkData[$sForumId]['user_id'] = $sUserId;
 				$aMarkData[$sForumId]['forum_id'] = $sForumId;
 				$aMarkData[$sForumId]['marker_read_array'] = array();
-				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
 				$aMarkData[$sForumId]['marker_unread_item'] = $oForum->getCountPost();
+				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
 			}
 			// при добавлении нового поста/топика
 			if ($aMarkData[$sForumId]['marker_count_item'] < $oForum->getCountPost()) {
 				$iCountDiff = $oForum->getCountPost() - (int)$aMarkData[$sForumId]['marker_count_item'];
-				$aMarkData[$sForumId]['marker_unread_item'] =+ $iCountDiff;
+				$aMarkData[$sForumId]['marker_unread_item'] = (int)$aMarkData[$sForumId]['marker_unread_item'] + $iCountDiff;
+				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
 			}
 			// build topic data
 			$aMarkTopic = array();
