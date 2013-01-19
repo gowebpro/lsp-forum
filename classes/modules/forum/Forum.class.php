@@ -500,7 +500,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
 			}
 			// при добавлении нового поста/топика
-			if ($aMarkData[$sForumId]['marker_count_item'] < $oForum->getCountPost()) {
+			if ($aMarkData[$sForumId]['marker_count_item'] <> $oForum->getCountPost()) {
 				$iCountDiff = $oForum->getCountPost() - (int)$aMarkData[$sForumId]['marker_count_item'];
 				$aMarkData[$sForumId]['marker_unread_item'] = (int)$aMarkData[$sForumId]['marker_unread_item'] + $iCountDiff;
 				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();

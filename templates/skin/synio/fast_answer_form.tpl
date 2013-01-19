@@ -13,7 +13,7 @@
 	<script>
 		jQuery(function($){
 			ls.lang.load({lang_load name="panel_b,panel_i,panel_s,panel_url,panel_url_promt,panel_image,panel_quote,panel_clear_tags,panel_image_promt,panel_user_promt"});
-			// Подключаем редактор
+			// РџРѕРґРєР»СЋС‡Р°РµРј СЂРµРґР°РєС‚РѕСЂ
 			$('#post_text').markItUp(ls.forum.getMarkitupMini());
 		});
 	</script>
