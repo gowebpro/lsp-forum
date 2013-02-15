@@ -16,6 +16,8 @@ return array(
 
 	'forum_closed' => 'Closed forum',
 
+	'authorization' => 'Authorization',
+
 	'button_edit' => 'Edit',
 	'button_delete' => 'Delete',
 	'button_reply' => 'Reply',

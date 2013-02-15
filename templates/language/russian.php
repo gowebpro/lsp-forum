@@ -16,6 +16,8 @@ return array(
 
 	'forum_closed' => 'Закрытый форум',
 
+	'authorization' => 'Авторизация',
+
 	'button_edit' => 'Редактировать',
 	'button_delete' => 'Удалить',
 	'button_reply' => 'Ответить',

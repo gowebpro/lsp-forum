@@ -448,6 +448,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_Assign('oForum',$oForum);
 		/**
+		 * Заголовок
+		 */
+		$this->_addTitle($this->Lang_Get('plugin.forum.authorization'));
+		/**
 		 * Устанавливаем шаблон вывода
 		 */
 		$this->SetTemplateAction('login');
@@ -675,6 +679,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		//$this->_breadcrumbsCreate($oTopic,true);
 		$this->_breadcrumbsCreate($oForum,false);
+		/**
+		 * Заголовок
+		 */
+		$this->_addTitle($oTopic->getTitle());
 		/**
 		 * Если установлен пароль
 		 */
