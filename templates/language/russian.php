@@ -153,6 +153,7 @@ return array(
 	'new_topic_forum' => 'Форум',
 	'new_topic_forum_notice' => '',
 	'new_topic_forum_error_unknown' => 'Вы должны выбрать форум',
+	'new_topic_forum_error_empty' => 'К сожалению нет разделов для выбора',
 	'new_topic_title' => 'Название темы',
 	'new_topic_title_notice' => '',
 	'new_topic_title_error' => 'Название должно быть от %%min%% до %%max%% символов',

@@ -1005,11 +1005,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Дерево форумов
 			 */
-			$aForumsTree=$this->PluginForum_Forum_buildTree($aForums);
-			/**
-			 * Загружаем переменные в шаблон
-			 */
-			$this->Viewer_Assign('aForumsTree',$aForumsTree);
+			if (!empty($aForums)) {
+				$aForumsTree=$this->PluginForum_Forum_buildTree($aForums);
+				/**
+				 * Загружаем переменные в шаблон
+				 */
+				$this->Viewer_Assign('aForumsTree',$aForumsTree);
+			} else {
+				/**
+				 * Уведомлении, что форумов нет
+				 */
+				$this->Message_AddError($this->Lang_Get('plugin.forum.new_topic_forum_error_empty'));
+			}
 			/**
 			 * Заголовки
 			 */

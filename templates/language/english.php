@@ -153,6 +153,7 @@ return array(
 	'new_topic_forum' => 'Forum',
 	'new_topic_forum_notice' => '',
 	'new_topic_forum_error_unknown' => 'You must choose a forum',
+	'new_topic_forum_error_empty' => 'Unfortunately there are no forum to select',
 	'new_topic_title' => 'Topic title',
 	'new_topic_title_notice' => '',
 	'new_topic_title_error' => 'The title should be between %%min%% and %%max%% characters',
