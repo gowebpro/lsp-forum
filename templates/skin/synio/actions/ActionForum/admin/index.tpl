@@ -3,7 +3,7 @@
 
 <h2 class="page-header">{$aLang.plugin.forum.acp}</h2>
 
-{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+{include file="$sTemplatePathForum/menu.forum.admin.tpl"}
 
 <div class="forums">
 	<header class="forums-header">

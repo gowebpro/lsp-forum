@@ -1,6 +1,6 @@
 {if $oForum}
 	{include file='header.tpl'}
-	<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+	<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 	<h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>&raquo;</h4>
 {else}
 	{include file='header.tpl' menu_content='create'}
@@ -81,7 +81,7 @@
 	</p>
 	{/if}
 
-	{include file="$sTemplatePathPlugin/guest_block.tpl" event="topic"}
+	{include file="$sTemplatePathForum/guest_block.tpl" event="topic"}
 
 	{hook run='form_forum_add_topic_end'}
 

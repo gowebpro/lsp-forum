@@ -18,7 +18,7 @@
 	</script>
 {/if}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 <h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
 
@@ -42,7 +42,7 @@
 		<br />
 	{/if}
 
-	{include file="$sTemplatePathPlugin/guest_block.tpl" event="post"}
+	{include file="$sTemplatePathForum/guest_block.tpl" event="post"}
 
 	{hook run='form_forum_add_post_end'}
 

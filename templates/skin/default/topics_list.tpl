@@ -13,7 +13,7 @@
 					{$aLang.plugin.forum.topic_pinned}:
 				{/if}
 				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
-				{include file="$sTemplatePathPlugin/paging_post.tpl" aPaging=$oTopic->getPaging()}
+				{include file="$sTemplatePathForum/paging_post.tpl" aPaging=$oTopic->getPaging()}
 			</h4>
 			{if $oTopic->getDescription()}
 			<p class="lighter">

@@ -3,7 +3,7 @@
 
 <h2 class="page-header"><a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span> {$aLang.plugin.forum.perms}</h2>
 
-{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+{include file="$sTemplatePathForum/menu.forum.admin.tpl"}
 
 <div class="forums">
 	<header class="forums-header">

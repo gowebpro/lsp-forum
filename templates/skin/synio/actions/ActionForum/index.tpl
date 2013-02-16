@@ -14,7 +14,7 @@
 						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">
-						{include file="$sTemplatePathPlugin/forums_list.tpl"}
+						{include file="$sTemplatePathForum/forums_list.tpl"}
 					</div>
 				</section>
 			{/if}
@@ -31,7 +31,7 @@
 	{/if}
 </div>
 
-{include file="$sTemplatePathPlugin/statistics.tpl"}
+{include file="$sTemplatePathForum/statistics.tpl"}
 
 {hook run='forum_copyright'}
 

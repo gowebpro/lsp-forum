@@ -11,7 +11,7 @@
 			<a href="{$oTopic->getUrlFull()}">({$oTopic->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')})</a>
 		</header>
 
-		{include file="$sTemplatePathPlugin/post.tpl" noPostSide=true noFooter=true bFirst=$smarty.foreach.posts.first}
+		{include file="$sTemplatePathForum/post.tpl" noPostSide=true noFooter=true bFirst=$smarty.foreach.posts.first}
 	</div>
 {/foreach}
 </div>

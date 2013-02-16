@@ -81,9 +81,10 @@ class PluginForum extends Plugin {
 		$this->Lang_AddMessage('stream_event_type_add_forum_topic', $this->Lang_Get('plugin.forum.event_type_add_topic'));
 		$this->Lang_AddMessage('stream_event_type_add_forum_post', $this->Lang_Get('plugin.forum.event_type_add_post'));
 		/**
-		 * Загружаем в шаблон
+		 * Загружаем в шаблон необходимые переменные
 		 */
 		$this->Viewer_Assign('aLang',$this->Lang_GetLangMsg());
+		$this->Viewer_Assign('sTemplatePathForum',rtrim(Plugin::GetTemplatePath(__CLASS__),'/'));
 		/**
 		 * Подключаем нашу директорию плагинов для Smarty
 		 */

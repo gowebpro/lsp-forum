@@ -1,6 +1,6 @@
 {include file='header.tpl' noSidebar=true}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 <form action="" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 

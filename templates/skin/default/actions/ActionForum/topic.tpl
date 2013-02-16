@@ -1,10 +1,10 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
-{include file="$sTemplatePathPlugin/window_post_anchor.tpl"}
+{include file="$sTemplatePathForum/window_post_anchor.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 {if $oConfig->GetValue('plugin.forum.topic_line_mod') && $oHeadPost}
 <div class="forum-topic">
@@ -17,14 +17,14 @@
 		{/if}
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
-	{include file="$sTemplatePathPlugin/post.tpl" oPost=$oHeadPost bFirst=true}
+	{include file="$sTemplatePathForum/post.tpl" oPost=$oHeadPost bFirst=true}
 </div>
 {/if}
 
 {if count($aPosts) > 0}
 <div id="topic-controls-top" class="controllers clearfix">
-	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-	{include file="$sTemplatePathPlugin/buttons_action.tpl"}
+	{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
+	{include file="$sTemplatePathForum/buttons_action.tpl"}
 </div>
 
 <div class="forum-topic">
@@ -45,7 +45,7 @@
 	{/if}
 	</header>
 	{foreach from=$aPosts item=oPost name=posts}
-		{include file="$sTemplatePathPlugin/post.tpl" oPost=$oPost bFirst=$smarty.foreach.posts.first}
+		{include file="$sTemplatePathForum/post.tpl" oPost=$oPost bFirst=$smarty.foreach.posts.first}
 	{/foreach}
 </div>
 {/if}
@@ -85,17 +85,17 @@
 {/if}
 
 <div id="topic-controls-bottom" class="controllers clearfix">
-	{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-	{include file="$sTemplatePathPlugin/buttons_action.tpl" bFastAnswer=true}
+	{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
+	{include file="$sTemplatePathForum/buttons_action.tpl" bFastAnswer=true}
 </div>
 
 {if $oUserCurrent && (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getAllowReply() && $oForum->getQuickReply()}
-	{include file="$sTemplatePathPlugin/fast_answer_form.tpl"}
+	{include file="$sTemplatePathForum/fast_answer_form.tpl"}
 {/if}
 
 <footer class="forums-footer-block clearfix">
 	<div class="fl-r">
-		{include file="$sTemplatePathPlugin/jumpmenu.tpl"}
+		{include file="$sTemplatePathForum/jumpmenu.tpl"}
 	</div>
 </footer>
 

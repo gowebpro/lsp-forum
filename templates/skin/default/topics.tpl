@@ -5,7 +5,7 @@
 			{$aLang.plugin.forum.topics_pinned}
 		</td>
 	</tr>
-	{include file="$sTemplatePathPlugin/topics_list.tpl" aTopics=$aPinned}
+	{include file="$sTemplatePathForum/topics_list.tpl" aTopics=$aPinned}
 {/if}
 {if count($aTopics) > 0}
 	<tr>
@@ -13,7 +13,7 @@
 			{$aLang.plugin.forum.topics_forum}
 		</td>
 	</tr>
-	{include file="$sTemplatePathPlugin/topics_list.tpl"}
+	{include file="$sTemplatePathForum/topics_list.tpl"}
 {/if}
 {if !$aPinned and !$aTopics}
 	<tr>

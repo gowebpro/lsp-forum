@@ -7,7 +7,7 @@
 	{$aLang.plugin.forum.perms}
 </h2>
 
-{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
+{include file="$sTemplatePathForum/menu.forum.admin.tpl"}
 {assign var="bCategory" value=$oForum->getCanPost()}
 
 <div class="forums">

@@ -107,7 +107,6 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		 */
 		$iCountForumTopic=$this->PluginForum_Forum_GetCountItemsByFilter(array('#where'=>array('user_id = ?d' => array($this->oUserProfile->getId()), 'post_new_topic = ?'=>array(1))),'Post');
 		$iCountForumPost=$this->PluginForum_Forum_GetCountItemsByFilter(array('#where'=>array('user_id = ?d' => array($this->oUserProfile->getId()), 'post_new_topic = ?'=>array(0))),'Post');
-		$this->Viewer_Assign('sTemplatePathPlugin',rtrim(Plugin::GetTemplatePath(__CLASS__),'/'));
 		$this->Viewer_Assign('iCountForumTopic',$iCountForumTopic);
 		$this->Viewer_Assign('iCountForumPost',$iCountForumPost);
 		/**

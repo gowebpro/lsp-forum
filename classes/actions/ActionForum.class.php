@@ -2437,12 +2437,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем в шаблон необходимые переменные
 		 */
-        $this->Viewer_Assign('menu','forum');
+		$this->Viewer_Assign('menu','forum');
 		$this->Viewer_Assign('aBreadcrumbs',$this->aBreadcrumbs);
 		$this->Viewer_Assign('sMenuHeadItemSelect',$this->sMenuHeadItemSelect);
 		$this->Viewer_Assign('sMenuItemSelect',$this->sMenuItemSelect);
 		$this->Viewer_Assign('sMenuSubItemSelect',$this->sMenuSubItemSelect);
-		$this->Viewer_Assign('sTemplatePathPlugin',rtrim($this->getTemplatePathPlugin(),'/'));
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */

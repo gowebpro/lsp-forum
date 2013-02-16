@@ -4,7 +4,7 @@
 {* assign var='aSubForums' value=$oForum->getChildren() *}
 {assign var='oSubscribeForum' value=$oForum->getSubscribeNewTopic()}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 {if $aSubForums}
 	<div class="forums">
@@ -13,7 +13,7 @@
 				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 			</header>
 			<div class="forums-content">
-				{include file="$sTemplatePathPlugin/forums_list.tpl" aForums=$aSubForums}
+				{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}
 			</div>
 		</section>
 	</div>
@@ -21,8 +21,8 @@
 
 {if $oForum->getCanPost() == 0}
 	<div id="forum-controls-top" class="controllers clearfix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
+		{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
+		{include file="$sTemplatePathForum/buttons_action.tpl"}
 	</div>
 
 	<div class="forums">
@@ -37,14 +37,14 @@
 				<h3>{$oForum->getTitle()}</h3>
 			</header>
 			<div class="forums-content">
-				{include file="$sTemplatePathPlugin/topics.tpl"}
+				{include file="$sTemplatePathForum/topics.tpl"}
 			</div>
 		</section>
 	</div>
 
 	<div id="forum-controls-bottom" class="controllers clearfix">
-		{include file="$sTemplatePathPlugin/paging.tpl" aPaging=$aPaging}
-		{include file="$sTemplatePathPlugin/buttons_action.tpl"}
+		{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
+		{include file="$sTemplatePathForum/buttons_action.tpl"}
 	</div>
 {/if}
 
@@ -54,7 +54,7 @@
 			<td class="col1"></td>
 			<td class="col2"></td>
 			<td class="col3">
-				{include file="$sTemplatePathPlugin/jumpmenu.tpl"}
+				{include file="$sTemplatePathForum/jumpmenu.tpl"}
 			</td>
 		</tr>
 	</table>

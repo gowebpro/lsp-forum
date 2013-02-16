@@ -1,6 +1,6 @@
 {include file='header.tpl' noSidebar=true}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 <h4 class="page-subheader">{$aLang.plugin.forum.topic_delete} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></h4>
 

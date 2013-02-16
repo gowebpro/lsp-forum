@@ -18,7 +18,7 @@
 	</script>
 {/if}
 
-<h2 class="page-header">{include file="$sTemplatePathPlugin/breadcrumbs.tpl"}</h2>
+<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 <h4 class="page-subheader">
 {if $bEditTopic}

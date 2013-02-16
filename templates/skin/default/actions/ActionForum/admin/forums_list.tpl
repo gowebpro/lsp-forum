@@ -3,8 +3,8 @@
 
 <h2 class="page-header"><a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span> {$aLang.plugin.forum.forums}</h2>
 
-{include file="$sTemplatePathPlugin/menu.forum.admin.tpl"}
-{include file="$sTemplatePathPlugin/actions/ActionForum/admin/window_moderator.tpl"}
+{include file="$sTemplatePathForum/menu.forum.admin.tpl"}
+{include file="$sTemplatePathForum/actions/ActionForum/admin/window_moderator.tpl"}
 
 <div class="forums">
 	<script type="text/javascript">
@@ -51,7 +51,7 @@
 								{if $aItem.level > 0}
 									<span class="js-forum-moder-toogler js-tip-help fl-r icon-plus-sign" id="toggler-moder-list-{$oForum->getId()}" title="{$aLang.plugin.forum.moderators_list}"></span>
 									<span class="moder-list" id="moder-list-{$oForum->getId()}" style="display:none">
-										{include file="$sTemplatePathPlugin/actions/ActionForum/admin/list_moderators.tpl"}
+										{include file="$sTemplatePathForum/actions/ActionForum/admin/list_moderators.tpl"}
 									</span>
 								{/if}
 							</li>
