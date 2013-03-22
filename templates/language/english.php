@@ -290,7 +290,7 @@ return array(
 	'notify_subject_new_post' => 'New reply to topic',
 	'notify_subject_reply' => 'Reply to post',
 
-	'create_menu_topic' => 'topic in forum',
+	'create_menu_topic' => 'Topic in forum',
 	'write_topic' => 'Topic in forum',
 
 	'block_stream' => 'Forum',

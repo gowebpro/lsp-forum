@@ -411,7 +411,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * Загружает иконку для форума
 	 *
 	 * @param array $aFile	Массив $_FILES при загрузке аватара
-	 * @param PluginForum_ModuleForum_EntityForum $oForum	Форум
+	 * @param PluginForum_ModuleForum_EntityForum $oForum
 	 * @return bool
 	 */
 	public function UploadIcon($aFile, $oForum) {
@@ -469,7 +469,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Удаляет иконку форума с сервера
 	 *
-	 * @param PluginForum_ModuleForum_EntityForum $oForum	Блог
+	 * @param PluginForum_ModuleForum_EntityForum $oForum
 	 */
 	public function DeleteIcon($oForum) {
 		/**
@@ -483,44 +483,52 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 	}
 
-	public function MarkTopic($oTopic) {
-		$oUser = $this->User_GetUserCurrent();
-		$oForum = $oTopic->getForum();
-		if ($oUser && $oForum) {
-			$sUserId = $oUser->getId();
-			$sForumId = $oForum->getId();
-			// build mark data
-			$aMarkData = $this->Session_Get("mark{$sUserId}");
-			$aMarkData = unserialize(stripslashes($aMarkData));
-			if (!isset($aMarkData[$sForumId])) {
-				$aMarkData[$sForumId]['user_id'] = $sUserId;
-				$aMarkData[$sForumId]['forum_id'] = $sForumId;
-				$aMarkData[$sForumId]['marker_read_array'] = array();
-				$aMarkData[$sForumId]['marker_unread_item'] = $oForum->getCountPost();
-				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
+	/**
+	 * Маркируем тему как прочитанную
+	 *
+	 * @param PluginForum_ModuleForum_EntityTopic $oTopic
+	 */
+	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic) {
+		if ($oUser = $this->User_GetUserCurrent()) {
+			if ($oForum = $oTopic->getForum()) {
+				$sUserId = $oUser->getId();
+				$sForumId = $oForum->getId();
+				/**
+				 * Запрашиваем таблицу маркировки
+				 */
+				$aMarkData = $this->Session_Get("mark{$sUserId}");
+				$aMarkData = unserialize(stripslashes($aMarkData));
+				if (!isset($aMarkData[$sForumId])) {
+					$aMarkData[$sForumId]['user_id'] = $sUserId;
+					$aMarkData[$sForumId]['forum_id'] = $sForumId;
+					$aMarkData[$sForumId]['marker_read_array'] = array();
+					$aMarkData[$sForumId]['marker_read_item'] = 0;
+				}
+				/**
+				 * Обновление общего счетчика форума
+				 */
+				if (isset($aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()])) {
+					$aMarkTopicOld = $aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()];
+					$iCountDiff = $oTopic->getCountPost() - (int)$aMarkTopicOld['i'];
+					$aMarkData[$sForumId]['marker_read_item'] = (int)$aMarkData[$sForumId]['marker_read_item'] + $iCountDiff;
+				} else {
+					$aMarkData[$sForumId]['marker_read_item'] = (int)$aMarkData[$sForumId]['marker_read_item'] + $oTopic->getCountPost();
+				}
+				/**
+				 * Формируем маркер для топика
+				 */
+				$aMarkTopic = array();
+				$aMarkTopic['i'] = $oTopic->getCountPost();
+				/**
+				 * Обновляем информацию о маркере
+				 */
+				$aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()] = $aMarkTopic;
+				$aMarkData[$sForumId]['marker_date'] = date('Y-m-d H:i:s');
+				/**
+				 * Сохраняем
+				 */
+				$this->Session_Set("mark{$sUserId}", addslashes(serialize($aMarkData)));
 			}
-			// при добавлении нового поста/топика
-			if ($aMarkData[$sForumId]['marker_count_item'] <> $oForum->getCountPost()) {
-				$iCountDiff = $oForum->getCountPost() - (int)$aMarkData[$sForumId]['marker_count_item'];
-				$aMarkData[$sForumId]['marker_unread_item'] = (int)$aMarkData[$sForumId]['marker_unread_item'] + $iCountDiff;
-				$aMarkData[$sForumId]['marker_count_item'] = $oForum->getCountPost();
-			}
-			// build topic data
-			$aMarkTopic = array();
-			$aMarkTopic['i'] = $oTopic->getCountPost();
-			// re-write
-			if (isset($aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()])) {
-				$aMarkTopicOld = $aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()];
-				$iCountDiff = $oTopic->getCountPost() - (int)$aMarkTopicOld['i'];
-				$aMarkData[$sForumId]['marker_unread_item'] = (int)$aMarkData[$sForumId]['marker_unread_item'] - $iCountDiff;
-			} else {
-				$aMarkData[$sForumId]['marker_unread_item'] = (int)$aMarkData[$sForumId]['marker_unread_item'] - $oTopic->getCountPost();
-			}
-			// build forum data
-			$aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()] = $aMarkTopic;
-			$aMarkData[$sForumId]['marker_date'] = date('Y-m-d H:i:s');
-			// save
-			$this->Session_Set("mark{$sUserId}", addslashes(serialize($aMarkData)));
 		}
 	}
 
@@ -541,11 +549,15 @@ class PluginForum_ModuleForum extends ModuleORM {
 			$aData = $this->Session_Get("mark{$oUser->getId()}");
 			$aData = unserialize(stripslashes($aData));
 			foreach ((array)$aData as $sForumId => $aForumData) {
+				if (!(isset($aForumData['user_id']) && isset($aForumData['forum_id']))) {
+					forumLogger($aForumData, "Marker Error [{$sForumId}]");
+					continue;
+				}
 				$aForumData['marker_read_array'] = addslashes(serialize($aForumData['marker_read_array']));
 				if ($oMarker = $this->GetMarkerByUserIdAndForumId($aForumData['user_id'], $aForumData['forum_id'])) {
 					$oMarker->setReadArray($aForumData['marker_read_array']);
+					$oMarker->setReadItem($aForumData['marker_read_item']);
 					$oMarker->setDate($aForumData['marker_date']);
-					$oMarker->setCountItem($aForumData['marker_count_item']);
 					$oMarker->Update();
 				} else {
 					$oMarker = LS::Ent('PluginForum_Forum_Marker', $aForumData);
@@ -563,8 +575,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$aData[$oMarker->getForumId()]['user_id'] = $oMarker->getUserId();
 				$aData[$oMarker->getForumId()]['forum_id'] = $oMarker->getForumId();
 				$aData[$oMarker->getForumId()]['marker_read_array'] = unserialize(stripslashes($oMarker->getReadArray()));
+				$aData[$oMarker->getForumId()]['marker_read_item'] = $oMarker->getReadItem();
 				$aData[$oMarker->getForumId()]['marker_date'] = $oMarker->getDate();
-				$aData[$oMarker->getForumId()]['marker_count_item'] = $oMarker->getCountItem();
 			}
 			$this->Session_Set("mark{$oUser->getId()}", addslashes(serialize($aData)));
 		}

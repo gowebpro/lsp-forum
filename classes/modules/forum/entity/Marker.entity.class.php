@@ -11,19 +11,20 @@
 */
 
 class PluginForum_ModuleForum_EntityMarker extends EntityORM {
+	protected $aRelations = array(
+		'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id')
+	);
 
 	public function checkRead() {
-		if ($this->getUnreadItem() == 0) {
-			return true;
-		}
-		return false;
+		$oForum = $this->getForum();
+		return $oForum ? $this->getReadItem() == $oForum->getCountPost() : false;
 	}
 
 	public function checkTopic($oTopic) {
 		if ($aData = $this->getReadArray()) {
 			if (isset($aData[$oTopic->getId()])) {
 				$aTopicData = $aData[$oTopic->getId()];
-				if ($aTopicData['i'] >= $oTopic->getCountPost()) {
+				if ($aTopicData['i'] == $oTopic->getCountPost()) {
 					return true;
 				}
 			}

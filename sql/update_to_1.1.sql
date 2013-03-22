@@ -2,13 +2,13 @@
 -- Table structure for table `prefix_forum_marker`
 --
 
+DROP TABLE IF EXISTS `prefix_forum_marker`;
 CREATE TABLE IF NOT EXISTS `prefix_forum_marker` (
 	`user_id` int(11) unsigned NOT NULL,
 	`forum_id` int(11) unsigned NOT NULL,
 	`marker_date` datetime DEFAULT NULL,
 	`marker_read_array` mediumtext,
-	`marker_count_item` int(11) NOT NULL DEFAULT '0',
-	`marker_unread_item` int(11) NOT NULL DEFAULT '0',
+	`marker_read_item` int(11) NOT NULL DEFAULT '0',
 	UNIQUE KEY `user_id_forum_id` (`user_id`,`forum_id`),
 	KEY `user_id` (`user_id`),
 	KEY `forum_id` (`forum_id`),

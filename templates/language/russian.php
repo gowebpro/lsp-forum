@@ -290,7 +290,7 @@ return array(
 	'notify_subject_new_post' => 'Новый ответ в тему',
 	'notify_subject_reply' => 'Ответ на сообщение',
 
-	'create_menu_topic' => 'тему на форуме',
+	'create_menu_topic' => 'Тему на форуме',
 	'write_topic' => 'Тема на форум',
 
 	'block_stream' => 'Форум',

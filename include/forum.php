@@ -105,4 +105,31 @@ if (!function_exists('fGetCookie')) {
 	}
 }
 
+/**
+ * Логгер
+ *
+ * @param (string|array)	$info		Список информации
+ * @param string 			$message	Заголовок
+ */
+function forumLogger($info, $title='Error') {
+	/**
+	 * Записываем информацию об ошибке в переменную $msg
+	 */
+	$msg="Forum message: $title<br>\n";
+	$msg.=print_r($info,true);
+	/**
+	 * Пишем ошибку в лог
+	 */
+	$oEngine=Engine::getInstance();
+	$sOldName=$oEngine->Logger_GetFileName();
+	$oEngine->Logger_SetFileName('forum_log.log');
+	$oEngine->Logger_Error($msg);
+	$oEngine->Logger_SetFileName($sOldName);
+	/**
+	 * Если стоит вывод ошибок то выводим ошибку на экран(браузер)
+	 */
+	if (error_reporting() && ini_get('display_errors')) {
+		exit($msg);
+	}
+}
 ?>
