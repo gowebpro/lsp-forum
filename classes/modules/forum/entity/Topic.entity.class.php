@@ -28,11 +28,15 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 
 	public function getPaging() {
+		$iCountItems=$this->getCountPost();
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
-		if (Config::Get('plugin.forum.topic_line_mod')) $iPerPage--;
+		if (Config::Get('plugin.forum.topic_line_mod')) {
+			$iCountItems--;
+			$iPerPage--;
+		}
 		$oEngine=Engine::getInstance();
 		$aPaging=$oEngine->Viewer_MakePaging(
-			$this->getCountPost(),
+			$iCountItems,
 			1,$iPerPage,
 			Config::Get('pagination.pages.count'),
 			$this->getUrlFull()
