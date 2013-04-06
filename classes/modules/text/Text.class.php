@@ -31,6 +31,8 @@ class PluginForum_ModuleText extends PluginForum_Inherit_ModuleText {
 				$sFullQuote="<blockquote>{$sHeadQuote}{$sTextQuote}</blockquote> ";
 				$sText.=$sFullQuote;
 			}
+		} else {
+			$sText="<blockquote>{$sContent}</blockquote>";
 		}
 		return $sText;
 	}
