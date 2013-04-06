@@ -53,7 +53,7 @@ ls.forum = (function ($) {
 		var idPost = $t.attr('data-post-id');
 		ls.forum.configReplyForm(idPost);
 		var $post = $t.parents('#post-'+idPost);
-		var $text = $post.find('.forum-post-body .text').text();
+		var $text = $post.find('.forum-post-body .text').html();
 		$.markItUp({target: $('#post_text'), replaceWith:'<blockquote reply="'+idPost+'">'+$.trim($text)+'</blockquote>' });
 		return false;
 	};
