@@ -801,9 +801,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$sKeyByCode=array(
 			1=>'MOVE',
-			2=>'DELETE',
-			3=>'STATE',
-			4=>'PIN'
+			2=>'MOVE_POSTS',
+			3=>'DELETE',
+			4=>'STATE',
+			5=>'PIN',
+			6=>'MERGE',
+			7=>'SPLIT'
 		);
 		/**
 		 * Действие
@@ -833,14 +836,20 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Viewer_Assign('aForumsList',$aForumsList);
 				break;
 			/**
-			 * Удалить топик
+			 * Переместить посты
 			 */
 			case 2:
+
+				break;
+			/**
+			 * Удалить топик
+			 */
+			case 3:
 				break;
 			/**
 			 * Открыть\закрыть топик
 			 */
-			case 3:
+			case 4:
 				/**
 				 * Проверка доступа
 				 */
@@ -853,7 +862,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Закрепить\открепить топик
 			 */
-			case 4:
+			case 5:
 				/**
 				 * Проверка доступа
 				 */
@@ -863,6 +872,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oTopic->setPinned($oTopic->getPinned() ? 0 : 1);
 				$oTopic->Save();
 				return Router::Location($oTopic->getUrlFull());
+			/**
+			 * Соединить тему
+			 */
+			case 6:
+
+				break;
+			/**
+			 * Разделить тему
+			 */
+			case 7:
+
+				break;
 			default:
 				return parent::EventNotFound();
 		}
@@ -1311,6 +1332,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
 		} else {
 			$oPost->setUserId($this->oUserCurrent->getId());
+		}
+		if ((int)getRequest('replyto')) {
+			$oPost->setParentId((int)getRequest('replyto'));
 		}
 		/**
 		 * Проверяем поля формы

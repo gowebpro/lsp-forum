@@ -10,7 +10,7 @@
 		<td class="cell-name">
 			<h4>
 				{if $oTopic->getPinned()==1}
-					{$aLang.plugin.forum.topic_pinned}:
+					<span class="badge">{$aLang.plugin.forum.topic_pinned}</span>
 				{/if}
 				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
 				{include file="$sTemplatePathForum/paging_post.tpl" aPaging=$oTopic->getPaging()}

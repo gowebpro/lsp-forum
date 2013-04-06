@@ -58,24 +58,25 @@
 		<input type="hidden" name="f" value="{$oForum->getId()}" />
 		<select name="code" class="">
 			<option value="-1"> {$aLang.plugin.forum.topic_mod_option}</option>
+			<option value="-1" disabled="disabled"> ----------- </option>
 			{if $oForum->getModMoveTopic()}
 				<option value="1">- {$aLang.plugin.forum.topic_move}</option>
 			{/if}
 			{if $oForum->getModDeleteTopic()}
-				<option value="2">- {$aLang.plugin.forum.topic_delete}</option>
+				<option value="3">- {$aLang.plugin.forum.topic_delete}</option>
 			{/if}
 			{if $oForum->getModOpencloseTopic()}
 				{if $oTopic->getState()}
-					<option value="3">- {$aLang.plugin.forum.topic_open}</option>
+					<option value="4">- {$aLang.plugin.forum.topic_open}</option>
 				{else}
-					<option value="3">- {$aLang.plugin.forum.topic_close}</option>
+					<option value="4">- {$aLang.plugin.forum.topic_close}</option>
 				{/if}
 			{/if}
 			{if $oForum->getModPinTopic()}
 				{if $oTopic->getPinned()}
-					<option value="4">- {$aLang.plugin.forum.topic_unpin}</option>
+					<option value="5">- {$aLang.plugin.forum.topic_unpin}</option>
 				{else}
-					<option value="4">- {$aLang.plugin.forum.topic_pin}</option>
+					<option value="5">- {$aLang.plugin.forum.topic_pin}</option>
 				{/if}
 			{/if}
 		</select>

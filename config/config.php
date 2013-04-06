@@ -99,6 +99,10 @@ $config['title_format']			= true;
  */
 $config['icon_size']			= array(64,48,32,0);
 
+/**
+ * Смайлики
+ */
+$config['smiles_pack']			= 'default';
 
 /**
  * Активация плагина
@@ -119,8 +123,8 @@ $config['path_plugin']			= '___path.root.server___/plugins/forum';
 $config['path_smarty_plug']		= '___plugin.forum.path_plugin___/smarty_plugs';// Папка плагинов для Smarty
 
 $config['path_uploads']			= '___plugin.forum.path_plugin___/uploads';		//Путь для загрузок
-$config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//Путь для загрузок
-
+$config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//Путь для загрузок иконок форума
+$config['path_uploads_smiles']	= '___plugin.forum.path_uploads___/smiles';		//Путь для загрузок смайлов
 
 /**
  * Настройка Jevix
@@ -128,9 +132,15 @@ $config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//П�
 $aJevix = array(
 	'cfgAllowTagParams' => array(
 		array(
-			'ls',
-			array('user'=>'#text', 'reply' => '#int')
+			'blockquote',
+			array('reply' => '#int')
 		)
+	),
+	'cfgSetTagCallbackFull' => array(
+		array(
+			'blockquote',
+			array('_this_','CallbackTagQuote'),
+		),
 	)
 );
 Config::Set('jevix.forum', array_merge_recursive(Config::Get('jevix.default'), $aJevix));

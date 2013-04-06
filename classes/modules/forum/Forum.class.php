@@ -264,7 +264,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function BuildPerms($oForum,$bNoModers=false) {
 		$oUser = LS::CurUsr();
 		$oParent = $oForum->getParentId() ? $this->BuildPerms($oForum->getParent(),true) : null;
-
+		/**
+		 * Права модератора
+		 */
 		if (!$bNoModers) {
 			$sId = $oUser ? $oUser->getId() : 0;
 			$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
@@ -283,14 +285,19 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUser,true));
 		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUser));
 		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUser));
-
+		/**
+		 * Авторизован ли текущий пользователь в данном форуме, при условии что форум запоролен
+		 */
 		$oForum->setAutorization($this->isForumAuthorization($oForum));
-
+		/**
+		 * Если у нас нет прав для просмотра родителя данного форума, запрещаем просмотр
+		 */
 		if ($oParent && !($oParent->getAllowShow())) {
 			$oForum->setAllowShow($oParent->getAllowShow());
 		}
-
-		// markers
+		/**
+		 * Маркер прочитанности
+		 */
 		$oForum->setMarker($this->GetMarker($oForum));
 
 		return $oForum;
@@ -404,6 +411,16 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function TextParse($sText=null) {
 		$this->Text_LoadJevixConfig('forum');
+		/**
+		 * @username
+		 */
+		if (preg_match_all('/@\w+/u',$sText,$aMatch)) {
+			foreach ($aMatch as $aPart){
+				foreach ($aPart as $str){
+					$sText=str_replace($str, '<ls user="'.substr(trim($str), 1).'" />', $sText);
+				}
+			}
+		}
 		return $this->Text_Parser($sText);
 	}
 

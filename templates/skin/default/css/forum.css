@@ -108,6 +108,28 @@
 
 /* Other */
 .controllers { margin: 15px 0 }
+.badge {
+	display: inline-block;
+	height: 16px;
+	line-height: 16px;
+	padding: 0 5px;
+	font-size: 9px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #fff;
+	text-shadow: rgba(0,0,0,0.2) 0px -1px 0px;
+	background-color: #def7dc;
+	background-image: url(../images/highlight.png);
+	background-repeat: repeat-x;
+	background-position: 0 -1px;
+	vertical-align: middle;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-webkit-background-clip: padding-box;
+	border-radius: 3px
+}
 
 .userlist { line-height: 24px }
 .userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }

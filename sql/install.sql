@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`topic_id` int(11) unsigned NOT NULL,
 	`user_id` int(11) unsigned NOT NULL,
+	`post_parent_id` int(11) unsigned NOT NULL DEFAULT '0',
 	`post_user_ip` varchar(20) NOT NULL DEFAULT '',
 	`post_date_add` datetime NOT NULL,
 	`post_date_edit` datetime DEFAULT NULL,

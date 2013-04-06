@@ -10,7 +10,7 @@
 		<td class="cell-name">
 			<h4>
 				{if $oTopic->getPinned()==1}
-					{$aLang.plugin.forum.topic_pinned}:
+					<span class="badge">{$aLang.plugin.forum.topic_pinned}</span>
 				{/if}
 				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
 				{include file="$sTemplatePathForum/paging_post.tpl" aPaging=$oTopic->getPaging()}
@@ -37,7 +37,7 @@
 				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
 				<li>
 					{$aLang.plugin.forum.post_writer}:
-					<span class="author">
+					<span class="author user-avatar">
 						{if $oPoster}
 							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
 							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>

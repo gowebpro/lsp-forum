@@ -23,3 +23,4 @@ ALTER TABLE `prefix_forum_marker`
 	ADD CONSTRAINT `prefix_forum_marker_fk1` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `prefix_forum` ADD `forum_icon` varchar(250) DEFAULT NULL AFTER `forum_count_post`;
+ALTER TABLE `prefix_forum_post` ADD `post_parent_id` int(11) unsigned NOT NULL DEFAULT '0' AFTER `user_id`;

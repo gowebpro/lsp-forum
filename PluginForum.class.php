@@ -84,7 +84,7 @@ class PluginForum extends Plugin {
 		 * Загружаем в шаблон необходимые переменные
 		 */
 		$this->Viewer_Assign('aLang',$this->Lang_GetLangMsg());
-		$this->Viewer_Assign('sTemplatePathForum',rtrim(Plugin::GetTemplatePath(__CLASS__),'/'));
+		$this->Viewer_Assign('sTemplatePathForum', rtrim(Plugin::GetTemplatePath(__CLASS__),'/'));
 		/**
 		 * Подключаем нашу директорию плагинов для Smarty
 		 */

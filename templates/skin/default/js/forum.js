@@ -24,13 +24,37 @@ ls.forum = (function ($) {
 		return false;
 	};
 
-	this.replyPost = function(idPost) {
-		var fast_form=$('#fast-reply-form');
-		if (fast_form.is(":hidden")) {
-			fast_form.slideDown();
+	this.configReplyForm = function(idPost) {
+		var $form=$('#fast-reply-form');
+		if ($form.is(":hidden")) {
+			$form.slideDown();
 		}
-		$.markItUp({target: $('#post_text'), replaceWith: '\n<ls reply="'+idPost+'" />'} );
-		$.scrollTo(fast_form, 1000, {offset: -220});
+		var postLink=aRouter['forum']+"findpost/"+idPost+"/";
+		var replyto=$form.find('#replyto');
+		replyto.val(idPost);
+		var rtpw=$('#reply-to-post-wrap');
+		if (replyto.val() > 0)
+			rtpw.show().find('span').html('<a class="link-dashed" href="'+postLink+'" target="_blank">#'+idPost+'</a>');
+		else
+			rtpw.hide().find('span').html('');
+		$.scrollTo($form, 1000, {offset: -220});
+		return $form;
+	};
+
+	this.replyPost = function($t) {
+		var idPost = $t.attr('data-post-id');
+		var userName = $t.attr('data-name');
+		ls.forum.configReplyForm(idPost);
+		if (userName) $.markItUp({target: $('#post_text'), replaceWith: '@'+userName+', '} );
+		return false;
+	};
+
+	this.quotePost = function($t) {
+		var idPost = $t.attr('data-post-id');
+		ls.forum.configReplyForm(idPost);
+		var $post = $t.parents('#post-'+idPost);
+		var $text = $post.find('.forum-post-body .text').text();
+		$.markItUp({target: $('#post_text'), replaceWith:'<blockquote reply="'+idPost+'">'+$.trim($text)+'</blockquote>' });
 		return false;
 	};
 
@@ -147,6 +171,17 @@ jQuery(document).ready(function($){
 			$(content).slideDown();
 			if (note) $(note).slideUp();
 		}
+		return false;
+	});
+
+	$('.js-forum-reply').click(function() {
+		var $t = $(this);
+		ls.forum.replyPost($t);
+		return false;
+	});
+	$('.js-forum-quote').click(function() {
+		var $t = $(this);
+		ls.forum.quotePost($t);
 		return false;
 	});
 

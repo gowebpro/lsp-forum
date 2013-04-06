@@ -21,6 +21,7 @@ return array(
 	'button_edit' => 'Edit',
 	'button_delete' => 'Delete',
 	'button_reply' => 'Reply',
+	'button_quote' => 'Quote',
 
 	'in_progress' => 'In development',
 	'notice' => 'You can just talk',
@@ -132,6 +133,9 @@ return array(
 	'topic_delete_warning' => 'When you delete a theme, and will remove all of its messages. Continue only if you really want to delete this topic. No more warnings will not be.',
 	'topic_pin' => '"Pinned" this topic',
 	'topic_unpin' => '"Unpinned" this topic',
+	'topic_move_posts' => 'Move posts',
+	'topic_merge' => 'Merge',
+	'topic_split' => 'Split',
 	'topic_answers' => 'Replies to this topic',
 
 	'topics' => 'Topics',
@@ -194,6 +198,7 @@ return array(
 
 	'reply' => 'Reply',
 	'reply_for' => 'Reply in %%topic%%',
+	'reply_for_post' => 'Reply for post',
 	'reply_not_allow' => 'You can not write in this topic',
 	'reply_not_allow_closed' => 'Locked',
 	'reply_time_limit' => 'You can send messages too often',

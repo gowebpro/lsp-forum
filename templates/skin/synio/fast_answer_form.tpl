@@ -12,7 +12,7 @@
 	{include file='window_load_img.tpl' sToLoad='post_text'}
 	<script>
 		jQuery(function($){
-			ls.lang.load({lang_load name="panel_b,panel_i,panel_s,panel_url,panel_url_promt,panel_image,panel_quote,panel_clear_tags,panel_image_promt,panel_user_promt"});
+			ls.lang.load({lang_load name="panel_b,panel_i,panel_s,panel_url,panel_url_promt,panel_image,panel_quote,panel_clear_tags,panel_image_promt,panel_user_promt,panel_emotion"});
 			// Подключаем редактор
 			$('#post_text').markItUp(ls.forum.getMarkitupMini());
 		});
@@ -24,6 +24,7 @@
 		{hook run='form_forum_fast_reply_begin'}
 
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
+		<input type="hidden" name="replyto" id="replyto" value="0" />
 
 		<p>
 			<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
@@ -39,6 +40,10 @@
 		{hook run='form_forum_fast_reply_end'}
 
 		<input type="hidden" name="action_type" value="add_post" />
+
+		<div class="fl-r" id="reply-to-post-wrap" style="display:none">
+			{$aLang.plugin.forum.reply_for_post} <span></span>
+		</div>
 
 		<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-fast-reply','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
 		<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
