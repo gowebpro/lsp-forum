@@ -32,15 +32,14 @@
 
 		<table class="table table-forum-admin">
 			<tr>
-				<th colspan="2" class="cell-subtitle ta-c">
+				<th colspan="2" class="cell-subtitle">
 					{$aLang.plugin.forum.create_block_main}
 				</th>
 			</tr>
 
 			<tr>
 				<td class="cell-label">
-					<label for="forum_title">{$aLang.plugin.forum.create_title}:</label>
-					<span class="note"> </span>
+					<label for="forum_title"><strong>{$aLang.plugin.forum.create_title}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_title" name="forum_title" value="{$_aRequest.forum_title}" class="input-text input-width-full" />
@@ -48,28 +47,33 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_url">{$aLang.plugin.forum.create_url}:</label>
-					<span class="note">{$aLang.plugin.forum.create_url_note}</span>
+					<label for="forum_url">
+						<strong>{$aLang.plugin.forum.create_url}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_url" name="forum_url" value="{$_aRequest.forum_url}" class="input-text input-width-full" />
+					<span class="note">{$aLang.plugin.forum.create_url_note}</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_sort">{$aLang.plugin.forum.create_sort}:</label>
-					<span class="note">{$aLang.plugin.forum.create_sort_notice}</span>
+					<label for="forum_sort">
+						<strong>{$aLang.plugin.forum.create_sort}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'}" class="input-text input-width-full" />
+					<span class="note">{$aLang.plugin.forum.create_sort_notice}</span>
 				</td>
 			</tr>
 
 			{if $sNewType != 'category'}
 			<tr>
 				<td class="cell-label">
-					<label for="forum_description">{$aLang.plugin.forum.create_description}:</label>
-					<span class="note"></span>
+					<label for="forum_description">
+						<strong>{$aLang.plugin.forum.create_description}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<textarea id="forum_description" name="forum_description" rows="5" class="input-text input-width-full">{$_aRequest.forum_description}</textarea>
@@ -77,8 +81,9 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_parent">{$aLang.plugin.forum.create_parent}:</label>
-					<span class="note"></span>
+					<label for="forum_parent">
+						<strong>{$aLang.plugin.forum.create_parent}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_parent" name="forum_parent">
@@ -90,84 +95,108 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_type">{$aLang.plugin.forum.create_type}:</label>
-					<span class="note">{$aLang.plugin.forum.create_type_notice}</span>
+					<label for="forum_type">
+						<strong>{$aLang.plugin.forum.create_type}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_type" name="forum_type">
 						<option value="1"{if $_aRequest.forum_type=='1'} selected{/if}>{$aLang.plugin.forum.create_type_active}</option>
 						<option value="0"{if $_aRequest.forum_type=='0'} selected{/if}>{$aLang.plugin.forum.create_type_archive}</option>
 					</select>
+					<span class="note">{$aLang.plugin.forum.create_type_notice}</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_sub_can_post">{$aLang.plugin.forum.create_sub_can_post}:</label>
+					<label for="forum_sub_can_post">
+						<strong>{$aLang.plugin.forum.create_sub_can_post}:</strong>
+					</label>
+				</td>
+				<td class="cell-labeled">
+					<span class="yesno_yes">
+						<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_yes" value="1"{if $_aRequest.forum_sub_can_post=='1'} checked{/if}> Yes</label>
+					</span><span class="yesno_no">
+						<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_no" value="0"{if !$_aRequest.forum_sub_can_post || $_aRequest.forum_sub_can_post=='0'} checked{/if}> No</label>
+					</span>
 					<span class="note">{$aLang.plugin.forum.create_sub_can_post_notice}</span>
 				</td>
-				<td class="cell-labeled">
-					<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_yes" value="1"{if $_aRequest.forum_sub_can_post=='1'} checked{/if}> Yes</label>
-					<label><input type="radio" class="radio" name="forum_sub_can_post" id="forum_sub_can_post_no" value="0"{if !$_aRequest.forum_sub_can_post || $_aRequest.forum_sub_can_post=='0'} checked{/if}> No</label>
-				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_quick_reply">{$aLang.plugin.forum.create_quick_reply}:</label>
+					<label for="forum_quick_reply">
+						<strong>{$aLang.plugin.forum.create_quick_reply}:</strong>
+					</label>
+				</td>
+				<td class="cell-labeled">
+					<span class="yesno_yes">
+						<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_yes" value="1"{if !$_aRequest.forum_quick_reply || $_aRequest.forum_quick_reply=='1'} checked{/if}> Yes</label>
+					</span><span class="yesno_no">
+						<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_no" value="0"{if $_aRequest.forum_quick_reply=='0'} checked{/if}> No</label>
+					</span>
 					<span class="note">{$aLang.plugin.forum.create_quick_reply_notice}</span>
 				</td>
-				<td class="cell-labeled">
-					<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_yes" value="1"{if !$_aRequest.forum_quick_reply || $_aRequest.forum_quick_reply=='1'} checked{/if}> Yes</label>
-					<label><input type="radio" class="radio" name="forum_quick_reply" id="forum_quick_reply_no" value="0"{if $_aRequest.forum_quick_reply=='0'} checked{/if}> No</label>
-				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_password">{$aLang.plugin.forum.create_password}:</label>
-					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
+					<label for="forum_password">
+						<strong>{$aLang.plugin.forum.create_password}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
+					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_limit_rating_topic">{$aLang.plugin.forum.create_rating}:</label>
-					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
+					<label for="forum_limit_rating_topic">
+						<strong>{$aLang.plugin.forum.create_rating}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
+					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
 				</td>
 			</tr>
 
 			<tr>
-				<th colspan="2" class="cell-subtitle ta-c">
+				<th colspan="2" class="cell-subtitle">
 					{$aLang.plugin.forum.create_block_redirect}
 				</th>
 			</tr>
 
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_url">{$aLang.plugin.forum.create_redirect_url}:</label>
-					<span class="note">{$aLang.plugin.forum.create_redirect_url_notice}</span>
+					<label for="forum_redirect_url">
+						<strong>{$aLang.plugin.forum.create_redirect_url}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-text input-width-full" />
+					<span class="note">{$aLang.plugin.forum.create_redirect_url_notice}</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_on">{$aLang.plugin.forum.create_redirect_on}:</label>
-					<span class="note">{$aLang.plugin.forum.create_redirect_on_notice}</span>
+					<label for="forum_redirect_on">
+						<strong>{$aLang.plugin.forum.create_redirect_on}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
-					<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_yes" value="1"{if $_aRequest.forum_redirect_on=='1'} checked{/if}> Yes</label>
-					<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_no" value="0"{if !$_aRequest.forum_redirect_on || $_aRequest.forum_redirect_on=='0'} checked{/if}> No</label>
+					<span class="yesno_yes">
+						<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_yes" value="1"{if $_aRequest.forum_redirect_on=='1'} checked{/if}> Yes</label>
+					</span><span class="yesno_no">
+						<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_no" value="0"{if !$_aRequest.forum_redirect_on || $_aRequest.forum_redirect_on=='0'} checked{/if}> No</label>
+					</span>
+					<span class="note">{$aLang.plugin.forum.create_redirect_on_notice}</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_icon">{$aLang.plugin.forum.create_icon}:</label>
-					<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
+					<label for="forum_icon">
+						<strong>{$aLang.plugin.forum.create_icon}:</strong>
+					</label>
 				</td>
 				<td class="cell-labeled">
 					{if $oForumEdit and $oForumEdit->getIcon()}
@@ -179,6 +208,7 @@
 					</div>
 					{/if}
 					<input type="file" name="forum_icon" id="forum_icon">
+					<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
 				</td>
 			</tr>
 			{/if}
@@ -187,7 +217,7 @@
 				<th colspan="2">
 					<div class="ta-c">
 						{if $sType == 'edit'}
-						<button type="submit" name="submit_forum_save" class="button">{$aLang.plugin.forum.edit_submit}</button>
+						<button type="submit" name="submit_forum_save" class="button button-orange">{$aLang.plugin.forum.edit_submit}</button>
 						<button type="submit" name="submit_forum_save_next_perms" class="button">{$aLang.plugin.forum.edit_submit_next_perms}</button>
 						{else}
 						<button type="submit" name="submit_forum_add" class="button button-primary">{$aLang.plugin.forum.create_submit}</button>
