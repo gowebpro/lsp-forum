@@ -35,9 +35,10 @@
 .table-topics h4 a:hover { color: #000 }
 .table-topics .unread h4 a { font-weight: bold }
 
-.table-forum-admin .cell-label { width: 400px }
+.table-forum-admin .cell-label { width: 30%; max-width: 400px; min-width: 240px; vertical-align: top; text-align: right }
 .table-forum-admin .cell-labeled {}
 .table-forum-admin .cell-half { width: 50% }
+.table-forum-admin .note { display: block }
 
 .table p.details { color: #666; font-size: 10px; margin: 2px 0 }
 .table p.details a { color: #666; text-decoration: underline }
@@ -108,28 +109,7 @@
 
 /* Other */
 .controllers { margin: 15px 0 }
-.badge {
-	display: inline-block;
-	height: 16px;
-	line-height: 16px;
-	padding: 0 5px;
-	font-size: 9px;
-	font-weight: bold;
-	text-transform: uppercase;
-	color: #fff;
-	text-shadow: rgba(0,0,0,0.2) 0px -1px 0px;
-	background-color: #def7dc;
-	background-image: url(../images/highlight.png);
-	background-repeat: repeat-x;
-	background-position: 0 -1px;
-	vertical-align: middle;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-webkit-background-clip: padding-box;
-	border-radius: 3px
-}
+.badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #5055b2; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
 
 .userlist { line-height: 24px }
 .userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
@@ -138,12 +118,15 @@
 .lighter { color: #a4a4a4 }
 
 span.divide { color: gray; font-weight: normal; padding: 0 2px }
+span.yesno_yes, span.yesno_no { display: inline-block !important; padding: 3px; min-width: 50px; max-width: 60px; text-align: center; height: 20px !important }
+span.yesno_yes { background: #e3f6e5; border: 1px solid #b4e3b9; border-right: 0; border-top-left-radius: 6px; border-bottom-left-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-bottomleft: 6px; -webkit-border-top-left-radius: 6px; -webkit-border-bottom-left-radius: 6px; -webkit-background-clip: padding-box }
+span.yesno_no { background: #f6e3e3; border: 1px solid #e3b4b4; border-left: 0; border-top-right-radius: 6px; border-bottom-right-radius: 6px; -moz-border-radius-topright: 6px; moz-border-radius-bottomright: 6px; -webkit-border-top-right-radius: 6px; -webkit-border-bottom-right-radius: 6px; -webkit-background-clip: padding-box }
 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 /* Text */
-.text blockquote .quote-head { font-size: 12px; padding: 8px 10px; background: #F6F6F6; background: -moz-linear-gradient(top, #F6F6F6 0%, #E5E5E5 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6F6F6), color-stop(100%,#E5E5E5)); margin: -10px -15px; border-top: 1px solid #EDEDF2; border-right: 1px solid #EDEDF2; font-weight: bold }
-.text blockquote .quote-text { padding: 15px 0px }
+.text blockquote .quote-head { font-size: 12px; padding: 8px 10px; background: #F6F6F6; background: -moz-linear-gradient(top, #F6F6F6 0%, #E5E5E5 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6F6F6), color-stop(100%,#E5E5E5)); margin: -15px -20px; border-top: 1px solid #EDEDF2; border-right: 1px solid #EDEDF2; font-weight: bold }
+.text blockquote .quote-text { padding: 25px 0px 0px }
 .text blockquote .quote-text pre { padding: 0 }
 
 /* Modal */

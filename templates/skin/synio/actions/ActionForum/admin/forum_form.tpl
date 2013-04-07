@@ -47,9 +47,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_url">
-						<strong>{$aLang.plugin.forum.create_url}:</strong>
-					</label>
+					<label for="forum_url"><strong>{$aLang.plugin.forum.create_url}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_url" name="forum_url" value="{$_aRequest.forum_url}" class="input-text input-width-full" />
@@ -58,9 +56,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_sort">
-						<strong>{$aLang.plugin.forum.create_sort}:</strong>
-					</label>
+					<label for="forum_sort"><strong>{$aLang.plugin.forum.create_sort}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'}" class="input-text input-width-full" />
@@ -71,9 +67,7 @@
 			{if $sNewType != 'category'}
 			<tr>
 				<td class="cell-label">
-					<label for="forum_description">
-						<strong>{$aLang.plugin.forum.create_description}:</strong>
-					</label>
+					<label for="forum_description"><strong>{$aLang.plugin.forum.create_description}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<textarea id="forum_description" name="forum_description" rows="5" class="input-text input-width-full">{$_aRequest.forum_description}</textarea>
@@ -81,9 +75,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_parent">
-						<strong>{$aLang.plugin.forum.create_parent}:</strong>
-					</label>
+					<label for="forum_parent"><strong>{$aLang.plugin.forum.create_parent}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_parent" name="forum_parent">
@@ -95,9 +87,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_type">
-						<strong>{$aLang.plugin.forum.create_type}:</strong>
-					</label>
+					<label for="forum_type"><strong>{$aLang.plugin.forum.create_type}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_type" name="forum_type">
@@ -109,9 +99,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_sub_can_post">
-						<strong>{$aLang.plugin.forum.create_sub_can_post}:</strong>
-					</label>
+					<label for="forum_sub_can_post"><strong>{$aLang.plugin.forum.create_sub_can_post}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<span class="yesno_yes">
@@ -124,9 +112,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_quick_reply">
-						<strong>{$aLang.plugin.forum.create_quick_reply}:</strong>
-					</label>
+					<label for="forum_quick_reply"><strong>{$aLang.plugin.forum.create_quick_reply}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<span class="yesno_yes">
@@ -139,9 +125,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_password">
-						<strong>{$aLang.plugin.forum.create_password}:</strong>
-					</label>
+					<label for="forum_password"><strong>{$aLang.plugin.forum.create_password}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
@@ -150,9 +134,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_limit_rating_topic">
-						<strong>{$aLang.plugin.forum.create_rating}:</strong>
-					</label>
+					<label for="forum_limit_rating_topic"><strong>{$aLang.plugin.forum.create_rating}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
@@ -168,9 +150,7 @@
 
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_url">
-						<strong>{$aLang.plugin.forum.create_redirect_url}:</strong>
-					</label>
+					<label for="forum_redirect_url"><strong>{$aLang.plugin.forum.create_redirect_url}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-text input-width-full" />
@@ -179,9 +159,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_redirect_on">
-						<strong>{$aLang.plugin.forum.create_redirect_on}:</strong>
-					</label>
+					<label for="forum_redirect_on"><strong>{$aLang.plugin.forum.create_redirect_on}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<span class="yesno_yes">
@@ -194,9 +172,7 @@
 			</tr>
 			<tr>
 				<td class="cell-label">
-					<label for="forum_icon">
-						<strong>{$aLang.plugin.forum.create_icon}:</strong>
-					</label>
+					<label for="forum_icon"><strong>{$aLang.plugin.forum.create_icon}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					{if $oForumEdit and $oForumEdit->getIcon()}

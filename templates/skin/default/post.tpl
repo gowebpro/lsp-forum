@@ -76,10 +76,10 @@
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
 			<a href="#" class="button js-forum-quote" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
-				<span class="icon-leaf"></span> {$aLang.plugin.forum.button_quote}
+				<span class="icon-white icon-leaf"></span> {$aLang.plugin.forum.button_quote}
 			</a>
 			<a href="{$oTopic->getUrlFull()}reply" class="button js-forum-reply" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
-				<span class="icon-comment"></span> {$aLang.plugin.forum.button_reply}
+				<span class="icon-white icon-comment"></span> {$aLang.plugin.forum.button_reply}
 			</a>
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange">

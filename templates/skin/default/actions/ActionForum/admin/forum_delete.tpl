@@ -18,8 +18,7 @@
 		<table class="table table-forum-admin">
 			<tr>
 				<td class="cell-label">
-					<label for="forum_move_id_topics">{$aLang.plugin.forum.delete_move_items}:</label>
-					<span class="note">{$aLang.plugin.forum.delete_move_items_note}</span>
+					<label for="forum_move_id_topics"><strong>{$aLang.plugin.forum.delete_move_items}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_move_id_topics" name="forum_move_id_topics">
@@ -27,14 +26,14 @@
 						<option value="{$aItem.id}"{if $_aRequest.forum_move_id_topics==$aItem.id} selected{/if}>{$aItem.title}</option>
 					{/foreach}
 					</select>
+					<span class="note">{$aLang.plugin.forum.delete_move_items_note}</span>
 				</td>
 			</tr>
 
 			{if $oForum->getChildren()}
 			<tr>
 				<td class="cell-label">
-					<label for="forum_delete_move_childrens">{$aLang.plugin.forum.delete_move_childrens}:</label>
-					<span class="note">{$aLang.plugin.forum.delete_move_childrens_note}</span>
+					<label for="forum_delete_move_childrens"><strong>{$aLang.plugin.forum.delete_move_childrens}:</strong></label>
 				</td>
 				<td class="cell-labeled">
 					<select id="forum_delete_move_childrens" name="forum_delete_move_childrens">
@@ -42,6 +41,7 @@
 						<option value="{$aItem.id}"{if $_aRequest.forum_delete_move_childrens==$aItem.id} selected{/if}>{$aItem.title}</option>
 					{/foreach}
 					</select>
+					<span class="note">{$aLang.plugin.forum.delete_move_childrens_note}</span>
 				</td>
 			</tr>
 			{/if}
@@ -49,7 +49,7 @@
 			<tr>
 				<td colspan="2">
 					<div class="ta-c">
-						<button type="submit" name="submit_forum_delete" class="button">{$aLang.plugin.forum.delete_forum}</button>
+						<button type="submit" name="submit_forum_delete" class="button button-red">{$aLang.plugin.forum.delete_forum}</button>
 					</div>
 				</td>
 			</tr>
