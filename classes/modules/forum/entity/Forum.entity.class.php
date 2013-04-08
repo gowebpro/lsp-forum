@@ -110,9 +110,17 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	 */
 	public function ValidateParentForum($sValue,$aParams) {
 		if ($this->getParentId()) {
-			if ($oParentForum=$this->PluginForum_Forum_GetForumById($this->getParentId())) {
-				if ($oParentForum->getId()==$this->getId()) {
-					return $this->Lang_Get('plugin.forum.create_parent_error_nested');;
+			if ($oParent=$this->PluginForum_Forum_GetForumById($this->getParentId())) {
+				if ($oParent->getId()==$this->getId()) {
+					return $this->Lang_Get('plugin.forum.create_parent_error_descendants');;
+				}
+				$aDescendants=$this->getDescendants();
+				$aDescendantsIds=array();
+				foreach ($aDescendants as $oDescendant) {
+					$aDescendantsIds[]=$oDescendant->getId();
+				}
+				if (in_array($oParent->getId(),$aDescendantsIds)) {
+					return $this->Lang_Get('plugin.forum.create_parent_error_descendants');
 				}
 			} else {
 				return $this->Lang_Get('plugin.forum.create_parent_error');;
