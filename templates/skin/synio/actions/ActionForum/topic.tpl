@@ -7,7 +7,7 @@
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
 {if $oConfig->GetValue('plugin.forum.topic_line_mod') && $oHeadPost}
-<div class="forum-topic">
+<div class="fBox forum-topic">
 	<header class="forums-header">
 		{if $oUserCurrent}
 		<section class="fl-r">
@@ -17,7 +17,11 @@
 		{/if}
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
-	{include file="$sTemplatePathForum/post.tpl" oPost=$oHeadPost bFirst=true}
+	<div class="forums-content">
+		<div class="fContainer">
+			{include file="$sTemplatePathForum/post.tpl" oPost=$oHeadPost bFirst=true}
+		</div>
+	</div>
 </div>
 {/if}
 
@@ -27,7 +31,7 @@
 	{include file="$sTemplatePathForum/buttons_action.tpl"}
 </div>
 
-<div class="forum-topic">
+<div class="fBox forum-topic">
 	<header class="forums-header">
 	{if $oConfig->GetValue('plugin.forum.topic_line_mod')}
 		<section class="fl-r">
@@ -44,9 +48,13 @@
 		<h3>{$oTopic->getTitle()}</h3>
 	{/if}
 	</header>
-	{foreach from=$aPosts item=oPost name=posts}
-		{include file="$sTemplatePathForum/post.tpl" oPost=$oPost bFirst=$smarty.foreach.posts.first}
-	{/foreach}
+	<div class="forums-content">
+		<div class="fContainer">
+		{foreach from=$aPosts item=oPost name=posts}
+			{include file="$sTemplatePathForum/post.tpl" oPost=$oPost bFirst=$smarty.foreach.posts.first}
+		{/foreach}
+		</div>
+	</div>
 </div>
 {/if}
 
@@ -60,23 +68,23 @@
 			<option value="-1"> {$aLang.plugin.forum.topic_mod_option}</option>
 			<option value="-1" disabled="disabled"> ----------- </option>
 			{if $oForum->getModMoveTopic()}
-				<option value="1">- {$aLang.plugin.forum.topic_move}</option>
+				<option value="1">{$aLang.plugin.forum.topic_move}</option>
 			{/if}
 			{if $oForum->getModDeleteTopic()}
-				<option value="3">- {$aLang.plugin.forum.topic_delete}</option>
+				<option value="3">{$aLang.plugin.forum.topic_delete}</option>
 			{/if}
 			{if $oForum->getModOpencloseTopic()}
 				{if $oTopic->getState()}
-					<option value="4">- {$aLang.plugin.forum.topic_open}</option>
+					<option value="4">{$aLang.plugin.forum.topic_open}</option>
 				{else}
-					<option value="4">- {$aLang.plugin.forum.topic_close}</option>
+					<option value="4">{$aLang.plugin.forum.topic_close}</option>
 				{/if}
 			{/if}
 			{if $oForum->getModPinTopic()}
 				{if $oTopic->getPinned()}
-					<option value="5">- {$aLang.plugin.forum.topic_unpin}</option>
+					<option value="5">{$aLang.plugin.forum.topic_unpin}</option>
 				{else}
-					<option value="5">- {$aLang.plugin.forum.topic_pin}</option>
+					<option value="5">{$aLang.plugin.forum.topic_pin}</option>
 				{/if}
 			{/if}
 		</select>

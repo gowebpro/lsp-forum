@@ -8,13 +8,20 @@
 		{foreach from=$aCategories item=oCategory}
 			{if $oCategory->getAllowShow()}
 				{assign var='aForums' value=$oCategory->getChildren()}
-				<section class="forums-list">
+				<section class="fBox forums-list category-block" id="category-{$oCategory->getId()}">
 					<header class="forums-header">
-						<span class="js-forum-cat-toogler fl-r icon-minus-sign"></span>
+						<i class="js-forum-cat-toogler fl-r icon-minus-sign"></i>
 						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">
 						{include file="$sTemplatePathForum/forums_list.tpl"}
+					</div>
+					<div class="forums-note clearfix" style="display:none">
+						<div class="fl-r">
+							<strong>{$oCategory->getCountTopic()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oCategory->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}
+							<span>|</span>
+							<strong>{$oCategory->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oCategory->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
+						</div>
 					</div>
 				</section>
 			{/if}

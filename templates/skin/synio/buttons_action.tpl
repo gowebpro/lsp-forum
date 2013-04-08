@@ -7,7 +7,7 @@
 				{/if}
 				<a href="{$oTopic->getUrlFull()}reply" class="button">{$aLang.plugin.forum.reply}</a>
 			{else}
-				<button class="button" disabled="disabled">{$aLang.plugin.forum.topic_closed}</button>
+				<button class="button button-red" disabled="disabled"><i class="icon-white icon-lock"></i> {$aLang.plugin.forum.topic_closed}</button>
 			{/if}
 		{else}
 			<button class="button"{if $oUserCurrent} disabled="disabled"{else} onclick="return ls.forum.disabledButton()"{/if}>{$aLang.plugin.forum.reply_not_allow}</button>

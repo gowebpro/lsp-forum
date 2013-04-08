@@ -63,6 +63,8 @@ return array(
 	'create_sort_notice' => 'Устанавливает сортировку при отображении',
 	'create_description' => 'Описание',
 	'create_parent' => 'Выберите родительский форум или категорию',
+	'create_parent_error' => 'Неверная категория',
+	'create_parent_error_nested' => 'К сожалению, это невозможно. Вы пытаетесь вложить форум или категорию в свою структуру подфорумов',
 	'create_type' => 'Состояние форума',
 	'create_type_notice' => '',
 	'create_type_active' => 'Активный',

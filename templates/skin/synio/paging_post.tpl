@@ -1,20 +1,21 @@
 {if $aPaging and $aPaging.iCountPage>1}
-<span class="goToPage">
-[
-	{$aLang.plugin.forum.on_page}:
+<ul class="pagination_mini">
 	{if $aPaging.iCurrentPage>1}
-	<a href="{$aPaging.sBaseUrl}">1 <<</a>
+		<li><a href="{$aPaging.sBaseUrl}" title="{$aLang.plugin.forum.on_page}: 1"><i class="icon-white icon-step-backward"></i></a></li>
 	{/if}
+
 	{foreach from=$aPaging.aPagesLeft item=iPage}
-	<a href="{$aPaging.sBaseUrl}/page{$iPage}">{$iPage}</a>
+		<li><a href="{$aPaging.sBaseUrl}/page{$iPage}" title="{$aLang.plugin.forum.on_page}: {$iPage}">{$iPage}</a></li>
 	{/foreach}
-	<a href="{$aPaging.sBaseUrl}/page{$aPaging.iCurrentPage}">{$aPaging.iCurrentPage}</a>
+
+	<li><a href="{$aPaging.sBaseUrl}/page{$aPaging.iCurrentPage}" title="{$aLang.plugin.forum.on_page}: {$aPaging.iCurrentPage}">{$aPaging.iCurrentPage}</a></li>
+
 	{foreach from=$aPaging.aPagesRight item=iPage}
-	<a href="{$aPaging.sBaseUrl}/page{$iPage}">{$iPage}</a>
+		<li><a href="{$aPaging.sBaseUrl}/page{$iPage}" title="{$aLang.plugin.forum.on_page}: {$iPage}">{$iPage}</a></li>
 	{/foreach}
+
 	{if $aPaging.iCountPage>5}
-	<a href="{$aPaging.sBaseUrl}/page{$aPaging.iCountPage}">>> {$aPaging.iCountPage}</a>
+		<li><a href="{$aPaging.sBaseUrl}/page{$aPaging.iCountPage}" title="{$aLang.plugin.forum.on_page}: {$aPaging.iCountPage}"><i class="icon-white icon-step-forward"></i></a></li>
 	{/if}
-]
-</span>
+</ul>
 {/if}

@@ -6,30 +6,36 @@
 {include file="$sTemplatePathForum/menu.forum.admin.tpl"}
 
 <div class="forums">
-	<header class="forums-header">
-		<h3>{$aLang.plugin.forum.perms}</h3>
-	</header>
+	<div class="fBox forum-acp">
+		<header class="forums-header">
+			<h3>{$aLang.plugin.forum.perms}</h3>
+		</header>
 
-	<table class="table table-forum-admin">
-		<tr>
-			<th class="cell-half cell-subtitle">
-				<h3>{$aLang.plugin.forum.perms_mask_name}</h3>
-			</th>
-			<th class="cell-half cell-subtitle">
-				<h3>{$aLang.plugin.forum.perms_used}</h3>
-			</th>
-		</tr>
-		{foreach from=$aPerms item=oPerm}
-		<tr>
-			<td>
-				<strong>{$oPerm->getName()}</strong>
-			</td>
-			<td>
-				{$aLang.plugin.forum.in_progress}
-			</td>
-		</tr>
-		{/foreach}
-	</table>
+		<div class="forums-content">
+			<div class="fContainer">
+				<table class="table table-forum-admin">
+					<tr>
+						<th class="cell-half cell-subtitle">
+							<h3>{$aLang.plugin.forum.perms_mask_name}</h3>
+						</th>
+						<th class="cell-half cell-subtitle">
+							<h3>{$aLang.plugin.forum.perms_used}</h3>
+						</th>
+					</tr>
+					{foreach from=$aPerms item=oPerm}
+					<tr>
+						<td>
+							<strong>{$oPerm->getName()}</strong>
+						</td>
+						<td>
+							{$aLang.plugin.forum.in_progress}
+						</td>
+					</tr>
+					{/foreach}
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 
 {include file='footer.tpl'}

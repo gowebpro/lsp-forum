@@ -13,6 +13,16 @@
 class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	protected $_aDataMore = array();
 
+	/**
+	 * Определяем правила валидации
+	 *
+	 * @var array
+	 */
+	protected $aValidateRules=array(
+		array('forum_sort','number','integerOnly'=>true),
+		array('forum_parent_id','parent_forum')
+	);
+
 	protected $aRelations = array(
 		self::RELATION_TYPE_TREE,
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','last_user_id'),
@@ -42,8 +52,8 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		$this->aValidateRules[]=array('forum_url','url','label'=>$this->Lang_Get('plugin.forum.create_url'));
 		$this->aValidateRules[]=array('forum_url','url_unique','label'=>$this->Lang_Get('plugin.forum.create_url'));
 		$this->aValidateRules[]=array('forum_url','url_bad','label'=>$this->Lang_Get('plugin.forum.create_url'));
-		$this->aValidateRules[]=array('forum_sort','number','label'=>$this->Lang_Get('plugin.forum.create_sort'));
 		$this->aValidateRules[]=array('forum_limit_rating_topic','number','label'=>$this->Lang_Get('plugin.forum.create_rating'));
+		$this->aValidateRules[]=array('forum_sort','sort_check','label'=>$this->Lang_Get('plugin.forum.create_sort'));
 	}
 
 	/**
@@ -87,6 +97,42 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function ValidateUrlBad($sValue,$aParams) {
 		if (in_array($sValue,$this->aBadUrl)) {
 			return $this->Lang_Get('plugin.forum.create_url_error_badword').' '.implode(', ',$this->aBadUrl);
+		}
+		return true;
+	}
+
+	/**
+	 * Проверка родительского форума
+	 *
+	 * @param string $sValue
+	 * @param array $aParams
+	 * @return bool
+	 */
+	public function ValidateParentForum($sValue,$aParams) {
+		if ($this->getParentId()) {
+			if ($oParentForum=$this->PluginForum_Forum_GetForumById($this->getParentId())) {
+				if ($oParentForum->getId()==$this->getId()) {
+					return $this->Lang_Get('plugin.forum.create_parent_error_nested');;
+				}
+			} else {
+				return $this->Lang_Get('plugin.forum.create_parent_error');;
+			}
+		} else {
+			$this->setParentId(null);
+		}
+		return true;
+	}
+
+	/**
+	 * Установка дефолтной сортировки
+	 *
+	 * @param string $sValue
+	 * @param array $aParams
+	 * @return bool
+	 */
+	public function ValidateSortCheck($sValue,$aParams) {
+		if (!$this->getSort()) {
+			$this->setSort($this->PluginForum_Forum_GetMaxSortByPid($this->getParentId())+1);
 		}
 		return true;
 	}

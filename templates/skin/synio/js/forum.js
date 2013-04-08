@@ -24,20 +24,29 @@ ls.forum = (function ($) {
 		return false;
 	};
 
-	this.configReplyForm = function(idPost) {
-		var $form=$('#fast-reply-form');
-		if ($form.is(":hidden")) {
-			$form.slideDown();
+	this.cancelPost = function() {
+		ls.forum.configReplyForm(0,0);
+		$('#post_text').val('');
+	};
+
+	this.configReplyForm = function(idPost,bScroll) {
+		bScroll=bScroll || true;
+		if ($('#fast-reply-form')) {
+			var $form=$('#fast-reply-form');
+			if ($form.is(":hidden")) {
+				$form.slideDown();
+			}
+			var replyto=$form.find('#replyto');
+			replyto.val(idPost);
+			var rtpw=$('#reply-to-post-wrap');
+			if (replyto.val() > 0) {
+				var postLink=aRouter['forum']+"findpost/"+idPost+"/";
+				rtpw.show().find('span').html('<a class="link-dashed" href="'+postLink+'" target="_blank">#'+idPost+'</a>');
+			} else {
+				rtpw.hide().find('span').html('');
+			}
+			if (bScroll) $.scrollTo($form, 1000, {offset: -220});
 		}
-		var postLink=aRouter['forum']+"findpost/"+idPost+"/";
-		var replyto=$form.find('#replyto');
-		replyto.val(idPost);
-		var rtpw=$('#reply-to-post-wrap');
-		if (replyto.val() > 0)
-			rtpw.show().find('span').html('<a class="link-dashed" href="'+postLink+'" target="_blank">#'+idPost+'</a>');
-		else
-			rtpw.hide().find('span').html('');
-		$.scrollTo($form, 1000, {offset: -220});
 		return $form;
 	};
 
@@ -173,7 +182,6 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});
-
 	$('.js-forum-reply').click(function() {
 		var $t = $(this);
 		ls.forum.replyPost($t);

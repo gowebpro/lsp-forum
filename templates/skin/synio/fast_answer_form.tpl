@@ -25,27 +25,19 @@
 
 		<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" />
 		<input type="hidden" name="replyto" id="replyto" value="0" />
+		<input type="hidden" name="action_type" value="add_post" />
 
-		<p>
-			<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
-			<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
-			<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
-		</p>
-
-		<p>
-			<label for="post_text">{$aLang.plugin.forum.post_create_text}{if !$oConfig->GetValue('view.tinymce')} ({$aLang.plugin.forum.post_create_text_notice}){/if}:</label>
-			<textarea name="post_text" id="post_text" rows="10" class="mce-editor">{$_aRequest.post_text}</textarea>
-		</p>
+		<textarea name="post_text" id="post_text" rows="10" class="mce-editor">{$_aRequest.post_text}</textarea>
 
 		{hook run='form_forum_fast_reply_end'}
-
-		<input type="hidden" name="action_type" value="add_post" />
 
 		<div class="fl-r" id="reply-to-post-wrap" style="display:none">
 			{$aLang.plugin.forum.reply_for_post} <span></span>
 		</div>
 
-		<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-fast-reply','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
 		<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
+		<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-fast-reply','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
+		or
+		<button type="button" name="submit_cancel" onclick="return ls.forum.cancelPost()" class="button button-red">cancel</button>
 	</form>
 </div>

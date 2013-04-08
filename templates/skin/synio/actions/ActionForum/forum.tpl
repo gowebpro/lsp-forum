@@ -8,7 +8,7 @@
 
 {if $aSubForums}
 	<div class="forums">
-		<section class="forums-list">
+		<section class="fBox forums-list">
 			<header class="forums-header">
 				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 			</header>
@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="forums">
-		<section class="forums-list">
+		<section class="fBox forums-list">
 			<header class="forums-header">
 				{if $oUserCurrent}
 				<section class="fl-r">

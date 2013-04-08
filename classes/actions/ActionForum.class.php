@@ -125,7 +125,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Допустимый тип?
 		 */
-		$sType=getRequest('action_type');
+		$sType=getRequestStr('action_type');
 		$bTopic=in_array($sType,array('add_topic','edit_topic')) ? 1 : 0;
 		$oTopic=null;
 		$oPost=LS::Ent('PluginForum_Forum_Post');
@@ -134,22 +134,22 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if ($bTopic) {
 			$oTopic=LS::Ent('PluginForum_Forum_Topic');
-			$oTopic->setTitle(forum_parse_title(getRequest('topic_title')));
-			$oTopic->setDescription(getRequest('topic_description'));
+			$oTopic->setTitle(forum_parse_title(getRequestStr('topic_title')));
+			$oTopic->setDescription(getRequestStr('topic_description'));
 			$oTopic->setDateAdd(date('Y-m-d H:i:s'));
 
 			$oPost->_setValidateScenario('topic');
 			$oPost->setTitle(forum_parse_title($oTopic->getTitle()));
 		} else {
 			$oPost->_setValidateScenario('post');
-			$oPost->setTitle(forum_parse_title(getRequest('post_title')));
+			$oPost->setTitle(forum_parse_title(getRequestStr('post_title')));
 		}
 		$oPost->setDateAdd(date('Y-m-d H:i:s'));
-		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
-		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequestStr('post_text')));
+		$oPost->setTextSource(getRequestStr('post_text'));
 		if (!$this->User_IsAuthorization()) {
 			$oPost->setUser(null);
-			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
+			$oPost->setGuestName(strip_tags(getRequestStr('guest_name')));
 		} else {
 			$oPost->setUser($this->oUserCurrent);
 		}
@@ -191,11 +191,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Обновляем или добавляем
 		 */
-		$sAction = getRequest('moder_form_action');
+		$sAction = getRequestStr('moder_form_action');
 		/**
 		 * Получаем форум по ID
 		 */
-		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('moder_forum_id')))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequestStr('moder_forum_id')))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_forum'),$this->Lang_Get('error'));
 			return false;
 		}
@@ -209,8 +209,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем юзера по имени
 		 */
-		if (!($oUser=$this->User_GetUserByLogin(getRequest('moder_name')))) {
-			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>getRequest('moder_name'))),$this->Lang_Get('error'));
+		if (!($oUser=$this->User_GetUserByLogin(getRequestStr('moder_name')))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.moderator_action_error_user', array('login'=>getRequestStr('moder_name'))),$this->Lang_Get('error'));
 			return false;
 		}
 		/**
@@ -288,7 +288,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Читаем параметры
 		 */
-		$sHash = getRequest('hash');
+		$sHash = getRequestStr('hash');
 		/**
 		 * Декодируем хэш
 		 */
@@ -355,7 +355,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Читаем параметры
 		 */
-		$sHash = getRequest('hash');
+		$sHash = getRequestStr('hash');
 		/**
 		 * Декодируем хэш
 		 */
@@ -459,7 +459,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Если была отправлена форма с данными
 		 */
 		if (isPost('f_password')) {
-			$sPassword=getRequest('f_password','','post');
+			$sPassword=getRequestStr('f_password');
 			if (!func_check($sPassword,'text',1,32)) {
 				$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_blank'));
 				return;
@@ -486,7 +486,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем форум по ID
 		 */
-		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequest('f')))) {
+		if (!($oForum=$this->PluginForum_Forum_GetForumById(getRequestStr('f')))) {
 			return parent::EventNotFound();
 		}
 		Router::Location($oForum->getUrlFull());
@@ -786,7 +786,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топик по ID
 		 */
-		if (!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequest('t')))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequestStr('t')))) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -811,7 +811,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Действие
 		 */
-		$iCode=(int)getRequest('code',0);
+		$iCode=(int)getRequestStr('code',0);
 		if (!isset($sKeyByCode[$iCode])) {
 			return parent::EventNotFound();
 		}
@@ -911,7 +911,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!(LS::Adm() || ($oForumOld->isModerator() && $oForumOld->getModMoveTopic()))) {
 			return;
 		}
-		if ($oForumNew=$this->PluginForum_Forum_GetForumById(getRequest('topic_move_id'))) {
+		if ($oForumNew=$this->PluginForum_Forum_GetForumById(getRequestStr('topic_move_id'))) {
 			/**
 			 * Если выбранный форум является удаляемым форум
 			 */
@@ -1059,7 +1059,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Определяем в какой форум делаем запись
 				 */
-				$iForumId=getRequest('forum_id', 0);
+				$iForumId=getRequestStr('forum_id', 0);
 				if ($iForumId > 0) {
 					$oForum=$this->PluginForum_Forum_GetForumById($iForumId);
 				}
@@ -1100,8 +1100,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oTopic->setForumId($oForum->getId());
 		$oTopic->setUserId($this->oUserCurrent->getId());
 		$oTopic->setUserIp(func_getIp());
-		$oTopic->setTitle(forum_parse_title(getRequest('topic_title')));
-		$oTopic->setDescription(getRequest('topic_description'));
+		$oTopic->setTitle(forum_parse_title(getRequestStr('topic_title')));
+		$oTopic->setDescription(getRequestStr('topic_description'));
 		$oTopic->setDateAdd(date('Y-m-d H:i:s'));
 		$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 		if (isPost('topic_close')) {
@@ -1133,8 +1133,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setUserId($this->oUserCurrent->getId());
 		$oPost->setUserIp(func_getIp());
 		$oPost->setDateAdd(date('Y-m-d H:i:s'));
-		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
-		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequestStr('post_text')));
+		$oPost->setTextSource(getRequestStr('post_text'));
 		$oPost->setNewTopic(1);
 		/**
 		 * Проверка корректности полей формы
@@ -1320,21 +1320,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Заполняем поля для валидации
 		 */
-		$oPost->setTitle(forum_parse_title(getRequest('post_title')));
+		$oPost->setTitle(forum_parse_title(getRequestStr('post_title')));
 		$oPost->setTopicId($oTopic->getId());
 		$oPost->setUserIp(func_getIp());
-		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
-		$oPost->setTextSource(getRequest('post_text'));
-		$oPost->setTextHash(md5(getRequest('post_text')));
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequestStr('post_text')));
+		$oPost->setTextSource(getRequestStr('post_text'));
+		$oPost->setTextHash(md5(getRequestStr('post_text')));
 		$oPost->setDateAdd(date('Y-m-d H:i:s'));
 		if (!$this->User_IsAuthorization()) {
 			$oPost->setUserId(0);
-			$oPost->setGuestName(strip_tags(getRequest('guest_name')));
+			$oPost->setGuestName(strip_tags(getRequestStr('guest_name')));
 		} else {
 			$oPost->setUserId($this->oUserCurrent->getId());
 		}
-		if ((int)getRequest('replyto')) {
-			$oPost->setParentId((int)getRequest('replyto'));
+		if (getRequestStr('replyto')) {
+			$oPost->setParentId((int)getRequestStr('replyto'));
 		}
 		/**
 		 * Проверяем поля формы
@@ -1502,8 +1502,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Заполняем поля для валидации
 		 */
 		if ($bEditTopic) {
-			$oTopic->setTitle(forum_parse_title(getRequest('topic_title')));
-			$oTopic->setDescription(getRequest('topic_description'));
+			$oTopic->setTitle(forum_parse_title(getRequestStr('topic_title')));
+			$oTopic->setDescription(getRequestStr('topic_description'));
 			$oTopic->setState(PluginForum_ModuleForum::TOPIC_STATE_OPEN);
 			if (isPost('topic_close')) {
 				if ($this->ACL_IsAllowClosedForumTopic($oTopic,$this->oUserCurrent)) {
@@ -1522,13 +1522,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oPost->setTitle(forum_parse_title($oTopic->getTitle()));
 		} else {
 			$oPost->_setValidateScenario('post');
-			$oPost->setTitle(forum_parse_title(getRequest('post_title')));
+			$oPost->setTitle(forum_parse_title(getRequestStr('post_title')));
 		}
-		$oPost->setText($this->PluginForum_Forum_TextParse(getRequest('post_text')));
-		$oPost->setTextSource(getRequest('post_text'));
+		$oPost->setText($this->PluginForum_Forum_TextParse(getRequestStr('post_text')));
+		$oPost->setTextSource(getRequestStr('post_text'));
 		$oPost->setDateEdit(date('Y-m-d H:i:s'));
 		$oPost->setEditorId($this->oUserCurrent->getId());
-		$oPost->setEditReason(getRequest('post_edit_reason'));
+		$oPost->setEditReason(getRequestStr('post_edit_reason'));
 		/**
 		 * Проверка корректности полей формы
 		 */
@@ -1731,33 +1731,29 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Обработка отправки формы добавления нового форума
 	 */
 	protected function submitAddForum() {
-		$sNewType=(isPost('forum_type')) ? getRequest('forum_type') : 'forum';
+		$sNewType=(isPost('forum_type')) ? getRequestStr('forum_type') : 'forum';
 		/**
 		 * Заполняем свойства
 		 */
 		$oForum=LS::ENT('PluginForum_Forum');
-		$oForum->setTitle(forum_parse_title(getRequest('forum_title')));
-		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequest('forum_url',''))));
+		$oForum->setTitle(forum_parse_title(getRequestStr('forum_title')));
+		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequestStr('forum_url',''))));
 		$oForum->setIcon(null);
 		if ($sNewType=='category') {
 			$oForum->setCanPost(1);
 		} else {
-			$oForum->setDescription(getRequest('forum_description'));
-			$oForum->setParentId((int)getRequest('forum_parent'));
-			$oForum->setType((int)getRequest('forum_type'));
-			$oForum->setCanPost((int)getRequest('forum_sub_can_post') ? 1 : 0 );
-			$oForum->setQuickReply((string)getRequest('forum_quick_reply') ? 1 : 0 );
-			$oForum->setPassword(getRequest('forum_password',null));
-			if (getRequest('forum_sort')) {
-				$oForum->setSort((int)getRequest('forum_sort'));
-			} else {
-				$oForum->setSort((int)$this->PluginForum_Forum_GetMaxSortByPid($oForum->getParentId())+1);
-			}
-			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
+			$oForum->setDescription(getRequestStr('forum_description'));
+			$oForum->setParentId(getRequestStr('forum_parent'));
+			$oForum->setType(getRequestStr('forum_type'));
+			$oForum->setCanPost(getRequestStr('forum_sub_can_post') ? 1 : 0 );
+			$oForum->setQuickReply(getRequestStr('forum_quick_reply') ? 1 : 0 );
+			$oForum->setPassword(getRequestStr('forum_password'));
+			$oForum->setSort(getRequestStr('forum_sort'));
+			$oForum->setRedirectUrl(getRequestStr('forum_redirect_url'));
 			if (isPost('forum_redirect_url')) {
-				$oForum->setRedirectOn(getRequest('forum_redirect_on') ? 1 : 0 );
+				$oForum->setRedirectOn(getRequestStr('forum_redirect_on') ? 1 : 0 );
 			}
-			$oForum->setLimitRatingTopic((float)getRequest('forum_limit_rating_topic'));
+			$oForum->setLimitRatingTopic((float)getRequestStr('forum_limit_rating_topic'));
 			/**
 			 * Загружаем иконку
 			 */
@@ -1799,27 +1795,23 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * @param unknown_type $oForum
 	 */
 	protected function submitEditForum($oForum=null) {
-		if ($oForum->getId()==getRequest('forum_parent')) {
-			$this->Message_AddError($this->Lang_Get('system_error'));
-			return;
-		}
-		$sNewType=(isPost('forum_type')) ? getRequest('forum_type') : 'forum';
+		$sNewType=(isPost('forum_type')) ? getRequestStr('forum_type') : 'forum';
 		/**
 		 * Обновляем свойства форума
 		 */
-		$oForum->setTitle(forum_parse_title(getRequest('forum_title')));
-		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequest('forum_url',''))));
+		$oForum->setTitle(forum_parse_title(getRequestStr('forum_title')));
+		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequestStr('forum_url',''))));
 		if ($sNewType=='category') {
 			$oForum->setCanPost(1);
 		} else {
-			$oForum->setDescription(getRequest('forum_description'));
-			$oForum->setParentId((int)getRequest('forum_parent'));
-			$oForum->setType((int)getRequest('forum_type'));
+			$oForum->setDescription(getRequestStr('forum_description'));
+			$oForum->setParentId(getRequestStr('forum_parent'));
+			$oForum->setType(getRequestStr('forum_type'));
 			$oForum->setCanPost( (int)getRequest('forum_sub_can_post',0,'post') === 1 );
 			$oForum->setQuickReply( (int)getRequest('forum_quick_reply',0,'post') === 1 );
-			$oForum->setPassword(getRequest('forum_password',null));
-			$oForum->setSort((int)getRequest('forum_sort'));
-			$oForum->setRedirectUrl(getRequest('forum_redirect_url',null));
+			$oForum->setPassword(getRequestStr('forum_password'));
+			$oForum->setSort(getRequestStr('forum_sort'));
+			$oForum->setRedirectUrl(getRequestStr('forum_redirect_url'));
 			if (isPost('forum_redirect_url')) {
 				$oForum->setRedirectOn( (int)getRequest('forum_redirect_on',0,'post') === 1 );
 			}
@@ -1929,7 +1921,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/*
 		 * Определяем тип создаваемого\редактируемого объекта (форум\категория)
 		 */
-		$sNewType=getRequest('type',null) ? getRequest('type') : 'forum';
+		$sNewType=getRequestStr('type') ? getRequestStr('type') : 'forum';
 		/**
 		 * Обрабатываем редактирование форума
 		 */
@@ -2037,7 +2029,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 *
 			 * (-1) - выбран пункт меню "удалить топики".
 			 */
-			if ($sForumIdNew=getRequest('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
+			if ($sForumIdNew=getRequestStr('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
 				if (!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
 					$this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_error'),$this->Lang_Get('error'));
 					return;
@@ -2067,7 +2059,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Если указан идентификатор форума для перемещения, то делаем попытку переместить подфорумы.
 			 */
-			if ($sForumIdNew=getRequest('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
+			if ($sForumIdNew=getRequestStr('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
 				if(!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
 					$this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_error'),$this->Lang_Get('error'));
 					return;
@@ -2090,13 +2082,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Перемещаем топики
 			 */
-			if ($sForumIdNew=getRequest('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
+			if ($sForumIdNew=getRequestStr('forum_move_id_topics') and ($sForumIdNew!=-1) and is_array($aTopics) and count($aTopics)) {
 				$this->PluginForum_Forum_MoveTopics($sForumId,$sForumIdNew);
 			}
 			/**
 			 * Перемещаем подфорумы
 			 */
-			if ($sForumIdNew=getRequest('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
+			if ($sForumIdNew=getRequestStr('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
 				$this->PluginForum_Forum_MoveForums($sForumId,$sForumIdNew);
 			}
 			/**
@@ -2377,7 +2369,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$bOk=false;
 		}
 		if (!$this->User_IsAuthorization()) {
-			if (!$this->Validate_Validate('captcha',getRequest('guest_captcha'))) {
+			if (!$this->Validate_Validate('captcha',getRequestStr('guest_captcha'))) {
 				$this->Message_AddError($this->Validate_GetErrorLast(),$this->Lang_Get('error'));
 				$bOk=false;
 			}

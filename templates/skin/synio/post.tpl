@@ -76,19 +76,19 @@
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
 			<a href="#" class="button js-forum-quote" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
-				<span class="icon-leaf"></span> {$aLang.plugin.forum.button_quote}
+				<i class="icon-leaf"></i> {$aLang.plugin.forum.button_quote}
 			</a>
 			<a href="{$oTopic->getUrlFull()}reply" class="button js-forum-reply" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
-				<span class="icon-comment"></span> {$aLang.plugin.forum.button_reply}
+				<i class="icon-comment"></i> {$aLang.plugin.forum.button_reply}
 			</a>
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange">
-					<span class="icon-white icon-edit"></span> {$aLang.plugin.forum.button_edit}
+					<i class="icon-white icon-edit"></i> {$aLang.plugin.forum.button_edit}
 				</a>
 			{/if}
 			{if $LS->ACL_IsAllowDeleteForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/delete/{$oPost->getId()}" class="button button-red">
-					<span class="icon-white icon-remove"></span> {$aLang.plugin.forum.button_delete}
+					<i class="icon-white icon-remove"></i> {$aLang.plugin.forum.button_delete}
 				</a>
 			{/if}
 		</section>

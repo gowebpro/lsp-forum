@@ -63,6 +63,8 @@ return array(
 	'create_sort_notice' => 'Sets the sorting when displaying',
 	'create_description' => 'Description',
 	'create_parent' => 'Select the parent forum or category',
+	'create_parent_error' => 'Wrong category',
+	'create_parent_error_nested' => 'Sorry, that is not possible. You are attempting to move a parent forum or category into its own child structure. Please go back and try again, selecting a different parent forum.',
 	'create_type' => 'State',
 	'create_type_notice' => '',
 	'create_type_active' => 'Active',
