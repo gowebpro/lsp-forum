@@ -1684,14 +1684,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем последний прочитанный пост
 		 */
-		if(!($oLastPost=$this->PluginForum_Forum_GetPostById($oMarker->getLastMarkPost($oTopic)))) {
+		if(!($oPost=$this->PluginForum_Forum_GetPostById($oMarker->getLastMarkPost($oTopic)))) {
 			return parent::EventNotFound();
+		}
+		$aRightPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>array('post_id > ?'=>array($oPost->getId())),'#page'=>array(1,1)));
+		if ($aRightPosts['count'] > 0) {
+			$oPost=$aRightPosts['collection'][0];
 		}
 		/**
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage='';
-		$iPostsCount=(int)$oTopic->getCountPost();
+		$iPostsCount=(int)$oTopic->getCountPost()-(int)$aRightPosts['count'];
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
@@ -1705,7 +1709,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Редирект
 		 */
-		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oLastPost->getId()}");
+		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oPost->getId()}");
 	}
 
 	/**
