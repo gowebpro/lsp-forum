@@ -32,6 +32,19 @@ class PluginForum_ModuleForum_EntityMarker extends EntityORM {
 		return false;
 	}
 
+	public function getLastMarkPost($oTopic) {
+		if ($aData = $this->getReadArray()) {
+			if (isset($aData[$oTopic->getId()])) {
+				$aTopicData = $aData[$oTopic->getId()];
+				if (isset($aTopicData['p'])) {
+					return $aTopicData['p'];
+				} else {
+					return $oTopic->getLastPostId();
+				}
+			}
+		}
+		return null;
+	}
 }
 
 ?>

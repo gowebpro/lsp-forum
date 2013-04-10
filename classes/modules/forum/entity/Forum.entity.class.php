@@ -126,7 +126,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 				return $this->Lang_Get('plugin.forum.create_parent_error');;
 			}
 		} else {
-			$this->setParentId(null);
+			$this->setParentId(0);
 		}
 		return true;
 	}

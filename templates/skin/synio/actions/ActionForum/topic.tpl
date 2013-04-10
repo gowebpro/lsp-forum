@@ -3,6 +3,7 @@
 {include file="$sTemplatePathForum/window_post_anchor.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
+{assign var='oMarker' value=$oForum->getMarker()}
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 

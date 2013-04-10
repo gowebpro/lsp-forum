@@ -100,6 +100,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i',array('EventEditPost','edit_post'));
 		$this->AddEventPreg('/^topic$/i','/^delete$/i','/^(\d+)$/i','EventDeletePost');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^lastpost$/i','EventLastPost');
+		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^newpost$/i','EventNewPost');
 		$this->AddEventPreg('/^findpost$/i','/^(\d+)$/i','EventFindPost');
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^(page([1-9]\d{0,5}))?$/i',array('EventShowForum','forum'));
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^add$/i',array('EventAddTopic','add_topic'));
@@ -733,7 +734,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Счетчик просмотров топика и маркировка
 			 */
 			$this->PluginForum_Forum_UpdateTopicViews($oTopic);
-			$this->PluginForum_Forum_MarkTopic($oTopic);
+			$this->PluginForum_Forum_MarkTopic($oTopic,end($aPosts));
 			/**
 			 * Check
 			 */
@@ -1652,7 +1653,59 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Редирект
 		 */
-		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post-{$oLastPost->getId()}");
+		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oLastPost->getId()}");
+	}
+
+	/**
+	 * Первый непрочитанный пост в топике
+	 *
+	 */
+	public function EventNewPost() {
+		/**
+		 * Получаем ID топика из URL
+		 */
+		$sId=$this->GetParamEventMatch(0,1);
+		/**
+		 * Получаем топик по ID
+		 */
+		if(!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Получаем форум
+		 */
+		if(!($oForum=$oTopic->getForum())){
+			return parent::EventNotFound();
+		}
+		/**
+		 * Получаем маркер
+		 */
+		$oMarker=$this->PluginForum_Forum_GetMarker($oForum);
+		/**
+		 * Получаем последний прочитанный пост
+		 */
+		if(!($oLastPost=$this->PluginForum_Forum_GetPostById($oMarker->getLastMarkPost($oTopic)))) {
+			return parent::EventNotFound();
+		}
+		/**
+		 * Определяем на какой странице находится пост
+		 */
+		$sPage='';
+		$iPostsCount=(int)$oTopic->getCountPost();
+		$iPerPage=Config::Get('plugin.forum.post_per_page');
+		if (Config::Get('plugin.forum.topic_line_mod')) {
+			$iPostsCount--;
+			$iPerPage--;
+		}
+		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
+			if ($iCountPage > 1) {
+				$sPage="page{$iCountPage}";
+			}
+		}
+		/**
+		 * Редирект
+		 */
+		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oLastPost->getId()}");
 	}
 
 	/**
@@ -1694,7 +1747,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Редирект
 		 */
-		Router::Location(Router::GetPath('forum')."topic/{$oTopic->getId()}/{$sPage}#post-{$oPost->getId()}");
+		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oPost->getId()}");
 	}
 
 

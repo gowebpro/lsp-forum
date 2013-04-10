@@ -505,7 +505,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 *
 	 * @param PluginForum_ModuleForum_EntityTopic $oTopic
 	 */
-	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic) {
+	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic,$oLastPost=null) {
 		if ($oUser = $this->User_GetUserCurrent()) {
 			if ($oForum = $oTopic->getForum()) {
 				$sUserId = $oUser->getId();
@@ -522,20 +522,27 @@ class PluginForum_ModuleForum extends ModuleORM {
 					$aMarkData[$sForumId]['marker_read_item'] = 0;
 				}
 				/**
+				 * Формируем маркер для топика
+				 */
+				$aMarkTopic = array();
+
+				if ($oLastPost) {
+					$aMarkTopic['i'] = $oLastPost->getNumber();
+					$aMarkTopic['p'] = $oLastPost->getId();
+				} else {
+					$aMarkTopic['i'] = $oTopic->getCountPost();
+					$aMarkTopic['p'] = $oTopic->getLastPostId();
+				}
+				/**
 				 * Обновление общего счетчика форума
 				 */
 				if (isset($aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()])) {
 					$aMarkTopicOld = $aMarkData[$sForumId]['marker_read_array'][$oTopic->getId()];
-					$iCountDiff = $oTopic->getCountPost() - (int)$aMarkTopicOld['i'];
+					$iCountDiff = (int)$aMarkTopic['i'] - (int)$aMarkTopicOld['i'];
 					$aMarkData[$sForumId]['marker_read_item'] = (int)$aMarkData[$sForumId]['marker_read_item'] + $iCountDiff;
 				} else {
-					$aMarkData[$sForumId]['marker_read_item'] = (int)$aMarkData[$sForumId]['marker_read_item'] + $oTopic->getCountPost();
+					$aMarkData[$sForumId]['marker_read_item'] = (int)$aMarkData[$sForumId]['marker_read_item'] + (int)$aMarkTopic['i'];
 				}
-				/**
-				 * Формируем маркер для топика
-				 */
-				$aMarkTopic = array();
-				$aMarkTopic['i'] = $oTopic->getCountPost();
 				/**
 				 * Обновляем информацию о маркере
 				 */

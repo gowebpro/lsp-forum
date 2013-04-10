@@ -47,19 +47,18 @@
 					<p>
 						<label for="forum_id">{$aLang.plugin.forum.new_topic_forum}</label>
 						<select name="forum_id" id="forum_id" class="input-width-full">
+							{assign var=bOpenOG value=false}
 							{foreach from=$aForumsTree key=sId item=aItem}
 								{assign var=oForum value=$aItem.entity}
-								{assign var=bOpenOG value=false}
 								{if $aItem.level == 0}
-									{if !$bOpenOG}
-										<optgroup label="{$oForum->getTitle()|escape:'html'}">
-										{assign var=bOpenOG value=true}
-									{else}
+									{if $bOpenOG}
 										</optgroup>
 										{assign var=bOpenOG value=false}
 									{/if}
+									<optgroup label="{$oForum->getTitle()|escape:'html'}">
+									{assign var=bOpenOG value=true}
 								{else}
-									<option value="{$sId}"{if $_aRequest.forum_id==$sId} selected{/if}>{$oForum->getTitle()|escape:'html'}</option>
+									<option value="{$sId}" style="margin-left: {$aItem.level*20}px"{if $_aRequest.forum_id==$sId} selected{/if}>{$oForum->getTitle()|escape:'html'}</option>
 								{/if}
 							{/foreach}
 						</select>

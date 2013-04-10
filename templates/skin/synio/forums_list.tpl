@@ -51,13 +51,13 @@
 								{if $oPoster}
 									<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(48)}" title="{$aLang.plugin.forum.post_writer}: {$oPoster->getLogin()}" /></a>
 								{else}
-									<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}" /></a>
+									<a href="{$oTopic->getUrlFull()}lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}" /></a>
 								{/if}
 							</div>
 							<ul class="last-post">
 								<li>
 									{if $oForum->getAllowRead() && $oForum->getAutorization()}
-										<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
+										<a href="{$oTopic->getUrlFull()}newpost">{$oTopic->getTitle()}</a>
 									{else}
 										<em>{$aLang.plugin.forum.forum_closed}</em>
 									{/if}
