@@ -24,20 +24,29 @@ ls.forum = (function ($) {
 		return false;
 	};
 
-	this.configReplyForm = function(idPost) {
-		var $form=$('#fast-reply-form');
-		if ($form.is(":hidden")) {
-			$form.slideDown();
+	this.cancelPost = function() {
+		ls.forum.configReplyForm(0,0);
+		$('#post_text').val('');
+	};
+
+	this.configReplyForm = function(idPost,bScroll) {
+		bScroll=bScroll || true;
+		if ($('#fast-reply-form')) {
+			var $form=$('#fast-reply-form');
+			if ($form.is(":hidden")) {
+				$form.slideDown();
+			}
+			var replyto=$form.find('#replyto');
+			replyto.val(idPost);
+			var rtpw=$('#reply-to-post-wrap');
+			if (replyto.val() > 0) {
+				var postLink=aRouter['forum']+"findpost/"+idPost+"/";
+				rtpw.show().find('span').html('<a class="link-dashed" href="'+postLink+'" target="_blank">#'+idPost+'</a>');
+			} else {
+				rtpw.hide().find('span').html('');
+			}
+			if (bScroll) $.scrollTo($form, 1000, {offset: -220});
 		}
-		var postLink=aRouter['forum']+"findpost/"+idPost+"/";
-		var replyto=$form.find('#replyto');
-		replyto.val(idPost);
-		var rtpw=$('#reply-to-post-wrap');
-		if (replyto.val() > 0)
-			rtpw.show().find('span').html('<a class="link-dashed" href="'+postLink+'" target="_blank">#'+idPost+'</a>');
-		else
-			rtpw.hide().find('span').html('');
-		$.scrollTo($form, 1000, {offset: -220});
 		return $form;
 	};
 
@@ -94,9 +103,31 @@ ls.forum = (function ($) {
 			} else {
 				preview.show().html(result.sText);
 				ls.hook.run('ls_forum_preview_after',[form, preview, result]);
+				ls.forum.initSpoilers();
 			}
 		});
 		return false;
+	};
+
+	this.initSpoilers = function() {
+		$('.spoiler-body').each(function() {
+			var $body = $(this);
+			var $head = $body.prev('.spoiler-head');
+			$head.click(function() {
+				if ($body.is(":visible")) {
+					$(this).addClass('folded').removeClass('unfolded');
+					$body.slideUp('fast');
+				} else {
+					$(this).removeClass('folded').addClass('unfolded');
+					$body.slideDown('fast');
+				}
+			});
+			var $fold = $('<div class="spoiler-fold"></div>').click(function(){
+				$.scrollTo($head, { duration: 200, axis: 'y', offset: -200 });
+				$head.click().animate({opacity: 0.1}, 500).animate({opacity: 1}, 700);
+			});
+			$body.append($fold);
+		});
 	};
 
 	this.getMarkitupMini = function() {
@@ -144,6 +175,7 @@ ls.forum = (function ($) {
 				{name: ls.lang.get('panel_video'), className:'editor-video', replaceWith:'<video>[!['+ls.lang.get('panel_video_promt')+':!:http://]!]</video>' },
 				{name: ls.lang.get('panel_url'), className:'editor-link', key:'L', openWith:'<a href="[!['+ls.lang.get('panel_url_promt')+':!:http://]!]"(!( title="[![Title]!]")!)>', closeWith:'</a>', placeHolder:'Your text to link...' },
 				{name: ls.lang.get('panel_user'), className:'editor-user', replaceWith:'<ls user="[!['+ls.lang.get('panel_user_promt')+']!]" />' },
+				{name: ls.lang.get('panel_spoiler'), className:'editor-spoiler', openWith:'<spoiler name="[!['+ls.lang.get('panel_spoiler_promt')+']!]">', closeWith:'</spoiler>', placeHolder:'Your hide text...' },
 				{separator:'---------------' },
 				{name: ls.lang.get('panel_clear_tags'), className:'editor-clean', replaceWith: function(markitup) { return markitup.selection.replace(/<(.*?)>/g, "") } },
 			]
@@ -173,7 +205,6 @@ jQuery(document).ready(function($){
 		}
 		return false;
 	});
-
 	$('.js-forum-reply').click(function() {
 		var $t = $(this);
 		ls.forum.replyPost($t);
@@ -184,6 +215,7 @@ jQuery(document).ready(function($){
 		ls.forum.quotePost($t);
 		return false;
 	});
+	ls.forum.initSpoilers();
 
 	$('#link-to-post').jqm();
 

@@ -302,6 +302,10 @@ return array(
 
 	'block_stream' => 'Forum',
 	'block_stream_empty' => 'No messages',
+
+	'panel_spoiler' => 'Spoiler',
+	'panel_spoiler_promt' => 'Enter a spoiler title',
+
 );
 
 ?>

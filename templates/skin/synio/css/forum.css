@@ -151,6 +151,17 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .text blockquote .quote-text { padding: 15px 0px }
 .text blockquote .quote-text pre { padding: 10px 0; border: 1px solid #f0f0f0 }
 
+.text .spoiler-wrap { width: 98%; clear: both; margin: 8px auto; padding: 0; background: #E9E9E6 }
+.text .spoiler-wrap .spoiler-wrap { margin: 2px auto 4px }
+.text .spoiler-wrap, .spoiler-head, .spoiler-body { border: solid #C3CBD1; border-width: 1px 1px 1px 2px; clear: both }
+.text .spoiler-head { display: block; border-width: 0; font-size: 11px; padding: 1px 14px 3px; margin-left: 6px; line-height: 15px; font-weight: bold; color: #2A2A2A; text-align: left !important; cursor: pointer }
+.text .spoiler-head.folded { padding-left: 14px; background: transparent url(../images/sp_folded.gif) no-repeat left center }
+.text .spoiler-head.unfolded { padding-left: 14px; background: transparent url(../images/sp_unfolded.gif) no-repeat left center }
+.text .spoiler-body { border-width: 1px 0 0 0; display: none; font-weight: normal; background: #F5F5F5; padding: 2px 6px }
+.text .spoiler-fold { width: 98%; margin: 0 auto; overflow: hidden; height: 8px; background: url(../images/sp_fold.png) 50% 3px no-repeat; cursor: pointer }
+
+.markItUp .editor-spoiler a { background: url(../images/editor-spoiler.png) }
+
 /* Modal */
 .modal-post { width: 360px }
 .modal-moderator { width: 500px }

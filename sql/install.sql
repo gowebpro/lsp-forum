@@ -110,6 +110,32 @@ INSERT INTO `prefix_forum_perm` (`perm_id`, `perm_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prefix_forum_poll`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_poll` (
+	`poll_id` int(11) unsigned NOT NULL,
+	`poll_content` text NOT NULL,
+	PRIMARY KEY (`poll_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prefix_forum_poll_rel`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_poll_rel` (
+	`topic_id` int(11) unsigned NOT NULL,
+	`poll_id` int(11) unsigned NOT NULL,
+	UNIQUE KEY `topic_id_poll_id` (`topic_id`,`poll_id`),
+	KEY `topic_id` (`topic_id`),
+	KEY `poll_id` (`poll_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prefix_forum_post`
 --
 

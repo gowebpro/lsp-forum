@@ -12,6 +12,17 @@
 
 class PluginForum_ModuleText extends PluginForum_Inherit_ModuleText {
 	/**
+	 * Обработка тега spoiler в тексте
+	 *
+	 * @param string $sTag	Тег на ктором сработал колбэк
+	 * @param array $aParams Список параметров тега
+	 * @return string
+	 */
+	public function CallbackTagSpoiler($sTag,$aParams,$sContent) {
+		$sSpoilerName=isset($aParams['name']) ? $aParams['name'] : 'Text';
+		return "<div class='spoiler-wrap'><div class='spoiler-head folded'>{$sSpoilerName}</div><div class='spoiler-body'>{$sContent}</div></div>";
+	}
+	/**
 	 * Обработка тега bloquote в тексте
 	 * <pre>
 	 * <bloquote reply="112"> text </bloquote>

@@ -130,13 +130,26 @@ $config['path_uploads_smiles']	= '___plugin.forum.path_uploads___/smiles';		//П
  * Настройка Jevix
  */
 $aJevix = array(
+	'cfgAllowTags' => array(
+		array(
+			array('spoiler')
+		),
+	),
 	'cfgAllowTagParams' => array(
+		array(
+			'spoiler',
+			array('name' => '#text')
+		),
 		array(
 			'blockquote',
 			array('reply' => '#int')
 		)
 	),
 	'cfgSetTagCallbackFull' => array(
+		array(
+			'spoiler',
+			array('_this_','CallbackTagSpoiler'),
+		),
 		array(
 			'blockquote',
 			array('_this_','CallbackTagQuote'),

@@ -416,7 +416,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		$aForumsId=$this->PluginForum_Forum_GetForumsOpenUser(LS::CurUsr(),true);
+		$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true);
 		/**
 		 * Получаем последние топики
 		 */
@@ -502,15 +502,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		$aCategories=$this->PluginForum_Forum_LoadTreeOfForum(array('#order'=>array('forum_sort'=>'asc')));
-		/**
-		 * Калькулирует инфу о счетчиках и последнем сообщении из подфорумов
-		 */
-		if (!empty($aCategories)) {
-			foreach ($aCategories as $oForum) {
-				$oForum=$this->PluginForum_Forum_CalcChildren($oForum);
-			}
-		}
+		$aCategories=$this->PluginForum_Forum_GetOpenForumsTree();
 		/**
 		 * Получаем статистику
 		 */
@@ -605,8 +597,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Сортировка подфорумов
 		 * https://github.com/Xmk/lsplugin-forum/issues/26
 		 */
-		$aSubForums = array();
 		if ($oForum->getChildren()) {
+			$aSubForums = array();
 			$aChildrens = array();
 			$aChildSort = array();
 			foreach ($oForum->getChildren() as $oChildren) {
@@ -617,6 +609,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			foreach ($aChildSort as $sId => $iSort) {
 				$aSubForums[] = $aChildrens[$sId];
 			}
+			$oForum->setChildren($aSubForums);
 		}
 		/**
 		 * JumpMenu
@@ -632,7 +625,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('aPaging',$aPaging);
 		$this->Viewer_Assign('aPinned',$aPinned);
 		$this->Viewer_Assign('aTopics',$aTopics);
-		$this->Viewer_Assign('aSubForums',$aSubForums);
 		$this->Viewer_Assign('oForum',$oForum);
 		/**
 		 * Вызов хуков
@@ -1760,18 +1752,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function AssignJumpMenu() {
 		/**
-		 * Получаем список id форумов, открытых для юзера
-		 */
-	//	$aForumsId=$this->PluginForum_Forum_GetForumsOpenUser(LS::CurUsr(),true);
-		/**
 		 * Получаем список форумов
 		 */
-		$aForums=$this->PluginForum_Forum_LoadTreeOfForum(
-			array(
-			//	'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
-				'#order'=>array('forum_sort'=>'asc')
-			)
-		);
+		$aForums=$this->PluginForum_Forum_GetOpenForumsTree();
 		/**
 		 * Дерево форумов
 		 */

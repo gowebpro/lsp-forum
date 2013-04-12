@@ -19,7 +19,8 @@
 							<strong>{$aLang.plugin.forum.subforums}:</strong>
 							{foreach from=$aSubForums item=oSubForum name=subforums}
 								{if $oSubForum->getAllowShow()}
-								<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>{if !$smarty.foreach.subforums.last}, {/if}
+								{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
+								<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>
 								{/if}
 							{/foreach}
 						</p>

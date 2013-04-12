@@ -78,8 +78,18 @@ class PluginForum extends Plugin {
 		/**
 		 * Добавляем в ленту текстовки новых типов событий
 		 */
-		$this->Lang_AddMessage('stream_event_type_add_forum_topic', $this->Lang_Get('plugin.forum.event_type_add_topic'));
-		$this->Lang_AddMessage('stream_event_type_add_forum_post', $this->Lang_Get('plugin.forum.event_type_add_post'));
+		$this->Lang_AddMessages(
+			array(
+				'stream_event_type_add_forum_topic' => $this->Lang_Get('plugin.forum.event_type_add_topic'),
+				'stream_event_type_add_forum_post' => $this->Lang_Get('plugin.forum.event_type_add_post'),
+				'panel_spoiler' => $this->Lang_Get('plugin.forum.panel_spoiler'),
+				'panel_spoiler_promt' => $this->Lang_Get('plugin.forum.panel_spoiler_promt'),
+			)
+		);
+		/**
+		 * Подключаем кнопку
+		 */
+		//$this->Viewer_AddBlock('toolbar','toolbar_jumpmenu.tpl', array('plugin'=>__CLASS__),-111);
 		/**
 		 * Загружаем в шаблон необходимые переменные
 		 */

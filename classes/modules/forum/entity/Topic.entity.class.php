@@ -16,6 +16,7 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id'),
 		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
 		//'view'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityView','topic_id')
+	//	'polls'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityPoll','poll_id','db.table.forum_poll_rel','topic_id')
 	);
 
 	/**

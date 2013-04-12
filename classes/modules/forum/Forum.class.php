@@ -323,13 +323,41 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Возвращает список форумов, открытых для пользователя в виде дерева
+	 *
+	 * @param	object	$oForum
+	 * @param	boolean	$bIdOnly
+	 * @return	array
+	 */
+	public function GetOpenForumsTree($bCalc=true) {
+		$oUserCurrent=$this->User_GetUserCurrent();
+		/**
+		 * Строит дерево
+		 */
+		$aForums=$this->LoadTreeOfForum(
+			array(
+				'#order'=>array('forum_sort'=>'asc')
+			)
+		);
+		/**
+		 * Калькулирует инфу о счетчиках и последнем сообщении из подфорумов
+		 */
+		if (!empty($aForums) && $bCalc) {
+			foreach ($aForums as $oForum) {
+				$oForum=$this->CalcChildren($oForum);
+			}
+		}
+		return $aForums;
+	}
+
+	/**
 	 * Возвращает список форумов, открытых для пользователя
 	 *
 	 * @param	object	$oForum
 	 * @param	boolean	$bIdOnly
 	 * @return	array
 	 */
-	public function GetForumsOpenUser($oUser=null,$bIdOnly=false) {
+	public function GetOpenForumsUser($oUser=null,$bIdOnly=false) {
 		$aForums=$this->GetForumItemsAll();
 		/**
 		 * Фильтруем список форумов

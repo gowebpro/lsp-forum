@@ -302,6 +302,10 @@ return array(
 
 	'block_stream' => 'Форум',
 	'block_stream_empty' => 'Новых сообщений нет',
+
+	'panel_spoiler' => 'Спойлер',
+	'panel_spoiler_promt' => 'Введите заголовок спойлера',
+
 );
 
 ?>
