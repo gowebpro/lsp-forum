@@ -9,7 +9,7 @@
 .fSubmit { background: #edf8fd; padding: 16px 6px; text-align: center; clear: both }
 
 .forums {}
-.forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #ebf0f4; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
+.forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #ebf0f4; -moz-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-header {	padding: 12px 20px 6px; position: relative; border-top-left-radius: 10; border-top-right-radius: 10px; -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; -webkit-background-clip: padding-box; box-shadow: 0 2px 3px #b4d5e2 inset; -moz-box-shadow: 0 2px 3px #b4d5e2 inset; -webkit-box-shadow: 0 2px 3px #b4d5e2 inset }
 .forums-header h3 { color: #628fa5; font-size: 22px; line-height: 1em; font-weight: normal; font-family: 'PT Sans', sans-serif }
@@ -80,10 +80,10 @@
 .forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }
 .forum-post-side section p span { color: #000 }
 .forum-post-side section.avatar { position: relative }
-.forum-post-side section.avatar .status { position: absolute; top: 5px; left: 30px; color: #fff; padding: 0 5px; font-size: 11px; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
+.forum-post-side section.avatar .status { position: absolute; top: 5px; left: 30px; color: #fff; padding: 0 5px; font-size: 11px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
 .forum-post-side section.avatar .status.status-online { background: rgba(80, 200, 40, 0.6) }
 .forum-post-side section.avatar .status.status-offline { background: rgba(200, 0, 0, 0.4) }
-.forum-post-side section.avatar img { border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box }
+.forum-post-side section.avatar img { border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box }
 .forum-post-side section.login { font-size: 14px; font-weight: bold }
 .forum-post-content { float: none; margin-left: 161px; border-left: 1px solid #ebf0f4; width: auto }
 .forum-post-content.no-side { margin-left: 0px; border-left: 0px }
@@ -132,11 +132,11 @@
 .forums .userlist span { white-space: nowrap }
 
 .forums .lighter { color: #a4a4a4 }
-.forums .badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #4ace56; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
+.forums .badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #4ace56; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
 
 .pagination_mini { font-size: 0.8em; display: inline; margin-left: 7px }
 .pagination_mini li { display: inline; margin: 0px 1px 0px 0px }
-.pagination_mini li a { background: #5f5f5f; color: #fff; text-decoration: none; padding: 2px 6px; border-radius: 2px; -moz-border-radius: 2px; -khtml-border-radius: 2px; -webkit-border-radius: 2px; -webkit-background-clip: padding-box }
+.pagination_mini li a { background: #5f5f5f; color: #fff; text-decoration: none; padding: 2px 6px; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; -webkit-background-clip: padding-box }
 .pagination_mini li a:hover { background:#444; color: #fff }
 
 span.divide { color: gray; font-weight: normal; padding: 0 2px }
@@ -151,13 +151,13 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .text blockquote .quote-text { padding: 15px 0px }
 .text blockquote .quote-text pre { padding: 10px 0; border: 1px solid #f0f0f0 }
 
-.text .spoiler-wrap { width: 98%; clear: both; margin: 8px auto; padding: 0; background: #E9E9E6 }
+.text .spoiler-wrap { width: 98%; clear: both; margin: 8px auto; padding: 0; background: #edf8fd; border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; -webkit-background-clip: padding-box; box-shadow: 0 2px 3px #b4d5e2 inset; -moz-box-shadow: 0 2px 3px #b4d5e2 inset; -webkit-box-shadow: 0 2px 3px #b4d5e2 inset }
 .text .spoiler-wrap .spoiler-wrap { margin: 2px auto 4px }
-.text .spoiler-wrap, .spoiler-head, .spoiler-body { border: solid #C3CBD1; border-width: 1px 1px 1px 2px; clear: both }
-.text .spoiler-head { display: block; border-width: 0; font-size: 11px; padding: 1px 14px 3px; margin-left: 6px; line-height: 15px; font-weight: bold; color: #2A2A2A; text-align: left !important; cursor: pointer }
+.text .spoiler-wrap, .spoiler-head, .spoiler-body { border: solid #b4d5e2; border-width: 1px 1px 1px 2px; clear: both }
+.text .spoiler-head { color: #628fa5; display: block; border-width: 0; font-size: 11px; padding: 3px 14px 5px; margin-left: 6px; line-height: 15px; font-weight: bold; text-align: left !important; cursor: pointer }
 .text .spoiler-head.folded { padding-left: 14px; background: transparent url(../images/sp_folded.gif) no-repeat left center }
 .text .spoiler-head.unfolded { padding-left: 14px; background: transparent url(../images/sp_unfolded.gif) no-repeat left center }
-.text .spoiler-body { border-width: 1px 0 0 0; display: none; font-weight: normal; background: #F5F5F5; padding: 2px 6px }
+.text .spoiler-body { border-width: 1px 0 0 0; display: none; font-weight: normal; background: #fbfcfc; padding: 2px 6px; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; -moz-border-radius-bottomleft: 6px; -moz-border-radius-bottomright: 6px; -webkit-border-bottom-left-radius: 6px; -webkit-border-bottom-right-radius: 6px; -webkit-background-clip: padding-box }
 .text .spoiler-fold { width: 98%; margin: 0 auto; overflow: hidden; height: 8px; background: url(../images/sp_fold.png) 50% 3px no-repeat; cursor: pointer }
 
 .markItUp .editor-spoiler a { background: url(../images/editor-spoiler.png) }
@@ -165,7 +165,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 /* Modal */
 .modal-post { width: 360px }
 .modal-moderator { width: 500px }
-.modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px; border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; -moz-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
+.modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; -moz-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
 	*background: url(../images/write.png) no-repeat;
