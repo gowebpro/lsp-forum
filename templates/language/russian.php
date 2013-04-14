@@ -305,6 +305,7 @@ return array(
 
 	'panel_spoiler' => 'Спойлер',
 	'panel_spoiler_promt' => 'Введите заголовок спойлера',
+	'panel_spoiler_placeholder' => 'Скрытый текст',
 
 );
 

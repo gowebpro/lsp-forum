@@ -84,6 +84,7 @@ class PluginForum extends Plugin {
 				'stream_event_type_add_forum_post' => $this->Lang_Get('plugin.forum.event_type_add_post'),
 				'panel_spoiler' => $this->Lang_Get('plugin.forum.panel_spoiler'),
 				'panel_spoiler_promt' => $this->Lang_Get('plugin.forum.panel_spoiler_promt'),
+				'panel_spoiler_placeholder' => $this->Lang_Get('plugin.forum.panel_spoiler_placeholder'),
 			)
 		);
 		/**

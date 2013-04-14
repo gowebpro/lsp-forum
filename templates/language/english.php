@@ -305,6 +305,7 @@ return array(
 
 	'panel_spoiler' => 'Spoiler',
 	'panel_spoiler_promt' => 'Enter a spoiler title',
+	'panel_spoiler_placeholder' => 'Hidden text',
 
 );
 
