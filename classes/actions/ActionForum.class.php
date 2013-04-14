@@ -1672,7 +1672,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем маркер
 		 */
-		$oMarker=$this->PluginForum_Forum_GetMarker($oForum);
+		$oMarker=$this->PluginForum_Forum_GetMarker($oForum->getId());
 		/**
 		 * Получаем последний прочитанный пост
 		 */
@@ -1687,7 +1687,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage='';
-		$iPostsCount=(int)$oTopic->getCountPost()-(int)$aRightPosts['count'];
+		$iPostsCount=(int)$oTopic->getCountPost()-((int)$aRightPosts['count']-1);
 		$iPerPage=Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
