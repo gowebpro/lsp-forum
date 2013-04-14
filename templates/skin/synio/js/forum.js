@@ -112,8 +112,9 @@ ls.forum = (function ($) {
 	this.initSpoilers = function() {
 		$('.spoiler-body').each(function() {
 			var $body = $(this);
-			var $head = $body.prev('.spoiler-head');
-			$head.click(function() {
+			var title = $body.attr('data-name') || ls.lang.get('panel_spoiler_placeholder');
+			var $head = $('<div class="spoiler-head folded">'+ title +'</div>');
+			$head.insertBefore($body).click(function() {
 				if ($body.is(":visible")) {
 					$(this).addClass('folded').removeClass('unfolded');
 					$body.slideUp('fast');

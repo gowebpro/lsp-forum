@@ -19,8 +19,8 @@ class PluginForum_ModuleText extends PluginForum_Inherit_ModuleText {
 	 * @return string
 	 */
 	public function CallbackTagSpoiler($sTag,$aParams,$sContent) {
-		$sSpoilerName=isset($aParams['name']) ? $aParams['name'] : 'Text';
-		return "<div class='spoiler-wrap'><div class='spoiler-head folded'>{$sSpoilerName}</div><div class='spoiler-body'>{$sContent}</div></div>";
+		$sSpoilerName=isset($aParams['name']) ? $aParams['name'] : '';
+		return "<div class='spoiler-wrap'><div class='spoiler-body' data-name='{$sSpoilerName}'>{$sContent}</div></div>";
 	}
 	/**
 	 * Обработка тега bloquote в тексте
