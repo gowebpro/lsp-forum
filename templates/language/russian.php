@@ -194,6 +194,7 @@ return array(
 	'post_edit_reason_notice' => 'Обязательное поле',
 	'post_edit_not_allow' => 'Нет доступа к этому действию',
 	'post_editing' => 'Последний раз редактировал пользователь',
+	'post_delete_confirm' => 'Удалить это сообщение?',
 	'post_delete_not_allow' => 'Нет доступа к этому действию',
 	'post_writer' => 'Пишет',
 	'post_view' => 'Просмотр сообщения',
@@ -309,6 +310,9 @@ return array(
 	'panel_spoiler_promt' => 'Введите заголовок спойлера',
 	'panel_spoiler_placeholder' => 'Скрытый текст',
 
+	'confirm' => 'Подтвердите действие',
+	'confirm_yes' => 'Подтверждаю',
+	'confirm_no' => 'Отмена',
 );
 
 ?>

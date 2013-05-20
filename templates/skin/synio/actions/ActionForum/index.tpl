@@ -10,7 +10,7 @@
 				{assign var='aForums' value=$oCategory->getChildren()}
 				<section class="fBox forums-list category-block" id="category-{$oCategory->getId()}">
 					<header class="forums-header">
-						<i class="js-forum-cat-toogler fl-r icon-minus-sign"></i>
+						<i class="js-forum-cat-toggler fl-r icon-minus-sign"></i>
 						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">

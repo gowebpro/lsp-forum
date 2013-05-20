@@ -50,6 +50,20 @@ ls.forum = (function ($) {
 		return $form;
 	};
 
+	this.configConfirmBox = function(text, params, callback) {
+		var $window = $('#confirm-box');
+		var $text = $window.find('.confirm-box-text'),
+			$btn = $window.find('.js-confirm-yes');
+		$text.text(text||'');
+		$window.removeData('params');
+		$window.data('params', params);
+		if ($.type(callback) == 'function')
+			$btn.click($.proxy(callback, $window));
+		else
+			$btn.unbind('click');
+		return $window;
+	};
+
 	this.replyPost = function($t) {
 		var idPost = $t.attr('data-post-id');
 		var userName = $t.attr('data-name');
@@ -64,6 +78,16 @@ ls.forum = (function ($) {
 		var $post = $t.parents('#post-'+idPost);
 		var $text = $post.find('.forum-post-body .text').html();
 		$.markItUp({target: $('#post_text'), replaceWith:'<blockquote reply="'+idPost+'">'+$.trim($text)+'</blockquote>' });
+		return false;
+	};
+
+	this.deletePost = function($t) {
+		var idPost = $t.attr('data-post-id');
+		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.post_delete_confirm'), { 'id':idPost }, function(e) {
+			var sId = $(this).data('params').id;
+			window.location=aRouter.forum+'topic/delete/'+sId;
+		});
+		$window.jqmShow();
 		return false;
 	};
 
@@ -109,6 +133,42 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.initToggler = function() {
+		$('.js-forum-cat-toggler').click(function() {
+			var header=$(this).parent('header');
+			var content=$(header).next('.forums-content');
+			var note=$(content).next('.forums-note');
+			if (content.is(":visible")) {
+				$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
+				$(header).addClass('collapsed');
+				$(content).slideUp();
+				if (note) $(note).slideDown();
+			} else {
+				$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
+				$(header).removeClass('collapsed');
+				$(content).slideDown();
+				if (note) $(note).slideUp();
+			}
+			return false;
+		});
+	};
+
+	this.initButtons = function() {
+		var $self = this;
+		$('.js-post-reply').click(function() {
+			var $t = $(this);
+			return $self.replyPost($t);
+		});
+		$('.js-post-quote').click(function() {
+			var $t = $(this);
+			return $self.quotePost($t);
+		});
+		$('.js-post-delete').click(function() {
+			var $t = $(this);
+			return $self.deletePost($t);
+		});
+	};
+
 	this.initSpoilers = function() {
 		$('.spoiler-body').each(function() {
 			var $body = $(this);
@@ -129,6 +189,11 @@ ls.forum = (function ($) {
 			});
 			$body.append($fold);
 		});
+	};
+
+	this.initModals = function() {
+		$('#link-to-post').jqm();
+		$('#confirm-box').jqm();
 	};
 
 	this.getMarkitupMini = function() {
@@ -189,36 +254,10 @@ ls.forum = (function ($) {
 jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
 
-	$('.js-forum-cat-toogler').click(function() {
-		var header=$(this).parent('header');
-		var content=$(header).next('.forums-content');
-		var note=$(content).next('.forums-note');
-		if (content.is(":visible")) {
-			$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
-			$(header).addClass('collapsed');
-			$(content).slideUp();
-			if (note) $(note).slideDown();
-		} else {
-			$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
-			$(header).removeClass('collapsed');
-			$(content).slideDown();
-			if (note) $(note).slideUp();
-		}
-		return false;
-	});
-	$('.js-forum-reply').click(function() {
-		var $t = $(this);
-		ls.forum.replyPost($t);
-		return false;
-	});
-	$('.js-forum-quote').click(function() {
-		var $t = $(this);
-		ls.forum.quotePost($t);
-		return false;
-	});
+	ls.forum.initToggler();
+	ls.forum.initButtons();
 	ls.forum.initSpoilers();
-
-	$('#link-to-post').jqm();
+	ls.forum.initModals();
 
 	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'

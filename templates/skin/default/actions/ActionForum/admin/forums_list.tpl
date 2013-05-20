@@ -4,7 +4,7 @@
 <h2 class="page-header"><a href="{router page='forum'}admin">{$aLang.plugin.forum.acp}</a> <span>&raquo;</span> {$aLang.plugin.forum.forums}</h2>
 
 {include file="$sTemplatePathForum/menu.forum.admin.tpl"}
-{include file="$sTemplatePathForum/actions/ActionForum/admin/window_moderator.tpl"}
+{include file="$sTemplatePathForum/modals/modal.moderator.tpl"}
 
 <div class="forums">
 	<script type="text/javascript">

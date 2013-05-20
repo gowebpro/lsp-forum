@@ -194,6 +194,7 @@ return array(
 	'post_edit_reason_notice' => 'Required field',
 	'post_edit_not_allow' => 'No access to this action',
 	'post_editing' => 'Last edit',
+	'post_delete_confirm' => 'Delete this post?',
 	'post_delete_not_allow' => 'No access to this action',
 	'post_writer' => 'Write',
 	'post_view' => 'View post',
@@ -309,6 +310,9 @@ return array(
 	'panel_spoiler_promt' => 'Enter a spoiler title',
 	'panel_spoiler_placeholder' => 'Hidden text',
 
+	'confirm' => 'Confirm action',
+	'confirm_yes' => 'Confirmed',
+	'confirm_no' => 'Cancel',
 );
 
 ?>

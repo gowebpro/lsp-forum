@@ -1,8 +1,16 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
-{include file="$sTemplatePathForum/window_post_anchor.tpl"}
+{include file="$sTemplatePathForum/modals/modal.post_anchor.tpl"}
+{include file="$sTemplatePathForum/modals/modal.confirm_box.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
+{assign var='oMarker' value=$oForum->getMarker()}
+
+<script type="text/javascript">
+	jQuery(function($){
+		ls.lang.load({lang_load name="plugin.forum.post_delete_confirm"});
+	});
+</script>
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 

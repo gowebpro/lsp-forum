@@ -1,6 +1,6 @@
 <div class="fBox forum-stats">
 	<header class="forums-header">
-		<i class="js-forum-cat-toogler fl-r icon-minus-sign"></i>
+		<i class="js-forum-cat-toggler fl-r icon-minus-sign"></i>
 		<h3>{$aLang.plugin.forum.stats}</h3>
 	</header>
 	<div class="forums-content">

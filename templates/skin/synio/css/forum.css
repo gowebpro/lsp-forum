@@ -15,8 +15,8 @@
 .forums-header h3 { color: #628fa5; font-size: 22px; line-height: 1em; font-weight: normal; font-family: 'PT Sans', sans-serif }
 .forums-header h3 a { text-decoration: none; color: #628fa5 }
 .forums-header section { margin-left: 10px }
-.forums-header .js-forum-cat-toogler { cursor: pointer; visibility: hidden }
-.forums-header:hover .js-forum-cat-toogler { visibility: visible }
+.forums-header .js-forum-cat-toggler { cursor: pointer; visibility: hidden }
+.forums-header:hover .js-forum-cat-toggler { visibility: visible }
 .forums-header.collapsed { opacity: 0.5 }
 .forums-header.collapsed:hover { opacity: 0.75 }
 .forums-content { padding: 8px }
@@ -164,9 +164,12 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .markItUp .editor-spoiler a { background: url(../images/editor-spoiler.png) }
 
 /* Modal */
-.modal-post { width: 360px }
-.modal-moderator { width: 500px }
+.modal-post { width: 360px; margin-left: -180px }
+.modal-post .modal-content input { margin: 10px 0 0 }
+.modal-moderator { width: 500px; margin-left: -250px }
 .modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; -moz-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
+.modal-confirm { width: 320px; margin-left: -160px }
+.modal-confirm .modal-content p { margin-bottom: 20px }
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
 	*background: url(../images/write.png) no-repeat;
@@ -181,6 +184,7 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 #forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
 
 .table-perms {}
+.table-perms button { padding: 5px 7px }
 .table-perms th { background: #F1F9F1; color: #808080; font-weight: bold }
 .table-perms td { text-align: center }
 .table-perms td div { font-weight: bold }
