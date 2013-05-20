@@ -194,6 +194,23 @@ ls.forum = (function ($) {
 	this.initModals = function() {
 		$('#link-to-post').jqm();
 		$('#confirm-box').jqm();
+		$('#insert-spoiler').jqm();
+	};
+
+	this.showSpoilerForm = function() {
+		var $modal = $('#insert-spoiler');
+		$modal.find('#spoiler-title').val('');
+		$modal.find('#spoiler-text').val('');
+		$modal.jqmShow();
+	};
+
+	this.insertSpoiler = function(form, target) {
+		form = $('#'+form);
+		$title = form.find('#spoiler-title').val();
+		$text = form.find('#spoiler-text').val();
+		$.markItUp({target: $('#'+target), replaceWith:'<spoiler name="'+$title+'">'+$.trim($text)+'</spoiler>' });
+		$('#insert-spoiler').jqmHide();
+		return false;
 	};
 
 	this.getMarkitupMini = function() {
@@ -241,7 +258,7 @@ ls.forum = (function ($) {
 				{name: ls.lang.get('panel_video'), className:'editor-video', replaceWith:'<video>[!['+ls.lang.get('panel_video_promt')+':!:http://]!]</video>' },
 				{name: ls.lang.get('panel_url'), className:'editor-link', key:'L', openWith:'<a href="[!['+ls.lang.get('panel_url_promt')+':!:http://]!]"(!( title="[![Title]!]")!)>', closeWith:'</a>', placeHolder:'Your text to link...' },
 				{name: ls.lang.get('panel_user'), className:'editor-user', replaceWith:'<ls user="[!['+ls.lang.get('panel_user_promt')+']!]" />' },
-				{name: ls.lang.get('panel_spoiler'), className:'editor-spoiler', openWith:'<spoiler name="[!['+ls.lang.get('panel_spoiler_promt')+']!]">', closeWith:'</spoiler>', placeHolder:'Your hide text...' },
+				{name: ls.lang.get('panel_spoiler'), className:'editor-spoiler', beforeInsert: function(h) { ls.forum.showSpoilerForm(); } },
 				{separator:'---------------' },
 				{name: ls.lang.get('panel_clear_tags'), className:'editor-clean', replaceWith: function(markitup) { return markitup.selection.replace(/<(.*?)>/g, "") } },
 			]
@@ -252,7 +269,7 @@ ls.forum = (function ($) {
 }).call(ls.forum || {},jQuery);
 
 /**
- * Функционал тул-бара
+ * Р¤СѓРЅРєС†РёРѕРЅР°Р» С‚СѓР»-Р±Р°СЂР°
  */
 ls.toolbar.forum = (function ($) {
 
@@ -292,7 +309,7 @@ ls.toolbar.forum = (function ($) {
 			$.scrollTo(post, 500);
 		} else {
 			this.iCurrentPost=$('.js-post').length-1;
-			// переход на следующую страницу
+			// РїРµСЂРµС…РѕРґ РЅР° СЃР»РµРґСѓСЋС‰СѓСЋ СЃС‚СЂР°РЅРёС†Сѓ
 			var page=$('.js-paging-next-page');
 			if (page.length && page.attr('href')) {
 				window.location=page.attr('href')+'#go-0';
@@ -305,7 +322,7 @@ ls.toolbar.forum = (function ($) {
 		this.iCurrentPost--;
 		if (this.iCurrentPost<0) {
 			this.iCurrentPost=0;
-			// на предыдущую страницу
+			// РЅР° РїСЂРµРґС‹РґСѓС‰СѓСЋ СЃС‚СЂР°РЅРёС†Сѓ
 			var page=$('.js-paging-prev-page');
 			if (page.length && page.attr('href')) {
 				window.location=page.attr('href')+'#go-last';
@@ -324,7 +341,7 @@ ls.toolbar.forum = (function ($) {
 
 
 /**
- * Инициализация
+ * РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ
  */
 jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
@@ -334,7 +351,7 @@ jQuery(document).ready(function($){
 	ls.forum.initSpoilers();
 	ls.forum.initModals();
 
-	// Тул-бар
+	// РўСѓР»-Р±Р°СЂ
 	ls.toolbar.forum.init();
 
 	ls.blocks.options.type.stream_forum = {

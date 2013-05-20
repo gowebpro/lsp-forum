@@ -1,22 +1,7 @@
 {include file='header.tpl' noSidebar=true}
 
-{if $oConfig->GetValue('view.tinymce')}
-	<script src="{cfg name='path.root.engine_lib'}/external/tinymce-jq/tiny_mce.js"></script>
-	<script>
-		jQuery(function($){
-			tinyMCE.init(ls.settings.getTinymce());
-		});
-	</script>
-{else}
-	{include file='window_load_img.tpl' sToLoad='post_text'}
-	<script>
-		jQuery(function($){
-			ls.lang.load({lang_load name="panel_b,panel_i,panel_u,panel_s,panel_url,panel_url_promt,panel_code,panel_video,panel_image,panel_cut,panel_quote,panel_list,panel_list_ul,panel_list_ol,panel_title,panel_clear_tags,panel_video_promt,panel_list_li,panel_image_promt,panel_user,panel_user_promt,panel_spoiler,panel_spoiler_promt,panel_spoiler_placeholder"});
-			// Подключаем редактор
-			$('#post_text').markItUp(ls.forum.getMarkitup());
-		});
-	</script>
-{/if}
+{include file='editor.tpl' sImgToLoad='post_text' sSettingsTinymce='ls.settings.getTinymce()' sSettingsMarkitup='ls.forum.getMarkitup()'}
+{include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
@@ -38,7 +23,7 @@
 						<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 					</p>
 
-					<textarea name="post_text" id="post_text" rows="20" class="mce-editor">{$_aRequest.post_text}</textarea>
+					<textarea name="post_text" id="post_text" rows="20" class="mce-editor markitup-editor input-width-full">{$_aRequest.post_text}</textarea>
 
 					{if !$oConfig->GetValue('view.tinymce')}
 						{include file='tags_help.tpl' sTagsTargetId="post_text"}
@@ -56,8 +41,8 @@
 			<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
 			<input type="hidden" name="action_type" value="add_post" />
 
-			<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.topic_create_submit_preview}</button>
-			<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.topic_create_submit_publish}</button>
+			<button type="submit" name="submit_preview" onclick="return ls.forum.preview('form-post-add','text_preview');" class="button">{$aLang.plugin.forum.button_preview}</button>
+			<button type="submit" name="submit_post_publish" id="submit_post_publish" class="button button-primary">{$aLang.plugin.forum.button_publish}</button>
 		</div>
 	</form>
 </div>

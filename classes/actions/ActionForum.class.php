@@ -2559,7 +2559,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Lang_AddLangJs(
 			array(
 				'plugin.forum.post_anchor_promt',
-				'plugin.forum.moderator_del_confirm'
+				'plugin.forum.moderator_del_confirm',
+				'panel_spoiler','panel_spoiler_placeholder'
 			)
 		);
 	}

@@ -22,6 +22,9 @@ return array(
 	'button_delete' => 'Delete',
 	'button_reply' => 'Reply',
 	'button_quote' => 'Quote',
+	'button_publish' => 'Publish',
+	'button_preview' => 'Preview',
+	'button_cancel' => 'Cancel',
 
 	'in_progress' => 'In development',
 	'notice' => 'You can just talk',
@@ -307,8 +310,9 @@ return array(
 	'block_stream_empty' => 'No messages',
 
 	'panel_spoiler' => 'Spoiler',
-	'panel_spoiler_promt' => 'Enter a spoiler title',
+	'panel_spoiler_title' => 'Spoiler title',
 	'panel_spoiler_placeholder' => 'Hidden text',
+	'panel_spoiler_insert' => 'Insert spoiler',
 
 	'confirm' => 'Confirm action',
 	'confirm_yes' => 'Confirmed',

@@ -151,11 +151,11 @@ jQuery(document).ready(function($){
 
 
 /**
- * Вспомогательные функции
+ * Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё
  */
 ls.tools = (function ($) {
 	/**
-	 * Проверка целых чисел
+	 * РџСЂРѕРІРµСЂРєР° С†РµР»С‹С… С‡РёСЃРµР»
 	 */
 	this.numberFilter = function(e) {
 		e=e || window.event;
@@ -168,7 +168,7 @@ ls.tools = (function ($) {
 	}
 
 	/**
-	 * Проверка чисел с плавающей точкой
+	 * РџСЂРѕРІРµСЂРєР° С‡РёСЃРµР» СЃ РїР»Р°РІР°СЋС‰РµР№ С‚РѕС‡РєРѕР№
 	 */
 	this.floatFilter = function(e) {
 		e=e || window.event;
@@ -184,7 +184,7 @@ ls.tools = (function ($) {
 	}
 
 	/**
-	 * Проверка латинских символов
+	 * РџСЂРѕРІРµСЂРєР° Р»Р°С‚РёРЅСЃРєРёС… СЃРёРјРІРѕР»РѕРІ
 	 */
 	this.latinecFilter = function(e) {
 		e=e || window.event;

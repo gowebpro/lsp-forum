@@ -22,6 +22,10 @@ return array(
 	'button_delete' => 'Удалить',
 	'button_reply' => 'Ответить',
 	'button_quote' => 'Цитировать',
+	'button_publish' => 'Опубликовать',
+	'button_preview' => 'Предпросмотр',
+	'button_cancel' => 'Отмена',
+	'button_insert' => 'Вставить',
 
 	'in_progress' => 'В разработке',
 	'notice' => 'Здесь можно просто пообщаться',
@@ -307,8 +311,9 @@ return array(
 	'block_stream_empty' => 'Новых сообщений нет',
 
 	'panel_spoiler' => 'Спойлер',
-	'panel_spoiler_promt' => 'Введите заголовок спойлера',
+	'panel_spoiler_title' => 'Заголовок спойлера',
 	'panel_spoiler_placeholder' => 'Скрытый текст',
+	'panel_spoiler_insert' => 'Вставить спойлер',
 
 	'confirm' => 'Подтвердите действие',
 	'confirm_yes' => 'Подтверждаю',

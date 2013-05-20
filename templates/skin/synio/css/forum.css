@@ -170,6 +170,8 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .modal-moderator .moder-options { position: relative; padding: 10px 7px 13px; background: #fefef1; color: #363636; font-size: 11px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box; -webkit-box-shadow: 0 0 5px #e8e8c0 inset; -moz-box-shadow: 0 0 5px #e8e8c0 inset; box-shadow: 0 0 5px #e8e8c0 inset }
 .modal-confirm { width: 320px; margin-left: -160px }
 .modal-confirm .modal-content p { margin-bottom: 20px }
+.modal-editor { width: 640px; margin-left: -320px; z-index: 2700 }
+.modal-editor textarea { height: 300px }
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
 	*background: url(../images/write.png) no-repeat;
