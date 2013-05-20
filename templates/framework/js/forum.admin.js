@@ -53,6 +53,7 @@ ls.forum.admin = (function ($) {
 		$('#moder_opt_openclosetopic').attr('checked', bOptOpencloseTopic);
 		$('#moder_opt_pintopic').attr('checked', bOptPinTopic);
 		$('#moder_form_action').val(sAction);
+		if (sAction == 'update') $('#moder_form_options').show();
 		$('#moder_form_modal').jqmShow();
 	};
 

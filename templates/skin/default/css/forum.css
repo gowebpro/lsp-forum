@@ -109,13 +109,14 @@
 
 /* Other */
 .controllers { margin: 15px 0 }
-.badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #5055b2; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
+.controllers .markread { color: #333; font-weight: bold; text-decoration: none; margin-right: 10px }
 
-.userlist { line-height: 24px }
-.userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
-.userlist span { white-space: nowrap }
+.forums .userlist { line-height: 24px }
+.forums .userlist img { width: 20px; height: 20px; vertical-align: middle; margin: 0 2px 0 0 }
+.forums .userlist span { white-space: nowrap }
 
-.lighter { color: #a4a4a4 }
+.forums .lighter { color: #a4a4a4 }
+.forums .badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #5055b2; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
 
 span.divide { color: gray; font-weight: normal; padding: 0 2px }
 span.yesno_yes, span.yesno_no { display: inline-block !important; padding: 3px; min-width: 50px; max-width: 60px; text-align: center; height: 20px !important }

@@ -213,6 +213,8 @@ return array(
 
 	'not_reading' => 'New topics',
 
+	'markread' => 'Mark this forum as read',
+
 	'acp' => 'Management forum',
 	'acp_main' => 'Control center',
 	'acp_forums_control' => 'Manage forums',

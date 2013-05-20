@@ -12,11 +12,17 @@
 
 class PluginForum_ActionForum extends ActionPlugin {
 	/**
-	 * Текущий юзер
+	 * Текущий пользователь
 	 *
 	 * @var ModuleUser_EntityUser
 	 */
 	protected $oUserCurrent=null;
+	/**
+	 * Текущий юзер
+	 *
+	 * @var PluginForum_ModuleForum_EntityUser
+	 */
+	protected $oUserForum=null;
 	/**
 	 * Главное меню
 	 *
@@ -58,6 +64,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->oUserCurrent=$this->User_GetUserCurrent();
 		/**
+		 * Текущий пользователь форума
+		 */
+		if ($this->oUserCurrent) {
+		//	if (!$this->oUserForum=$this->PluginForum_Forum_GetUserById($this->oUserCurrent->getId())) {
+		//		$this->oUserForum=LS::Ent('PluginForum_Forum_User');
+		//	}
+		}
+		/**
 		 * Закрытый режим
 		 */
 		if (!(LS::Adm()) && Config::Get('plugin.forum.close_mode')) {
@@ -79,6 +93,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Устанавливаем дефолтный шаблон
 		 */
 		$this->SetTemplateAction('index');
+
+		if (LS::Adm()) {
+		//	$aMarkData = $this->Session_Get("mark".LS::CurUsr()->getId());
+		//	$aMarkData = unserialize(stripslashes($aMarkData));
+		//	print_r($aMarkData);
+		}
 	}
 
 
@@ -106,6 +126,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^[\w\-\_]+$/i','/^add$/i',array('EventAddTopic','add_topic'));
 		$this->AddEventPreg('/^(\d+)$/i','/^(page([1-9]\d{0,5}))?$/i',array('EventShowForum','forum'));
 		$this->AddEventPreg('/^(\d+)$/i','/^add$/i',array('EventAddTopic','add_topic'));
+		$this->AddEventPreg('/^[\w\-\_]+$/i','/^markread$/i',array('EventMarkForum','mark_forum'));
+		$this->AddEventPreg('/^(\d+)$/i','/^markread$/i',array('EventMarkForum','mark_forum'));
 		/**
 		 * AJAX Обработчики
 		 */
@@ -518,6 +540,33 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->SetTemplateAction('index');
 	}
 
+
+	public function EventMarkForum() {
+		/**
+		 * Получаем URL форума из эвента
+		 */
+		$sUrl=$this->sCurrentEvent;
+		/**
+		 * Получаем форум по URL
+		 */
+		if (!($oForum=$this->PluginForum_Forum_GetForumByUrl($sUrl))) {
+			/**
+			 * Возможно форум запросили по id
+			 */
+			if (!($oForum=$this->PluginForum_Forum_GetForumById($sUrl))) {
+				return parent::EventNotFound();
+			}
+			if ($oForum->getUrl()){
+				Router::Location($oForum->getUrlFull());
+			}
+		}
+		/**
+		 * Маркируем форум как прочитанный
+		 */
+		$this->PluginForum_Forum_MarkForum($oForum);
+
+		Router::Location($oForum->getUrlFull());
+	}
 
 	/**
 	 * Просмотр форума
@@ -1356,6 +1405,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oForum->setLastPostId($oPost->getId());
 			$oForum->setCountPost((int)$oForum->getCountPost()+1);
 			$oForum->Save();
+			/**
+			 * Обновляем инфу о пользователе
+			 */
+	//		$this->oUserForum->setPostCount($this->oUserForum->getPostCount() + 1);
+	//		$this->oUserForum->Save();
 
 			/**
 			 * Список емайлов на которые не нужно отправлять уведомление
@@ -2273,7 +2327,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Подключаем JS
 		 */
-		$this->Viewer_AppendScript($this->getTemplatePathPlugin().'js/forum.admin.js');
+	//	$this->Viewer_AppendScript($this->getTemplatePathPlugin().'js/forum.admin.js');
+		$this->Viewer_AppendScript(Plugin::GetWebPath(__CLASS__).'templates/framework/js/forum.admin.js');
 
 		$sCategory=$this->GetParam(0);
 		$sAction=$this->GetParam(1);

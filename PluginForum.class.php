@@ -64,7 +64,7 @@ class PluginForum extends Plugin {
 		/**
 		 * Подключаем JS
 		 */
-		$this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__).'js/forum.js');
+		$this->Viewer_AppendScript(Plugin::GetWebPath(__CLASS__).'templates/framework/js/forum.js');
 		/**
 		 * Добавляем в подписку новые типы
 		 */

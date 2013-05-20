@@ -16,12 +16,18 @@ class PluginForum_ModuleForum_EntityMarker extends EntityORM {
 	);
 
 	public function checkRead() {
+		if ((string)$this->getReadArray() == '*') {
+			return true;
+		}
 		$oForum = $this->getForum();
 		return $oForum ? $this->getReadItem() == $oForum->getCountPost() : false;
 	}
 
 	public function checkTopic($oTopic) {
 		if ($aData = $this->getReadArray()) {
+			if ((string)$aData == '*') {
+				return true;
+			}
 			if (isset($aData[$oTopic->getId()])) {
 				$aTopicData = $aData[$oTopic->getId()];
 				if ($aTopicData['i'] == $oTopic->getCountPost()) {
@@ -34,14 +40,13 @@ class PluginForum_ModuleForum_EntityMarker extends EntityORM {
 
 	public function getLastMarkPost($oTopic) {
 		if ($aData = $this->getReadArray()) {
-			if (isset($aData[$oTopic->getId()])) {
+			if (is_array($aData) && isset($aData[$oTopic->getId()])) {
 				$aTopicData = $aData[$oTopic->getId()];
 				if (isset($aTopicData['p'])) {
 					return $aTopicData['p'];
-				} else {
-					return $oTopic->getLastPostId();
 				}
 			}
+			return $oTopic->getLastPostId();
 		}
 		return null;
 	}

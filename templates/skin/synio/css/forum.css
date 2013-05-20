@@ -122,6 +122,7 @@
 
 /* Other */
 .controllers { margin: 15px 0 }
+.controllers .markread { color: #333; font-weight: bold; text-decoration: none; margin-right: 10px }
 
 .forums .author { float: left; margin: 2px 10px 0 0; position: relative }
 .forums .author:after { content: ""; z-index: 1; position: absolute; top: 0px; left: 0px; right: 0; bottom: 0; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; -webkit-background-clip: padding-box; box-shadow: inset rgba(0,0,0,0.3) 0px 1px 5px, inset rgba(0,0,0,0.08) 0px 0px 0px 1px; -moz-box-shadow: inset rgba(0,0,0,0.3) 0px 1px 5px, inset rgba(0,0,0,0.08) 0px 0px 0px 1px; -webkit-box-shadow: inset rgba(0,0,0,0.3) 0px 1px 5px, inset rgba(0,0,0,0.08) 0px 0px 0px 1px }
