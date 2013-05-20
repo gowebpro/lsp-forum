@@ -313,6 +313,9 @@ return array(
 	'confirm' => 'Confirm action',
 	'confirm_yes' => 'Confirmed',
 	'confirm_no' => 'Cancel',
+
+	'toolbar_post_prev' => 'Previous post',
+	'toolbar_post_next' => 'Next post',
 );
 
 ?>

@@ -313,6 +313,9 @@ return array(
 	'confirm' => 'Подтвердите действие',
 	'confirm_yes' => 'Подтверждаю',
 	'confirm_no' => 'Отмена',
+
+	'toolbar_post_prev' => 'Предыдущий пост',
+	'toolbar_post_next' => 'Следующий пост',
 );
 
 ?>

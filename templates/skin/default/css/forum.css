@@ -155,6 +155,11 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 }
 .modal.modal-write .write-list li.write-item-type-forum:hover  .write-item-image { background-position: -230px -115px }
 
+/* Toolbar */
+.toolbar .toolbar-forum-post a.toolbar-post-prev {
+	border-bottom: 1px solid #eee
+}
+
 /* Admin*/
 #forums-tree {}
 #forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }

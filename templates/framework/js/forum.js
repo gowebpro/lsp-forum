@@ -251,6 +251,81 @@ ls.forum = (function ($) {
 	return this;
 }).call(ls.forum || {},jQuery);
 
+/**
+ * Функционал тул-бара
+ */
+ls.toolbar.forum = (function ($) {
+
+	this.iCurrentPost=-1;
+
+	this.init = function() {
+		var vars = [], hash;
+		var hashes = window.location.hash.replace('#','').split('&');
+		for(var i = 0; i < hashes.length; i++) {
+			hash = hashes[i].split('-');
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+
+		if (vars.go!==undefined) {
+			if (vars.go=='last') {
+				this.iCurrentPost=$('.js-post').length-2;
+			} else {
+				this.iCurrentPost=parseInt(vars.go)-1;
+			}
+			this.goNextPost();
+		}
+		if (vars.post!==undefined) {
+			this.iCurrentPost=$('#post-'+vars.post).prevAll().length;
+			this.goNextPost();
+		}
+	};
+
+	this.reset = function() {
+		this.iCurrentPost=-1;
+	};
+
+	this.goNextPost = function() {
+		this.iCurrentPost++;
+		var post=$('.js-post:eq('+this.iCurrentPost+')');
+		if (post.length) {
+			$.scrollTo(post, 500);
+		} else {
+			this.iCurrentPost=$('.js-post').length-1;
+			// переход на следующую страницу
+			var page=$('.js-paging-next-page');
+			if (page.length && page.attr('href')) {
+				window.location=page.attr('href')+'#go-0';
+			}
+		}
+		return false;
+	};
+
+	this.goPrevPost = function() {
+		this.iCurrentPost--;
+		if (this.iCurrentPost<0) {
+			this.iCurrentPost=0;
+			// на предыдущую страницу
+			var page=$('.js-paging-prev-page');
+			if (page.length && page.attr('href')) {
+				window.location=page.attr('href')+'#go-last';
+			}
+		} else {
+			var post=$('.js-post:eq('+this.iCurrentPost+')');
+			if (post.length) {
+				$.scrollTo(post, 500);
+			}
+		}
+		return false;
+	};
+
+	return this;
+}).call(ls.toolbar.forum || {},jQuery);
+
+
+/**
+ * Инициализация
+ */
 jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
 
@@ -258,6 +333,9 @@ jQuery(document).ready(function($){
 	ls.forum.initButtons();
 	ls.forum.initSpoilers();
 	ls.forum.initModals();
+
+	// Тул-бар
+	ls.toolbar.forum.init();
 
 	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'

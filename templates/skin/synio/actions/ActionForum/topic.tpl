@@ -34,6 +34,9 @@
 {/if}
 
 {if count($aPosts) > 0}
+
+{add_block group='toolbar' name="$sTemplatePathForum/toolbar_post.tpl" iCountPost=count($aPosts)}
+
 <div id="topic-controls-top" class="controllers clearfix">
 	{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
 	{include file="$sTemplatePathForum/buttons_action.tpl"}
