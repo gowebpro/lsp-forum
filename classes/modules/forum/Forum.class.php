@@ -115,7 +115,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 */
 		if (class_exists('PluginAcewidgetmanager_ModuleVisitors') && Config::Get('plugin.forum.stats.online')) {
 			$aStats['online']=array();
-			$nCountVisitors=$this->PluginAceBlockManager_Visitors_GetVisitorsCount(300);
+			$nCountVisitors=$this->PluginAcewidgetmanager_Visitors_GetVisitorsCount(300);
 			$nCountGuest=$nCountVisitors;
 			$nCountUsers=0;
 			if ($aUsersLast=$this->User_GetUsersByDateLast(Config::Get('plugin.forum.stats.users_count'))) {
