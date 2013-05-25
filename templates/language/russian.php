@@ -26,6 +26,7 @@ return array(
 	'button_preview' => 'Предпросмотр',
 	'button_cancel' => 'Отмена',
 	'button_insert' => 'Вставить',
+	'button_save' => 'Сохранить',
 
 	'in_progress' => 'В разработке',
 	'notice' => 'Здесь можно просто пообщаться',

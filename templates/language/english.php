@@ -25,6 +25,7 @@ return array(
 	'button_publish' => 'Publish',
 	'button_preview' => 'Preview',
 	'button_cancel' => 'Cancel',
+	'button_save' => 'Save',
 
 	'in_progress' => 'In development',
 	'notice' => 'You can just talk',

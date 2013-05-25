@@ -185,7 +185,7 @@ ls.forum = (function ($) {
 			});
 			var $fold = $('<div class="spoiler-fold"></div>').click(function(){
 				$.scrollTo($head, { duration: 200, axis: 'y', offset: -200 });
-				$head.click().animate({opacity: 0.1}, 500).animate({opacity: 1}, 700);
+				$head.click().animate({opacity: 0.3}, 500).animate({opacity: 1}, 700);
 			});
 			$body.append($fold);
 		});
