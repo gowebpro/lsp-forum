@@ -43,6 +43,10 @@
 .table-topics .unread h4 a { font-weight: bold }
 
 .table-forum-admin { margin: 0 }
+.table-forum-admin .cell-checkbox {
+	width: 20px;
+	padding: 12px 0 10px 10px
+}
 .table-forum-admin .cell-label { width: 30%; max-width: 400px; min-width: 240px; vertical-align: top; text-align: right }
 .table-forum-admin .cell-labeled {}
 .table-forum-admin .cell-half { width: 50% }

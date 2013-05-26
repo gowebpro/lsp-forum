@@ -49,6 +49,25 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Перемещает сообщения в другую тему
+	 *
+	 * @param	array	$aPostsId
+	 * @param	integer	$sTopicId
+	 * @return	bool
+	 */
+	public function MovePosts($aPostsId,$sTopicId) {
+		if (!is_array($aPostsId)) {
+			$aPostsId=array($aPostsId);
+		}
+		if ($res=$this->oMapperForum->MovePosts($aPostsId,$sTopicId)) {
+			//чистим кеш
+			$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityPost_save'));
+			return $res;
+		}
+		return false;
+	}
+
+	/**
 	 * Перемещает топики в другой форум
 	 *
 	 * @param	integer	$sForumId

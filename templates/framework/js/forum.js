@@ -197,6 +197,36 @@ ls.forum = (function ($) {
 		$('#insert-spoiler').jqm();
 	};
 
+	this.initSelect = function() {
+		$.each($('.js-forum-select'),function(k,v){
+			$(v).find('.js-select-forum').bind('change',function(e){
+				this.loadTopics($(e.target));
+			}.bind(this));
+		}.bind(this));
+	};
+
+	this.loadTopics = function($forum) {
+		$topic=$forum.parents('.js-forum-select').find('.js-select-topic');
+		$topic.empty();
+		$topic.append('<option value="">'+ls.lang.get('plugin.forum.select_topic')+'</option>');
+
+		if (!$forum.val()) {
+			$topic.hide();
+			return;
+		}
+
+		ls.ajax(aRouter['forum']+'ajax/gettopics/', { forum_id:$forum.val() }, function(result) {
+			if (result.bStateError) {
+				ls.msg.error(null, result.sMsg);
+			} else {
+				$.each(result.aTopics,function(k,v){
+					$topic.append('<option value="'+v.id+'">'+v.title+'</option>');
+				});
+				$topic.show();
+			}
+		});
+	};
+
 	this.showSpoilerForm = function() {
 		var $modal = $('#insert-spoiler');
 		$modal.find('#spoiler-title').val('');

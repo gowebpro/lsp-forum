@@ -12,6 +12,22 @@
 
 class PluginForum_ModuleForum_MapperForum extends Mapper {
 	/**
+	 * Перемещает сообщения в другую тему
+	 *
+	 * @param	integer	$sForumId
+	 * @param	integer	$sForumIdNew
+	 * @return	bool
+	 */
+	public function MovePosts($aPostsId,$sTopicId) {
+		$sql = 'UPDATE '.Config::Get('db.table.forum_post').'
+				SET topic_id = ?d
+				WHERE post_id IN (?a)';
+		if ($this->oDb->query($sql,$sTopicId,$aPostsId)) {
+			return true;
+		}
+		return false;
+	}
+	/**
 	 * Перемещает топики в другой форум
 	 *
 	 * @param	integer	$sForumId
