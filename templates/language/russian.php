@@ -256,6 +256,7 @@ return array(
 	'moderator_options_edittopic' => 'Возможность редактировать темы',
 	'moderator_options_deletepost' => 'Возможность удалять сообщения',
 	'moderator_options_deletetopic' => 'Возможность удалять темы',
+	'moderator_options_movepost' => 'Возможность перемещать сообщения',
 	'moderator_options_movetopic' => 'Возможность перемещать темы',
 	'moderator_options_openclosetopic' => 'Возможность открывать/закрывать темы',
 	'moderator_options_pintopic' => 'Возможность поднимать/опускать темы',

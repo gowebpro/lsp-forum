@@ -263,7 +263,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oModerator->setAllowEditTopic( (int)getRequest('moder_opt_edittopic',0,'post') === 1 );
 		$oModerator->setAllowDeletePost( (int)getRequest('moder_opt_deletepost',0,'post') === 1 );
 		$oModerator->setAllowDeleteTopic( (int)getRequest('moder_opt_deletetopic',0,'post') === 1 );
-		$oModerator->setAllowMovePost(0);
+		$oModerator->setAllowMovePost( (int)getRequest('moder_opt_movepost',0,'post') === 1 );
 		$oModerator->setAllowMoveTopic( (int)getRequest('moder_opt_movetopic',0,'post') === 1 );
 		$oModerator->setAllowOpencloseTopic( (int)getRequest('moder_opt_openclosetopic',0,'post') === 1 );
 		$oModerator->setAllowPinTopic( (int)getRequest('moder_opt_pintopic',0,'post') === 1 );

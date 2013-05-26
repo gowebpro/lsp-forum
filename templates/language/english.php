@@ -41,6 +41,9 @@ return array(
 	'on_page' => 'To page',
 	'and' => 'and',
 
+	'select_forum' => 'Select forum',
+	'select_topic' => 'Select topic',
+
 	'stats' => 'Stats',
 	'stats_visitors' => 'Who is online',
 	'stats_birthday' => 'Birthdays',
@@ -139,7 +142,6 @@ return array(
 	'topic_delete_warning' => 'When you delete a theme, and will remove all of its messages. Continue only if you really want to delete this topic. No more warnings will not be.',
 	'topic_pin' => '"Pinned" this topic',
 	'topic_unpin' => '"Unpinned" this topic',
-	'topic_move_posts' => 'Move posts',
 	'topic_merge' => 'Merge',
 	'topic_split' => 'Split',
 	'topic_answers' => 'Replies to this topic',
@@ -154,6 +156,10 @@ return array(
 	'topic_move_for' => 'Move topic to forum',
 	'topic_move_error_self' => 'This theme is so chosen forum!',
 	'topic_move_error_category' => 'You can not move the topic into the category of',
+	'topic_move_posts' => 'Move posts',
+	'topic_move_posts_for' => 'You need to choose a topic in which you want to transfer messages',
+	'topic_move_posts_error_self' => 'Messages are so chosen topic',
+	'topic_move_posts_error_topic' => 'You need to choose a new theme for posts',
 	'topic_post_count' => 'Posts in topic',
 	'topic_acl' => 'You lack the ratings to create topics in this forum',
 	'topic_time_limit' => 'You may not post new threads too often',
