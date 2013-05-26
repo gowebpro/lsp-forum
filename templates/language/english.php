@@ -255,6 +255,7 @@ return array(
 	'moderator_options_edittopic' => 'Ability to edit threads',
 	'moderator_options_deletepost' => 'Ability to delete messages',
 	'moderator_options_deletetopic' => 'Ability to delete threads',
+	'moderator_options_movepost' => 'Ability to move messages',
 	'moderator_options_movetopic' => 'Ability to move threads',
 	'moderator_options_openclosetopic' => 'Ability to open/close the topic',
 	'moderator_options_pintopic' => 'Ability to pin/unpin threads',

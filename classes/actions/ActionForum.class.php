@@ -421,6 +421,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_AssignAjax('bOptEditTopic',(bool)$oModerator->getAllowEditTopic());
 		$this->Viewer_AssignAjax('bOptDeletePost',(bool)$oModerator->getAllowDeletePost());
 		$this->Viewer_AssignAjax('bOptDeleteTopic',(bool)$oModerator->getAllowDeleteTopic());
+		$this->Viewer_AssignAjax('bOptMovePost',(bool)$oModerator->getAllowMovePost());
 		$this->Viewer_AssignAjax('bOptMoveTopic',(bool)$oModerator->getAllowMoveTopic());
 		$this->Viewer_AssignAjax('bOptOpencloseTopic',(bool)$oModerator->getAllowOpencloseTopic());
 		$this->Viewer_AssignAjax('bOptPinTopic',(bool)$oModerator->getAllowPinTopic());

@@ -302,6 +302,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			$oForum->setModViewIP(LS::Adm() || ($oModerator && $oModerator->getViewIp()));
 			$oForum->setModDeletePost(LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
 			$oForum->setModDeleteTopic(LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
+			$oForum->setModMovePost(LS::Adm() || ($oModerator && $oModerator->getAllowMovePost()));
 			$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
 			$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
 			$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));

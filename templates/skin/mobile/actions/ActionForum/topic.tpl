@@ -72,6 +72,9 @@
 			{if $oForum->getModMoveTopic()}
 				<option value="1">- {$aLang.plugin.forum.topic_move}</option>
 			{/if}
+			{if $oForum->getModMovePost()}
+				<option value="2">{$aLang.plugin.forum.topic_move_posts}</option>
+			{/if}
 			{if $oForum->getModDeleteTopic()}
 				<option value="3">- {$aLang.plugin.forum.topic_delete}</option>
 			{/if}

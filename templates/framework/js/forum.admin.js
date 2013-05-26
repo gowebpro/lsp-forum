@@ -38,6 +38,7 @@ ls.forum.admin = (function ($) {
 			bOptEditTopic = (data&&data.bOptEditTopic ? data.bOptEditTopic : false),
 			bOptDeletePost = (data&&data.bOptDeletePost ? data.bOptDeletePost : false),
 			bOptDeleteTopic = (data&&data.bOptDeleteTopic ? data.bOptDeleteTopic : false),
+			bOptMovePost = (data&&data.bOptMovePost ? data.bOptMovePost : false),
 			bOptMoveTopic = (data&&data.bOptMoveTopic ? data.bOptMoveTopic : false),
 			bOptOpencloseTopic = (data&&data.bOptOpencloseTopic ? data.bOptOpencloseTopic : false),
 			bOptPinTopic = (data&&data.bOptPinTopic ? data.bOptPinTopic : false);
@@ -49,6 +50,7 @@ ls.forum.admin = (function ($) {
 		$('#moder_opt_edittopic').attr('checked', bOptEditTopic);
 		$('#moder_opt_deletepost').attr('checked', bOptDeletePost);
 		$('#moder_opt_deletetopic').attr('checked', bOptDeleteTopic);
+		$('#moder_opt_movepost').attr('checked', bOptMovePost);
 		$('#moder_opt_movetopic').attr('checked', bOptMoveTopic);
 		$('#moder_opt_openclosetopic').attr('checked', bOptOpencloseTopic);
 		$('#moder_opt_pintopic').attr('checked', bOptPinTopic);
