@@ -225,6 +225,7 @@ return array(
 	'not_reading' => 'New topics',
 
 	'markread' => 'Mark this forum as read',
+	'markread_all' => 'Mark all forums read',
 
 	'acp' => 'Management forum',
 	'acp_main' => 'Control center',

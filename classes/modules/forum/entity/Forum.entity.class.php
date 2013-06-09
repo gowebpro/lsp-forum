@@ -193,22 +193,22 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return $this->_getDataMore('mod_pintopic');
 	}
 	public function getAllowShow() {
-		return $this->_aDataMore['allow_show'];
+		return $this->_getDataMore('allow_show');
 	}
 	public function getAllowRead() {
-		return $this->_aDataMore['allow_read'];
+		return $this->_getDataMore('allow_read');
 	}
 	public function getAllowReply() {
-		return $this->_aDataMore['allow_reply'];
+		return $this->_getDataMore('allow_reply');
 	}
 	public function getAllowStart() {
-		return $this->_aDataMore['allow_start'];
+		return $this->_getDataMore('allow_start');
 	}
 	public function getAutorization() {
-		return $this->_aDataMore['autorization'];
+		return $this->_getDataMore('autorization');
 	}
-	public function getMarker() {
-		return $this->_aDataMore['marker'];
+	public function getRead() {
+		return $this->_getDataMore('marker');
 	}
 
 	public function setIsModerator($data) {
@@ -247,7 +247,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function setAutorization($data) {
 		$this->_aDataMore['autorization']=$data;
 	}
-	public function setMarker($data) {
+	public function setRead($data) {
 		$this->_aDataMore['marker']=$data;
 	}
 }

@@ -44,6 +44,15 @@
 .table-forum-admin .cell-half { width: 50% }
 .table-forum-admin .note { display: block }
 
+.form-item.webmoney li {
+	height: 32px;
+	font-size: 16px
+}
+.form-item.webmoney li img {
+	vertical-align: middle
+}
+
+
 .table p.details { color: #666; font-size: 10px; margin: 2px 0 }
 .table p.details a { color: #666; text-decoration: underline }
 .table a.date { color: #434951 }
@@ -86,6 +95,22 @@
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #eee; padding: 10px; margin: 10px 0 0 }
 .forum-post-body .reason { background: #eee; padding: 3px 6px }
 .forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
+
+.board-stats-links {
+	margin: 0 10px 20px
+}
+.board-stats-links a {
+	color: #999
+}
+.board-stats-links a:hover {
+	color: #777
+}
+.board-stats-links a.link-dotted {
+	border-color: #999
+}
+.board-stats-links a.link-dotted:hover {
+	border-color: #777
+}
 
 /* Stats */
 .forum-stats {}

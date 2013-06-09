@@ -2,8 +2,7 @@
 	{assign var='oUser' value=$oTopic->getUser()}
 	{assign var='oPost' value=$oTopic->getPost()}
 	{assign var='oPoster' value=$oPost->getUser()}
-	{assign var='oMarker' value=$oForum->getMarker()}
-	<li id="topic-{$oTopic->getId()}"{if !($oMarker && $oMarker->checkTopic($oTopic))} class="unread"{/if}>
+	<li id="topic-{$oTopic->getId()}"{if !$oTopic->getRead()} class="unread"{/if}>
 		<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}"  title="{if !($oMarker && $oMarker->checkTopic($oTopic))}{$aLang.plugin.forum.topic_unread}{else}{$aLang.plugin.forum.topic_read}{/if}"></a>
 		<h3>
 			{if $oTopic->getPinned()==1}

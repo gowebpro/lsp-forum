@@ -4,23 +4,23 @@
 <h2 class="page-header">{$aLang.plugin.forum.forums}</h2>
 
 <div class="forums">
-	{if $aCategories}
-		{foreach from=$aCategories item=oCategory}
-			{if $oCategory->getAllowShow()}
-				{assign var='aForums' value=$oCategory->getChildren()}
-				<section class="fBox forums-list category-block" id="category-{$oCategory->getId()}">
+	{if count($aForums) > 0}
+		{foreach from=$aForums item=oForum}
+			{if $oForum->getAllowShow()}
+				{assign var="aSubForums" value=$oForum->getChildren()}
+				<section class="fBox forums-list category-block" id="category-{$oForum->getId()}">
 					<header class="forums-header">
 						<i class="js-forum-cat-toggler fl-r icon-minus-sign"></i>
-						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
+						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">
-						{include file="$sTemplatePathForum/forums_list.tpl"}
+						{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}
 					</div>
 					<div class="forums-note clearfix" style="display:none">
 						<div class="fl-r">
-							<strong>{$oCategory->getCountTopic()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oCategory->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}
+							<strong>{$oForum->getCountTopic()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}
 							<span>|</span>
-							<strong>{$oCategory->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oCategory->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
+							<strong>{$oForum->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
 						</div>
 					</div>
 				</section>
@@ -36,6 +36,11 @@
 		{/if}
 		</div>
 	{/if}
+	<div class="board-stats-links clearfix">
+		<div class="fl-r">
+			<a class="link-dotted" href="{router page='forum'}?markread=all">{$aLang.plugin.forum.markread_all}</a>
+		</div>
+	</div>
 </div>
 
 {include file="$sTemplatePathForum/statistics.tpl"}

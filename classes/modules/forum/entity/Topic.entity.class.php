@@ -11,13 +11,21 @@
 */
 
 class PluginForum_ModuleForum_EntityTopic extends EntityORM {
+	protected $_aDataMore = array();
+
 	protected $aRelations = array(
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
 		'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id'),
 		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
-		//'view'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityView','topic_id')
 	//	'polls'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityPoll','poll_id','db.table.forum_poll_rel','topic_id')
 	);
+
+	protected function _getDataMore($sKey) {
+		if (isset($this->_aDataMore[$sKey])) {
+			return $this->_aDataMore[$sKey];
+		}
+		return null;
+	}
 
 	/**
 	 * Определяем правила валидации
@@ -57,7 +65,6 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 
 	public function getViews() {
-		//if ($oView = $this->getView()) {
 		$oView = null;
 		if (false === ($data = $this->Cache_Get("topic_views_{$this->getId()}"))) {
 			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($this->getId());
@@ -65,6 +72,13 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 			$oView = $data['obj'];
 		}
 		return $oView ? $oView->getTopicViews() : 0;
+	}
+
+	public function getRead() {
+		return $this->_getDataMore('marker');
+	}
+	public function setRead($data) {
+		$this->_aDataMore['marker']=$data;
 	}
 }
 

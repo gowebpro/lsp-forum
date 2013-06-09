@@ -3,9 +3,8 @@
 	{foreach from=$aForums item=oForum}
 		{if $oForum->getAllowShow()}
 			{assign var='oPost' value=$oForum->getPost()}
-			{assign var='oMarker' value=$oForum->getMarker()}
 			{assign var='aSubForums' value=$oForum->getChildren()}
-			<li{if !($oMarker && $oMarker->checkRead()) && !$oForum->getRedirectOn()} class="unread"{/if}>
+			<li{if !$oForum->getRead() && !$oForum->getRedirectOn()} class="unread"{/if}>
 				<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}">
 					<img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if !($oMarker && $oMarker->checkRead())}{$aLang.plugin.forum.forum_unread}{else}{$aLang.plugin.forum.forum_read}{/if}"{/if}/>
 				</a>

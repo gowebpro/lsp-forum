@@ -153,6 +153,31 @@
 .table-forum-admin .cell-half { width: 50% }
 .table-forum-admin .note { display: block }
 
+.form-item.donate {
+	margin-bottom: 20px;
+	overflow: hidden;
+	zoom: 1
+}
+.form-item.donate dt {
+	float: left;
+	width: 125px;
+	padding-top: 4px;
+	padding-right: 15px;
+	overflow: hidden
+}
+.form-item.donate dd {
+	float: left;
+	width: 250px
+}
+.form-item.donate li {
+	height: 32px;
+	font-size: 16px
+}
+.form-item.donate li img {
+	vertical-align: middle
+}
+
+
 /**
  * Post
  */
@@ -272,6 +297,26 @@
 .forum-post .slide.slide-post-info-extra li a {
 	border-bottom: 1px solid #becde1;
 	color: #275ec2
+}
+
+
+/**
+ * Links
+ */
+.board-stats-links {
+	margin: 0 10px 20px
+}
+.board-stats-links a {
+	color: #999
+}
+.board-stats-links a:hover {
+	color: #666
+}
+.board-stats-links a.link-dotted {
+	border-color: #999
+}
+.board-stats-links a.link-dotted:hover {
+	border-color: #666
 }
 
 

@@ -188,6 +188,21 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return null;
 	}
+	/**
+	 * Получает дату поста по ID
+	 *
+	 * @param	integer	$sPid
+	 * @return	string
+	 */
+	public function GetPostDateById($sPid) {
+		$sql = 'SELECT post_date_add
+				FROM '.Config::Get('db.table.forum_post').'
+				WHERE post_id = ?';
+		if ($aRow=$this->oDb->selectRow($sql,$sPid)) {
+			return $aRow['post_date_add'];
+		}
+		return null;
+	}
 
 	/**
 	 * Получает количество топиков

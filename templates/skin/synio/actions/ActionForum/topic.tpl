@@ -4,7 +4,6 @@
 {include file="$sTemplatePathForum/modals/modal.confirm_box.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
-{assign var='oMarker' value=$oForum->getMarker()}
 
 <script type="text/javascript">
 	jQuery(function($){

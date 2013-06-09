@@ -4,17 +4,17 @@
 <h2 class="page-header">{$aLang.plugin.forum.forums}</h2>
 
 <div class="forums">
-	{if $aCategories}
-		{foreach from=$aCategories item=oCategory}
-			{if $oCategory->getAllowShow()}
-				{assign var='aForums' value=$oCategory->getChildren()}
+	{if $aForums}
+		{foreach from=$aForums item=oForum}
+			{if $oForum->getAllowShow()}
+				{assign var='aSubForums' value=$oForum->getChildren()}
 				<section class="forums-list">
 					<header class="forums-header">
-						<span class="js-forum-cat-toggler fl-r icon-minus-sign"></span>
-						<h3><a href="{$oCategory->getUrlFull()}">{$oCategory->getTitle()}</a></h3>
+						<i class="js-forum-cat-toggler fl-r icon-minus-sign"></i>
+						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">
-						{include file="$sTemplatePathForum/forums_list.tpl"}
+						{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}
 					</div>
 				</section>
 			{/if}
@@ -29,6 +29,11 @@
 		{/if}
 		</div>
 	{/if}
+	<div class="board-stats-links clearfix">
+		<div class="fl-r">
+			<a class="link-dotted" href="{router page='forum'}?markread=all">{$aLang.plugin.forum.markread_all}</a>
+		</div>
+	</div>
 </div>
 
 {include file="$sTemplatePathForum/statistics.tpl"}

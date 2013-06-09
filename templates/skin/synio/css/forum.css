@@ -24,6 +24,7 @@
 .forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #ebf0f4; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
 .forum-acp .forums-content section { padding: 15px }
+.forum-acp .forums-content h3 { font-size: 22px }
 
 .table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
 .table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 7px }
@@ -52,6 +53,14 @@
 .table-forum-admin .cell-half { width: 50% }
 .table-forum-admin .note { display: block }
 
+.form-item.webmoney li {
+	height: 32px;
+	font-size: 16px
+}
+.form-item.webmoney li img {
+	vertical-align: middle
+}
+
 .table p.details { color: #666; font-size: 10px; margin: 2px 0 }
 .table p.details a { color: #666; text-decoration: underline }
 .table a.date { color: #434951 }
@@ -60,10 +69,25 @@
 .table .cell-icon { width: 1% }
 .table .last-post {}
 
-.fLayout-withright { padding-right: 260px }
-.fLayout-content { box-shadow: 2px 0px 4px rgba(0,0,0,0.1); -moz-box-shadow: 2px 0px 4px rgba(0,0,0,0.1); -webkit-box-shadow: 2px 0px 4px rgba(0,0,0,0.1); z-index: 900; float: none }
-.fLayout-content-side { width: 250px; margin-right: -251px; border-left: 0; z-index: 800 }
-.fLayout-pad { padding: 8px }
+.fLayout-withright {
+	padding-right: 260px
+}
+.fLayout-content {
+	box-shadow: 2px 0px 4px rgba(0,0,0,0.1);
+	-moz-box-shadow: 2px 0px 4px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 2px 0px 4px rgba(0,0,0,0.1);
+	z-index: 900;
+	float: none
+}
+.fLayout-content-side {
+	width: 250px;
+	margin-right: -251px;
+	border-left: 0;
+	z-index: 800
+}
+.fLayout-pad {
+	padding: 8px
+}
 
 .forum-topic {}
 
@@ -99,6 +123,22 @@
 .forum-post-body .reason { background: #ebf0f4; padding: 3px 6px }
 .forum-post-footer { border-top: 1px solid #ebf0f4; padding: 5px 10px 8px 0 }
 .forum-post.new .forum-post-header { background: #cdf5a6 }
+
+.board-stats-links {
+	margin: 0 10px 20px
+}
+.board-stats-links a {
+	color: #82aabe
+}
+.board-stats-links a:hover {
+	color: #6b8a99
+}
+.board-stats-links a.link-dotted {
+	border-color: #82aabe
+}
+.board-stats-links a.link-dotted:hover {
+	border-color: #6b8a99
+}
 
 /* Stats */
 .forum-stats {}

@@ -68,7 +68,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if ($this->oUserCurrent) {
 		//	if (!$this->oUserForum=$this->PluginForum_Forum_GetUserById($this->oUserCurrent->getId())) {
-		//		$this->oUserForum=LS::Ent('PluginForum_Forum_User');
+		//		$this->oUserForum=Engine::GetEntity('PluginForum_Forum_User');
 		//	}
 		}
 		/**
@@ -93,12 +93,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Устанавливаем дефолтный шаблон
 		 */
 		$this->SetTemplateAction('index');
-
-		if (LS::Adm()) {
-		//	$aMarkData = $this->Session_Get("mark".LS::CurUsr()->getId());
-		//	$aMarkData = unserialize(stripslashes($aMarkData));
-		//	print_r($aMarkData);
-		}
 	}
 
 
@@ -152,12 +146,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$sType=getRequestStr('action_type');
 		$bTopic=in_array($sType,array('add_topic','edit_topic')) ? 1 : 0;
 		$oTopic=null;
-		$oPost=LS::Ent('PluginForum_Forum_Post');
+		$oPost=Engine::GetEntity('PluginForum_Forum_Post');
 		/**
 		 * Создаем объект топика для валидации данных
 		 */
 		if ($bTopic) {
-			$oTopic=LS::Ent('PluginForum_Forum_Topic');
+			$oTopic=Engine::GetEntity('PluginForum_Forum_Topic');
 			$oTopic->setTitle(forum_parse_title(getRequestStr('topic_title')));
 			$oTopic->setDescription(getRequestStr('topic_description'));
 			$oTopic->setDateAdd(date('Y-m-d H:i:s'));
@@ -252,7 +246,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Создаем объект модератора
 		 */
 		if ($sAction == 'add') {
-			$oModerator=LS::Ent('PluginForum_Forum_Moderator');
+			$oModerator=Engine::GetEntity('PluginForum_Forum_Moderator');
 		}
 		$oModerator->setForumId($oForum->getId());
 		$oModerator->setUserId($oUser->getId());
@@ -312,7 +306,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Читаем параметры
 		 */
-		$sHash = getRequestStr('hash');
+		$sHash=getRequestStr('hash');
 		/**
 		 * Декодируем хэш
 		 */
@@ -379,7 +373,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Читаем параметры
 		 */
-		$sHash = getRequestStr('hash');
+		$sHash=getRequestStr('hash');
 		/**
 		 * Декодируем хэш
 		 */
@@ -564,9 +558,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	public function EventIndex() {
 		/**
+		 * Маркируем все форумы как прочитанные
+		 */
+		if (getRequestStr('markread') === 'all') {
+			$this->PluginForum_Forum_MarkAll();
+			Router::Location(Router::GetPath('forum'));
+		}
+		/**
 		 * Получаем список форумов
 		 */
-		$aCategories=$this->PluginForum_Forum_GetOpenForumsTree();
+		$aForums=$this->PluginForum_Forum_GetOpenForumsTree();
 		/**
 		 * Получаем статистику
 		 */
@@ -574,7 +575,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем переменные в шаблон
 		 */
-		$this->Viewer_Assign('aCategories',$aCategories);
+		$this->Viewer_Assign('aForums',$aForums);
 		$this->Viewer_Assign('aForumStats',$aForumStats);
 		/**
 		 * Устанавливаем шаблон вывода
@@ -582,7 +583,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->SetTemplateAction('index');
 	}
 
-
+	/**
+	 * Маркируем форум как прочитанный
+	 *
+	 */
 	public function EventMarkForum() {
 		/**
 		 * Получаем URL форума из эвента
@@ -603,10 +607,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
-		 * Маркируем форум как прочитанный
+		 * Маркируем форум
 		 */
 		$this->PluginForum_Forum_MarkForum($oForum);
-
+		/**
+		 * Редирект
+		 */
 		Router::Location($oForum->getUrlFull());
 	}
 
@@ -644,9 +650,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			Router::Location($oForum->getRedirectUrl());
 		}
 		/**
-		 * Калькулятор
+		 * Дополнительные данные
 		 */
-		$oForum=$this->PluginForum_Forum_CalcChildren($oForum);
+		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oForum,PluginForum_ModuleForum::FORUM_DATA_FORUM);
 		/**
 		 * Права доступа
 		 */
@@ -672,9 +678,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Получаем топики
 		 */
 		$aResult=$this->PluginForum_Forum_GetTopicItemsByForumId($oForum->getId(),array('#order'=>array('topic_pinned'=>'desc','last_post_id'=>'desc','topic_date_add'=>'desc'),'#page'=>array($iPage,Config::Get('plugin.forum.topic_per_page'))));
+		$aResult['collection']=$this->PluginForum_Forum_GetTopicsAdditionalData($aResult['collection']);
 		/**
 		 * Делим топики на важные и обычные
 		 */
+		$bUnread=false;
 		$aPinned=array();
 		$aTopics=array();
 		foreach ($aResult['collection'] as $oTopic) {
@@ -682,6 +690,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$aPinned[]=$oTopic;
 			} else {
 				$aTopics[]=$oTopic;
+			}
+			if (!$oTopic->getRead()) {
+				$bUnread=true;
 			}
 		}
 		/**
@@ -701,6 +712,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$aSubForums[] = $aChildrens[$sId];
 			}
 			$oForum->setChildren($aSubForums);
+		}
+		/**
+		 * Маркировка
+		 */
+		if (!$bUnread) {
+			$this->PluginForum_Forum_CheckForumMarking($oForum);
 		}
 		/**
 		 * JumpMenu
@@ -752,9 +769,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
+		 * Дополнительные данные
+		 */
+		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oForum,PluginForum_ModuleForum::FORUM_DATA_TOPIC);
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
+		/**
 		 * Права доступа
 		 */
-		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
 		if (!$oForum->getAllowRead()) {
 			return parent::EventNotFound();
 		}
@@ -880,9 +901,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return parent::EventNotFound();
 		}
 		/**
+		 * Получаем форум
+		 */
+		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oTopic->getForum(),PluginForum_ModuleForum::FORUM_DATA_TOPIC);
+		/**
 		 * Проверка доступа
 		 */
-		$oForum=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
 		if (!(LS::Adm() || $oForum->isModerator())) {
 			return false;
 		}
@@ -1010,8 +1034,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function submitTopicMove($oTopic) {
 		$this->Security_ValidateSendForm();
-
-		$oForumOld=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
+		/**
+		 * Получаем форум
+		 */
+		$oForumOld=$this->PluginForum_Forum_GetForumsAdditionalData($oTopic->getForum(),PluginForum_ModuleForum::FORUM_DATA_TOPIC);
 		/**
 		 * Проверка доступа
 		 */
@@ -1054,8 +1080,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function submitTopicMovePosts($oTopicOld) {
 		$this->Security_ValidateSendForm();
-
-		$oForumOld=$this->PluginForum_Forum_BuildPerms($oTopicOld->getForum());
+		/**
+		 * Получаем форум
+		 */
+		$oForumOld=$this->PluginForum_Forum_GetForumsAdditionalData($oTopicOld->getForum(),PluginForum_ModuleForum::FORUM_DATA_TOPIC);
 		/**
 		 * Проверка доступа
 		 */
@@ -1103,8 +1131,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected function submitTopicDelete($oTopic) {
 		$this->Security_ValidateSendForm();
-
-		$oForum=$this->PluginForum_Forum_BuildPerms($oTopic->getForum());
+		/**
+		 * Получаем форум
+		 */
+		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oTopic->getForum(),PluginForum_ModuleForum::FORUM_DATA_TOPIC);
 		/**
 		 * Проверка доступа
 		 */
@@ -1155,10 +1185,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 					return parent::EventNotFound();
 				}
 			}
+			$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oForum,PluginForum_ModuleForum::FORUM_DATA_TOPIC);
 			/**
 			 * Права доступа
 			 */
-			$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
 			if (!$oForum->getAllowStart()) {
 				return parent::EventNotFound();
 			}
@@ -1249,7 +1279,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Создаем топик
 		 */
-		$oTopic=LS::Ent('PluginForum_Forum_Topic');
+		$oTopic=Engine::GetEntity('PluginForum_Forum_Topic');
 		/**
 		 * Заполняем поля для валидации
 		 */
@@ -1280,7 +1310,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Первый пост
 		 */
-		$oPost=LS::Ent('PluginForum_Forum_Post');
+		$oPost=Engine::GetEntity('PluginForum_Forum_Post');
 		$oPost->_setValidateScenario('topic');
 		/**
 		 * Заполняем поля для валидации
@@ -1325,12 +1355,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 */
 				$oTopic->setFirstPostId($oPost->getId());
 				$oTopic->setLastPostId($oPost->getId());
+				$oTopic->setLastPostDate($oPost->getDateAdd());
 				$oTopic->setCountPost((int)$oTopic->getCountPost()+1);
 				$oTopic->Save();
 				/**
 				 * Обновляем данные в форуме
 				 */
 				$oForum->setLastPostId($oPost->getId());
+				$oForum->setLastPostDate($oPost->getDateAdd());
 				$oForum->setCountTopic((int)$oForum->getCountTopic()+1);
 				$oForum->setCountPost((int)$oForum->getCountPost()+1);
 				$oForum->Save();
@@ -1397,10 +1429,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oForum=$oTopic->getForum())) {
 			return parent::EventNotFound();
 		}
+		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oForum,PluginForum_ModuleForum::FORUM_DATA_TOPIC);
 		/**
 		 * Проверям права доступа
 		 */
-		$oForum=$this->PluginForum_Forum_BuildPerms($oForum);
 		if (!$oForum->getAllowReply()) {
 			return parent::EventNotFound();
 		}
@@ -1471,7 +1503,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Создаём
 		 */
-		$oPost=LS::Ent('PluginForum_Forum_Post');
+		$oPost=Engine::GetEntity('PluginForum_Forum_Post');
 		$oPost->_setValidateScenario('post');
 		/**
 		 * Заполняем поля для валидации
@@ -1511,12 +1543,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Обновляем инфу в топике
 			 */
 			$oTopic->setLastPostId($oPost->getId());
+			$oTopic->setLastPostDate($oPost->getDateAdd());
 			$oTopic->setCountPost((int)$oTopic->getCountPost()+1);
 			$oTopic->Save();
 			/**
 			 * Обновляем инфу в форуме
 			 */
 			$oForum->setLastPostId($oPost->getId());
+			$oForum->setLastPostDate($oPost->getDateAdd());
 			$oForum->setCountPost((int)$oForum->getCountPost()+1);
 			$oForum->Save();
 			/**
@@ -1786,13 +1820,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топик по ID
 		 */
-		if(!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
 		/**
 		 * Получаем последний пост
 		 */
-		if(!($oLastPost=$oTopic->getPost())) {
+		if (!($oLastPost=$oTopic->getPost())) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -1828,29 +1862,27 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топик по ID
 		 */
-		if(!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
 		/**
 		 * Получаем форум
 		 */
-		if(!($oForum=$oTopic->getForum())){
+		if (!($oForum=$oTopic->getForum())){
 			return parent::EventNotFound();
 		}
 		/**
-		 * Получаем маркер
+		 * Дополнительные данные
 		 */
-		$oMarker=$this->PluginForum_Forum_GetMarker($oForum->getId());
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
-		 * Получаем последний прочитанный пост
+		 * Получаем непрочитанные посты
 		 */
-		if(!($oPost=$this->PluginForum_Forum_GetPostById($oMarker->getLastMarkPost($oTopic)))) {
-			return parent::EventNotFound();
+		$aRightPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>array('post_date_add > ?'=>array($oTopic->getReadDate())),'#page'=>array(1,1)));
+		if (empty($aRightPosts['count'])) {
+			return Router::Location($oTopic->getUrlFull().'lastpost');
 		}
-		$aRightPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>array('post_id > ?'=>array($oPost->getId())),'#page'=>array(1,1)));
-		if ($aRightPosts['count'] > 0) {
-			$oPost=$aRightPosts['collection'][0];
-		}
+		$oPost=$aRightPosts['collection'][0];
 		/**
 		 * Определяем на какой странице находится пост
 		 */
@@ -1943,7 +1975,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Заполняем свойства
 		 */
-		$oForum=LS::ENT('PluginForum_Forum');
+		$oForum=Engine::GetEntity('PluginForum_Forum');
 		$oForum->setTitle(forum_parse_title(getRequestStr('forum_title')));
 		$oForum->setUrl(preg_replace("/\s+/",'_',trim(getRequestStr('forum_url',''))));
 		$oForum->setIcon(null);
@@ -2269,7 +2301,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Если указан идентификатор форума для перемещения, то делаем попытку переместить подфорумы.
 			 */
 			if ($sForumIdNew=getRequestStr('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
-				if(!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
+				if (!$oForumNew=$this->PluginForum_Forum_GetForumById($sForumIdNew)){
 					$this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_error'),$this->Lang_Get('error'));
 					return;
 				}
@@ -2447,7 +2479,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		$sCategory=$this->GetParam(0);
 		$sAction=$this->GetParam(1);
-
 		/**
 		 * Раздел админки
 		 */
@@ -2570,7 +2601,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Security_ValidateSendForm();
 
 		$bOk=true;
-
 		/**
 		 * Валидация данных
 		 */

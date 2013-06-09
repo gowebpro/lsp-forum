@@ -25,6 +25,19 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	const DEPTH_GUIDE			= '--';
 	/**
+	 * Маркеры
+	 */
+	const MARKER_FORUM			= 'F';
+	const MARKER_TOPIC			= 'T';
+	const MARKER_TOPIC_FORUM	= 'TF';
+	const MARKER_USER			= 'L';
+	/**
+	 * Дополнительные данные форумов
+	 */
+	const FORUM_DATA_INDEX		= 'marker,calculate,perms';
+	const FORUM_DATA_FORUM		= 'marker,calculate,perms,moder';
+	const FORUM_DATA_TOPIC		= 'marker,perms,moder';
+	/**
 	 * Объект текущего пользователя
 	 */
 	protected $oUserCurrent=null;
@@ -198,26 +211,33 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Считает инфу по количеству постов и топиков в подфорумах
 	 *
-	 * @param	object	$oRoot
+	 * @param	object	$oForum
 	 * @return	object
 	 */
-	public function CalcChildren($oRoot) {
-		$aChildren=$oRoot->getChildren();
-
-		if (!empty($aChildren)) {
-			foreach ($aChildren as $oForum) {
-				$oForum=$this->CalcChildren($oForum);
-
-				if ($oForum->getLastPostId() > $oRoot->getLastPostId()) {
-					$oRoot->setLastPostId($oForum->getLastPostId());
-				}
-
-				$oRoot->setCountTopic($oRoot->getCountTopic() + $oForum->getCountTopic());
-				$oRoot->setCountPost($oRoot->getCountPost() + $oForum->getCountPost());
+	public function CalcChildren($oForum,$bPerm=1,$bNoModer=1,$bMark=0) {
+		if ($bMark) {
+			$aMark=$this->GetMarking();
+			$sUserMark=(isset($aMark[self::MARKER_USER])) ? $aMark[self::MARKER_USER] : null;
+			$sMarkDate=(isset($aMark[self::MARKER_FORUM][$oForum->getId()])) ? $aMark[self::MARKER_FORUM][$oForum->getId()] : $sUserMark;
+			if ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate())) {
+				$oForum->setRead(true);
 			}
 		}
-
-		return $this->BuildPerms($oRoot,true);
+		$aChildren=$oForum->getChildren();
+		if (!empty($aChildren)) {
+			foreach ($aChildren as $oChildren) {
+				$oChildren=$this->CalcChildren($oChildren,$bPerm,$bNoModer,$bMark);
+				if (!$oChildren->getRead()) {
+					$oForum->setRead(false);
+				}
+				if ($oChildren->getLastPostId() > $oForum->getLastPostId()) {
+					$oForum->setLastPostId($oChildren->getLastPostId());
+				}
+				$oForum->setCountTopic($oForum->getCountTopic() + $oChildren->getCountTopic());
+				$oForum->setCountPost($oForum->getCountPost() + $oChildren->getCountPost());
+			}
+		}
+		return $bPerm ? $this->BuildPerms($oForum,$bNoModer) : $oForum;
 	}
 
 	/**
@@ -256,10 +276,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$iCountTopic=$this->oMapperForum->GetCountTopicByForumId($oForum->getId());
 		$iCountPost=$this->oMapperForum->GetCountPostByForumId($oForum->getId());
 		$iLastPostId=$this->oMapperForum->GetLastPostByForumId($oForum->getId());
+		$sLastPostDate=$this->oMapperForum->GetPostDateById($iLastPostId);
 
 		$oForum->setCountTopic((int)$iCountTopic);
 		$oForum->setCountPost((int)$iCountPost);
 		$oForum->setLastPostId((int)$iLastPostId);
+		$oForum->setLastPostDate($sLastPostDate);
+
 		return $oForum->Save();
 	}
 
@@ -276,9 +299,11 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 		$iCountPost=$this->oMapperForum->GetCountPostByTopicId($oTopic->getId());
 		$iLastPostId=$this->oMapperForum->GetLastPostByTopicId($oTopic->getId());
+		$sLastPostDate=$this->oMapperForum->GetPostDateById($iLastPostId);
 
 		$oTopic->setCountPost((int)$iCountPost);
 		$oTopic->setLastPostId((int)$iLastPostId);
+		$oTopic->setLastPostDate($sLastPostDate);
 		return $oTopic->Save();
 	}
 
@@ -289,7 +314,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	object
 	 */
 	public function BuildPerms($oForum,$bNoModers=false) {
-		$oUser = LS::CurUsr();
+		$oUser = $this->User_GetUserCurrent();
 		$oParent = $oForum->getParentId() ? $this->BuildPerms($oForum->getParent(),true) : null;
 		/**
 		 * Права модератора
@@ -323,10 +348,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if ($oParent && !($oParent->getAllowShow())) {
 			$oForum->setAllowShow($oParent->getAllowShow());
 		}
-		/**
-		 * Маркер прочитанности
-		 */
-		$oForum->setMarker($this->GetMarker($oForum->getId()));
+
 		return $oForum;
 	}
 
@@ -340,7 +362,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$bAccess=true;
 		if ($oForum->getPassword()) {
 			$bAccess=false;
-			if (LS::CurUsr()) {
+			if ($this->User_IsAuthorization()) {
 				if (forum_compare_password($oForum)) {
 					$bAccess=true;
 				}
@@ -351,12 +373,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 	/**
 	 * Возвращает список форумов, открытых для пользователя в виде дерева
+	 * TODO: Проверять права доступа и исключать ненужные форумы из списка
 	 *
 	 * @param	object	$oForum
 	 * @param	boolean	$bIdOnly
 	 * @return	array
 	 */
-	public function GetOpenForumsTree($bCalc=true) {
+	public function GetOpenForumsTree() {
 		$oUserCurrent=$this->User_GetUserCurrent();
 		/**
 		 * Строит дерево
@@ -367,12 +390,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 			)
 		);
 		/**
-		 * Калькулирует инфу о счетчиках и последнем сообщении из подфорумов
+		 * Подцепляем дополнительные данные
 		 */
-		if (!empty($aForums) && $bCalc) {
-			foreach ($aForums as $oForum) {
-				$oForum=$this->CalcChildren($oForum);
-			}
+		if (!empty($aForums)) {
+			$aForums=$this->GetForumsAdditionalData($aForums,self::FORUM_DATA_INDEX);
 		}
 		return $aForums;
 	}
@@ -410,13 +431,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function UpdateTopicViews(PluginForum_ModuleForum_EntityTopic $oTopic) {
 		if (false === ($data = $this->Cache_Get("topic_views_{$oTopic->getId()}"))) {
-			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($oTopic->getId());
+			$oView=$this->PluginForum_Forum_GetTopicViewByTopicId($oTopic->getId());
 			if (!$oView) {
-				$oView = LS::ENT('PluginForum_Forum_TopicView');
+				$oView=Engine::GetEntity('PluginForum_Forum_TopicView');
 				$oView->setTopicId($oTopic->getId());
 			}
 			$oView->setTopicViews($oView->getTopicViews()+1);
-			$data = array(
+			$data=array(
 				'obj' => $oView,
 				'time' => time()
 			);
@@ -554,7 +575,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Если иконка есть, удаляем ее и ее рейсайзы
 		 */
-		if($oForum->getIcon()) {
+		if ($oForum->getIcon()) {
 			$aSize = Config::Get('plugin.forum.icon_size');
 			foreach ($aSize as $iSize) {
 				$this->Image_RemoveFile($this->Image_GetServerPath($oForum->getIconPath($iSize)));
@@ -563,242 +584,342 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
-	 * Сортировка таблицы маркеров
+	 * Получает дополнительные данные(объекты) для форумов
 	 *
-	 * @param	array	$aData
-	 * @param	string	$sFindId
+	 * @param	array $aForums	Список форумов
+	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
 	 * @return	array
 	 */
-	private function sortMarker($aData=array(),$sFindId=null) {
-		$aSort = array();
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$aMarkTopics = isset($aData['t']) ? $aData['t'] : array();
-			$aMarkForums = isset($aData['f']) ? $aData['f'] : array();
-			foreach ((array)$aMarkTopics as $sTopicId => $aTopicData) {
-				$sForumId = $aTopicData['forum_id'];
-				if ($sFindId && $sFindId != $sForumId) {
-					continue;
-				}
-				if (!isset($aMarkForums[$sForumId])) {
-					if (!isset($aSort[$sForumId])) {
-						$aSort[$sForumId]['user_id'] = $oUser->getId();
-						$aSort[$sForumId]['marker_read_array'] = array();
-						$aSort[$sForumId]['marker_read_item'] = 0;
+	public function GetForumsAdditionalData($aForums,$aAllowData=null) {
+		if (is_null($aAllowData)) {
+			$aAllowData=array('marker','calculate','perms','moder');
+		}
+		if (is_string($aAllowData)) {
+			$aAllowData=explode(',', $aAllowData);
+		}
+		func_array_simpleflip($aAllowData);
+		$sOne=false;
+		if (!is_array($aForums)) {
+			$sOne=$aForums->getId();
+			$aForums=array($aForums->getId() => $aForums);
+		}
+		/**
+		 * Получаем дополнительные данные
+		 */
+		$aMark=$this->GetMarking();
+		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
+			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+		}
+		/**
+		 * Добавляем данные к результату - списку форумов
+		 */
+		foreach ($aForums as $oForum) {
+			/**
+			 * Calculate
+			 */
+			if (isset($aAllowData['calculate'])) {
+				$oForum=$this->CalcChildren($oForum, isset($aAllowData['perms']) ? 1 : 0, isset($aAllowData['moder']) ? 0 : 1, isset($aAllowData['marker']) ? 1 : 0);
+			} else {
+				/**
+				 * Marker
+				 */
+				if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+					$sMarkDate=isset($aForumMark[$oForum->getId()]) ? $aForumMark[$oForum->getId()] : $sUserMark;
+					if ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate())) {
+						$oForum->setRead(true);
+					} else {
+						$oForum->setRead(false);
 					}
-					$aSort[$sForumId]['marker_read_array'][$sTopicId] = array(
-						'i' => $aTopicData['marker_data']['i'],
-						'p' => $aTopicData['marker_data']['p']
-					);
-					$aSort[$sForumId]['marker_read_item'] += $aTopicData['marker_data']['i'];
 				}
-			}
-			foreach ((array)$aMarkForums as $sForumId => $aForumData) {
-				if ($sFindId && $sFindId != $sForumId) {
-					continue;
+				/**
+				 * Perms
+				 */
+				if (isset($aAllowData['perms'])) {
+					$oForum=$this->BuildPerms($oForum,isset($aAllowData['moder']) ? 0 : 1);
 				}
-				$aSort[$sForumId]['user_id'] = $oUser->getId();
-				$aSort[$sForumId]['marker_read_array'] = '*';
-				$aSort[$sForumId]['marker_read_item'] = $aForumData['mark_item'];
-				$aSort[$sForumId]['marker_date'] = $aForumData['mark_date'];
 			}
 		}
-		return $aSort;
+
+		return $sOne ? $aForums[$sOne] : $aForums;
 	}
 
-	public function MarkAll() {
-		if (!$oUserForum=$this->GetUserById($this->oUserCurrent->getId())) {
-			$oUserForum=LS::Ent('PluginForum_Forum_User');
+	/**
+	 * Получает дополнительные данные(объекты) для топиков
+	 *
+	 * @param	array $aTopics	Список топиков
+	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
+	 * @return	array
+	 */
+	public function GetTopicsAdditionalData($aTopics,$aAllowData=null) {
+		if (is_null($aAllowData)) {
+			$aAllowData=array('marker');
 		}
-		$oUserForum->setLastMark(date('Y-m-d H:i:s'));
-		$oUserForum->Save();
+		if (is_string($aAllowData)) {
+			$aAllowData=explode(',', $aAllowData);
+		}
+		func_array_simpleflip($aAllowData);
+		$sOne=false;
+		if (!is_array($aTopics)) {
+			$sOne=$aTopics->getId();
+			$aTopics=array($aTopics->getId() => $aTopics);
+		}
+		/**
+		 * Получаем дополнительные данные
+		 */
+		$aMark=$this->GetMarking();
+		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
+			$aTopicMark=isset($aMark[self::MARKER_TOPIC]) ? $aMark[self::MARKER_TOPIC] : array();
+			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+		}
+		/**
+		 * Добавляем данные к результату - списку топиков
+		 */
+		foreach ($aTopics as $oTopic) {
+			/**
+			 * Marker
+			 */
+			if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+				$sMarkDate=isset($aForumMark[$oTopic->getForumId()]) ? $aForumMark[$oTopic->getForumId()] : $sUserMark;
+				$sMarkDate=isset($aTopicMark[$oTopic->getId()]) ? $aTopicMark[$oTopic->getId()] : $sMarkDate;
+				if ($sMarkDate && strtotime($sMarkDate) >= strtotime($oTopic->getLastPostDate())) {
+					$oTopic->setRead(true);
+				} else {
+					$oTopic->setRead(false);
+				}
+				if (isset($aTopicMark[$oTopic->getId()]) && (is_null($sUserMark) || strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sUserMark))) {
+					$sUserMark=$aTopicMark[$oTopic->getId()];
+				}
+				$oTopic->setReadDate($sUserMark);
+			}
+		}
+
+		return $sOne ? $aTopics[$sOne] : $aTopics;
+	}
+
+	/**
+	 * Получает массив трека из сессии
+	 *
+	 * @return	array
+	 */
+	public function GetMarking() {
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$aMark=$this->Session_Get("mark{$oUser->getId()}");
+			$aMark=unserialize(stripslashes($aMark));
+			return $aMark;
+		}
+		return array();
+	}
+
+	/**
+	 * Записывает массив трека в сессию
+	 *
+	 * @param	array	$aMark
+	 * @return	boolean
+	 */
+	public function SetMarking($aMark) {
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$this->Session_Set("mark{$oUser->getId()}",addslashes(serialize($aMark)));
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Проверяет форум на предмет непрочитанных тем
+	 *
+	 * @param	PluginForum_ModuleForum_EntityForum	$oForum
+	 * @return	boolean
+	 */
+	public function CheckForumMarking(PluginForum_ModuleForum_EntityForum $oForum) {
+		$sForumId=$oForum->getId();
+		/**
+		 * Таблица маркировки
+		 */
+		$aMark=$this->GetMarking();
+		$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+		$sMarkDate=isset($aMark[self::MARKER_FORUM][$sForumId]) ? $aMark[self::MARKER_FORUM][$sForumId] : $sUserMark;
+		/**
+		 * Если есть информация
+		 */
+		if (isset($aMark[self::MARKER_TOPIC_FORUM][$sForumId])) {
+			/**
+			 * Получаем топики
+			 */
+			$aTopics=array();
+			if ($sMarkDate) {
+				$aTopics=$this->GetTopicItemsByForumIdAndLastPostDateGt($sForumId,$sMarkDate);
+			} else {
+				$aTopics=$this->GetTopicItemsByForumId($sForumId);
+			}
+			/**
+			 * Чекаем
+			 */
+			if (!empty($aTopics)) {
+				$aCheckForum=$aMark[self::MARKER_TOPIC_FORUM][$sForumId];
+				$bUnread=false;
+				foreach ($aTopics as $oTopic) {
+					if (!isset($aCheckForum[$oTopic->getId()])) {
+						$bUnread=true;
+						break;
+					}
+				}
+				if (!$bUnread) {
+					return $this->MarkForum($oForum);
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Маркируем все форумы как прочитанные
+	 *
+	 * @return	boolean
+	 */
+	public function MarkAll() {
+		if ($this->User_IsAuthorization()) {
+			$aMark=$this->GetMarking();
+			if (isset($aMark[self::MARKER_TOPIC_FORUM])) unset($aMark[self::MARKER_TOPIC_FORUM]);
+			if (isset($aMark[self::MARKER_TOPIC])) unset($aMark[self::MARKER_TOPIC]);
+			if (isset($aMark[self::MARKER_FORUM])) unset($aMark[self::MARKER_FORUM]);
+			$aMark[self::MARKER_USER]=date('Y-m-d H:i:s');
+			return $this->SetMarking($aMark);
+		}
+		return false;
 	}
 
 	/**
 	 * Маркируем форум как прочитанный
 	 *
-	 * @param PluginForum_ModuleForum_EntityForum $oForum
+	 * @param	PluginForum_ModuleForum_EntityForum $oForum
+	 * @return	boolean
 	 */
 	public function MarkForum(PluginForum_ModuleForum_EntityForum $oForum) {
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$sUserId = $oUser->getId();
-			$sForumId = $oForum->getId();
-			/**
-			 * Запрашиваем таблицу маркировки
-			 */
-			$aMarkData = $this->Session_Get("mark{$sUserId}");
-			$aMarkData = unserialize(stripslashes($aMarkData));
-			$aMarkData['f'][$sForumId]['mark_item'] = $oForum->getCountPost();
-			$aMarkData['f'][$sForumId]['mark_date'] = date('Y-m-d H:i:s');
-			foreach ((array)$aMarkData['t'] as $sTopicId => $aTopicData) {
-				if ($aTopicData['forum_id'] == $oForum->getId()) {
-					unset($aMarkData['t'][$sTopicId]);
-				}
-			}
-			/**
-			 * Сохраняем
-			 */
-			$this->Session_Set("mark{$sUserId}", addslashes(serialize($aMarkData)));
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$sUserId=$oUser->getId();
+			$sForumId=$oForum->getId();
+			$aMark=$this->GetMarking();
+			$aTopicIds=(isset($aMark[self::MARKER_TOPIC_FORUM][$sForumId])) ? $aMark[self::MARKER_TOPIC_FORUM][$sForumId] : array();
+			if (isset($aMark[self::MARKER_TOPIC_FORUM][$sForumId])) unset($aMark[self::MARKER_TOPIC_FORUM][$sForumId]);
+			foreach ($aTopicIds as $sTopicId) unset($aMark[self::MARKER_TOPIC][$sTopicId]);
+			if (isset($aMark[self::MARKER_TOPIC_FORUM]) && empty($aMark[self::MARKER_TOPIC_FORUM])) unset($aMark[self::MARKER_TOPIC_FORUM]);
+			$aMark[self::MARKER_FORUM][$sForumId]=$oForum->getLastPostDate();
+			return $this->SetMarking($aMark);
 		}
+		return false;
 	}
 
 	/**
 	 * Маркируем тему как прочитанную
 	 *
-	 * @param PluginForum_ModuleForum_EntityTopic $oTopic
+	 * @param	PluginForum_ModuleForum_EntityTopic $oTopic
+	 * @return	boolean
 	 */
 	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic,$oLastPost=null) {
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$sUserId = $oUser->getId();
-			$sTopicId = $oTopic->getId();
-			$sForumId = $oTopic->getForumId();
-			/**
-			 * Запрашиваем таблицу маркировки
-			 */
-			$aMarkData = $this->Session_Get("mark{$sUserId}");
-			$aMarkData = unserialize(stripslashes($aMarkData));
-			$aMarkTopics = $aMarkData['t'];
-			/**
-			 * Маркер топика
-			 */
-			$aMarkTopic = array();
-			$bRewrite = false;
-			/**
-			 * Топик уже был прочитан, сверяем данные
-			 */
-			if (isset($aMarkTopics[$sTopicId])) {
-				$aMarkTopic = $aMarkTopics[$sTopicId]['marker_data'];
-				/**
-				 * Сменился форум
-				 */
-				if ($aMarkTopics[$sTopicId]['forum_id'] != $sForumId) {
-					$bRewrite = true;
-				}
-				/**
-				 * Последний отмеченный пост не существует
-				 */
-				if (!$this->GetPostById($aMarkTopic['p'])) {
-					$bRewrite = true;
-				}
-				/**
-				 * Последний пост новее или количество сообщений больше
-				 */
-				if ($oLastPost) {
-					if (($oLastPost->getId() > $aMarkTopic['p']) || ($oLastPost->getNumber() > $aMarkTopic['i'])) {
-						$bRewrite = true;
-					}
-				} else {
-					if (($oTopic->getLastPostId() > $aMarkTopic['p']) || ($oTopic->getCountPost() > $aMarkTopic['i'])) {
-						$bRewrite = true;
-					}
-				}
-				/*
-				 * Топик прочитан полностью
-				 */
-				if ($oTopic->getLastPostId() == $aMarkTopic['p']) {
-					/**
-					 * Количество сообщений не сходится
-					 */
-					if ($oTopic->getCountPost() <> $aMarkTopic['i']) {
-						$bRewrite = true;
-					}
-				}
-			} else {
-				$bRewrite = true;
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$sUserId=$oUser->getId();
+			$sTopicId=$oTopic->getId();
+			$sForumId=$oTopic->getForumId();
+			$aMark=$this->GetMarking();
+			if (!isset($aMark[self::MARKER_TOPIC][$sTopicId])) {
+				$aMark[self::MARKER_TOPIC_FORUM][$sForumId][$sTopicId]=true;
 			}
-			/**
-			 * Обновляем информацию о маркере
-			 */
-			if ($bRewrite) {
-				if ($oLastPost) {
-					$aMarkTopic['i'] = $oLastPost->getNumber();
-					$aMarkTopic['p'] = $oLastPost->getId();
-				} else {
-					$aMarkTopic['i'] = $oTopic->getCountPost();
-					$aMarkTopic['p'] = $oTopic->getLastPostId();
-				}
-				$aMarkTopics[$sTopicId]['forum_id'] = $sForumId;
-				$aMarkTopics[$sTopicId]['marker_data'] = $aMarkTopic;
-				/**
-				 * Сохраняем
-				 */
-				$aMarkData['t'] = $aMarkTopics;
-				$this->Session_Set("mark{$sUserId}", addslashes(serialize($aMarkData)));
-			}
+			$aMark[self::MARKER_TOPIC][$sTopicId]=$oLastPost ? $oLastPost->getDateAdd() : $oTopic->getLastPostDate();
+			return $this->SetMarking($aMark);
 		}
-	}
-
-	/**
-	 * Получить маркер форума по ID
-	 *
-	 * @param	string	$sForumId
-	 * @return	object
-	 */
-	public function GetMarker($sForumId) {
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$aData = $this->Session_Get("mark{$oUser->getId()}");
-			$aData = unserialize(stripslashes($aData));
-			$aData = $this->sortMarker($aData, $sForumId);
-			if (isset($aData[$sForumId])) {
-				$oMarker = LS::Ent('PluginForum_Forum_Marker', $aData[$sForumId]);
-				return $oMarker;
-			}
-		}
-		return null;
+		return false;
 	}
 
 	/**
 	 * Сохраняем маркер пользователя в БД
 	 *
+	 * @return	boolean
 	 */
 	public function SaveMarkers() {
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$aData = $this->Session_Get("mark{$oUser->getId()}");
-			$aData = unserialize(stripslashes($aData));
-			$aData = $this->sortMarker($aData);
-			foreach ((array)$aData as $sForumId => $aForumData) {
-				if (is_array($aForumData['marker_read_array'])) {
-					$aForumData['marker_read_array'] = addslashes(serialize($aForumData['marker_read_array']));
-				}
-				if ($oMarker = $this->GetMarkerByUserIdAndForumId($oUser->getId(), $sForumId)) {
-					$oMarker->setReadArray($aForumData['marker_read_array']);
-					$oMarker->setReadItem($aForumData['marker_read_item']);
-					$oMarker->setDate(isset($aForumData['marker_date']) ? $aForumData['marker_date'] : null);
-					$oMarker->Update();
-				} else {
-					$oMarker = LS::Ent('PluginForum_Forum_Marker', $aForumData);
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$sUserId=$oUser->getId();
+			$aMark=$this->GetMarking();
+			/**
+			 * Чистим БД
+			 */
+			$aForumMark=$this->GetMarkerItemsByUserId($oUser->getId());
+			$aTopicMark=$this->GetMarkerTopicItemsByUserId($oUser->getId());
+			foreach ($aForumMark as $oMarker) $oMarker->Delete();
+			foreach ($aTopicMark as $oMarker) $oMarker->Delete();
+			/**
+			 * Сохраняем трекер форумов
+			 */
+			if (isset($aMark[self::MARKER_FORUM])) {
+				foreach ((array)$aMark[self::MARKER_FORUM] as $sForumId=>$sMarkDate) {
+					$oMarker=Engine::GetEntity('PluginForum_Forum_Marker');
+					$oMarker->setUserId($sUserId);
+					$oMarker->setForumId($sForumId);
+					$oMarker->setMarkDate((string)$sMarkDate);
 					$oMarker->Add();
 				}
 			}
-			$this->Session_Drop("mark{$oUser->getId()}");
-		}
-	}
-
-	/**
-	 * Загружаем маркер пользователя в БД
-	 *
-	 */
-	public function LoadMarkers() {
-		if ($oUser = $this->User_GetUserCurrent()) {
-			$aData = array('t'=>array(),'f'=>array());
-			$aMarkers = $this->GetMarkerItemsByUserId($oUser->getId());
-			foreach ((array)$aMarkers as $oMarker) {
-				$aReadArray = $oMarker->getReadArray();
-				if ((string)$aReadArray != '*') {
-					$aReadArray = unserialize(stripslashes($aReadArray));
-				}
-				if ((string)$aReadArray == '*') {
-					$aData['f'][$oMarker->getForumId()]['mark_item'] = $oMarker->getReadItem();
-					$aData['f'][$oMarker->getForumId()]['mark_date'] = $oMarker->getDate();
-				} else {
-					foreach ($aReadArray as $sTopicId => $aTopicData) {
-						$aData['t'][$sTopicId]['forum_id'] = $oMarker->getForumId();
-						$aData['t'][$sTopicId]['marker_data'] = $aTopicData;
+			/**
+			 * Сохраняем трекер топиков
+			 */
+			if (isset($aMark[self::MARKER_TOPIC_FORUM])) {
+				foreach ((array)$aMark[self::MARKER_TOPIC_FORUM] as $sForumId=>$aTopics) {
+					foreach ((array)$aTopics as $sTopicId=>$bState) {
+						$sMarkDate=isset($aMark[self::MARKER_TOPIC][$sTopicId]) ? $aMark[self::MARKER_TOPIC][$sTopicId] : null;
+						if ($sMarkDate) {
+							$oMarker=Engine::GetEntity('PluginForum_Forum_MarkerTopic');
+							$oMarker->setUserId($sUserId);
+							$oMarker->setForumId($sForumId);
+							$oMarker->setTopicId($sTopicId);
+							$oMarker->setMarkDate((string)$sMarkDate);
+							$oMarker->Add();
+						}
 					}
 				}
 			}
-			$this->Session_Set("mark{$oUser->getId()}", addslashes(serialize($aData)));
+			/**
+			 * Сохраняем трекер пользователя
+			 */
+			if (isset($aMark[self::MARKER_USER])) {
+				if (!$oUserForum=$this->GetUserById($sUserId)) {
+					$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
+				}
+				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
+				$oUserForum->Save();
+			}
+			$this->Session_Drop("mark{$sUserId}");
+			return true;
 		}
+		return false;
 	}
+
+	/**
+	 * Загружает маркер пользователя из БД
+	 *
+	 * @return	boolean
+	 */
+	public function LoadMarkers() {
+		if ($oUser=$this->User_GetUserCurrent()) {
+			$aMarkData=array();
+			$aForumMark=$this->GetMarkerItemsByUserId($oUser->getId());
+			$aTopicMark=$this->GetMarkerTopicItemsByUserId($oUser->getId());
+			$oUserForum=$this->GetUserById($oUser->getId());
+			foreach ($aForumMark as $oMarker) {
+				$aMarkData[self::MARKER_FORUM][$oMarker->getForumId()]=$oMarker->getMarkDate();
+			}
+			foreach ($aTopicMark as $oMarker) {
+				$aMarkData[self::MARKER_TOPIC_FORUM][$oMarker->getForumId()][$oMarker->getTopicId()]=true;
+				$aMarkData[self::MARKER_TOPIC][$oMarker->getTopicId()]=$oMarker->getMarkDate();
+			}
+			if ($oUserForum) {
+				$aMarkData[self::MARKER_USER]=$oUserForum->getLastMark();
+			}
+			return $this->SetMarking($aMarkData);
+		}
+		return false;
+	}
+
 }
 
 ?>

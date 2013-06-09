@@ -5,12 +5,12 @@
 * @Version: 1.0
 * @Author: Chiffa
 * @LiveStreet version: 1.X
-* @File Name: Marker.entity.class.php
+* @File Name: MarkerTopic.entity.class.php
 * @License: CC BY-NC, http://creativecommons.org/licenses/by-nc/3.0/
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleForum_EntityMarker extends EntityORM {
+class PluginForum_ModuleForum_EntityMarkerTopic extends EntityORM {
 
 }
 
