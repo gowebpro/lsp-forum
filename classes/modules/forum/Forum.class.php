@@ -884,6 +884,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			if (isset($aMark[self::MARKER_USER])) {
 				if (!$oUserForum=$this->GetUserById($sUserId)) {
 					$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
+					$oUserForum->setUserId($sUserId);
 				}
 				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
 				$oUserForum->Save();

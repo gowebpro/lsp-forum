@@ -6,7 +6,7 @@
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			<li{if !$oForum->getRead() && !$oForum->getRedirectOn()} class="unread"{/if}>
 				<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}">
-					<img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if !($oMarker && $oMarker->checkRead())}{$aLang.plugin.forum.forum_unread}{else}{$aLang.plugin.forum.forum_read}{/if}"{/if}/>
+					<img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/>
 				</a>
 				<h3>
 					<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>

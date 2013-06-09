@@ -9,8 +9,8 @@
 			{if $oForum->getAllowShow()}
 				{assign var="aSubForums" value=$oForum->getChildren()}
 				<section class="forum-block">
-					<header class="forum-header">
-						<i class="js-forum-cat-toggler fl-r"></i>
+					<header class="forum-header js-forum-cat-toggler">
+						<i class="fl-r"></i>
 						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 					</header>
 					<div class="forum-content">

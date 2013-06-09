@@ -4,7 +4,7 @@
 	{assign var='oPoster' value=$oPost->getUser()}
 	<tr id="topic-{$oTopic->getId()}"{if !$oTopic->getRead()} class="unread"{/if}>
 		<td class="cell-icon">
-			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}" title="{if !($oMarker && $oMarker->checkTopic($oTopic))}{$aLang.plugin.forum.topic_unread}{else}{$aLang.plugin.forum.topic_read}{/if}"></a>
+			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}" title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
 		</td>
 		<td class="cell-name">
 			<h4>
@@ -33,7 +33,7 @@
 		</td>
 		<td class="cell-post">
 			<ul class="last-post">
-				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
+				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">{date_format date=$oPost->getDateAdd() format='d.m.Y, H:i'}</a></li>
 				<li>
 					{$aLang.plugin.forum.post_writer}:
 					<span class="author user-avatar">
@@ -41,7 +41,7 @@
 							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
 							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
 						{else}
-							<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+							<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
 						{/if}
 					</span>
 				</li>

@@ -4,7 +4,7 @@
 	{assign var='oPoster' value=$oPost->getUser()}
 	<tr id="topic-{$oTopic->getId()}"{if !$oTopic->getRead()} class="unread"{/if}>
 		<td class="cell-icon">
-			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{router page='forum'}topic/{$oTopic->getId()}" title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
+			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}" title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
 		</td>
 		<td class="cell-name">
 			<h4>
@@ -37,7 +37,7 @@
 				{if $oPoster}
 					<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(48)}" title="{$aLang.plugin.forum.post_writer}: {$oPoster->getLogin()}" /></a>
 				{else}
-					<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}" /></a>
+					<a href="{$oTopic->getUrlFull()}lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}" /></a>
 				{/if}
 			</div>
 			<ul class="last-post">
@@ -45,10 +45,10 @@
 				{if $oPoster}
 					<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
 				{else}
-					<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+					<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
 				{/if}
 				</li>
-				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd() day="day H:i" format="j F Y, H:i"}</a></li>
+				<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">{date_format date=$oPost->getDateAdd() day="day H:i" format="j F Y, H:i"}</a></li>
 			</ul>
 		</td>
 	</tr>

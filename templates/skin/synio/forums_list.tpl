@@ -67,12 +67,12 @@
 									{if $oPoster}
 										<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
 									{else}
-										<a href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+										<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
 									{/if}
 								</li>
 								<li>
 									{if $oForum->getAllowRead() && $oForum->getAutorization()}
-										<a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{router page='forum'}topic/{$oTopic->getId()}/lastpost">{date_format date=$oPost->getDateAdd()}</a>
+										<a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">{date_format date=$oPost->getDateAdd()}</a>
 									{else}
 										<span title="{$aLang.plugin.forum.post_last_view}">{date_format date=$oPost->getDateAdd()}</span>
 									{/if}

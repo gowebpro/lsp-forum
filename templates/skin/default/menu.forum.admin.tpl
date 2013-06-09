@@ -4,5 +4,6 @@
 	<li{if $sMenuSubItemSelect=='perms'} class="active"{/if}><a href="{router page='forum'}admin/perms/"><div>{$aLang.plugin.forum.perms}</div></a></li>
  
 	{hook run='menu_forum_admin_item'}
-	{hook run='menu_forum_admin'}
 </ul>
+
+{hook run='menu_forum_admin'}

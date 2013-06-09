@@ -21,17 +21,19 @@
 .forum-header section {
 	margin-left: 10px
 }
-.forum-header .js-forum-cat-toggler {
-	cursor: pointer;
+.forum-header.js-forum-cat-toggler {
+	cursor: pointer
+}
+.forum-header.js-forum-cat-toggler i {
 	visibility: hidden;
 	width: 10px;
 	height: 10px;
 	background: url(../images/icons.png) -10px -250px no-repeat /* icon: arrow.png */
 }
-.forum-header:hover .js-forum-cat-toggler {
+.forum-header.js-forum-cat-toggler:hover i {
 	visibility: visible
 }
-.forum-header.collapsed .js-forum-cat-toggler {
+.forum-header.js-forum-cat-toggler.collapsed i {
 	background: url(../images/icons.png) -0px -250px no-repeat /* icon: arrow-active.png */;
 }
 .forum-header.collapsed {
@@ -307,6 +309,7 @@
 	margin: 0 10px 20px
 }
 .board-stats-links a {
+	font-size: 11px;
 	color: #999
 }
 .board-stats-links a:hover {

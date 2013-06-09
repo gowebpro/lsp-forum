@@ -1,6 +1,6 @@
 <div class="forum-stats">
-	<header class="forum-header">
-		<i class="js-forum-cat-toggler fl-r"></i>
+	<header class="forum-header js-forum-cat-toggler">
+		<i class="fl-r"></i>
 		<h3>{$aLang.plugin.forum.stats}</h3>
 	</header>
 	<div class="forum-content">

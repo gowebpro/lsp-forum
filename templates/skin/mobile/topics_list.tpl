@@ -3,7 +3,7 @@
 	{assign var='oPost' value=$oTopic->getPost()}
 	{assign var='oPoster' value=$oPost->getUser()}
 	<li id="topic-{$oTopic->getId()}"{if !$oTopic->getRead()} class="unread"{/if}>
-		<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}"  title="{if !($oMarker && $oMarker->checkTopic($oTopic))}{$aLang.plugin.forum.topic_unread}{else}{$aLang.plugin.forum.topic_read}{/if}"></a>
+		<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}"  title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
 		<h3>
 			{if $oTopic->getPinned()==1}
 				<span class="badge">{$aLang.plugin.forum.topic_pinned|upper}</span>

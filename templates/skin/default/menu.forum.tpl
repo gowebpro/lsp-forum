@@ -8,5 +8,6 @@
 	{/if}
 
 	{hook run='menu_forum_item'}
-	{hook run='menu_forum'}
 </ul>
+
+{hook run='menu_forum'}
