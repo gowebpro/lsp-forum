@@ -50,6 +50,9 @@
 											<a class="js-tip-help icon-remove" title="{$aLang.plugin.forum.delete}" href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"></a>
 											<a class="js-tip-help icon-arrow-up" title="{$aLang.plugin.forum.sort_up} ({$oForum->getSort()})" href="{router page='forum'}admin/forums/sort/{$oForum->getId()}/up/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
 											<a class="js-tip-help icon-arrow-down" title="{$aLang.plugin.forum.sort_down} ({$oForum->getSort()})" href="{router page='forum'}admin/forums/sort/{$oForum->getId()}/down/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
+											{if $aItem.level > 0}
+												<a class="js-tip-help icon-refresh" title="{$aLang.plugin.forum.refresh}" href="{router page='forum'}admin/forums/refresh/{$oForum->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
+											{/if}
 											<span class="title">{$oForum->getTitle()}</span>
 											{if $aItem.level > 0}
 												<span class="js-forum-moder-toogler js-tip-help fl-r icon-plus-sign" id="toggler-moder-list-{$oForum->getId()}" title="{$aLang.plugin.forum.moderators_list}"></span>

@@ -2440,6 +2440,30 @@ class PluginForum_ActionForum extends ActionPlugin {
 		}
 	}
 
+	/**
+	 * Пересчет показателей
+	 */
+	protected function _adminForumRefresh() {
+		$sForumId=$this->GetParam(2);
+		if (!$oForum=$this->PluginForum_Forum_GetForumById($sForumId)) {
+			return parent::EventNotFound();
+		}
+
+		$this->Security_ValidateSendForm();
+		/**
+		 * Запускаем пересчет топиков
+		 */
+		$aTopics = $this->PluginForum_Forum_GetTopicItemsByForumId($oForum->getId());
+		foreach ((array)$aTopics as $oTopic) {
+			$this->PluginForum_Forum_RecountTopic($oTopic);
+		}
+		/**
+		 * Запускаем пересчет форума
+		 */
+		$this->PluginForum_Forum_RecountForum($oForum);
+
+		Router::Location(Router::GetPath('forum').'admin/forums/');
+	}
 
 	/**
 	 * Права доступа
@@ -2520,6 +2544,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 					 */
 					case 'perms':
 						$this->_adminForumPerms();
+						break;
+					/**
+					 * Пересчет счетчиков
+					 */
+					case 'refresh':
+						$this->_adminForumRefresh();
 						break;
 					/**
 					 * Список форумов

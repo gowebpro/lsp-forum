@@ -42,6 +42,8 @@ return array(
 	'on_page' => 'На страницу',
 	'and' => 'и',
 
+	'refresh' => 'Пересчет счетчиков',
+
 	'select_forum' => 'Выбрать форум',
 	'select_topic' => 'Выбрать топик',
 

@@ -41,6 +41,8 @@ return array(
 	'on_page' => 'To page',
 	'and' => 'and',
 
+	'refresh' => 'Recalculation counters',
+
 	'select_forum' => 'Select forum',
 	'select_topic' => 'Select topic',
 
