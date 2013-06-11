@@ -183,6 +183,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function getModDeleteTopic() {
 		return $this->_getDataMore('mod_deletetopic');
 	}
+	public function getModMovePost() {
+		return $this->_getDataMore('mod_movepost');
+	}
 	public function getModMoveTopic() {
 		return $this->_getDataMore('mod_movetopic');
 	}
@@ -222,6 +225,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 	public function setModDeleteTopic($data) {
 		$this->_aDataMore['mod_deletetopic']=$data;
+	}
+	public function setModMovePost($data) {
+		$this->_aDataMore['mod_movepost']=$data;
 	}
 	public function setModMoveTopic($data) {
 		$this->_aDataMore['mod_movetopic']=$data;

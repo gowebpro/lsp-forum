@@ -11,9 +11,17 @@
 */
 
 class PluginForum_ModuleForum extends ModuleORM {
+	/**
+	 * Состояния тем
+	 */
 	const TOPIC_STATE_OPEN		= 0;
 	const TOPIC_STATE_CLOSE		= 1;
 	const TOPIC_STATE_MOVED		= 2;
+	/**
+	 * Типы форума
+	 */
+	const FORUM_TYPE_ARCHIVE	= 0;
+	const FORUM_TYPE_ACTIVE		= 1;
 	/**
 	 * Глобальные маски
 	 */
@@ -334,10 +342,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 		$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
 
-		$oForum->setAllowShow(check_perms($aPermissions['show_perms'],$oUser,true));
-		$oForum->setAllowRead(check_perms($aPermissions['read_perms'],$oUser,true));
-		$oForum->setAllowReply(check_perms($aPermissions['reply_perms'],$oUser));
-		$oForum->setAllowStart(check_perms($aPermissions['start_perms'],$oUser));
+		$oForum->setAllowShow(forum_check_perms($aPermissions['show_perms'],$oUser,true));
+		$oForum->setAllowRead(forum_check_perms($aPermissions['read_perms'],$oUser,true));
+		$oForum->setAllowReply(forum_check_perms($aPermissions['reply_perms'],$oUser));
+		$oForum->setAllowStart(forum_check_perms($aPermissions['start_perms'],$oUser));
 		/**
 		 * Авторизован ли текущий пользователь в данном форуме, при условии что форум запоролен
 		 */
@@ -414,8 +422,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if (!empty($aForums)) {
 			foreach ($aForums as $oForum) {
 				$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
-				if (check_perms($aPermissions['show_perms'],$oUser,true)
-				and check_perms($aPermissions['read_perms'],$oUser,true)
+				if (forum_check_perms($aPermissions['show_perms'],$oUser,true)
+				and forum_check_perms($aPermissions['read_perms'],$oUser,true)
 				and $this->isForumAuthorization($oForum)) {
 					$aRes[$oForum->getId()]=$oForum;
 				}

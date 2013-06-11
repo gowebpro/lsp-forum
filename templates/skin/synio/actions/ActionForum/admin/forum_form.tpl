@@ -31,7 +31,7 @@
 			<div class="fContainer">
 				<form action="" method="POST" enctype="multipart/form-data">
 					<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
-					<input type="hidden" name="forum_type" value="{$sNewType}" />
+					<input type="hidden" name="f_type" value="{$sNewType}" />
 
 					<table class="table table-forum-admin">
 						<tr>

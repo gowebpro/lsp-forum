@@ -47,6 +47,12 @@ function forum_compare_password($oForum) {
 	return (bool)($sCookiePass == md5($oForum->getPassword()));
 }
 
+/**
+ * Обработчик заголовков
+ *
+ * @param	string $sTitle
+ * @return	string
+ */
 function forum_parse_title($sTitle) {
 	if (Config::Get('plugin.forum.title_format')) {
 		$sTitle = preg_replace('#(\.|\?|!|\(|\)){3,}#', '\1\1\1', $sTitle);
@@ -63,7 +69,7 @@ function forum_parse_title($sTitle) {
  * @param	boolean	$bGuestDef
  * @return	boolean
  */
-function check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
+function forum_check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 	$sPermId=is_null($oUser)
 		? PluginForum_ModuleForum::MASK_PERM_GUEST
 		: ($oUser->isAdministrator() ? PluginForum_ModuleForum::MASK_PERM_ADMIN : PluginForum_ModuleForum::MASK_PERM_USER);
@@ -85,6 +91,16 @@ function check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 }
 
 if (!function_exists('fSetCookie')) {
+	/**
+	 * Сохраняет куку
+	 *
+	 * @param	string	$sName
+	 * @param	string	$sValue
+	 * @param	boolean	$bSticky
+	 * @param	integer	$iExpiresDays
+	 * @param	integer	$iExpiresMinutes
+	 * @param	integer	$iExpiresSeconds
+	 */
 	function fSetCookie($sName=null, $sValue='', $bSticky=1, $iExpiresDays=0, $iExpiresMinutes=0, $iExpiresSeconds=0) {
 		if (!($sName)) return;
 
@@ -97,6 +113,12 @@ if (!function_exists('fSetCookie')) {
 	}
 }
 if (!function_exists('fGetCookie')) {
+	/**
+	 * Возвращает значение куки
+	 *
+	 * @param	string	$sName
+	 * @return	(string|boolean)
+	 */
 	function fGetCookie($sName) {
 		if (isset($_COOKIE[$sName])) {
 			return htmlspecialchars(urldecode(trim($_COOKIE[$sName])));

@@ -133,24 +133,25 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	this.toggleCat = function(e) {
+		var $section=$(this).parent().parent('section');
+		var $content=$section.children('.forums-content'),
+			$note=$section.children('.forums-note');
+		if ($content.is(":visible")) {
+			$section.addClass('collapsed');
+			$content.slideUp();
+			if ($note) $note.slideDown();
+		} else {
+			$section.removeClass('collapsed');
+			$content.slideDown();
+			if ($note) $note.slideUp();
+		}
+		if (e) e.preventDefault();
+	};
+
 	this.initToggler = function() {
-		$('.js-forum-cat-toggler').click(function() {
-			var header=$(this).parent('header');
-			var content=$(header).next('.forums-content');
-			var note=$(content).next('.forums-note');
-			if (content.is(":visible")) {
-				$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
-				$(header).addClass('collapsed');
-				$(content).slideUp();
-				if (note) $(note).slideDown();
-			} else {
-				$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
-				$(header).removeClass('collapsed');
-				$(content).slideDown();
-				if (note) $(note).slideUp();
-			}
-			return false;
-		});
+		$('.js-forum-cat-toggler').click(this.toggleCat);
+
 	};
 
 	this.initButtons = function() {
@@ -369,6 +370,24 @@ ls.toolbar.forum = (function ($) {
 	return this;
 }).call(ls.toolbar.forum || {},jQuery);
 
+/**
+ * Вспомогательные функции
+ */
+ls.tools = (function ($) {
+
+	this.arrayUniq = function(arr) {
+		var res=new Array();
+		$.each(arr,function(i,e) {
+			if ($.inArray(e,res)==-1) res.push(e);
+			if ($.inArray(e,without)==-1) res.push(e);
+		});
+		return res;
+	};
+
+
+
+	return this;
+}).call(ls.tools || {},jQuery);
 
 /**
  * Инициализация

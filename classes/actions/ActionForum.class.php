@@ -1971,7 +1971,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Обработка отправки формы добавления нового форума
 	 */
 	protected function submitAddForum() {
-		$sNewType=(isPost('forum_type')) ? getRequestStr('forum_type') : 'forum';
+		$sNewType=(isPost('f_type')) ? getRequestStr('f_type') : 'forum';
 		/**
 		 * Заполняем свойства
 		 */
@@ -2035,7 +2035,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * @param unknown_type $oForum
 	 */
 	protected function submitEditForum($oForum=null) {
-		$sNewType=(isPost('forum_type')) ? getRequestStr('forum_type') : 'forum';
+		$sNewType=(isPost('f_type')) ? getRequestStr('f_type') : 'forum';
 		/**
 		 * Обновляем свойства форума
 		 */
@@ -2698,6 +2698,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('sMenuHeadItemSelect',$this->sMenuHeadItemSelect);
 		$this->Viewer_Assign('sMenuItemSelect',$this->sMenuItemSelect);
 		$this->Viewer_Assign('sMenuSubItemSelect',$this->sMenuSubItemSelect);
+		/**
+		 * Загружаем в шаблон константы
+		 */
+		$this->Viewer_Assign('FORUM_TYPE_ARCHIVE',PluginForum_ModuleForum::FORUM_TYPE_ARCHIVE);
+		$this->Viewer_Assign('FORUM_TYPE_ACTIVE',PluginForum_ModuleForum::FORUM_TYPE_ACTIVE);
+
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */

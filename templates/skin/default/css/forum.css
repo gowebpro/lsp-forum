@@ -6,13 +6,29 @@
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
+.forums-list .js-forum-cat-toggler {
+	display: inline-block;
+	vertical-align: text-top;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	background: url(../images/icons.png) no-repeat;
+	background-position: -24px -96px
+}
+.forums-list.collapsed {
+	opacity: 0.5
+}
+.forums-list.collapsed:hover {
+	opacity: 0.75
+}
+.forums-list.collapsed .js-forum-cat-toggler {
+	background-position: 0 -96px;
+}
 .forums-header { padding: 13px 20px; background: whiteSmoke; border-top: 1px solid #DCE1E6; border-bottom: 1px solid #EEE; position: relative }
 .forums-header h3 { font-size: 16px; line-height: 1em; font-weight: normal }
 .forums-header section { margin-left: 10px }
 .forums-header .js-forum-cat-toggler { cursor: pointer; visibility: hidden }
 .forums-header:hover .js-forum-cat-toggler { visibility: visible }
-.forums-header.collapsed { opacity: 0.5 }
-.forums-header.collapsed:hover { opacity: 0.75 }
 .forums-content { margin-bottom: 10px }
 .forums-content section { padding: 15px }
 .forums-note { padding: 20px 40px; color: #999; border-width: 1px 0px; border-style: solid; border-color: #DCE1E6; margin-bottom: 10px }
