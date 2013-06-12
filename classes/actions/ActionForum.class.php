@@ -2458,10 +2458,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$this->PluginForum_Forum_RecountTopic($oTopic);
 		}
 		/**
-		 * Запускаем пересчет форума
+		 * Запускаем пересчет показателей форума
 		 */
 		$this->PluginForum_Forum_RecountForum($oForum);
 
+		$this->Message_AddNotice($this->Lang_Get('plugin.forum.refresh_submit_ok'));
 		Router::Location(Router::GetPath('forum').'admin/forums/');
 	}
 

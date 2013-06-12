@@ -42,6 +42,7 @@ return array(
 	'and' => 'and',
 
 	'refresh' => 'Recalculation counters',
+	'refresh_submit_ok' => 'Counters forum recalculated',
 
 	'select_forum' => 'Select forum',
 	'select_topic' => 'Select topic',
