@@ -45,6 +45,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	const FORUM_DATA_INDEX		= 'marker,calculate,perms';
 	const FORUM_DATA_FORUM		= 'marker,calculate,perms,moder';
 	const FORUM_DATA_TOPIC		= 'marker,perms,moder';
+	const FORUM_DATA_RSS		= 'perms';
 	/**
 	 * Объект текущего пользователя
 	 */

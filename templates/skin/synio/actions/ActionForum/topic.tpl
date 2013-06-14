@@ -22,6 +22,9 @@
 			<label for="topic_subscribe">{$aLang.plugin.forum.subscribe_topic}</label>
 		</section>
 		{/if}
+		<section class="fl-r">
+			<a href="{router page='rss'}forum_topic/{$oTopic->getId()}/" class="rss">RSS</a>
+		</section>
 		<h3>{$oTopic->getTitle()}</h3>
 	</header>
 	<div class="forums-content">

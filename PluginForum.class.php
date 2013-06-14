@@ -17,13 +17,14 @@ if (!class_exists('Plugin')) {
 class PluginForum extends Plugin {
 	protected $aInherits=array(
 		'action' => array(
-			'ActionProfile' => 'PluginForum_ActionProfile'
+			'ActionProfile',
+			'ActionRss'
 		),
 		'module' => array(
-			'ModuleACL' => 'PluginForum_ModuleACL',
-			'ModuleStream' => 'PluginForum_ModuleStream',
-			'ModuleSubscribe' => 'PluginForum_ModuleSubscribe',
-			'ModuleText' => 'PluginForum_ModuleText'
+			'ModuleACL',
+			'ModuleStream',
+			'ModuleSubscribe',
+			'ModuleText'
 		)
 	);
 

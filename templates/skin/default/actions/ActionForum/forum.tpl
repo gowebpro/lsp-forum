@@ -34,6 +34,9 @@
 					<label for="forum_subscribe">{$aLang.plugin.forum.subscribe_forum}</label>
 				</section>
 				{/if}
+				<section class="fl-r">
+					<a href="{router page='rss'}forum/{if $oForum->getUrl()}{$oForum->getUrl()}{else}{$oForum->getId()}{/if}/" class="rss">RSS</a>
+				</section>
 				<h3>{$oForum->getTitle()}</h3>
 			</header>
 			<div class="forums-content">

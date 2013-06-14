@@ -22,3 +22,7 @@
 		</li>
 	{/foreach}
 </ul>
+
+<footer>
+	<a href="{router page='rss'}forum_stream/">RSS</a>
+</footer>
