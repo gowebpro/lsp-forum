@@ -634,7 +634,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 				 * Marker
 				 */
 				if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-					$sMarkDate=isset($aForumMark[$oForum->getId()]) ? $aForumMark[$oForum->getId()] : $sUserMark;
+					$sMarkDate=(isset($aForumMark[$oForum->getId()]) && strtotime($aForumMark[$oForum->getId()]) > strtotime($sUserMark)) ? $aForumMark[$oForum->getId()] : $sUserMark;
 					if ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate())) {
 						$oForum->setRead(true);
 					} else {
@@ -690,8 +690,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 			 * Marker
 			 */
 			if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-				$sMarkDate=isset($aForumMark[$oTopic->getForumId()]) ? $aForumMark[$oTopic->getForumId()] : $sUserMark;
-				$sMarkDate=isset($aTopicMark[$oTopic->getId()]) ? $aTopicMark[$oTopic->getId()] : $sMarkDate;
+				$sMarkDate=(isset($aForumMark[$oTopic->getForumId()]) && strtotime($aForumMark[$oTopic->getForumId()]) > strtotime($sUserMark)) ? $aForumMark[$oTopic->getForumId()] : $sUserMark;
+				$sMarkDate=(isset($aTopicMark[$oTopic->getId()]) && strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sMarkDate)) ? $aTopicMark[$oTopic->getId()] : $sMarkDate;
 				if ($sMarkDate && strtotime($sMarkDate) >= strtotime($oTopic->getLastPostDate())) {
 					$oTopic->setRead(true);
 				} else {

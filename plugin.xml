@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
 	<name>
-		<lang name="default">Forum</lang>
-		<lang name="russian">Форум</lang>
+		<lang name="default">Forum - beta</lang>
+		<lang name="russian">Форум - beta</lang>
 	</name>
 	<author>
 		<lang name="default">Chiffa</lang>
 		<lang name="russian">Чиффа</lang>
 	</author>
 	<homepage>http://xmk.ars-team.ru</homepage>
-	<version>1.1</version>
+	<version>1.0.52-beta</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>
@@ -17,7 +17,7 @@
 		</plugins>
 	</requires>
 	<description>
-		<lang name="default">Forum for Livestreet CMS</lang>
-		<lang name="russian">Форум для Livestreet CMS</lang>
+		<lang name="default">Forum for Livestreet CMS - beta</lang>
+		<lang name="russian">Форум для Livestreet CMS - beta</lang>
 	</description>
 </plugin>
