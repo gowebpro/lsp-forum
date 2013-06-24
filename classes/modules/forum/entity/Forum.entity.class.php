@@ -256,6 +256,25 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function setRead($data) {
 		$this->_aDataMore['marker']=$data;
 	}
+
+	public function getOptions() {
+		$aValue=unserialize(stripslashes((string)$this->_getDataOne('forum_options')));
+		return $aValue ? $aValue : array();
+	}
+
+	public function getOptionsValue($sName) {
+		$aOptions=$this->getOptions();
+		if (isset($aOptions[$sName])) {
+			return $aOptions[$sName];
+		}
+		return null;
+	}
+
+	public function setOptionsValue($sName,$sValue) {
+		$aOptions=$this->getOptions();
+		$aOptions[$sName]=$sValue;
+		$this->setOptions(addslashes(serialize($aOptions)));
+	}
 }
 
 ?>

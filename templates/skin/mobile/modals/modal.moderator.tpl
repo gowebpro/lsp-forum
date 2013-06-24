@@ -31,6 +31,7 @@
 			</div>
 
 			<input type="hidden" name="moder_form_action" id="moder_form_action" />
+			type="hidden" name="moder_form_forum" id="moder_form_forum" />
 
 			<button type="button" onclick="return ls.forum.admin.applyModerForm('moder-form')" class="button button-primary">{$aLang.plugin.forum.button_save}</button>
 			<button type="button" class="button jqmClose">{$aLang.plugin.forum.button_cancel}</button>

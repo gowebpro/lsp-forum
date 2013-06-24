@@ -2,17 +2,37 @@
 	ФОРУМ
 -------------------------------------------- */
 
-.fBox { background: #edf8fd; border: 1px solid #b4d5e2; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; margin-bottom: 10px }
-.fContainer { background: #fbfcfc; border: 1px solid #dbe4ef }
-.fContainer.fPad { padding: 10px }
+.fBox {
+	background: #edf8fd;
+	border: 1px solid #b4d5e2;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-webkit-background-clip: padding-box;
+	margin-bottom: 10px
+}
+.fContainer {
+	background: #fbfcfc;
+	border: 1px solid #dbe4ef
+}
+.fContainer.fPad {
+	padding: 10px
+}
 
-.fSubmit { background: #edf8fd; padding: 16px 6px; text-align: center; clear: both }
+.fSubmit {
+	background: #edf8fd;
+	padding: 16px 6px;
+	text-align: center;
+	clear: both
+}
 
 .forums {}
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #ebf0f4; -moz-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
 .forums .empty { color: #666; text-align: center; padding: 15px }
 .forums-list {}
-.forums-list .js-forum-cat-toggler {
+
+.toggle-section .js-forum-cat-toggler {
+	float: right;
 	display: inline-block;
 	vertical-align: text-top;
 	width: 14px;
@@ -21,14 +41,15 @@
 	background: url(../images/icons.png) no-repeat;
 	background-position: -24px -96px
 }
+.toggle-section.collapsed .js-forum-cat-toggler {
+	background-position: 0 -96px
+}
+
 .forums-list.collapsed {
 	opacity: 0.5
 }
 .forums-list.collapsed:hover {
 	opacity: 0.75
-}
-.forums-list.collapsed .js-forum-cat-toggler {
-	background-position: 0 -96px;
 }
 .forums-header {	padding: 12px 20px 6px; position: relative; border-top-left-radius: 10; border-top-right-radius: 10px; -moz-border-radius-topleft: 10px; -moz-border-radius-topright: 10px; -webkit-border-top-left-radius: 10px; -webkit-border-top-right-radius: 10px; -webkit-background-clip: padding-box; box-shadow: 0 2px 3px #b4d5e2 inset; -moz-box-shadow: 0 2px 3px #b4d5e2 inset; -webkit-box-shadow: 0 2px 3px #b4d5e2 inset }
 .forums-header h3 { color: #628fa5; font-size: 22px; line-height: 1em; font-weight: normal; font-family: 'PT Sans', sans-serif }
@@ -44,9 +65,6 @@
 .forums-content { padding: 8px }
 .forums-note { padding: 20px 40px; color: #82aabe; border-width: 1px 0px 0px; border-style: solid; border-color: #DCE1E6 }
 .forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #ebf0f4; background: #F7F7F7; margin: 10px 0; padding: 10px }
-
-.forum-acp .forums-content section { padding: 15px }
-.forum-acp .forums-content h3 { font-size: 22px }
 
 .table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
 .table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 7px }
@@ -214,9 +232,60 @@ span.yesno_no { background: #f6e3e3; border: 1px solid #e3b4b4; border-left: 0; 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 /* Text */
-.text blockquote .quote-head { font-size: 12px; padding: 8px 10px; background: #F6F6F6; background: -moz-linear-gradient(top, #F6F6F6 0%, #E5E5E5 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6F6F6), color-stop(100%,#E5E5E5)); margin: -10px -15px; border-top: 1px solid #EDEDF2; border-right: 1px solid #EDEDF2; font-weight: bold }
-.text blockquote .quote-text { padding: 15px 0px }
-.text blockquote .quote-text pre { padding: 10px 0; border: 1px solid #f0f0f0 }
+.text blockquote .quote-head {
+	font-size: 12px;
+	padding: 8px 10px;
+	background: #f6f6f6;
+	background: -moz-linear-gradient(top, #f6f6f6 0%, #e5e5e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#e5e5e5));
+	margin: -10px -15px;
+	border-top: 1px solid #ededf2;
+	border-right: 1px solid #ededf2;
+	font-weight: bold
+}
+.text blockquote .quote-text {
+	padding: 15px 0px
+}
+.text blockquote .quote-text blockquote {
+	border-color: #e4ffe4
+}
+.text blockquote .quote-text .quote-head {
+	border-color: #e4ffe4;
+	background: #e4ffe4;
+	background: -moz-linear-gradient(top, #e4ffe4 0%, #d0f0d0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4ffe4), color-stop(100%,#d0f0d0))
+}
+.text blockquote .quote-text .quote-text blockquote {
+	border-color: #f5ffbe
+}
+.text blockquote .quote-text .quote-text .quote-head {
+	border-color: #f5ffbe;
+	background: #f5ffbe;
+	background: -moz-linear-gradient(top, #f5ffbe 0%, #f2ffa9 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5ffbe), color-stop(100%,#f2ffa9))
+}
+.text blockquote .quote-text .quote-text .quote-text blockquote {
+	border-color: #d5fff7
+}
+.text blockquote .quote-text .quote-text .quote-text .quote-head {
+	border-color: #d5fff7;
+	background: #d5fff7;
+	background: -moz-linear-gradient(top, #d5fff7 0%, #b8f0e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5fff7), color-stop(100%,#b8f0e5))
+}
+.text blockquote .quote-text .quote-text .quote-text .quote-text blockquote {
+	border-color: #f1d6ff
+}
+.text blockquote .quote-text .quote-text .quote-text .quote-text .quote-head {
+	border-color: #f1d6ff;
+	background: #f1d6ff;
+	background: -moz-linear-gradient(top, #f1d6ff 0%, #e3bef7 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1d6ff), color-stop(100%,#e3bef7))
+}
+.text blockquote .quote-text pre {
+	padding: 10px 0;
+	border: 1px solid #f0f0f0
+}
 
 .text .spoiler-wrap { width: 98%; clear: both; margin: 8px auto; padding: 0; background: #edf8fd; border-radius: 6px; -moz-border-radius: 6px; -webkit-border-radius: 6px; -webkit-background-clip: padding-box; box-shadow: 0 2px 3px #b4d5e2 inset; -moz-box-shadow: 0 2px 3px #b4d5e2 inset; -webkit-box-shadow: 0 2px 3px #b4d5e2 inset }
 .text .spoiler-wrap .spoiler-wrap { margin: 2px auto 4px }
@@ -274,22 +343,6 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .toolbar .toolbar-forum-post a.toolbar-post-next i:active {
 	background-position: -249px -55px
 }
-
-/* Admin*/
-#forums-tree {}
-#forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }
-#forums-tree .title { font-weight: bold }
-#forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
-
-.table-perms {}
-.table-perms button { padding: 5px 7px }
-.table-perms th { background: #F1F9F1; color: #808080; font-weight: bold }
-.table-perms td { text-align: center }
-.table-perms td div { font-weight: bold }
-.table-perms .perm-red { background-color: #ECD5D8 !important; color: #E86D7F }
-.table-perms .perm-green { background-color: #CCFFBF !important; color: #00960C }
-.table-perms .perm-yellow { background-color: #FFFDA7 !important; color: #AFA81D }
-.table-perms .perm-blue { background-color: #DEE0ED !important; color: #4D589E }
 
 /* Buttons */
 a.button { color: #434343 }

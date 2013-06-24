@@ -42,6 +42,7 @@ ls.forum.admin = (function ($) {
 			bOptMoveTopic = (data&&data.bOptMoveTopic ? data.bOptMoveTopic : false),
 			bOptOpencloseTopic = (data&&data.bOptOpencloseTopic ? data.bOptOpencloseTopic : false),
 			bOptPinTopic = (data&&data.bOptPinTopic ? data.bOptPinTopic : false);
+		$('#moder_form_forum').val(sForumId);
 		$('#moder_forum_id').val(sForumId);
 		$('#moder_name').val(sModerName);
 		$('#moder_form_options').hide();

@@ -233,6 +233,7 @@ return array(
 	'acp' => 'Management forum',
 	'acp_main' => 'Control center',
 	'acp_forums_control' => 'Manage forums',
+	'acp_forums_control_notice' => 'Each forum can have an unlimited number of sub-forums, and you can specify allowed it to create a theme or not (in the latter case, the forum will act as a partition). Here you can add, edit, lock, unlock each of the forums set some additional settings. If your posts and threads out of sync, you can also synchronize the forum. You need to copy or install the necessary rights to the newly established forum to appear in the list of forums.',
 	'acp_forums_moders' => 'Office of the moderators',
 
 	'moderators' => 'Moderators',

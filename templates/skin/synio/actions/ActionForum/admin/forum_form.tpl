@@ -62,7 +62,7 @@
 								<label for="forum_sort"><strong>{$aLang.plugin.forum.create_sort}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'}" class="input-text input-width-full" />
+								<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'}" class="input-text input-width-100" />
 								<span class="note">{$aLang.plugin.forum.create_sort_notice}</span>
 							</td>
 						</tr>
@@ -88,6 +88,62 @@
 								</select>
 							</td>
 						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_perms"><strong>{$aLang.plugin.forum.create_perms}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<select id="forum_perms" name="forum_perms">
+									<option value="">{$aLang.plugin.forum.create_perms_not}</option>
+								{foreach from=$aForumsList item=aItem}
+									<option value="{$aItem.id}"{if $_aRequest.forum_perms==$aItem.id} selected{/if}>{$aItem.title}</option>
+								{/foreach}
+								</select>
+								<br><span class="note">{$aLang.plugin.forum.create_perms_notice}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_password"><strong>{$aLang.plugin.forum.create_password}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
+								<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_limit_rating_topic"><strong>{$aLang.plugin.forum.create_rating}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
+								<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_icon"><strong>{$aLang.plugin.forum.create_icon}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								{if $oForumEdit and $oForumEdit->getIcon()}
+								<div class="avatar-edit">
+									{foreach from=$oConfig->GetValue('plugin.forum.icon_size') item=iSize}
+										{if $iSize}<img src="{$oForumEdit->getIconPath({$iSize})}">{/if}
+									{/foreach}
+									<label><input type="checkbox" id="forum_icon_delete" name="forum_icon_delete" value="on" class="input-checkbox"> {$aLang.plugin.forum.create_icon_delete}</label>
+								</div>
+								{/if}
+								<input type="file" name="forum_icon" id="forum_icon">
+								<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
+							</td>
+						</tr>
+
+						<tr>
+							<th colspan="2" class="cell-subtitle">
+								{$aLang.plugin.forum.create_block_options}
+							</th>
+						</tr>
+
 						<tr>
 							<td class="cell-label">
 								<label for="forum_type"><strong>{$aLang.plugin.forum.create_type}:</strong></label>
@@ -128,20 +184,46 @@
 						</tr>
 						<tr>
 							<td class="cell-label">
-								<label for="forum_password"><strong>{$aLang.plugin.forum.create_password}:</strong></label>
+								<label for="forum_display_subforum_list"><strong>{$aLang.plugin.forum.create_display_subforum_list}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-width-200" />
-								<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
+								<span class="yesno_yes">
+									<label><input type="radio" class="radio" name="forum_display_subforum_list" id="forum_display_subforum_list_yes" value="1"{if $_aRequest.forum_display_subforum_list=='1'} checked{/if}> Yes</label>
+								</span><span class="yesno_no">
+									<label><input type="radio" class="radio" name="forum_display_subforum_list" id="forum_display_subforum_list_no" value="0"{if !$_aRequest.forum_display_subforum_list || $_aRequest.forum_display_subforum_list=='0'} checked{/if}> No</label>
+								</span>
+								<span class="note">{$aLang.plugin.forum.create_display_subforum_list_notice}</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="cell-label">
-								<label for="forum_limit_rating_topic"><strong>{$aLang.plugin.forum.create_rating}:</strong></label>
+								<label for="forum_display_on_index"><strong>{$aLang.plugin.forum.create_display_on_index}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
-								<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
+								<span class="yesno_yes">
+									<label><input type="radio" class="radio" name="forum_display_on_index" id="forum_display_on_index_yes" value="1"{if $_aRequest.forum_display_on_index=='1'} checked{/if}> Yes</label>
+								</span><span class="yesno_no">
+									<label><input type="radio" class="radio" name="forum_display_on_index" id="forum_display_on_index_no" value="0"{if !$_aRequest.forum_display_on_index || $_aRequest.forum_display_on_index=='0'} checked{/if}> No</label>
+								</span>
+								<span class="note">{$aLang.plugin.forum.create_display_on_index_notice}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_topics_per_page"><strong>{$aLang.plugin.forum.create_topics_per_page}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<input type="text" id="forum_topics_per_page" name="forum_topics_per_page" value="{$_aRequest.forum_topics_per_page|default:0}" class="input-text input-width-100" />
+								<span class="note">{$aLang.plugin.forum.create_topics_per_page_notice|ls_lang:"default%%`$oConfig->Get('plugin.forum.topic_per_page')`"}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_posts_per_page"><strong>{$aLang.plugin.forum.create_posts_per_page}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<input type="text" id="forum_posts_per_page" name="forum_posts_per_page" value="{$_aRequest.forum_posts_per_page|default:0}" class="input-text input-width-100" />
+								<span class="note">{$aLang.plugin.forum.create_posts_per_page_notice|ls_lang:"default%%`$oConfig->Get('plugin.forum.post_per_page')`"}</span>
 							</td>
 						</tr>
 
@@ -171,23 +253,6 @@
 									<label><input type="radio" class="radio" name="forum_redirect_on" id="forum_redirect_on_no" value="0"{if !$_aRequest.forum_redirect_on || $_aRequest.forum_redirect_on=='0'} checked{/if}> No</label>
 								</span>
 								<span class="note">{$aLang.plugin.forum.create_redirect_on_notice}</span>
-							</td>
-						</tr>
-						<tr>
-							<td class="cell-label">
-								<label for="forum_icon"><strong>{$aLang.plugin.forum.create_icon}:</strong></label>
-							</td>
-							<td class="cell-labeled">
-								{if $oForumEdit and $oForumEdit->getIcon()}
-								<div class="avatar-edit">
-									{foreach from=$oConfig->GetValue('plugin.forum.icon_size') item=iSize}
-										{if $iSize}<img src="{$oForumEdit->getIconPath({$iSize})}">{/if}
-									{/foreach}
-									<label><input type="checkbox" id="forum_icon_delete" name="forum_icon_delete" value="on" class="input-checkbox"> {$aLang.plugin.forum.create_icon_delete}</label>
-								</div>
-								{/if}
-								<input type="file" name="forum_icon" id="forum_icon">
-								<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
 							</td>
 						</tr>
 						{/if}

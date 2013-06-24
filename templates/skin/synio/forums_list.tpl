@@ -6,6 +6,7 @@
 				{assign var='oPost' value=$oForum->getPost()}
 				{assign var='aSubForums' value=$oForum->getChildren()}
 				{assign var='aModerators' value=$oForum->getModerators()}
+				{assign var='sDisplaySubforumList' value=$oForum->getOptionsValue('display_subforum_list')}
 				<tr{if !$oForum->getRead() && !$oForum->getRedirectOn()} class="unread"{/if}>
 					<td class="cell-icon">
 						<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/></a>
@@ -13,13 +14,14 @@
 					<td class="cell-name">
 						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 						<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
-						{if $aSubForums}
+						{if $sDisplaySubforumList && $aSubForums}
 						<p class="details">
 							<strong>{$aLang.plugin.forum.subforums}:</strong>
 							{foreach from=$aSubForums item=oSubForum name=subforums}
-								{if $oSubForum->getAllowShow()}
-								{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
-								<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>
+								{assign var='sDisplayOnIndex' value=$oSubForum->getOptionsValue('display_on_index')}
+								{if $sDisplayOnIndex && $oSubForum->getAllowShow()}
+									{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
+									<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>
 								{/if}
 							{/foreach}
 						</p>

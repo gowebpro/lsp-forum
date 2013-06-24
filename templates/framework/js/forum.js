@@ -64,25 +64,25 @@ ls.forum = (function ($) {
 		return $window;
 	};
 
-	this.replyPost = function($t) {
-		var idPost = $t.attr('data-post-id');
-		var userName = $t.attr('data-name');
+	this.replyPost = function() {
+		var idPost = $(this).attr('data-post-id');
+		var userName = $(this).attr('data-name');
 		ls.forum.configReplyForm(idPost);
 		if (userName) $.markItUp({target: $('#post_text'), replaceWith: '@'+userName+', '} );
 		return false;
 	};
 
-	this.quotePost = function($t) {
-		var idPost = $t.attr('data-post-id');
+	this.quotePost = function() {
+		var idPost = $(this).attr('data-post-id');
 		ls.forum.configReplyForm(idPost);
-		var $post = $t.parents('#post-'+idPost);
+		var $post = $(this).parents('#post-'+idPost);
 		var $text = $post.find('.forum-post-body .text').html();
 		$.markItUp({target: $('#post_text'), replaceWith:'<blockquote reply="'+idPost+'">'+$.trim($text)+'</blockquote>' });
 		return false;
 	};
 
-	this.deletePost = function($t) {
-		var idPost = $t.attr('data-post-id');
+	this.deletePost = function() {
+		var idPost = $(this).attr('data-post-id');
 		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.post_delete_confirm'), { 'id':idPost }, function(e) {
 			var sId = $(this).data('params').id;
 			window.location=aRouter.forum+'topic/delete/'+sId;
@@ -134,7 +134,7 @@ ls.forum = (function ($) {
 	};
 
 	this.toggleCat = function(e) {
-		var $section=$(this).parent().parent('section');
+		var $section=$(this).parent().parent('.toggle-section');
 		var $content=$section.children('.forums-content'),
 			$note=$section.children('.forums-note');
 		if ($content.is(":visible")) {
@@ -155,19 +155,9 @@ ls.forum = (function ($) {
 	};
 
 	this.initButtons = function() {
-		var $self = this;
-		$('.js-post-reply').click(function() {
-			var $t = $(this);
-			return $self.replyPost($t);
-		});
-		$('.js-post-quote').click(function() {
-			var $t = $(this);
-			return $self.quotePost($t);
-		});
-		$('.js-post-delete').click(function() {
-			var $t = $(this);
-			return $self.deletePost($t);
-		});
+		$('.js-post-reply').click(this.replyPost);
+		$('.js-post-quote').click(this.quotePost);
+		$('.js-post-delete').click(this.deletePost);
 	};
 
 	this.initSpoilers = function() {

@@ -42,6 +42,7 @@ ALTER TABLE `prefix_forum_marker_topic`
 	ADD CONSTRAINT `prefix_forum_marker_topic_fk2` FOREIGN KEY (`topic_id`) REFERENCES `prefix_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `prefix_forum` ADD `forum_icon` varchar(250) DEFAULT NULL AFTER `forum_count_post`;
+ALTER TABLE `prefix_forum` ADD `forum_options` text DEFAULT NULL AFTER `forum_icon`;
 ALTER TABLE `prefix_forum` ADD `last_post_date` datetime DEFAULT NULL;
 ALTER TABLE `prefix_forum_post` ADD `post_parent_id` int(11) unsigned NOT NULL DEFAULT '0' AFTER `user_id`;
 ALTER TABLE `prefix_forum_topic` ADD `last_post_date` datetime DEFAULT NULL;

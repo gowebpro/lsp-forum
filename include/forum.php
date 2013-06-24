@@ -77,7 +77,7 @@ function forum_check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 		if (is_null($aPermissions) && PluginForum_ModuleForum::MASK_PERM_GUEST === $sPermId) {
 			return $bGuestDef;
 		}
-		if (is_null($aPermissions) || (string)$aPermissions === '*') {
+		if ((string)$aPermissions === '*') {
 			return true;
 		}
 	}

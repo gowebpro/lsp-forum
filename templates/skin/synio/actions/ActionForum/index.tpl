@@ -8,9 +8,9 @@
 		{foreach from=$aForums item=oForum}
 			{if $oForum->getAllowShow()}
 				{assign var="aSubForums" value=$oForum->getChildren()}
-				<section class="fBox forums-list category-block" id="category-{$oForum->getId()}">
+				<section class="fBox forums-list category-block toggle-section" id="category-{$oForum->getId()}">
 					<header class="forums-header">
-						<i class="js-forum-cat-toggler fl-r"></i>
+						<i class="js-forum-cat-toggler"></i>
 						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 					</header>
 					<div class="forums-content">

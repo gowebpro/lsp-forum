@@ -32,6 +32,7 @@
 			</div>
 
 			<input type="hidden" name="moder_form_action" id="moder_form_action" />
+			<input type="hidden" name="moder_form_forum" id="moder_form_forum" />
 
 			<button type="button" onclick="return ls.forum.admin.applyModerForm('moder-form')" class="button button-primary">OK</button>
 		</form>

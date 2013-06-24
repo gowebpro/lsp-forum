@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 	`forum_count_topic` int(11) NOT NULL DEFAULT '0',
 	`forum_count_post` int(11) NOT NULL DEFAULT '0',
 	`forum_icon` varchar(250) DEFAULT NULL,
+	`forum_options` text DEFAULT NULL,
 	`last_post_id` int(11) unsigned DEFAULT NULL,
 	`last_post_date` datetime DEFAULT NULL,
 	PRIMARY KEY (`forum_id`),
