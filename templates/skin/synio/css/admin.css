@@ -36,6 +36,9 @@
 .forums-tree-wrapper {
 	padding: 20px
 }
+.forums-tree-wrapper ul {
+	border-bottom: 1px solid #9bc800
+}
 .forums-tree-wrapper ul ul {
 	margin-left: 25px
 }

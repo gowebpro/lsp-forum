@@ -4,7 +4,7 @@
 * @Description: Forum for LiveStreet
 * @Version: 1.0
 * @Author: Chiffa
-* @LiveStreet Version: 1.0
+* @LiveStreet version: 1.X
 * @File Name: ActionForum.class.php
 * @License: CC BY-NC, http://creativecommons.org/licenses/by-nc/3.0/
 *----------------------------------------------------------------------------
@@ -131,6 +131,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^ajax$/i','/^getmoderator$/','EventAjaxGetModerator');
 		$this->AddEventPreg('/^ajax$/i','/^getlasttopics$/','EventAjaxGetLastTopics');
 		$this->AddEventPreg('/^ajax$/i','/^gettopics$/','EventAjaxGetTopics');
+		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^upload$/','EventAjaxAttachUpload');
+		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^delete$/','EventAjaxAttachDelete');
+		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^text$/','EventAjaxAttachText');
 	}
 
 
@@ -509,6 +512,188 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Устанавливаем переменные для ajax ответа
 		 */
 		$this->Viewer_AssignAjax('aTopics',$aTopics);
+	}
+
+	/**
+	 * Загрузка файла на сервер
+	 *
+	 */
+	protected function EventAjaxAttachUpload() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 * В зависимости от типа загрузчика устанавливается тип ответа
+		 */
+		if (getRequest('is_iframe')) {
+			$this->Viewer_SetResponseAjax('jsonIframe', false);
+		} else {
+			$this->Viewer_SetResponseAjax('json');
+		}
+		/**
+		 * Проверяем авторизован ли юзер
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Файл был загружен?
+		 */
+		if (!isset($_FILES['Filedata']['tmp_name'])) {
+			$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+			return false;
+		}
+
+		$iPostId = getRequestStr('post_id');
+		$sTargetId = null;
+		$iCountFiles = 0;
+		// Если от сервера не пришёл id поста, то пытаемся определить временный код для нового поста. Если и его нет. то это ошибка
+		if (!$iPostId) {
+			$sTargetId = empty($_COOKIE['ls_fattach_target_tmp']) ? getRequestStr('ls_fattach_target_tmp') : $_COOKIE['ls_fattach_target_tmp'];
+			if (!$sTargetId) {
+				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+				return false;
+			}
+			$iCountFiles = $this->PluginForum_Forum_GetCountFilesByTargetTmp($sTargetId);
+		} else {
+			/**
+			 * Загрузка файлов к уже существующему посту
+			 */
+			$oPost = $this->PluginForum_Forum_GetPostById($iPostId);
+			if (!$oPost || !$this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+				return false;
+			}
+			$iCountFiles = $this->PluginForum_Forum_GetCountFilesByPostId($iPostId);
+		}
+		/**
+		 * Максимальное количество файлов в сообщении
+		 */
+		if ($iCountFiles >= Config::Get('plugin.forum.attach.count_max')) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.attach_error_too_much_files', array('MAX' => Config::Get('plugin.forum.attach.count_max'))), $this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Максимальный размер файла
+		 */
+		$iFileSize = filesize($_FILES['Filedata']['tmp_name']);
+		if ($iFileSize > Config::Get('plugin.forum.attach.max_size')*1024) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.attach_error_bad_filesize', array('MAX' => Config::Get('plugin.forum.attach.max_size'))), $this->Lang_Get('error'));
+			return false;
+		}
+		/**
+		 * Загружаем файл
+		 */
+		$sFile = $this->PluginForum_Forum_UploadAttach($_FILES['Filedata']);
+		if ($sFile) {
+			$sFileName = $_FILES['Filedata']['name'];
+			$sExtension = strtolower(array_pop(explode('.',$sFileName)));
+			/**
+			 * Создаем файл
+			 */
+			$oFile = Engine::GetEntity('PluginForum_Forum_File');
+			$oFile->setPath($sFile);
+			$oFile->setName($sFileName);
+			$oFile->setSize($iFileSize);
+			$oFile->setExtension($sExtension);
+			if ($iPostId) {
+				$oFile->setPostId($iPostId);
+			} else {
+				$oFile->setTargetTmp($sTargetId);
+			}
+			if ($oFile = $oFile->Add()) {
+				/**
+				 * Если пост уже существует (редактирование), то обновляем число файлов в нём
+				 */
+				if (isset($oPost)) {
+					$oPost->setFilesCount($oPost->getFilesCount()+1);
+					$oPost->Update();
+				}
+				/**
+				 * Формируем ответ
+				 */
+				$this->Viewer_AssignAjax('id', $oFile->getId());
+				$this->Viewer_AssignAjax('name', $oFile->getName());
+				$this->Viewer_AssignAjax('size', $oFile->getSizeFormat());
+				$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_added'), $this->Lang_Get('attention'));
+			} else {
+				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+			}
+		} else {
+			$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+		}
+	}
+	/**
+	 * Удаление файла с сервера
+	 *
+	 */
+	protected function EventAjaxAttachDelete() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Проверяем авторизован ли юзер
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Поиск файла по id
+		 */
+		$oFile = $this->PluginForum_Forum_GetFileById(getRequestStr('id'));
+		if ($oFile) {
+			if ($oFile->getPostId()) {
+				/**
+				 * Проверяем права
+				 */
+				if ($oPost=$this->PluginForum_Forum_GetPostById($oFile->getPostId()) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+					$this->PluginForum_Forum_DeleteAttach($oFile);
+					$oPost->setFilesCount($oPost->getFilesCount()-1);
+					$oPost->Update();
+					$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_deleted'), $this->Lang_Get('attention'));
+					return;
+				}
+			} else {
+				$oFile->Delete();
+				$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_deleted'), $this->Lang_Get('attention'));
+				return;
+			}
+		}
+		$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+	}
+	/**
+	 * Установка описания для файла
+	 *
+	 */
+	protected function EventAjaxAttachText() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Проверяем авторизован ли юзер
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Поиск файла по id
+		 */
+		$oFile = $this->PluginForum_Forum_GetFileById(getRequestStr('id'));
+		if ($oFile) {
+			if ($oFile->getPostId()) {
+				// проверяем права
+				if ($oPost=$this->Topic_GetTopicById($oFile->getPostId()) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+					$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
+					$oFile->Update();
+				}
+			} else {
+				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
+				$oFile->Update();
+			}
+		}
 	}
 
 
@@ -1245,6 +1430,18 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$this->_addTitle($this->Lang_Get('plugin.forum.new_topic'),'after');
 		}
 		/**
+		 * Если нет временного ключа для нового поста, то генерируеи. если есть, то загружаем файлы по этому ключу
+		 */
+		if (empty($_COOKIE['ls_fattach_target_tmp'])) {
+			setcookie('ls_fattach_target_tmp',  func_generator(), time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+		} else {
+			setcookie('ls_fattach_target_tmp', $_COOKIE['ls_fattach_target_tmp'], time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+			$this->Viewer_Assign('aFiles', $this->PluginForum_Forum_GetFileItemsByTargetTmp($_COOKIE['ls_fattach_target_tmp']));
+		}
+		if (!is_numeric(getRequest('post_id'))) {
+			$_REQUEST['post_id']='';
+		}
+		/**
 		 * Вызов хуков
 		 */
 		$this->Hook_Run('forum_topic_add_show');
@@ -1480,18 +1677,28 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->SetTemplateAction('add_post');
 		/**
-		 * Проверяем отправлена ли форма с данными(хотяб одна кнопка)
+		 * Если нет временного ключа для нового поста, то генерируеи. если есть, то загружаем файлы по этому ключу
 		 */
-		if (isPost('submit_post_publish')) {
-			return $this->submitPostAdd($oForum,$oTopic);
+		if (empty($_COOKIE['ls_fattach_target_tmp'])) {
+			setcookie('ls_fattach_target_tmp',  func_generator(), time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+		} else {
+			setcookie('ls_fattach_target_tmp', $_COOKIE['ls_fattach_target_tmp'], time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+			$this->Viewer_Assign('aFiles', $this->PluginForum_Forum_GetFileItemsByTargetTmp($_COOKIE['ls_fattach_target_tmp']));
 		}
+		if (!is_numeric(getRequest('post_id'))) {
+			$_REQUEST['post_id']='';
+		}
+		/**
+		 * Обрабатываем отправку формы
+		 */
+		return $this->submitPostAdd($oForum,$oTopic);
 	}
 
 	/**
 	 * Обработка формы добавление поста
 	 */
 	protected function submitPostAdd($oForum=null,$oTopic=null) {
-		if (!($oForum && $oTopic)) {
+		if (!isPost('submit_post_publish') || !($oForum && $oTopic)) {
 			return false;
 		}
 		/**
@@ -1539,6 +1746,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (getRequestStr('replyto')) {
 			$oPost->setParentId((int)getRequestStr('replyto'));
 		}
+		/**
+		 * Вложения
+		 */
+		$sTargetTmp=$_COOKIE['ls_fattach_target_tmp'];
+		$aFiles = $this->PluginForum_Forum_GetFileItemsByTargetTmp($sTargetTmp);
+		$oPost->setFilesCount(count($aFiles));
 		/**
 		 * Проверяем поля формы
 		 */
@@ -1601,6 +1814,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Отправка уведомления на отвеченные посты
 			 */
 			$this->PluginForum_Forum_SendNotifyReply($oPost,$aExcludeMail);
+			/**
+			 * Удаляем временную куку
+			 */
+			setcookie('ls_fattach_target_tmp', null);
 
 			Router::Location($oPost->getUrlFull());
 		} else {
@@ -1670,6 +1887,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		} else {
 			$this->_addTitle($this->Lang_Get('plugin.forum.post_edit_for',array('topic'=>$oTopic->getTitle())),'after');
 		}
+		if (!is_numeric(getRequest('post_id'))) {
+			$_REQUEST['post_id']='';
+		}
 		/**
 		 * Устанавливаем шаблон вывода
 		 */
@@ -1689,8 +1909,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 			} else {
 				$_REQUEST['post_title']=$oPost->getTitle();
 			}
+			$_REQUEST['post_id']=$oPost->getId();
 			$_REQUEST['post_text']=$oPost->getTextSource();
 		}
+		$this->Viewer_Assign('aFiles', $this->PluginForum_Forum_GetFileItemsByPostId($oPost->getId()));
 	}
 
 	/**
@@ -2724,6 +2946,25 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
+		 * Проверка вложений
+		 */
+		$iCountFiles = 0;
+		if (!$oPost->getId()) {
+			if (isset($_COOKIE['ls_fattach_target_tmp'])) {
+				$iCountFiles = $this->PluginForum_Forum_GetCountFilesByTargetTmp($_COOKIE['ls_fattach_target_tmp']);
+			} else {
+				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+				$bOk=false;
+			}
+		} else {
+			$iCountFiles = $this->PluginForum_Forum_GetCountFilesByPostId($oPost->getId());
+		}
+		if ($iCountFiles > Config::Get('plugin.forum.attach.count_max')) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.attach_error_too_much_files', array('MAX' => Config::Get('plugin.forum.attach.count_max'))), $this->Lang_Get('error'));
+			$bOk=false;
+		}
+
+		/**
 		 * Выполнение хуков
 		 */
 		$this->Hook_Run('forum_check_post_fields', array('bOk'=>&$bOk));
@@ -2820,7 +3061,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			array(
 				'plugin.forum.post_anchor_promt',
 				'plugin.forum.moderator_del_confirm',
-				'panel_spoiler','panel_spoiler_placeholder'
+				//editor
+				'panel_spoiler','panel_spoiler_placeholder',
+				//attach
+				'plugin.forum.attach_upload_file_choose',
+				'plugin.forum.attach_file_delete_confirm',
+				'plugin.forum.attach_file_delete',
 			)
 		);
 	}

@@ -105,6 +105,15 @@ $config['icon_size']			= array(64,48,32,0);
 $config['smiles_pack']			= 'default';
 
 /**
+ * Файлы
+ * TODO: Управление форматами через админку
+ */
+$config['attach']['max_size'] = 10*1024; // максимально допустимый размер фото, Kb
+$config['attach']['count_max'] = 10; // максимальное количество файлов
+$config['attach']['format'] = 'zip,rar'; // допустимые форматы файлов
+$config['attach']['format_swf'] = '*.zip;*.rar;*.7-zip;*.ZIP;*.RAR;*.7-ZIP'; // настройка для flash загрузчика
+
+/**
  * Активация плагина
  */
 $config['activate'] = array();
@@ -125,6 +134,7 @@ $config['path_smarty_plug']		= '___plugin.forum.path_plugin___/smarty_plugs';// 
 $config['path_uploads']			= '___plugin.forum.path_plugin___/uploads';		//Путь для загрузок
 $config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//Путь для загрузок иконок форума
 $config['path_uploads_smiles']	= '___plugin.forum.path_uploads___/smiles';		//Путь для загрузок смайлов
+$config['path_uploads_files']	= '___plugin.forum.path_uploads___/files';		//Путь для загрузок файлов
 
 /**
  * Настройка Jevix

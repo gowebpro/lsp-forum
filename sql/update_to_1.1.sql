@@ -1,4 +1,19 @@
 --
+-- Table structure for table `prefix_forum_file`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_file` (
+	`file_id` int(11) NOT NULL AUTO_INCREMENT,
+	`post_id` int(11) unsigned DEFAULT NULL,
+	`file_path` varchar(255) NOT NULL,
+	`file_text` text,
+	`file_target_tmp` varchar(40) DEFAULT NULL,
+	PRIMARY KEY (`file_id`),
+	KEY `post_id` (`post_id`),
+	KEY `file_target_tmp` (`file_target_tmp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Table structure for table `prefix_forum_marker`
 --
 
@@ -45,4 +60,5 @@ ALTER TABLE `prefix_forum` ADD `forum_icon` varchar(250) DEFAULT NULL AFTER `for
 ALTER TABLE `prefix_forum` ADD `forum_options` text DEFAULT NULL AFTER `forum_icon`;
 ALTER TABLE `prefix_forum` ADD `last_post_date` datetime DEFAULT NULL;
 ALTER TABLE `prefix_forum_post` ADD `post_parent_id` int(11) unsigned NOT NULL DEFAULT '0' AFTER `user_id`;
+ALTER TABLE `prefix_forum_post` ADD `post_extra` text DEFAULT NULL AFTER `post_guest_name`;
 ALTER TABLE `prefix_forum_topic` ADD `last_post_date` datetime DEFAULT NULL;

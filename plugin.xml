@@ -8,8 +8,8 @@
 		<lang name="default">Chiffa</lang>
 		<lang name="russian">Чиффа</lang>
 	</author>
-	<homepage>http://xmk.ars-team.ru</homepage>
-	<version>1.0.54-beta</version>
+	<homepage>http://xmk.github.io/lsplugin-forum/</homepage>
+	<version>1.0.55-beta</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>

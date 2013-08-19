@@ -930,6 +930,70 @@ class PluginForum_ModuleForum extends ModuleORM {
 		return false;
 	}
 
-}
+	/**
+	 * Возвращает количество файлов по временному id
+	 *
+	 * @param	string	$sTargetId
+	 * @return	integer
+	 */
+	public function GetCountFilesByTargetTmp($sTargetId) {
+		return count($this->GetFileItemsByTargetTmp($sTargetId));
+	}
+	/**
+	 * Возвращает количество файлов по id поста
+	 *
+	 * @param	integer	$iPostId
+	 * @return	integer
+	 */
+	public function GetCountFilesByPostId($iPostId) {
+		return count($this->GetFileItemsByPostId($iPostId));
+	}
+	/**
+	 * Загружает файл на сервер
+	 *
+	 * @param	array	$aFile
+	 * @return	string
+	 */
+	public function UploadAttach($aFile) {
+		if(!is_array($aFile) || !isset($aFile['tmp_name'])) {
+			return false;
+		}
 
+		$sFileName = func_generator(10);
+		$sTmpName = $aFile['tmp_name'];
+
+		/**
+		 * TODO: Проверка типов файла
+		 */
+
+		$sFullPath = Config::Get('plugin.forum.path_uploads_files').'/'.date('Y/m/d').'/';
+
+		if (!is_dir($sFullPath)) {
+			mkdir($sFullPath, 0755, true);
+		}
+
+		$sFilePath = $sFullPath.$sFileName;
+		if (!move_uploaded_file($sTmpName,$sFilePath)) {
+			return false;
+		}
+
+		/**
+		 * TODO:
+		 * Вырезать путь 'plugin.forum.path_uploads_files'
+		 */
+
+		return $this->Image_GetWebPath($sFilePath);
+	}
+	/**
+	 * Удаляет файл с сервера
+	 *
+	 * @param	PluginForum_ModuleForum_EntityFile	$oFile
+	 * @return	boolean
+	 */
+	public function DeleteAttach(PluginForum_ModuleForum_EntityFile $oFile) {
+		@unlink($this->Image_GetServerPath($oFile->getPath()));
+		return	$this->PluginForum_Forum_DeleteFile($oFile);
+	}
+
+}
 ?>

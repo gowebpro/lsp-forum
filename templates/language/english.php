@@ -242,6 +242,11 @@ return array(
 	'markread' => 'Mark this forum as read',
 	'markread_all' => 'Mark all forums read',
 
+	'attach_upload_title' => 'Upload',
+	'attach_upload_rules' => 'Доступна загрузка файлов форматов %%FORMAT%%<br>Размер одного файла не должен превышать %%SIZE%%<br>Максимальное число загружаемых файлов: %%COUNT%%',
+	'attach_upload_file_choose' => 'Choose file',
+	'attach_file_delete' => 'Delete',
+
 	'acp' => 'Management forum',
 	'acp_main' => 'Control center',
 	'acp_forums_control' => 'Manage forums',

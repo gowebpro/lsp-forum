@@ -243,6 +243,16 @@ return array(
 	'markread' => 'Отметить этот форум прочитанным',
 	'markread_all' => 'Отметить все форумы прочитанными',
 
+	'attach_upload_title' => 'Загрузка вложений',
+	'attach_upload_rules' => 'Доступна загрузка файлов форматов %%FORMAT%%<br>Размер одного файла не должен превышать %%SIZE%% Kб<br>Максимальное число загружаемых файлов: %%COUNT%%',
+	'attach_upload_file_choose' => 'Выбрать файл',
+	'attach_file_delete' => 'Удалить',
+	'attach_file_delete_confirm' => 'Удалить файл?',
+	'attach_file_deleted' => 'Файл удален',
+	'attach_file_added' => 'Файл загружен',
+	'attach_error_too_much_files' => 'Сообщение может содержать не более %%MAX%% файлов',
+	'attach_error_bad_filesize' => 'Размер файла должен быть не более %%MAX%% Кб',
+
 	'acp' => 'Управление форумом',
 	'acp_main' => 'Центр управления',
 	'acp_forums_control' => 'Управление форумами',

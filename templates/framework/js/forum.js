@@ -3,7 +3,7 @@
 * @Description: Forum for LiveStreet
 * @Version: 1.0
 * @Author: Chiffa
-* @LiveStreet Version: 1.0
+* @LiveStreet version: 1.X
 * @File Name: forum.js
 * @License: CC BY-NC, http://creativecommons.org/licenses/by-nc/3.0/
 *----------------------------------------------------------------------------
@@ -11,7 +11,15 @@
 
 var ls=ls || {}
 
+/**
+ * Main
+ * last update: 8.13
+ */
 ls.forum = (function ($) {
+
+	/**
+	 * Открывает\закрывает форму быстрого ответа
+	 */
 	this.fastReply = function(el) {
 		var form=$('#fast-reply-form');
 		if (form.is(":visible")) {
@@ -234,6 +242,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Editor settings
+	 */
 	this.getMarkitupMini = function() {
 		return {
 			onShiftEnter:	{keepDefault:false, replaceWith:'<br />\n'},
@@ -289,8 +300,184 @@ ls.forum = (function ($) {
 	return this;
 }).call(ls.forum || {},jQuery);
 
+
+/**
+ * Attach
+ * last update: 8.13
+ */
+ls.forum.attach = (function ($) {
+	this.swfu;
+
+	/**
+	 * Инициализация компонента
+	 */
+	this.init = function() {
+		var self = this;
+
+		$('#js-attach-file-upload').on('change', function(e) {
+			self.upload();
+		});
+	};
+
+	/**
+	 * Инициализация flash загрузчика
+	 */
+	this.initSwfUpload = function(opt) {
+		opt = opt || {};
+		opt.post_params.ls_fattach_target_tmp = $.cookie('ls_fattach_target_tmp') ? $.cookie('ls_fattach_target_tmp') : 0;
+		opt.upload_url = aRouter['forum'] + 'ajax/attach/upload/';
+		opt.file_types_description = 'attach';
+		opt.button_text = '<span class="button">'+ls.lang.get('plugin.forum.attach_upload_file_choose')+'</span>';
+
+		$(ls.swfupload).unbind('load').bind('load',function() {
+			this.swfu = ls.swfupload.init(opt);
+
+			$(this.swfu).bind('eUploadProgress',this.swfHandlerUploadProgress);
+			$(this.swfu).bind('eFileDialogComplete',this.swfHandlerFileDialogComplete);
+			$(this.swfu).bind('eUploadSuccess',this.swfHandlerUploadSuccess);
+			$(this.swfu).bind('eUploadComplete',this.swfHandlerUploadComplete);
+		}.bind(this));
+
+		ls.swfupload.loadSwf();
+	};
+
+	this.swfHandlerUploadProgress = function(e, file, bytesLoaded, percent) {
+		$('#attach_file_empty_filename').text(file.name);
+		$('#attach_file_empty_progress').find('.js-upload-label').text(percent >= 100  ? 'Complete..' : percent +'%');
+		$('#attach_file_empty_progress').find('.js-upload-percents').css({ 'width' : percent + '%' });
+	};
+
+	this.swfHandlerFileDialogComplete = function(e, numFilesSelected, numFilesQueued) {
+		if (numFilesQueued>0) {
+			ls.forum.attach.addFileEmpty();
+		}
+	};
+
+	this.swfHandlerUploadSuccess = function(e, file, serverData) {
+		ls.forum.attach.addFile(jQuery.parseJSON(serverData));
+	};
+
+	this.swfHandlerUploadComplete = function(e, file, next) {
+		if (next>0) {
+			ls.forum.attach.addFileEmpty();
+		}
+	};
+
+	/**
+	 * Добавляет пустую форму файла
+	 */
+	this.addFileEmpty = function() {
+		var $template = $('<li id="attach_file_empty" class="attach-upload-progress">'
+			+'<div id="attach_file_empty_filename" class="attach-upload-progress-filename"></div>'
+			+'<div id="attach_file_empty_progress" class="progress-bar">'
+			+'<div class="progress-bar-value js-upload-percents"></div>'
+			+'<div class="progress-bar-label js-upload-label">Uploading...</div>'
+			+'</div></li>');
+		$('#swfu_files').append($template);
+	};
+
+	/**
+	 * Добавляет форму с загруженным файлом
+	 */
+	this.addFile = function(data) {
+		$('#attach_file_empty').remove();
+		if (!data.bStateError) {
+			var $template = $('<li id="file_'+data.id+'"><div class="forum-attach-files-item-header">'
+				+'<span class="forum-attach-files-item-title">'+data.name+'</span><span class="forum-attach-files-item-size">'+data.size+'</span></div>'
+				+'<textarea onBlur="ls.forum.attach.setFileDescription('+data.id+', this.value)"></textarea><br />'
+				+'<a href="javascript:ls.forum.attach.deleteFile('+data.id+')" class="file-delete">'+ls.lang.get('plugin.forum.attach_file_delete')+'</a>'
+				+'</li>');
+			$('#swfu_files').append($template);
+			ls.msg.notice(data.sMsgTitle,data.sMsg);
+		} else {
+			ls.msg.error(data.sMsgTitle,data.sMsg);
+		}
+	};
+
+	/**
+	 * Удалить файл
+	 */
+	this.deleteFile = function(id) {
+	//	var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.attach_file_delete_confirm'), { }, function(e) {
+	//		run function
+	//	});
+	//	$window.jqmShow();
+		if (!confirm(ls.lang.get('plugin.forum.attach_file_delete_confirm'))) {return;}
+		ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':id}, function(response){
+			if (!response.bStateError) {
+				$('#file_'+id).remove();
+				ls.msg.notice(response.sMsgTitle,response.sMsg);
+			} else {
+				ls.msg.error(response.sMsgTitle,response.sMsg);
+			}
+		});
+	};
+
+	/**
+	 * Установка описания для файла
+	 */
+	this.setFileDescription = function(id, text) {
+		ls.ajax(aRouter['forum']+'ajax/attach/text', {'id':id, 'text':text}, function(result){
+			if (!result.bStateError) {
+
+			} else {
+				ls.msg.error('Error','Please try again later');
+			}
+		});
+	};
+
+	/**
+	 * Загрузка файла
+	 */
+	this.upload = function() {
+		ls.forum.attach.addFileEmpty();
+
+		var input = $('#js-attach-file-upload');
+		var form = $('<form method="post" enctype="multipart/form-data">'
+			+'<input type="hidden" name="is_iframe" value="true" />'
+			+'<input type="hidden" name="post_id" value="' + input.data('post-id') + '" />'
+			+'</form>').hide().appendTo('body');
+
+		input.clone(true).insertAfter(input);
+		input.appendTo(form);
+
+		ls.ajaxSubmit(aRouter['forum'] + 'ajax/attach/upload/', form, function (data) {
+			if (data.bStateError) {
+				$('#attach_file_empty').remove();
+				ls.msg.error(data.sMsgTitle,data.sMsg);
+			} else {
+				ls.forum.attach.addFile(data);
+			}
+			form.remove();
+		});
+
+		ls.forum.attach.closeForm();
+	};
+
+	this.closeForm = function() {
+		$('#modal-attach-upload').jqmHide();
+	}
+
+	this.showForm = function() {
+		var $select = $('#js-attach-file-upload-flash');
+		if ($select.length) {
+			var pos = $select.offset();
+			w = $select.outerWidth();
+			h = $select.outerHeight();
+			t = pos.top + h - 30  + 'px';
+			l = pos.left - 15 + 'px';
+			$('#modal-attach-upload').css({'top':t,'left':l});
+		}
+		$('#modal-attach-upload').show();
+	}
+
+	return this;
+}).call(ls.forum.attach || {},jQuery);
+
+
 /**
  * Функционал тул-бара
+ * last update: 5.13
  */
 ls.toolbar.forum = (function ($) {
 
@@ -330,7 +517,6 @@ ls.toolbar.forum = (function ($) {
 			$.scrollTo(post, 500);
 		} else {
 			this.iCurrentPost=$('.js-post').length-1;
-			// переход на следующую страницу
 			var page=$('.js-paging-next-page');
 			if (page.length && page.attr('href')) {
 				window.location=page.attr('href')+'#go-0';
@@ -343,7 +529,6 @@ ls.toolbar.forum = (function ($) {
 		this.iCurrentPost--;
 		if (this.iCurrentPost<0) {
 			this.iCurrentPost=0;
-			// на предыдущую страницу
 			var page=$('.js-paging-prev-page');
 			if (page.length && page.attr('href')) {
 				window.location=page.attr('href')+'#go-last';
@@ -360,27 +545,21 @@ ls.toolbar.forum = (function ($) {
 	return this;
 }).call(ls.toolbar.forum || {},jQuery);
 
+
 /**
  * Вспомогательные функции
+ * last update: 8.13
  */
 ls.tools = (function ($) {
-
-	this.arrayUniq = function(arr) {
-		var res=new Array();
-		$.each(arr,function(i,e) {
-			if ($.inArray(e,res)==-1) res.push(e);
-			if ($.inArray(e,without)==-1) res.push(e);
-		});
-		return res;
-	};
-
 
 
 	return this;
 }).call(ls.tools || {},jQuery);
 
+
 /**
  * Инициализация
+ * last update: 8.13
  */
 jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
@@ -390,7 +569,8 @@ jQuery(document).ready(function($){
 	ls.forum.initSpoilers();
 	ls.forum.initModals();
 
-	// Тул-бар
+	ls.forum.attach.init();
+
 	ls.toolbar.forum.init();
 
 	ls.blocks.options.type.stream_forum = {

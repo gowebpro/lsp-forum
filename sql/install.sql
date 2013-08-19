@@ -32,6 +32,26 @@ CREATE TABLE IF NOT EXISTS `prefix_forum` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prefix_forum_file`
+--
+
+CREATE TABLE IF NOT EXISTS `prefix_forum_file` (
+	`file_id` int(11) NOT NULL AUTO_INCREMENT,
+	`post_id` int(11) unsigned DEFAULT NULL,
+	`file_name` varchar(255) NOT NULL,
+	`file_path` varchar(255) NOT NULL,
+	`file_size` int(11) NOT NULL,
+	`file_extension` varchar(40) DEFAULT NULL,
+	`file_text` text,
+	`file_target_tmp` varchar(40) DEFAULT NULL,
+	PRIMARY KEY (`file_id`),
+	KEY `post_id` (`post_id`),
+	KEY `file_target_tmp` (`file_target_tmp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `prefix_forum_marker`
 --
 
@@ -174,6 +194,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_post` (
 	`post_editor_id` int(11) unsigned DEFAULT NULL,
 	`post_edit_reason` varchar(255) DEFAULT NULL,
 	`post_guest_name` varchar(50) DEFAULT NULL,
+	`post_extra` text DEFAULT NULL,
 	PRIMARY KEY (`post_id`),
 	KEY `topic_id` (`topic_id`),
 	KEY `user_id` (`user_id`),
