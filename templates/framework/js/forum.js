@@ -317,6 +317,10 @@ ls.forum.attach = (function ($) {
 		$('#js-attach-file-upload').on('change', function(e) {
 			self.upload();
 		});
+		$('.js-attach-file-download').click(function(e) {
+			self.download($(this).data('file-id'));
+			return false;
+		});
 	};
 
 	/**
@@ -382,7 +386,7 @@ ls.forum.attach = (function ($) {
 	this.addFile = function(data) {
 		$('#attach_file_empty').remove();
 		if (!data.bStateError) {
-			var $template = $('<li id="file_'+data.id+'"><div class="forum-attach-files-item-header">'
+			var $template = $('<li id="file_'+data.id+'" class="forum-attach-files-item"><div class="forum-attach-files-item-header">'
 				+'<span class="forum-attach-files-item-title">'+data.name+'</span><span class="forum-attach-files-item-size">'+data.size+'</span></div>'
 				+'<textarea onBlur="ls.forum.attach.setFileDescription('+data.id+', this.value)"></textarea><br />'
 				+'<a href="javascript:ls.forum.attach.deleteFile('+data.id+')" class="file-delete">'+ls.lang.get('plugin.forum.attach_file_delete')+'</a>'
@@ -427,7 +431,7 @@ ls.forum.attach = (function ($) {
 	};
 
 	/**
-	 * Загрузка файла
+	 * Загрузка файла на сервер
 	 */
 	this.upload = function() {
 		ls.forum.attach.addFileEmpty();
@@ -452,6 +456,13 @@ ls.forum.attach = (function ($) {
 		});
 
 		ls.forum.attach.closeForm();
+	};
+
+	/**
+	 * Загрузка файла с сервера
+	 */
+	this.download = function(id) {
+		window.location=aRouter.forum+'download/'+id;
 	};
 
 	this.closeForm = function() {

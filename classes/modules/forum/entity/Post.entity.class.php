@@ -16,6 +16,7 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id'),
 		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
 		'editor'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','post_editor_id'),
+		'files'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityFile','file_id','db.table.forum_file_rel','post_id')
 	);
 
 	/**
@@ -56,5 +57,14 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	public function getNumber() {
 		return $this->_getDataOne('number') ? $this->_getDataOne('number') : $this->getId();
 	}
+
+	public function getFilesCount() {
+		return 0;
+	}
+	public function setFilesCount($data) {
+		//tmp
+		return true;
+	}
+
 }
 ?>

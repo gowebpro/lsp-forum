@@ -1,5 +1,3 @@
-{include file="$sTemplatePathForum/modals/modal.upload_file.tpl"}
-
 <script type="text/javascript">
 	jQuery(function($){
 		if (jQuery.browser.flash) {
@@ -27,7 +25,7 @@
 						<span class="forum-attach-files-item-title">{$oFile->getName()}</span>
 						<span class="forum-attach-files-item-size">{$oFile->getSizeFormat()}</span>
 					</div>
-					<textarea onblur="ls.forum.attach.setFileDescription({$oFile->getId()}, this.value)">{$oFile->getDescription()}</textarea><br />
+					<textarea onblur="ls.forum.attach.setFileDescription({$oFile->getId()}, this.value)">{$oFile->getText()}</textarea><br />
 					<a href="javascript:ls.forum.attach.deleteFile({$oFile->getId()})" class="file-delete">{$aLang.plugin.forum.attach_file_delete}</a>
 				</li>
 			{/foreach}

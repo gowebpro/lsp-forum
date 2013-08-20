@@ -109,6 +109,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->AddEvent('index','EventIndex');
 		$this->AddEvent('jump','EventJump');
+		$this->AddEventPreg('/^download$/','/^(\d+)$/i','EventDownload');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^(page([1-9]\d{0,5}))?$/i','EventShowTopic');
 		$this->AddEventPreg('/^topic$/i','/^(\d+)$/i','/^reply$/i',array('EventAddPost','add_post'));
 		$this->AddEventPreg('/^topic$/i','/^edit$/i','/^(\d+)$/i',array('EventEditPost','edit_post'));
@@ -546,7 +547,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$iPostId = getRequestStr('post_id');
 		$sTargetId = null;
 		$iCountFiles = 0;
-		// Если от сервера не пришёл id поста, то пытаемся определить временный код для нового поста. Если и его нет. то это ошибка
+		/**
+		 * Если от сервера не пришёл id поста, то пытаемся определить временный код. Если и его нет. то это ошибка
+		 */
 		if (!$iPostId) {
 			$sTargetId = empty($_COOKIE['ls_fattach_target_tmp']) ? getRequestStr('ls_fattach_target_tmp') : $_COOKIE['ls_fattach_target_tmp'];
 			if (!$sTargetId) {
@@ -563,7 +566,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
 				return false;
 			}
-			$iCountFiles = $this->PluginForum_Forum_GetCountFilesByPostId($iPostId);
+			$iCountFiles = count($oPost->getFiles());
 		}
 		/**
 		 * Максимальное количество файлов в сообщении
@@ -595,17 +598,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$oFile->setName($sFileName);
 			$oFile->setSize($iFileSize);
 			$oFile->setExtension($sExtension);
-			if ($iPostId) {
-				$oFile->setPostId($iPostId);
-			} else {
+			$oFile->setUserId($this->oUserCurrent->getId());
+			if (!$iPostId) {
 				$oFile->setTargetTmp($sTargetId);
 			}
 			if ($oFile = $oFile->Add()) {
 				/**
-				 * Если пост уже существует (редактирование), то обновляем число файлов в нём
+				 * Привязываем вложение к посту
 				 */
 				if (isset($oPost)) {
-					$oPost->setFilesCount($oPost->getFilesCount()+1);
+					$oPost->files->add($oFile);
 					$oPost->Update();
 				}
 				/**
@@ -648,14 +650,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 * Проверяем права
 				 */
 				if ($oPost=$this->PluginForum_Forum_GetPostById($oFile->getPostId()) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+					//$oPost->files->remove($oFile);
 					$this->PluginForum_Forum_DeleteAttach($oFile);
-					$oPost->setFilesCount($oPost->getFilesCount()-1);
-					$oPost->Update();
 					$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_deleted'), $this->Lang_Get('attention'));
 					return;
 				}
 			} else {
-				$oFile->Delete();
+				$this->PluginForum_Forum_DeleteAttach($oFile);
 				$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_deleted'), $this->Lang_Get('attention'));
 				return;
 			}
@@ -693,6 +694,41 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
 				$oFile->Update();
 			}
+		}
+	}
+
+	/**
+	 * Скачиваем файл вложения
+	 *
+	 */
+	public function EventDownload() {
+		/**
+		 * Проверяем авторизован ли юзер
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
+			return Router::Action('error');
+		}
+		/**
+		 * Поиск файла по id
+		 */
+		$oFile = $this->PluginForum_Forum_GetFileById($this->getParam(0));
+		if ($oFile) {
+			$oFile->setDownload($oFile->getDownload() + 1);
+			$oFile->Update();
+
+			$sServerPath = $this->Image_GetServerPath($oFile->getPath());
+
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.$oFile->getName().'"');
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . $oFile->getSize());
+  
+			print file_get_contents($sServerPath);
 		}
 	}
 
@@ -1468,6 +1504,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Обрабатываем форму добавления топика
+	 * TODO: Проверка прав доступа
 	 */
 	protected function submitTopicAdd($oForum) {
 		if (is_null($oForum)) {
@@ -1535,6 +1572,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oPost->setTextSource(getRequestStr('post_text'));
 		$oPost->setNewTopic(1);
 		/**
+		 * Вложения
+		 */
+		$sTargetTmp = $_COOKIE['ls_fattach_target_tmp'];
+		$aFiles = $this->PluginForum_Forum_GetFileItemsByTargetTmp($sTargetTmp);
+		/**
 		 * Проверка корректности полей формы
 		 */
 		if (!$this->checkPostFields($oPost)) {
@@ -1558,6 +1600,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			if ($oPost->Add()) {
 				$this->Hook_Run('forum_topic_add_after', array('oTopic'=>$oTopic,'oPost'=>$oPost,'oForum'=>$oForum));
+				/**
+				 * Привязываем вложения к id поста
+				 * TODO: здесь нужно это делать одним запросом, а не перебором сущностей
+				 */
+				if (count($aFiles)) {
+					foreach($aFiles as $oFile) {
+						$oFile->setTargetTmp(null);
+						$oFile->Update();
+						$oPost->files->add($oFile);
+					}
+				}
+				/**
+				 * Удаляем временную куку
+				 */
+				setcookie('ls_fattach_target_tmp', null);
 				/**
 				 * Получаем пост, чтоб подцепить связанные данные
 				 */
@@ -1691,14 +1748,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Обрабатываем отправку формы
 		 */
-		return $this->submitPostAdd($oForum,$oTopic);
+		if (isPost('submit_post_publish')) {
+			return $this->submitPostAdd($oForum,$oTopic);
+		}
 	}
 
 	/**
 	 * Обработка формы добавление поста
+	 *
 	 */
 	protected function submitPostAdd($oForum=null,$oTopic=null) {
-		if (!isPost('submit_post_publish') || !($oForum && $oTopic)) {
+		if (!($oForum && $oTopic)) {
 			return false;
 		}
 		/**
@@ -1749,9 +1809,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Вложения
 		 */
-		$sTargetTmp=$_COOKIE['ls_fattach_target_tmp'];
+		$sTargetTmp = $_COOKIE['ls_fattach_target_tmp'];
 		$aFiles = $this->PluginForum_Forum_GetFileItemsByTargetTmp($sTargetTmp);
-		$oPost->setFilesCount(count($aFiles));
 		/**
 		 * Проверяем поля формы
 		 */
@@ -1767,6 +1826,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if ($oPost->Add()) {
 			$this->Hook_Run('forum_post_add_after',array('oPost'=>$oPost,'oTopic'=>$oTopic,'oForum'=>$oForum));
+			/**
+			 * Привязываем вложения к id поста
+			 * TODO: здесь нужно это делать одним запросом, а не перебором сущностей
+			 */
+			if (count($aFiles)) {
+				foreach($aFiles as $oFile) {
+					$oFile->setTargetTmp(null);
+					$oFile->Update();
+					$oPost->files->add($oFile);
+				}
+			}
+			/**
+			 * Удаляем временную куку
+			 */
+			setcookie('ls_fattach_target_tmp', null);
 			/**
 			 * Обновляем инфу в топике
 			 */
@@ -1814,10 +1888,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Отправка уведомления на отвеченные посты
 			 */
 			$this->PluginForum_Forum_SendNotifyReply($oPost,$aExcludeMail);
-			/**
-			 * Удаляем временную куку
-			 */
-			setcookie('ls_fattach_target_tmp', null);
 
 			Router::Location($oPost->getUrlFull());
 		} else {
@@ -1912,7 +1982,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$_REQUEST['post_id']=$oPost->getId();
 			$_REQUEST['post_text']=$oPost->getTextSource();
 		}
-		$this->Viewer_Assign('aFiles', $this->PluginForum_Forum_GetFileItemsByPostId($oPost->getId()));
+		$this->Viewer_Assign('aFiles', $oPost->getFiles());
 	}
 
 	/**
@@ -1994,6 +2064,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 	/**
 	 * Удаление поста
 	 * TODO: Перевесить на ajax с возможностью быстрого восстановления
+	 * удаленные сообщения не отображаются и удаляются раз в X дней
 	 */
 	public function EventDeletePost() {
 		/**
@@ -2957,7 +3028,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$bOk=false;
 			}
 		} else {
-			$iCountFiles = $this->PluginForum_Forum_GetCountFilesByPostId($oPost->getId());
+			$iCountFiles = count($oPost->getFiles());
 		}
 		if ($iCountFiles > Config::Get('plugin.forum.attach.count_max')) {
 			$this->Message_AddError($this->Lang_Get('plugin.forum.attach_error_too_much_files', array('MAX' => Config::Get('plugin.forum.attach.count_max'))), $this->Lang_Get('error'));

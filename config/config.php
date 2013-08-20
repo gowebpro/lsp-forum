@@ -172,6 +172,8 @@ Config::Set('jevix.forum', array_merge_recursive(Config::Get('jevix.default'), $
  * Настройка таблиц
  */
 Config::Set('db.table.forum', '___db.table.prefix___forum');
+Config::Set('db.table.forum_file', '___db.table.prefix___forum_file');
+Config::Set('db.table.forum_file_rel', '___db.table.prefix___forum_file_rel');
 Config::Set('db.table.forum_moderator', '___db.table.prefix___forum_moderator');
 Config::Set('db.table.forum_moderator_rel', '___db.table.prefix___forum_moderator_rel');
 Config::Set('db.table.forum_post', '___db.table.prefix___forum_post');

@@ -8,6 +8,7 @@
 
 {include file='editor.tpl' sImgToLoad='post_text' sSettingsTinymce='ls.settings.getTinymce()' sSettingsMarkitup='ls.forum.getMarkitup()'}
 {include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
+{include file="$sTemplatePathForum/modals/modal.upload_file.tpl"}
 
 <div class="fBox">
 	<form action="" method="POST" enctype="multipart/form-data" id="form-topic-add">

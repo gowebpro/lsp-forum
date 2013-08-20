@@ -940,15 +940,6 @@ class PluginForum_ModuleForum extends ModuleORM {
 		return count($this->GetFileItemsByTargetTmp($sTargetId));
 	}
 	/**
-	 * Возвращает количество файлов по id поста
-	 *
-	 * @param	integer	$iPostId
-	 * @return	integer
-	 */
-	public function GetCountFilesByPostId($iPostId) {
-		return count($this->GetFileItemsByPostId($iPostId));
-	}
-	/**
 	 * Загружает файл на сервер
 	 *
 	 * @param	array	$aFile
@@ -958,10 +949,15 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if(!is_array($aFile) || !isset($aFile['tmp_name'])) {
 			return false;
 		}
-
-		$sFileName = func_generator(10);
+		/**
+		 * Генерируем случайное имя
+		 */
+		$sFileName = func_generator(16);
+		/**
+		 * Извлекаем расширение файла
+		 */
+		$sExtension = strtolower(array_pop(explode('.',$aFile['name'])));
 		$sTmpName = $aFile['tmp_name'];
-
 		/**
 		 * TODO: Проверка типов файла
 		 */
@@ -972,7 +968,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			mkdir($sFullPath, 0755, true);
 		}
 
-		$sFilePath = $sFullPath.$sFileName;
+		$sFilePath = $sFullPath.$sFileName.'.'.$sExtension;
 		if (!move_uploaded_file($sTmpName,$sFilePath)) {
 			return false;
 		}

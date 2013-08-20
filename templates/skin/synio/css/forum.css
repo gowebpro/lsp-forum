@@ -260,6 +260,15 @@
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #ebf0f4; padding: 10px; margin: 10px 0 0 }
 .forum-post-body .reason { background: #ebf0f4; padding: 3px 6px }
+.forum-post-body .attach {
+	background: #f1f7fd;
+	padding: 10px;
+	border-top: 1px dashed #ebf0f4
+}
+.forum-post-body .attach-item {
+	font-weight: bold;
+	text-decoration: none
+}
 .forum-post-footer { border-top: 1px solid #ebf0f4; padding: 5px 10px 8px 0 }
 .forum-post.new .forum-post-header { background: #cdf5a6 }
 

@@ -250,6 +250,7 @@ return array(
 	'attach_file_delete_confirm' => 'Удалить файл?',
 	'attach_file_deleted' => 'Файл удален',
 	'attach_file_added' => 'Файл загружен',
+	'attach_file_hint' => '%%TEXT%%<br>Размер файла: %%SIZE%%<br>Скачан раз: %%COUNT%%',
 	'attach_error_too_much_files' => 'Сообщение может содержать не более %%MAX%% файлов',
 	'attach_error_bad_filesize' => 'Размер файла должен быть не более %%MAX%% Кб',
 
