@@ -38,6 +38,22 @@
 	color: #fff
 }
 
+/**
+ * Input File Replacer
+ * из девелоперской версии ls
+ */
+.form-input-file {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	display: inline
+}
+.form-input-file input[type=file] {
+	position: absolute;
+	top: -999px;
+	left: -999px
+}
+
 
 /**
  * Main

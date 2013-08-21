@@ -314,12 +314,17 @@ ls.forum.attach = (function ($) {
 	this.init = function() {
 		var self = this;
 
-		$('#js-attach-file-upload').on('change', function(e) {
+		$('#js-attach-upload-file').on('change', function(e) {
 			self.upload();
 		});
 		$('.js-attach-file-download').click(function(e) {
 			self.download($(this).data('file-id'));
 			return false;
+		});
+
+		$('#js-attach-my-files').click(function() {
+			// load window content
+			// show window
 		});
 	};
 
@@ -436,7 +441,7 @@ ls.forum.attach = (function ($) {
 	this.upload = function() {
 		ls.forum.attach.addFileEmpty();
 
-		var input = $('#js-attach-file-upload');
+		var input = $('#js-attach-upload-file');
 		var form = $('<form method="post" enctype="multipart/form-data">'
 			+'<input type="hidden" name="is_iframe" value="true" />'
 			+'<input type="hidden" name="post_id" value="' + input.data('post-id') + '" />'
@@ -454,8 +459,6 @@ ls.forum.attach = (function ($) {
 			}
 			form.remove();
 		});
-
-		ls.forum.attach.closeForm();
 	};
 
 	/**
@@ -464,23 +467,6 @@ ls.forum.attach = (function ($) {
 	this.download = function(id) {
 		window.location=aRouter.forum+'download/'+id;
 	};
-
-	this.closeForm = function() {
-		$('#modal-attach-upload').jqmHide();
-	}
-
-	this.showForm = function() {
-		var $select = $('#js-attach-file-upload-flash');
-		if ($select.length) {
-			var pos = $select.offset();
-			w = $select.outerWidth();
-			h = $select.outerHeight();
-			t = pos.top + h - 30  + 'px';
-			l = pos.left - 15 + 'px';
-			$('#modal-attach-upload').css({'top':t,'left':l});
-		}
-		$('#modal-attach-upload').show();
-	}
 
 	return this;
 }).call(ls.forum.attach || {},jQuery);

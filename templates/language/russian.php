@@ -245,7 +245,7 @@ return array(
 
 	'attach_upload_title' => 'Загрузка вложений',
 	'attach_upload_rules' => 'Доступна загрузка файлов форматов %%FORMAT%%<br>Размер одного файла не должен превышать %%SIZE%% Kб<br>Максимальное число загружаемых файлов: %%COUNT%%',
-	'attach_upload_file_choose' => 'Выбрать файл',
+	'attach_upload_file_choose' => 'Загрузить файл',
 	'attach_file_delete' => 'Удалить',
 	'attach_file_delete_confirm' => 'Удалить файл?',
 	'attach_file_deleted' => 'Файл удален',
@@ -253,6 +253,7 @@ return array(
 	'attach_file_hint' => '%%TEXT%%<br>Размер файла: %%SIZE%%<br>Скачан раз: %%COUNT%%',
 	'attach_error_too_much_files' => 'Сообщение может содержать не более %%MAX%% файлов',
 	'attach_error_bad_filesize' => 'Размер файла должен быть не более %%MAX%% Кб',
+	'attach_my_files' => 'Мои файлы',
 
 	'acp' => 'Управление форумом',
 	'acp_main' => 'Центр управления',
