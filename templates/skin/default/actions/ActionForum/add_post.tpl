@@ -26,7 +26,11 @@
 		<br />
 	{/if}
 
+	{* Расширенная форма для гостей *}
 	{include file="$sTemplatePathForum/guest_block.tpl" event="post"}
+
+	{* Прикрепление файлов *}
+	{include file="$sTemplatePathForum/forms/form.attach.tpl"}
 
 	{hook run='form_forum_add_post_end'}
 

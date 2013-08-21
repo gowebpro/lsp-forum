@@ -60,7 +60,7 @@
 						<br />
 					{/if}
 
-					{* Прикрепление файлов *}
+					{* РџСЂРёРєСЂРµРїР»РµРЅРёРµ С„Р°Р№Р»РѕРІ *}
 					{include file="$sTemplatePathForum/forms/form.attach.tpl"}
 
 					<p>

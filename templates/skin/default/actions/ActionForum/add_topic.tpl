@@ -65,7 +65,11 @@
 	</p>
 	{/if}
 
+	{* Расширенная форма для гостей *}
 	{include file="$sTemplatePathForum/guest_block.tpl" event="topic"}
+
+	{* Прикрепление файлов *}
+	{include file="$sTemplatePathForum/forms/form.attach.tpl"}
 
 	{hook run='form_forum_add_topic_end'}
 

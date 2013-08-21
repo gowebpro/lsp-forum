@@ -1,7 +1,63 @@
-/* --------------------------------------------
-	ФОРУМ
--------------------------------------------- */
+/**
+ * Стили форума
+ */
+ 
+ 
+/**
+ * Progress Bar
+ * из девелоперской версии ls
+ */
+.progress-bar {
+	height: 25px;
+	width: 100%;
+	background: #8BC4E0;
+	color: #fff;
+	overflow: hidden;
+	position: relative;
+	border-radius: 3px
+}
+.progress-bar-value {
+	height: 25px;
+	background: #149bdf;
+	background: -moz-linear-gradient(top, #149bdf 0%, #0480be 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, #149bdf), color-stop(100%, #0480be));
+	background: -webkit-linear-gradient(top, #149bdf 0%, #0480be 100%);
+	background: -o-linear-gradient(top, #149bdf 0%, #0480be 100%);
+	background: -ms-linear-gradient(top, #149bdf 0%, #0480be 100%);
+	background: linear-gradient(to bottom, #149bdf 0%, #0480be 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#149bdf', endColorstr='#0480be', GradientType=0 );
+ }
+.progress-bar-label {
+	height: 25px;
+	width: 100%;
+	line-height: 25px;
+	text-align: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: #fff
+}
 
+/**
+ * Input File Replacer
+ * из девелоперской версии ls
+ */
+.form-input-file {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	display: inline
+}
+.form-input-file input[type=file] {
+	position: absolute;
+	top: -999px;
+	left: -999px
+}
+
+
+/**
+ * Main
+ */
 .forums {}
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box }
 .forums .empty { color: #666; text-align: center; padding: 15px }
@@ -89,6 +145,65 @@
 .forum-legend  .col2 { width: 5% }
 .forum-legend  .col3 { width: 90%; text-align: right }
 
+/* Attach */
+.forum-attach-upload {
+	background: #f1f7fd;
+	padding: 15px;
+	margin-bottom: 20px
+}
+.forum-attach-upload h2 {
+	font-size: 24px;
+	margin-bottom: 15px
+}
+.forum-attach-upload-rules {
+	color: #888;
+	font-size: 12px;
+	line-height: 20px;
+	margin-bottom: 15px
+}
+.forum-attach-files {
+	overflow: hidden;
+	zoom: 1
+}
+.forum-attach-files-item {
+	padding: 15px;
+	position: relative
+}
+.forum-attach-files-item-header {
+	padding: 5px
+}
+.forum-attach-files-item-title {
+	font-weight: bold
+}
+.forum-attach-files-item-size {
+	color: #888;
+	margin: 0 10px
+}
+.forum-attach-files-item label {
+	color: #aaa
+}
+.forum-attach-files-item textarea {
+	border: 1px solid #ddd;
+	width: 350px;
+	height: 60px;
+	padding: 3px;
+	font-size: 12px;
+	font-family: Arial, sans-serif;
+	color: #333;
+	resize: none
+}
+.forum-attach-files-item a {
+	margin-right: 15px
+}
+
+.attach-upload-progress {
+	margin: 15px
+}
+.attach-upload-progress-filename {
+	margin-bottom: 5px
+}
+
+
 /* Post */
 .forum-post { background: #fafafa; border-bottom: 1px solid #dce1e6; padding: 0 0 5px }
 .forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
@@ -110,6 +225,15 @@
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #eee; padding: 10px; margin: 10px 0 0 }
 .forum-post-body .reason { background: #eee; padding: 3px 6px }
+.forum-post-body .attach {
+	background: #f1f7fd;
+	padding: 10px;
+	border-top: 1px dashed #ebf0f4
+}
+.forum-post-body .attach-item {
+	font-weight: bold;
+	text-decoration: none
+}
 .forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
 
 .board-stats-links {

@@ -71,10 +71,10 @@
 						<br />
 					{/if}
 
-					{* Расширенная форма для гостей *}
+					{* Р Р°СЃС€РёСЂРµРЅРЅР°СЏ С„РѕСЂРјР° РґР»СЏ РіРѕСЃС‚РµР№ *}
 					{include file="$sTemplatePathForum/guest_block.tpl" event="topic"}
 
-					{* Прикрепление файлов *}
+					{* РџСЂРёРєСЂРµРїР»РµРЅРёРµ С„Р°Р№Р»РѕРІ *}
 					{include file="$sTemplatePathForum/forms/form.attach.tpl"}
 
 					{hook run='form_forum_add_topic_end'}

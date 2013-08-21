@@ -50,6 +50,9 @@
 		<br />
 	{/if}
 
+	{* Прикрепление файлов *}
+	{include file="$sTemplatePathForum/forms/form.attach.tpl"}
+
 	{if $oUserCurrent && $bEditTopic && ($oUserCurrent->isAdministrator())}
 	<p>
 		<label><input type="checkbox" id="topic_pinned" name="topic_pinned" class="input-checkbox" value="1"{if $_aRequest.topic_pinned==1} checked{/if} /> {$aLang.plugin.forum.new_topic_pin}</label>
