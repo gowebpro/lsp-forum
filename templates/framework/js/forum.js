@@ -496,7 +496,7 @@ ls.forum.attach = (function ($) {
 	};
 
 	/**
-	 * Загрузка файла на сервер
+	 * Прикрепление файла к сообщению
 	 */
 	this.attach = function(id) {
 		ls.forum.attach.addFileEmpty();

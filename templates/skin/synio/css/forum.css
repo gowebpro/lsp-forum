@@ -88,7 +88,6 @@
 .forums {}
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #ebf0f4; -moz-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box; border-radius: 10px }
 .forums .empty { color: #666; text-align: center; padding: 15px }
-.forums-list {}
 
 .toggle-section .js-forum-cat-toggler {
 	float: right;
@@ -104,6 +103,8 @@
 	background-position: 0 -96px
 }
 
+.forums-list {
+}
 .forums-list.collapsed {
 	opacity: 0.5
 }

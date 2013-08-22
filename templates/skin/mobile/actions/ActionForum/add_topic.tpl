@@ -7,6 +7,8 @@
 {/if}
 
 {include file='editor.tpl' sImgToLoad='post_text' sSettingsTinymce='ls.settings.getTinymce()' sSettingsMarkitup='ls.forum.getMarkitup()'}
+{include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
+{include file="$sTemplatePathForum/modals/modal.files.tpl"}
 
 <form action="" method="POST" enctype="multipart/form-data" id="form-topic-add">
 	{hook run='form_forum_add_topic_begin'}
@@ -58,14 +60,18 @@
 		<br />
 	{/if}
 
+	{* Расширенная форма для гостей *}
+	{include file="$sTemplatePathForum/guest_block.tpl" event="topic"}
+
+	{* Прикрепление файлов *}
+	{include file="$sTemplatePathForum/forms/form.attach.tpl"}
+
 	{if $oUserCurrent && $oUserCurrent->isAdministrator()}
 	<p>
 		<label><input type="checkbox" id="topic_pinned" name="topic_pinned" class="input-checkbox" value="1"{if $_aRequest.topic_pinned==1} checked{/if} /> {$aLang.plugin.forum.new_topic_pin}</label>
 		<label><input type="checkbox" id="topic_close" name="topic_close" class="input-checkbox" value="1"{if $_aRequest.topic_close==1} checked{/if} /> {$aLang.plugin.forum.new_topic_close}</label>
 	</p>
 	{/if}
-
-	{include file="$sTemplatePathForum/guest_block.tpl" event="topic"}
 
 	{hook run='form_forum_add_topic_end'}
 

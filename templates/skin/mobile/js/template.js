@@ -1,15 +1,20 @@
+/**
+ * Переопределение функций для мобильного шаблона
+ * last update: 8.13
+ */
 
+/**
+ * Удаление сообщения
+ */
 ls.forum.deletePost = function($t) {
+	if (!confirm(ls.lang.get('plugin.forum.post_delete_confirm'))) {return;}
 	var idPost = $t.attr('data-post-id');
-	var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.post_delete_confirm'), { 'id':idPost }, function(e) {
-		var sId = $(this).data('params').id;
-		window.location=aRouter.forum+'topic/delete/'+sId;
-	});
-	$window.insertBefore($('#post-'+idPost));
-	$window.slideDown();
+	window.location=aRouter.forum+'topic/delete/'+sId;
 	return false;
 };
-
+/**
+ * Модальное окно с прямой ссылкой на сообщение
+ */
 ls.forum.linkToPost = function(idPost) {
 	var $window = $('#link-to-post');
 	$window.insertBefore($('#post-'+idPost));
@@ -17,7 +22,9 @@ ls.forum.linkToPost = function(idPost) {
 	$window.slideToggle();
 	return false;
 };
-
+/**
+ * Колбэк заблокированной кнопки (для гостей)
+ */
 ls.forum.disabledButton = function() {
 	if (ls.blocks.switchTab('login','popup-login')) {
 		$('#window_login_form').show();
@@ -26,29 +33,15 @@ ls.forum.disabledButton = function() {
 	}
 	return false;
 };
-
+/**
+ * Инициализация модальных окон
+ */
 ls.forum.initModals = function() {
 	$('.slide').each(function() {
 		$(this).find('.jqmClose').click($.proxy($(this).slideUp, $(this)));
 	});
 };
 
-ls.forum.initToggler = function() {
-	$('.js-forum-cat-toggler').click(function() {
-		var content=$(this).next('.forum-content');
-		var note=$(content).next('.forum-note');
-		if (content.is(":visible")) {
-			$(this).addClass('collapsed');
-			$(content).slideUp();
-			if (note) $(note).slideDown();
-		} else {
-			$(this).removeClass('collapsed');
-			$(content).slideDown();
-			if (note) $(note).slideUp();
-		}
-		return false;
-	});
-};
 
 jQuery(document).ready(function($){
 	// Хук начала инициализации javascript-составляющих шаблона

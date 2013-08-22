@@ -4,17 +4,24 @@
 <h2 class="page-header">{$aLang.plugin.forum.forums}</h2>
 
 <div class="forums">
-	{if $aForums}
+	{if count($aForums) > 0}
 		{foreach from=$aForums item=oForum}
 			{if $oForum->getAllowShow()}
 				{assign var="aSubForums" value=$oForum->getChildren()}
-				<section class="forum-block">
-					<header class="forum-header js-forum-cat-toggler">
-						<i class="fl-r"></i>
+				<section class="forum-block toggle-section" id="category-{$oForum->getId()}">
+					<header class="forum-header">
+						<i class="js-forum-cat-toggler"></i>
 						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
 					</header>
 					<div class="forum-content">
 						{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}
+					</div>
+					<div class="forums-note clearfix" style="display:none">
+						<div class="fl-r">
+							<strong>{$oForum->getCountTopic()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountTopic()|declension:$aLang.plugin.forum.topics_declension:'russian'|lower}
+							<span>|</span>
+							<strong>{$oForum->getCountPost()|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</strong> {$oForum->getCountPost()|declension:$aLang.plugin.forum.posts_declension:'russian'|lower}
+						</div>
 					</div>
 				</section>
 			{/if}
