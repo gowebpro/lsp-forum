@@ -24,7 +24,7 @@
 				{assign var="noShowSystemMessage" value=false}
 				{include file='system_message.tpl'}
 
-				<div class="forums-tree-notice">
+				<div class="forum-acp-notice">
 					{$aLang.plugin.forum.acp_forums_control_notice}
 				</div>
 

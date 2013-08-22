@@ -14,7 +14,10 @@
 	color: #fff;
 	overflow: hidden;
 	position: relative;
-	border-radius: 3px
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-webkit-background-clip: padding-box
 }
 .progress-bar-value {
 	height: 25px;
@@ -253,6 +256,65 @@
 	margin-bottom: 5px
 }
 
+.attach-files {
+	overflow: hidden;
+	zoom: 1
+}
+.attach-files-item {
+	border: 1px solid #fbfcfc;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-webkit-background-clip: padding-box;
+	cursor: pointer;
+	width: 100%
+}
+.attach-files-item:hover {
+	border-color: #e2fff7;
+	background: #f1f7fd
+}
+.attach-files-item:hover .file-hover {
+	display: block
+}
+.attach-files-item-main,
+.attach-files-item-note,
+.attach-files-item-detail {
+	vertical-align: middle;
+	display: inline-block;
+	padding: 10px
+}
+.attach-files-item-main {
+	width: 37%
+}
+	.attach-files-item-main .file-name {
+		display: block;
+		font-weight: bold
+	}
+	.attach-files-item-main .file-text {
+		display: block;
+		color: #888;
+		font-size: 11px
+	}
+.attach-files-item-note {
+	text-align: center;
+	width: 17%
+}
+	.attach-files-item-note .file-hover {
+		color: #888;
+		display: none
+	}
+.attach-files-item-detail {
+	width: 33%;
+	font-size: 11px;
+	text-align: right
+}
+	.attach-files-item-detail .file-size {
+		display: block;
+	}
+	.attach-files-item-detail .file-counter {
+		display: block;
+	}
+
 
 /* Post */
 .forum-post { _background: #fafafa; border-bottom: 1px solid #DCE1E6; padding: 0 0 5px }
@@ -423,6 +485,10 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .markItUp .editor-spoiler a { background: url(../images/editor-spoiler.png) }
 
 /* Modal */
+.modal-scroll {
+	max-height: 450px;
+	overflow-y: scroll
+}
 .modal-post { width: 360px; margin-left: -180px }
 .modal-post .modal-content input { margin: 10px 0 0 }
 .modal-moderator { width: 500px; margin-left: -250px }
@@ -437,6 +503,12 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 	background-position: -230px 0
 }
 .modal.modal-write .write-list li.write-item-type-forum:hover  .write-item-image { background-position: -230px -115px }
+
+.modal.modal-files {
+	width: 600px;
+	margin-left: -300px
+}
+
 
 /* Toolbar */
 .toolbar .toolbar-forum-post {

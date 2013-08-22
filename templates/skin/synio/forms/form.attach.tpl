@@ -1,3 +1,4 @@
+{if $oUserCurrent}
 <script type="text/javascript">
 	jQuery(function($){
 		if (jQuery.browser.flash) {
@@ -15,7 +16,7 @@
 		<h2>{$aLang.plugin.forum.attach_upload_title}</h2>
 
 		<p>
-			<a id="js-attach-my-files" href="#">{$aLang.plugin.forum.attach_my_files}</a>
+			<a class="link-dotted" id="js-attach-my-files" href="#">{$aLang.plugin.forum.attach_my_files}</a>
 		</p>
 
 		<div class="forum-attach-upload-rules">
@@ -45,3 +46,4 @@
 		</label>
 	</footer>
 </div>
+{/if}

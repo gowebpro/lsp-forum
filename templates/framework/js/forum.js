@@ -58,6 +58,9 @@ ls.forum = (function ($) {
 		return $form;
 	};
 
+	/**
+	 * Окно подтверждения действия
+	 */
 	this.configConfirmBox = function(text, params, callback) {
 		var $window = $('#confirm-box');
 		var $text = $window.find('.confirm-box-text'),
@@ -72,6 +75,9 @@ ls.forum = (function ($) {
 		return $window;
 	};
 
+	/**
+	 * Ответ на сообщение
+	 */
 	this.replyPost = function() {
 		var idPost = $(this).attr('data-post-id');
 		var userName = $(this).attr('data-name');
@@ -80,6 +86,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Цитирование сообщения
+	 */
 	this.quotePost = function() {
 		var idPost = $(this).attr('data-post-id');
 		ls.forum.configReplyForm(idPost);
@@ -89,6 +98,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Удаление сообщения
+	 */
 	this.deletePost = function() {
 		var idPost = $(this).attr('data-post-id');
 		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.post_delete_confirm'), { 'id':idPost }, function(e) {
@@ -99,6 +111,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Модальное окно с прямой ссылкой на сообщение
+	 */
 	this.linkToPost = function(idPost) {
 		var $window = $('#link-to-post');
 		$window.find('#link-to-post-input').val(aRouter['forum']+"findpost/"+idPost+"/").select();
@@ -106,6 +121,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Меню быстрой навигации
+	 */
 	this.jumpMenu = function(list) {
 		list = $(list);
 		if (list.val() > 0) {
@@ -115,6 +133,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Колбэк заблокированной кнопки (для гостей)
+	 */
 	this.disabledButton = function() {
 		if (ls.blocks.switchTab('login','popup-login')) {
 			$('#window_login_form').jqmShow();
@@ -124,9 +145,12 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Предпросмотр текста
+	 */
 	this.preview = function(form, preview) {
-		form=$('#'+form);
-		preview=$('#'+preview);
+		form = $('#'+form);
+		preview = $('#'+preview);
 		var url = aRouter['forum']+'ajax/preview/';
 		ls.hook.marker('previewBefore');
 		ls.ajaxSubmit(url, form, function(result) {
@@ -141,6 +165,9 @@ ls.forum = (function ($) {
 		return false;
 	};
 
+	/**
+	 * Свернуть\развернуть категорию
+	 */
 	this.toggleCat = function(e) {
 		var $section=$(this).parent().parent('.toggle-section');
 		var $content=$section.children('.forums-content'),
@@ -157,45 +184,59 @@ ls.forum = (function ($) {
 		if (e) e.preventDefault();
 	};
 
+	/**
+	 * Инициализация переключателей
+	 */
 	this.initToggler = function() {
 		$('.js-forum-cat-toggler').click(this.toggleCat);
 
 	};
-
+	/**
+	 * Инициализация кнопок
+	 */
 	this.initButtons = function() {
 		$('.js-post-reply').click(this.replyPost);
 		$('.js-post-quote').click(this.quotePost);
 		$('.js-post-delete').click(this.deletePost);
 	};
-
+	/**
+	 * Инициализация спойлера
+	 */
 	this.initSpoilers = function() {
 		$('.spoiler-body').each(function() {
 			var $body = $(this);
-			var title = $body.attr('data-name') || ls.lang.get('panel_spoiler_placeholder');
-			var $head = $('<div class="spoiler-head folded">'+ title +'</div>');
-			$head.insertBefore($body).click(function() {
-				if ($body.is(":visible")) {
-					$(this).addClass('folded').removeClass('unfolded');
-					$body.slideUp('fast');
-				} else {
-					$(this).removeClass('folded').addClass('unfolded');
-					$body.slideDown('fast');
-				}
-			});
-			var $fold = $('<div class="spoiler-fold"></div>').click(function(){
-				$.scrollTo($head, { duration: 200, axis: 'y', offset: -200 });
-				$head.click().animate({opacity: 0.3}, 500).animate({opacity: 1}, 700);
-			});
-			$body.append($fold);
+			if (!$body.data('init')) {
+				var title = $body.attr('data-name') || ls.lang.get('panel_spoiler_placeholder');
+				var $head = $('<div class="spoiler-head folded">'+ title +'</div>');
+				$head.insertBefore($body).click(function() {
+					if ($body.is(":visible")) {
+						$(this).addClass('folded').removeClass('unfolded');
+						$body.slideUp('fast');
+					} else {
+						$(this).removeClass('folded').addClass('unfolded');
+						$body.slideDown('fast');
+					}
+				});
+				var $fold = $('<div class="spoiler-fold"></div>').click(function(){
+					$.scrollTo($head, { duration: 200, axis: 'y', offset: -200 });
+					$head.click().animate({opacity: 0.3}, 500).animate({opacity: 1}, 700);
+				});
+				$body.append($fold);
+				$body.data('init', true);
+			}
 		});
 	};
-
+	/**
+	 * Инициализация модальных окон
+	 */
 	this.initModals = function() {
 		$('#link-to-post').jqm();
 		$('#confirm-box').jqm();
 		$('#insert-spoiler').jqm();
 	};
-
+	/**
+	 * Инициализация селекторов
+	 */
 	this.initSelect = function() {
 		$.each($('.js-forum-select'),function(k,v){
 			$(v).find('.js-select-forum').bind('change',function(e){
@@ -204,6 +245,9 @@ ls.forum = (function ($) {
 		}.bind(this));
 	};
 
+	/**
+	 * Подгружаем список топиков из выбранного форума в селектор
+	 */
 	this.loadTopics = function($forum) {
 		$topic=$forum.parents('.js-forum-select').find('.js-select-topic');
 		$topic.empty();
@@ -226,13 +270,20 @@ ls.forum = (function ($) {
 		});
 	};
 
+	/**
+	 * Показывает форму вставки спойлера
+	 * Callback for markitup
+	 */
 	this.showSpoilerForm = function() {
 		var $modal = $('#insert-spoiler');
 		$modal.find('#spoiler-title').val('');
 		$modal.find('#spoiler-text').val('');
 		$modal.jqmShow();
 	};
-
+	/**
+	 * Вставляет спойлер в текст
+	 * Callback for markitup
+	 */
 	this.insertSpoiler = function(form, target) {
 		form = $('#'+form);
 		$title = form.find('#spoiler-title').val();
@@ -243,7 +294,8 @@ ls.forum = (function ($) {
 	};
 
 	/**
-	 * Editor settings
+	 * Настройки редактора
+	 * type: mini
 	 */
 	this.getMarkitupMini = function() {
 		return {
@@ -264,7 +316,10 @@ ls.forum = (function ($) {
 			]
 		}
 	};
-
+	/**
+	 * Настройки редактора
+	 * type: full
+	 */
 	this.getMarkitup = function() {
 		return {
 			onShiftEnter:	{keepDefault:false, replaceWith:'<br />\n'},
@@ -307,7 +362,6 @@ ls.forum = (function ($) {
  */
 ls.forum.attach = (function ($) {
 	this.swfu;
-
 	/**
 	 * Инициализация компонента
 	 */
@@ -323,8 +377,14 @@ ls.forum.attach = (function ($) {
 		});
 
 		$('#js-attach-my-files').click(function() {
-			// load window content
-			// show window
+			$('#modal-attach-files').jqmShow();
+			return false;
+		});
+		$('#modal-attach-files').jqm();
+		$('#modal-attach-files .attach-files-item').click(function() {
+			$('#modal-attach-files').jqmHide();
+			self.attach($(this).data('id'));
+			return false;
 		});
 	};
 
@@ -393,7 +453,7 @@ ls.forum.attach = (function ($) {
 		if (!data.bStateError) {
 			var $template = $('<li id="file_'+data.id+'" class="forum-attach-files-item"><div class="forum-attach-files-item-header">'
 				+'<span class="forum-attach-files-item-title">'+data.name+'</span><span class="forum-attach-files-item-size">'+data.size+'</span></div>'
-				+'<textarea onBlur="ls.forum.attach.setFileDescription('+data.id+', this.value)"></textarea><br />'
+				+'<textarea onBlur="ls.forum.attach.setFileDescription('+data.id+', this.value)">'+data.text+'</textarea><br />'
 				+'<a href="javascript:ls.forum.attach.deleteFile('+data.id+')" class="file-delete">'+ls.lang.get('plugin.forum.attach_file_delete')+'</a>'
 				+'</li>');
 			$('#swfu_files').append($template);
@@ -406,20 +466,20 @@ ls.forum.attach = (function ($) {
 	/**
 	 * Удалить файл
 	 */
-	this.deleteFile = function(id) {
-	//	var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.attach_file_delete_confirm'), { }, function(e) {
-	//		run function
-	//	});
-	//	$window.jqmShow();
-		if (!confirm(ls.lang.get('plugin.forum.attach_file_delete_confirm'))) {return;}
-		ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':id}, function(response){
-			if (!response.bStateError) {
-				$('#file_'+id).remove();
-				ls.msg.notice(response.sMsgTitle,response.sMsg);
-			} else {
-				ls.msg.error(response.sMsgTitle,response.sMsg);
-			}
+	this.deleteFile = function(idFile) {
+		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.attach_file_delete_confirm'), {'id':idFile}, function(e) {
+			var sId = $(this).data('params').id;
+			ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':sId}, function(data){
+				if (!data.bStateError) {
+					$('#file_'+sId).remove();
+					ls.msg.notice(data.sMsgTitle,data.sMsg);
+				} else {
+					ls.msg.error(data.sMsgTitle,data.sMsg);
+				}
+				$window.jqmHide();
+			});
 		});
+		$window.jqmShow();
 	};
 
 	/**
@@ -434,6 +494,30 @@ ls.forum.attach = (function ($) {
 			}
 		});
 	};
+
+	/**
+	 * Загрузка файла на сервер
+	 */
+	this.attach = function(id) {
+		ls.forum.attach.addFileEmpty();
+
+		var post_id = 0;
+
+		if ($('#js-attach-upload-file').length) {
+			post_id = $('#js-attach-upload-file').data('post-id');
+		}
+
+		var params = { id:id, post_id:post_id }
+
+		ls.ajax(aRouter['forum'] + 'ajax/attach/file/', params, function (data) {
+			if (data.bStateError) {
+				$('#attach_file_empty').remove();
+				ls.msg.error(data.sMsgTitle,data.sMsg);
+			} else {
+				ls.forum.attach.addFile(data);
+			}
+		});
+	}
 
 	/**
 	 * Загрузка файла на сервер
@@ -476,10 +560,11 @@ ls.forum.attach = (function ($) {
  * Функционал тул-бара
  * last update: 5.13
  */
-ls.toolbar.forum = (function ($) {
-
+ls.forum.toolbar = (function ($) {
 	this.iCurrentPost=-1;
-
+	/**
+	 * Инициализация компонента
+	 */
 	this.init = function() {
 		var vars = [], hash;
 		var hashes = window.location.hash.replace('#','').split('&');
@@ -502,11 +587,15 @@ ls.toolbar.forum = (function ($) {
 			this.goNextPost();
 		}
 	};
-
+	/**
+	 * Дефолтные настройки
+	 */
 	this.reset = function() {
 		this.iCurrentPost=-1;
 	};
-
+	/**
+	 * Переключение на следующее сообщение
+	 */
 	this.goNextPost = function() {
 		this.iCurrentPost++;
 		var post=$('.js-post:eq('+this.iCurrentPost+')');
@@ -521,7 +610,9 @@ ls.toolbar.forum = (function ($) {
 		}
 		return false;
 	};
-
+	/**
+	 * Переключение на предыдущее сообщение
+	 */
 	this.goPrevPost = function() {
 		this.iCurrentPost--;
 		if (this.iCurrentPost<0) {
@@ -540,7 +631,7 @@ ls.toolbar.forum = (function ($) {
 	};
 
 	return this;
-}).call(ls.toolbar.forum || {},jQuery);
+}).call(ls.forum.toolbar || {},jQuery);
 
 
 /**
@@ -560,16 +651,21 @@ ls.tools = (function ($) {
  */
 jQuery(document).ready(function($){
 	ls.hook.run('forum_template_init_start',[],window);
-
+	/**
+	 * Инициализация
+	 */
 	ls.forum.initToggler();
 	ls.forum.initButtons();
 	ls.forum.initSpoilers();
 	ls.forum.initModals();
-
+	/**
+	 * Инициализация компонентов
+	 */
 	ls.forum.attach.init();
-
-	ls.toolbar.forum.init();
-
+	ls.forum.toolbar.init();
+	/**
+	 * Прямой эфир
+	 */
 	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'
 	}

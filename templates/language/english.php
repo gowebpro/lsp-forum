@@ -251,6 +251,7 @@ return array(
 	'attach_file_added' => 'Файл загружен',
 	'attach_error_too_much_files' => 'Сообщение может содержать не более %%MAX%% файлов',
 	'attach_error_bad_filesize' => 'Размер файла должен быть не более %%MAX%% Кб',
+	'attach_my_files' => 'Мои файлы',
 
 	'acp' => 'Management forum',
 	'acp_main' => 'Control center',

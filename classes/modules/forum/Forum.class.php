@@ -954,11 +954,6 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 */
 		$sFileName = func_generator(16);
 		/**
-		 * Извлекаем расширение файла
-		 */
-		$sExtension = strtolower(array_pop(explode('.',$aFile['name'])));
-		$sTmpName = $aFile['tmp_name'];
-		/**
 		 * TODO: Проверка типов файла
 		 */
 
@@ -968,8 +963,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 			mkdir($sFullPath, 0755, true);
 		}
 
-		$sFilePath = $sFullPath.$sFileName.'.'.$sExtension;
-		if (!move_uploaded_file($sTmpName,$sFilePath)) {
+		$sFilePath = $sFullPath.$sFileName;
+		if (!move_uploaded_file($aFile['tmp_name'],$sFilePath)) {
 			return false;
 		}
 

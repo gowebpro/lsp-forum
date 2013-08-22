@@ -12,7 +12,8 @@
 
 class PluginForum_ModuleForum_EntityFile extends EntityORM {
 	protected $aRelations = array(
-		'posts'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityForum','post_id','db.table.forum_file_rel','file_id')
+		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
+		'posts'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityPost','post_id','db.table.forum_file_rel','file_id')
 	);
 
 	public function getSizeFormat() {
