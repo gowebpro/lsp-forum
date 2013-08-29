@@ -1068,6 +1068,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('aPinned',$aPinned);
 		$this->Viewer_Assign('aTopics',$aTopics);
 		$this->Viewer_Assign('oForum',$oForum);
+		$this->Viewer_SetHtmlRssAlternate(Router::GetPath('rss').'forum/'.$oForum->getId(),$oForum->getTitle());
 		/**
 		 * Вызов хуков
 		 */
@@ -1189,6 +1190,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->Viewer_Assign('aPosts',$aPosts);
 		$this->Viewer_Assign('iPostsCount',$iPostsCount);
 		$this->Viewer_Assign('aPaging',$aPaging);
+		$this->Viewer_SetHtmlRssAlternate(Router::GetPath('rss').'forum_topic/'.$oTopic->getId(),$oTopic->getTitle());
 		/**
 		 * Вызов хуков
 		 */
