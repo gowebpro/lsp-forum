@@ -66,5 +66,14 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 		return true;
 	}
 
+	/**
+	 * Возвращает рейтинг
+	 *
+	 * @return string
+	 */
+	public function getRating() {
+		return number_format(round($this->_getDataOne('post_rating'),2), 0, '.', '');
+	}
+
 }
 ?>

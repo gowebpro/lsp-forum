@@ -136,6 +136,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^upload$/','EventAjaxAttachUpload');
 		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^delete$/','EventAjaxAttachDelete');
 		$this->AddEventPreg('/^ajax$/i','/^attach$/','/^text$/','EventAjaxAttachText');
+		$this->AddEventPreg('/^ajax$/i','/^vote$/i','/^info$/i','EventVoteGetInfo');
+		$this->AddEventPreg('/^ajax$/i','/^vote$/i','EventAjaxVote');
 	}
 
 
@@ -796,6 +798,130 @@ class PluginForum_ActionForum extends ActionPlugin {
 	}
 
 	/**
+	 * Получение информации о голосовании за сообщение
+	 *
+	 */
+	protected function EventVoteGetInfo() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+
+		if (!($oPost = $this->PluginForum_Forum_GetPostById(getRequestStr('iPostId')))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+			return;
+		}
+		$oPost=$this->PluginForum_Forum_GetPostsAdditionalData($oPost);
+
+		if (!$oPost->getVote() && ($this->oUserCurrent && $oPost->getUserId() != $this->oUserCurrent->getId()) && (strtotime($oTravel->getDateAdd()) + Config::Get('plugin.travel.acl.vote.time') > time())) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+			return;
+		}
+
+		$oViewer = $this->Viewer_GetLocalViewer();
+
+		$oViewer->Assign('oPost', $oPost);
+		$oViewer->Assign('oUserCurrent', $this->oUserCurrent);
+
+		$this->Viewer_AssignAjax('sText', $oViewer->Fetch($this->getTemplatePathPlugin().'post_vote_info.tpl'));
+	}
+
+	/**
+	 * Голосование
+	 *
+	 */
+	protected function EventAjaxVote() {
+		/**
+		 * Устанавливаем формат Ajax ответа
+		 */
+		$this->Viewer_SetResponseAjax('json');
+		/**
+		 * Пользователь авторизован?
+		 */
+		if (!$this->User_IsAuthorization()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('need_authorization'),$this->Lang_Get('error'));
+			return;
+		}
+		/**
+		 * Сообщение существует?
+		 */
+		if (!($oPost=$this->PluginForum_Forum_GetPostById(getRequestStr('iPostId',null,'post')))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+			return;
+		}
+		/**
+		 * Голосует автор топика?
+		 */
+		if ($oPost->getUserId()==$this->oUserCurrent->getId()) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_self'),$this->Lang_Get('attention'));
+			return;
+		}
+		/**
+		 * Пользователь уже голосовал?
+		 */
+		if ($oVote=$this->Vote_GetVote($oPost->getId(),'forum_post',$this->oUserCurrent->getId())) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_already'),$this->Lang_Get('attention'));
+			return;
+		}
+		/**
+		 * Время голосования истекло?
+		 */
+		if (strtotime($oPost->getDateAdd())<=time()-Config::Get('plugin.forum.acl.vote.post.time')) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_time'),$this->Lang_Get('attention'));
+			return;
+		}
+		/**
+		 * Как проголосовал пользователь
+		 */
+		$iValue=getRequestStr('value',null,'post');
+		if (!in_array($iValue,array('1','-1','0'))) {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('attention'));
+			return;
+		}
+		/**
+		 * Права на голосование
+		 */
+		if (!$this->ACL_CanVoteForumPost($this->oUserCurrent,$oPost) and $iValue) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_acl'),$this->Lang_Get('attention'));
+			return;
+		}
+		/**
+		 * Голосуем
+		 */
+		$oVote=Engine::GetEntity('Vote');
+		$oVote->setTargetId($oPost->getId());
+		$oVote->setTargetType('forum_post');
+		$oVote->setVoterId($this->oUserCurrent->getId());
+		$oVote->setDirection($iValue);
+		$oVote->setDate(date("Y-m-d H:i:s"));
+		$iVal=0;
+		if ($iValue!=0) {
+			$iVal=(float)$this->Rating_VoteForumPost($this->oUserCurrent,$oPost,$iValue);
+		}
+		$oVote->setValue($iVal);
+		$oPost->setCountVote($oPost->getCountVote()+1);
+		if ($iValue==1) {
+			$oPost->setCountVoteUp($oPost->getCountVoteUp()+1);
+		} elseif ($iValue==-1) {
+			$oPost->setCountVoteDown($oPost->getCountVoteDown()+1);
+		} elseif ($iValue==0) {
+			$oPost->setCountVoteAbstain($oPost->getCountVoteAbstain()+1);
+		}
+		if ($this->Vote_AddVote($oVote) and $this->PluginForum_Forum_UpdatePost($oPost)) {
+			if ($iValue) {
+				$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.vote_ok'),$this->Lang_Get('attention'));
+			} else {
+				$this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.vote_ok_abstain'),$this->Lang_Get('attention'));
+			}
+			$this->Viewer_AssignAjax('iRating',$oPost->getRating());
+		} else {
+			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
+			return;
+		}
+	}
+
+
+	/**
 	 * Скачиваем файл вложения
 	 *
 	 */
@@ -1142,12 +1268,13 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if ($bLineMod) {
 			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
 			$oHeadPost->setNumber(1);
+			$oHeadPost=$this->PluginForum_Forum_GetPostsAdditionalData($oHeadPost);
 			$this->Viewer_Assign('oHeadPost',$oHeadPost);
 			$aWhere=array_merge($aWhere,array('post_id <> ?d'=>array($oHeadPost->getId())));
 			$iPerPage--;
 		}
 		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>$aWhere,'#page'=>array($iPage,$iPerPage)));
-		$aPosts=$aResult['collection'];
+		$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
 		$iPostsCount=$aResult['count'];
 		if ($bLineMod) $iPostsCount++;
 		/**

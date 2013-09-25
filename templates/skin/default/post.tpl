@@ -1,5 +1,10 @@
 {assign var="oUser" value=$oPost->getUser()}
 {assign var="aFiles" value=$oPost->getFiles()}
+{assign var="oVote" value=$oPost->getVote()}
+
+{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
+	{assign var="bVoteInfoShow" value=true}
+{/if}
 
 <article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oTopic->getReadDate()) <= strtotime($oPost->getDateAdd())} new{/if} js-post" id="post-{$oPost->getId()}">
 	<div class="forum-post-wrap {if !$noPostSide}clearfix{/if}">
@@ -54,6 +59,52 @@
 				{hook run='forum_post_content_begin' post=$oPost}
 				<div class="text">
 					{$oPost->getText()}
+				</div>
+				<div id="vote_area_forum_post_{$oPost->getId()}"
+					data-type="tooltip-toggle"
+					data-param-i-post-id="{$oPost->getId()}"
+					data-option-url="{router page='forum'}ajax/vote/info/"
+					data-vote-type="forum_post"
+					data-vote-id="{$oPost->getId()}"
+					class="forum-post-vote vote-topic
+						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.travel.acl.vote.post.time')}
+							{if $oPost->getRating() > 0}
+								vote-count-positive
+							{elseif $oPost->getRating() < 0}
+								vote-count-negative
+							{/if}
+						{/if}
+
+						{if $oVote}
+							voted
+							{if $oVote->getDirection() > 0}
+								voted-up
+							{elseif $oVote->getDirection() < 0}
+								voted-down
+							{/if}
+						{/if}
+
+						{if $bVoteInfoShow}js-tooltip-vote-forum_post{/if}">
+					<div class="vote-up" onclick="return ls.vote.vote({$oPost->getId()},this,1,'forum_post');"></div>
+					<div class="vote-count" id="vote_total_forum_post_{$oPost->getId()}">
+						{if $bVoteInfoShow}
+							{if $oPost->getRating() > 0}+{/if}{$oPost->getRating()}
+						{else}
+							<a href="#" onclick="return ls.vote.vote({$oPost->getId()},this,0,'forum_post');">?</a>
+						{/if}
+					</div>
+					<div class="vote-down" onclick="return ls.vote.vote({$oPost->getId()},this,-1,'forum_post');"></div>
+					{if $bVoteInfoShow}
+						<div id="vote-info-forum_post-{$oPost->getId()}" style="display: none;">
+							<ul class="vote-topic-info">
+								<li><i class="icon-plus icon-white"></i> {$oPost->getCountVoteUp()}</li>
+								<li><i class="icon-minus icon-white"></i> {$oPost->getCountVoteDown()}</li>
+								<li><i class="icon-eye-open icon-white"></i> {$oPost->getCountVoteAbstain()}</li>
+								<li><i class="icon-asterisk icon-white"></i> {$oPost->getCountVote()}</li>
+								{hook run='forum_post_show_vote_stats' post=$oPost}
+							</ul>
+						</div>
+					{/if}
 				</div>
 				{if $oPost->getEditorId()}
 					{assign var="oEditor" value=$oPost->getEditor()}

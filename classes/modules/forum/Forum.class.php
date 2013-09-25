@@ -708,6 +708,55 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Получает дополнительные данные(объекты) для постов
+	 *
+	 * @param	array $aPosts	Список топиков
+	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
+	 * @return	array
+	 */
+	public function GetPostsAdditionalData($aPosts, $aAllowData=null) {
+		if (is_null($aAllowData)) {
+			return $aPosts;
+		}
+		if (is_string($aAllowData)) {
+			$aAllowData=explode(',', $aAllowData);
+		}
+		func_array_simpleflip($aAllowData);
+		$sOne=false;
+		if (!is_array($aPosts)) {
+			$sOne=$aPosts->getId();
+			$aPosts=array($aPosts->getId() => $aPosts);
+		}
+		$aPostId=array();
+		/**
+		 * Формируем ID дополнительных данных, которые нужно получить
+		 */
+		foreach ($aPosts as $oPost) {
+			$aPostId[]=$oPost->getId();
+		}
+		/**
+		 * Получаем дополнительные данные
+		 */
+		$aVote=array();
+		if ($this->oUserCurrent) {
+			$aVote=$this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
+		}
+		/**
+		 * Добавляем данные к результату - списку топиков
+		 */
+		foreach ($aPosts as $oPost) {
+			if (isset($aVote[$oPost->getId()])) {
+				$oPost->setVote($aVote[$oPost->getId()]);
+			} else {
+				$oPost->setVote(null);
+			}
+		}
+
+		return $sOne ? $aPosts[$sOne] : $aPosts;
+	}
+
+
+	/**
 	 * Получает массив трека из сессии
 	 *
 	 * @return	array

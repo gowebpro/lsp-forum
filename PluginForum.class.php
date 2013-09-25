@@ -22,6 +22,7 @@ class PluginForum extends Plugin {
 		),
 		'module' => array(
 			'ModuleACL',
+			'ModuleRating',
 			'ModuleStream',
 			'ModuleSubscribe',
 			'ModuleText'
@@ -41,6 +42,7 @@ class PluginForum extends Plugin {
 		if (!$this->isTableExists('prefix_forum_marker')) {
 			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.1.sql');
 		}
+		$this->addEnumType('prefix_vote', 'target_type', 'forum_post');
 		return true;
 	}
 

@@ -335,7 +335,15 @@
 .forum-post-content.no-side { margin-left: 0px; border-left: 0px }
 .forum-post-header { border-bottom: 1px solid #ebf0f4; padding: 5px }
 .forum-post-details { color: #666 }
-.forum-post-body { min-height: 120px }
+.forum-post-body {
+	position: relative;
+	min-height: 120px
+}
+.forum-post-body .forum-post-vote {
+	float: right;
+	white-space: nowrap;
+	margin: 6px 4px;
+}
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #ebf0f4; padding: 10px; margin: 10px 0 0 }
 .forum-post-body .reason { background: #ebf0f4; padding: 3px 6px }

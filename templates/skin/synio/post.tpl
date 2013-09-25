@@ -1,5 +1,10 @@
 {assign var="oUser" value=$oPost->getUser()}
 {assign var="aFiles" value=$oPost->getFiles()}
+{assign var="oVote" value=$oPost->getVote()}
+
+{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
+	{assign var="bVoteInfoShow" value=true}
+{/if}
 
 <article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oTopic->getReadDate()) <= strtotime($oPost->getDateAdd())} new{/if} js-post" id="post-{$oPost->getId()}">
 	<div class="forum-post-wrap {if !$noPostSide}clearfix{/if}">
@@ -54,6 +59,72 @@
 				{hook run='forum_post_content_begin' post=$oPost}
 				<div class="text">
 					{$oPost->getText()}
+				</div>
+				<div id="vote_area_forum_post_{$oPost->getId()}"
+					data-type="tooltip-toggle"
+					data-param-i-post-id="{$oPost->getId()}"
+					data-option-url="{router page='forum'}ajax/vote/info/"
+					data-vote-type="forum_post"
+					data-vote-id="{$oPost->getId()}"
+					class="forum-post-vote vote-topic
+						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.travel.acl.vote.post.time')}
+							{if $oTopic->getRating() > 0}
+								vote-count-positive
+							{elseif $oTopic->getRating() < 0}
+								vote-count-negative
+							{elseif $oTopic->getRating() == 0}
+								vote-count-zero
+							{/if}
+						{/if}
+
+						{if !$oUserCurrent or ($oUserCurrent && $oPost->getUserId() != $oUserCurrent->getId())}
+							vote-not-self
+						{/if}
+
+						{if $oVote} 
+							voted
+							{if $oVote->getDirection() > 0}
+								voted-up
+							{elseif $oVote->getDirection() < 0}
+								voted-down
+							{elseif $oVote->getDirection() == 0}
+								voted-zero
+							{/if}
+						{else}
+							not-voted
+						{/if}
+
+						{if (strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time') && !$oVote) || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId())}
+							vote-nobuttons
+						{/if}
+						{if strtotime($oPost->getDateAdd()) > $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
+							vote-not-expired
+						{/if}
+
+						{if $bVoteInfoShow}js-infobox-vote-forum_post{/if}">
+
+					<div class="vote-item vote-down" onclick="return ls.vote.vote({$oPost->getId()},this,-1,'forum_post');"><span><i></i></span></div>
+					<div class="vote-item vote-count" title="{$aLang.topic_vote_count}: {$oPost->getCountVote()}">
+						<span id="vote_total_forum_post_{$oPost->getId()}">
+							{if $bVoteInfoShow}
+								{if $oPost->getRating() > 0}+{/if}{$oPost->getRating()}
+							{else}
+								<i onclick="return ls.vote.vote({$oPost->getId()},this,0,'forum_post');"></i>
+							{/if}
+						</span>
+					</div>
+					<div class="vote-item vote-up" onclick="return ls.vote.vote({$oPost->getId()},this,1,'forum_post');"><span><i></i></span></div>
+					{if $bVoteInfoShow}
+						<div id="vote-info-forum_post-{$oPost->getId()}" style="display: none;">
+							<ul class="vote-topic-info">
+								<li><i class="icon-synio-vote-info-up"></i> {$oPost->getCountVoteUp()}</li>
+								<li><i class="icon-synio-vote-info-down"></i> {$oPost->getCountVoteDown()}</li>
+								<li><i class="icon-synio-vote-info-zero"></i> {$oPost->getCountVoteAbstain()}</li>
+								<li><i class="icon-asterisk icon-white"></i> {$oPost->getCountVote()}</li>
+								{hook run='forum_post_show_vote_stats' post=$oPost}
+							</ul>
+						</div>
+					{/if}
 				</div>
 				{if $oPost->getEditorId()}
 					{assign var="oEditor" value=$oPost->getEditor()}

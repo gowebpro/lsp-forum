@@ -72,9 +72,19 @@ ALTER TABLE `prefix_forum_marker_topic`
 	ADD CONSTRAINT `prefix_forum_marker_topic_fk1` FOREIGN KEY (`forum_id`) REFERENCES `prefix_forum` (`forum_id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	ADD CONSTRAINT `prefix_forum_marker_topic_fk2` FOREIGN KEY (`topic_id`) REFERENCES `prefix_forum_topic` (`topic_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE `prefix_forum` ADD `forum_icon` varchar(250) DEFAULT NULL AFTER `forum_count_post`;
-ALTER TABLE `prefix_forum` ADD `forum_options` text DEFAULT NULL AFTER `forum_icon`;
-ALTER TABLE `prefix_forum` ADD `last_post_date` datetime DEFAULT NULL;
-ALTER TABLE `prefix_forum_post` ADD `post_parent_id` int(11) unsigned NOT NULL DEFAULT '0' AFTER `user_id`;
-ALTER TABLE `prefix_forum_post` ADD `post_extra` text DEFAULT NULL AFTER `post_guest_name`;
+
+ALTER TABLE `prefix_forum`
+	ADD `forum_icon` varchar(250) DEFAULT NULL AFTER `forum_count_post`,
+	ADD `forum_options` text DEFAULT NULL AFTER `forum_icon`,
+	ADD `last_post_date` datetime DEFAULT NULL;
+
+ALTER TABLE `prefix_forum_post`
+	ADD `post_parent_id` int(11) unsigned NOT NULL DEFAULT '0' AFTER `user_id`,
+	ADD `post_rating` float(9,3) NOT NULL DEFAULT '0.000',
+	ADD `post_count_vote` int(11) unsigned NOT NULL DEFAULT '0',
+	ADD `post_count_vote_up` int(11) NOT NULL DEFAULT '0',
+	ADD `post_count_vote_down` int(11) NOT NULL DEFAULT '0',
+	ADD `post_count_vote_abstain` int(11) NOT NULL DEFAULT '0',
+	ADD `post_extra` text DEFAULT NULL AFTER `post_guest_name`;
+
 ALTER TABLE `prefix_forum_topic` ADD `last_post_date` datetime DEFAULT NULL;

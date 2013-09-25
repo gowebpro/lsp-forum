@@ -669,6 +669,16 @@ jQuery(document).ready(function($){
 	ls.blocks.options.type.stream_forum = {
 		url: aRouter['forum']+'ajax/getlasttopics/'
 	}
+	/**
+	 * Голосование
+	 */
+	ls.vote.options.type.forum_post = {
+		url: aRouter['forum']+'ajax/vote/',
+		targetName: 'idPost'
+	};
+	ls.vote.onVoteForumPost = function(iTargetId, iValue, sType, oVars, result) {
+		oVars.vote.addClass('js-tooltip-vote-forum').tooltip('enter');
+	};
 
 	ls.hook.run('forum_template_init_end',[],window);
 });

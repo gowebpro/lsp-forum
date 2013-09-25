@@ -286,5 +286,18 @@ class PluginForum_ModuleACL extends PluginForum_Inherit_ModuleACL {
 		return false;
 	}
 
+	/**
+	 * Проверяет может ли пользователь голосовать за конкретный пост
+	 *
+	 * @param ModuleUser_EntityUser $oUser	Пользователь
+	 * @param PluginForum_ModuleForum_EntityPost $oPost	Сообщение
+	 * @return bool
+	 */
+	public function CanVoteForumPost(ModuleUser_EntityUser $oUser, $oPost) {
+		if ($oUser->getRating()>=Config::Get('plugin.forum.acl.vote.post.rating')) {
+			return true;
+		}
+		return false;
+	}
 }
 ?>
