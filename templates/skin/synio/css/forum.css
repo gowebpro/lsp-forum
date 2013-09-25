@@ -342,7 +342,7 @@
 .forum-post-body .forum-post-vote {
 	float: right;
 	white-space: nowrap;
-	margin: 6px 4px;
+	margin: 17px 4px 0;
 }
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #ebf0f4; padding: 10px; margin: 10px 0 0 }

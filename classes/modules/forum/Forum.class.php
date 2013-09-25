@@ -716,7 +716,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function GetPostsAdditionalData($aPosts, $aAllowData=null) {
 		if (is_null($aAllowData)) {
-			return $aPosts;
+			$aAllowData=array('vote');
 		}
 		if (is_string($aAllowData)) {
 			$aAllowData=explode(',', $aAllowData);
@@ -738,7 +738,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 * Получаем дополнительные данные
 		 */
 		$aVote=array();
-		if ($this->oUserCurrent) {
+		if (isset($aAllowData['vote']) && $this->oUserCurrent) {
 			$aVote=$this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
 		}
 		/**

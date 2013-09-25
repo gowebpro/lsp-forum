@@ -68,11 +68,11 @@
 					data-vote-id="{$oPost->getId()}"
 					class="forum-post-vote vote-topic
 						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.travel.acl.vote.post.time')}
-							{if $oTopic->getRating() > 0}
+							{if $oPost->getRating() > 0}
 								vote-count-positive
-							{elseif $oTopic->getRating() < 0}
+							{elseif $oPost->getRating() < 0}
 								vote-count-negative
-							{elseif $oTopic->getRating() == 0}
+							{elseif $oPost->getRating() == 0}
 								vote-count-zero
 							{/if}
 						{/if}
@@ -102,7 +102,6 @@
 						{/if}
 
 						{if $bVoteInfoShow}js-infobox-vote-forum_post{/if}">
-
 					<div class="vote-item vote-down" onclick="return ls.vote.vote({$oPost->getId()},this,-1,'forum_post');"><span><i></i></span></div>
 					<div class="vote-item vote-count" title="{$aLang.topic_vote_count}: {$oPost->getCountVote()}">
 						<span id="vote_total_forum_post_{$oPost->getId()}">

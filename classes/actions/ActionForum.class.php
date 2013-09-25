@@ -845,7 +845,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Сообщение существует?
 		 */
-		if (!($oPost=$this->PluginForum_Forum_GetPostById(getRequestStr('iPostId',null,'post')))) {
+		if (!($oPost=$this->PluginForum_Forum_GetPostById(getRequestStr('idPost',null,'post')))) {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));
 			return;
 		}
@@ -2044,7 +2044,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Вложения
 		 */
-		$sTargetTmp = $_COOKIE['ls_fattach_target_tmp'];
+		$sTargetTmp = isset($_COOKIE['ls_fattach_target_tmp']) ? $_COOKIE['ls_fattach_target_tmp'] : 'null';
 		$aFiles = $this->PluginForum_Forum_GetFileItemsByTargetTmp($sTargetTmp);
 		/**
 		 * Проверяем поля формы
