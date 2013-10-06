@@ -154,4 +154,22 @@ function forumLogger($info, $title='Error') {
 		exit($msg);
 	}
 }
+
+/**
+ * Совместимость с версиями < 1.0.3
+ */
+if (!function_exists('getRequestStr')) {
+	/**
+	 * функция доступа к GET POST параметрам, которая значение принудительно приводит к строке
+	 *
+	 * @param string $sName
+	 * @param mixed $default
+	 * @param string $sType
+	 *
+	 * @return string
+	 */
+	function getRequestStr($sName,$default=null,$sType=null) {
+		return (string)getRequest($sName,$default,$sType);
+	}
+}
 ?>
