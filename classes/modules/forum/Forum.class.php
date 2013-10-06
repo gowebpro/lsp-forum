@@ -815,9 +815,6 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$aCheckForum=$aMark[self::MARKER_TOPIC_FORUM][$sForumId];
 				$bUnread=false;
 				foreach ($aTopics as $oTopic) {
-					print_r($oTopic->getId().'/');
-				}
-				foreach ($aTopics as $oTopic) {
 					if (!isset($aCheckForum[$oTopic->getId()])) {
 						$bUnread=true;
 						break;
