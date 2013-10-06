@@ -1310,6 +1310,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 		}
 		/**
+		 * Если нет временного ключа для нового поста, то генерируем.
+		 */
+		if (empty($_COOKIE['ls_fattach_target_tmp'])) {
+			setcookie('ls_fattach_target_tmp',  func_generator(), time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
+		}
+		/**
 		 * Загружаем переменные в шаблон
 		 */
 		$this->Viewer_Assign('oForum',$oForum);
@@ -1693,7 +1699,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$this->_addTitle($this->Lang_Get('plugin.forum.new_topic'),'after');
 		}
 		/**
-		 * Если нет временного ключа для нового поста, то генерируеи. если есть, то загружаем файлы по этому ключу
+		 * Если нет временного ключа для нового поста, то генерируем. если есть, то загружаем файлы по этому ключу
 		 */
 		if (empty($_COOKIE['ls_fattach_target_tmp'])) {
 			setcookie('ls_fattach_target_tmp',  func_generator(), time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
@@ -1965,7 +1971,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->SetTemplateAction('add_post');
 		/**
-		 * Если нет временного ключа для нового поста, то генерируеи. если есть, то загружаем файлы по этому ключу
+		 * Если нет временного ключа для нового поста, то генерируем. если есть, то загружаем файлы по этому ключу
 		 */
 		if (empty($_COOKIE['ls_fattach_target_tmp'])) {
 			setcookie('ls_fattach_target_tmp',  func_generator(), time()+24*3600,Config::Get('sys.cookie.path'),Config::Get('sys.cookie.host'));
