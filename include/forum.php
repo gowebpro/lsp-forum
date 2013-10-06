@@ -74,8 +74,8 @@ function forum_check_perms($aPermissions,$oUser=null,$bGuestDef=false) {
 		? PluginForum_ModuleForum::MASK_PERM_GUEST
 		: ($oUser->isAdministrator() ? PluginForum_ModuleForum::MASK_PERM_ADMIN : PluginForum_ModuleForum::MASK_PERM_USER);
 	if (!is_array($aPermissions)) {
-		if (is_null($aPermissions) && PluginForum_ModuleForum::MASK_PERM_GUEST === $sPermId) {
-			return $bGuestDef;
+		if (is_null($aPermissions)) {
+			return PluginForum_ModuleForum::MASK_PERM_GUEST === $sPermId ? $bGuestDef:true;
 		}
 		if ((string)$aPermissions === '*') {
 			return true;
