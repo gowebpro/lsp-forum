@@ -9,7 +9,7 @@
 		<lang name="russian">Чиффа</lang>
 	</author>
 	<homepage>http://xmk.github.io/lsplugin-forum/</homepage>
-	<version>1.0.55-beta</version>
+	<version>1.0.56-beta</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>

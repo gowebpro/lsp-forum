@@ -6,7 +6,7 @@
 	{assign var="bVoteInfoShow" value=true}
 {/if}
 
-<article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oTopic->getReadDate()) <= strtotime($oPost->getDateAdd())} new{/if} js-post" id="post-{$oPost->getId()}">
+<article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oPost->getDateAdd()) > strtotime($oTopic->getReadDate())} new{/if} js-post" id="post-{$oPost->getId()}">
 	<div class="forum-post-wrap {if !$noPostSide}clearfix{/if}">
 		{if !$noPostSide}
 		<aside class="forum-post-side">

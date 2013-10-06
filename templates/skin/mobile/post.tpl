@@ -1,7 +1,7 @@
 {assign var="oUser" value=$oPost->getUser()}
 {assign var="aFiles" value=$oPost->getFiles()}
 
-<article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oTopic->getReadDate()) <= strtotime($oPost->getDateAdd())} new{/if} js-post" id="post-{$oPost->getId()}">
+<article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oPost->getDateAdd()) > strtotime($oTopic->getReadDate())} new{/if} js-post" id="post-{$oPost->getId()}">
 	<div class="forum-post-wrap">
 		<div class="forum-post-content">
 			<header class="forum-post-header">

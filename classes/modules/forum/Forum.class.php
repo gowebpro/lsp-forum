@@ -697,10 +697,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 				} else {
 					$oTopic->setRead(false);
 				}
-				if (isset($aTopicMark[$oTopic->getId()]) && (is_null($sUserMark) || strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sUserMark))) {
-					$sUserMark=$aTopicMark[$oTopic->getId()];
-				}
-				$oTopic->setReadDate($sUserMark);
+				$oTopic->setReadDate($sMarkDate);
 			}
 		}
 
@@ -817,6 +814,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 			if (!empty($aTopics)) {
 				$aCheckForum=$aMark[self::MARKER_TOPIC_FORUM][$sForumId];
 				$bUnread=false;
+				foreach ($aTopics as $oTopic) {
+					print_r($oTopic->getId().'/');
+				}
 				foreach ($aTopics as $oTopic) {
 					if (!isset($aCheckForum[$oTopic->getId()])) {
 						$bUnread=true;
