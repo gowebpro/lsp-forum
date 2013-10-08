@@ -60,13 +60,40 @@
 				<div class="text">
 					{$oPost->getText()}
 				</div>
+				{if $oPost->getEditorId()}
+					{assign var="oEditor" value=$oPost->getEditor()}
+					<div class="edit">
+						{$aLang.plugin.forum.post_editing}
+						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()}</a>
+						{if $oPost->getDateEdit()}
+							<span class="divide">-</span>
+							{date_format date=$oPost->getDateEdit()}
+						{/if}
+						{if $oPost->getEditReason()}
+							<span class="reason">{$oPost->getEditReason()}</span>
+						{/if}
+					</div>
+				{/if}
+				{if count($aFiles) > 0}
+					<div class="attach">
+					{foreach from=$aFiles item=oFile name=post_files}
+						<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
+							<i class="icon-file"></i>
+							{$oFile->getName()}
+						</a>{if !$smarty.foreach.post_files.last}, {/if}
+					{/foreach}
+					</div>
+				{/if}
+				{hook run='forum_post_content_end' post=$oPost}
+			</div>
+			<div class="forum-post-vote cleafix">
 				<div id="vote_area_forum_post_{$oPost->getId()}"
 					data-type="tooltip-toggle"
 					data-param-i-post-id="{$oPost->getId()}"
 					data-option-url="{router page='forum'}ajax/vote/info/"
 					data-vote-type="forum_post"
 					data-vote-id="{$oPost->getId()}"
-					class="forum-post-vote vote-topic
+					class="vote
 						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.travel.acl.vote.post.time')}
 							{if $oPost->getRating() > 0}
 								vote-count-positive
@@ -125,32 +152,6 @@
 						</div>
 					{/if}
 				</div>
-				{if $oPost->getEditorId()}
-					{assign var="oEditor" value=$oPost->getEditor()}
-					<div class="edit">
-						{$aLang.plugin.forum.post_editing}
-						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()}</a>
-						{if $oPost->getDateEdit()}
-							<span class="divide">-</span>
-							{date_format date=$oPost->getDateEdit()}
-						{/if}
-						{if $oPost->getEditReason()}
-							<span class="reason">{$oPost->getEditReason()}</span>
-						{/if}
-					</div>
-				{/if}
-				{if count($aFiles) > 0}
-					<div class="attach">
-					{foreach from=$aFiles item=oFile name=post_files}
-						<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
-							<i class="icon-file"></i>
-							{$oFile->getName()}
-						</a>
-						{if !$smarty.foreach.post_files.last}, {/if}
-					{/foreach}
-					</div>
-				{/if}
-				{hook run='forum_post_content_end' post=$oPost}
 			</div>
 		</div>
 	</div>

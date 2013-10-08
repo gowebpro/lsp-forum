@@ -677,8 +677,23 @@ jQuery(document).ready(function($){
 		targetName: 'idPost'
 	};
 	ls.vote.onVoteForumPost = function(iTargetId, iValue, sType, oVars, result) {
-		oVars.vote.addClass('js-tooltip-vote-forum').tooltip('enter');
+	//будет актуально в девелоперской версии лс
+	//	oVars.vote.addClass('js-tooltip-vote-forum').tooltip('enter');
 	};
+
+	$('.js-infobox-vote-forum_post').poshytip({
+		content: function() {
+			var id = $(this).data('vote-id');
+			return $('#vote-info-forum_post-'+id).html();
+		},
+		className: 'infobox-standart',
+		alignTo: 'target',
+		alignX: 'center',
+		alignY: 'top',
+		offsetX: 2,
+		liveEvents: true,
+		showTimeout: 100
+	});
 
 	ls.hook.run('forum_template_init_end',[],window);
 });

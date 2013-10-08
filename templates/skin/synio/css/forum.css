@@ -319,9 +319,13 @@
 
 /* Post */
 .forum-post { _background: #fafafa; border-bottom: 1px solid #DCE1E6; padding: 0 0 5px }
-.forum-post-wrap { padding: 6px }
+.forum-post-wrap { }
 .forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
-.forum-post-side { float: left; width: 160px }
+.forum-post-side {
+	float: left;
+	width: 160px;
+	padding: 6px 0
+}
 .forum-post-side section { text-align: center; padding: 5px }
 .forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }
 .forum-post-side section p span { color: #000 }
@@ -331,18 +335,22 @@
 .forum-post-side section.avatar .status.status-offline { background: rgba(200, 0, 0, 0.4) }
 .forum-post-side section.avatar img { border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box }
 .forum-post-side section.login { font-size: 14px; font-weight: bold }
-.forum-post-content { float: none; margin-left: 161px; border-left: 1px solid #ebf0f4; width: auto }
+.forum-post-content {
+	float: none;
+	position: relative;
+	margin-left: 161px;
+	border-left: 1px solid #ebf0f4;
+	width: auto
+}
 .forum-post-content.no-side { margin-left: 0px; border-left: 0px }
-.forum-post-header { border-bottom: 1px solid #ebf0f4; padding: 5px }
+.forum-post-header {
+	border-bottom: 1px solid #ebf0f4;
+	padding: 10px
+}
 .forum-post-details { color: #666 }
 .forum-post-body {
 	position: relative;
 	min-height: 120px
-}
-.forum-post-body .forum-post-vote {
-	float: right;
-	white-space: nowrap;
-	margin: 17px 4px 0;
 }
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #ebf0f4; padding: 10px; margin: 10px 0 0 }
@@ -356,8 +364,19 @@
 	font-weight: bold;
 	text-decoration: none
 }
+.forum-post-vote {
+	height: 30px
+}
+.forum-post-vote .vote-topic {
+	float: right;
+	white-space: nowrap;
+	margin: 2px 4px
+}
 .forum-post-footer { border-top: 1px solid #ebf0f4; padding: 5px 10px 8px 0 }
-.forum-post.new .forum-post-header { background: #cdf5a6 }
+.forum-post.new .forum-post-header {
+	background: #cdf5a6
+}
+
 
 .board-stats-links {
 	margin: 0 10px 20px

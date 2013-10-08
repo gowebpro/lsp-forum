@@ -270,7 +270,18 @@
 	font-weight: bold;
 	text-decoration: none
 }
+.forum-post-vote {
+	height: 30px
+}
+.forum-post-vote .vote {
+	float: right;
+	white-space: nowrap;
+	margin: 2px 4px
+}
 .forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
+.forum-post.new .forum-post-header {
+	background: #cdf5a6
+}
 
 .board-stats-links {
 	margin: 0 10px 20px
