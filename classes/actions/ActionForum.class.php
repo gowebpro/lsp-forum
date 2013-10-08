@@ -2146,6 +2146,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	public function EventEditPost() {
 		/**
+		 * Проверяем авторизован ли пользователь
+		 */
+		if (!$this->User_IsAuthorization()) {
+			return parent::EventNotFound();
+		}
+		/**
 		 * Получаем ID поста из URL
 		 */
 		$sPostId=$this->GetParamEventMatch(1,1);
