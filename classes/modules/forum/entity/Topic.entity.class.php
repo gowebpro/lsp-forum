@@ -75,11 +75,24 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		return $oView ? $oView->getTopicViews() : 0;
 	}
 
+	/**
+	 * Отметка о прочтении топика
+	 */
 	public function getRead() {
 		return $this->_getDataMore('marker');
 	}
 	public function setRead($data) {
 		$this->_aDataMore['marker']=$data;
+	}
+
+	/**
+	 * Дата последнего прочтения топика
+	 */
+	public function getReadDate() {
+		return $this->_getDataMore('marker_date');
+	}
+	public function setReadDate($data) {
+		$this->_aDataMore['marker_date']=$data;
 	}
 }
 
