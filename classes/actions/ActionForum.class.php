@@ -695,7 +695,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$this->Viewer_AssignAjax('id', $oFile->getId());
 				$this->Viewer_AssignAjax('name', $oFile->getName());
 				$this->Viewer_AssignAjax('size', $oFile->getSizeFormat());
-				$this->Viewer_AssignAjax('text', $oFile->getText());
+				$this->Viewer_AssignAjax('text', '');
 				$this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_added'), $this->Lang_Get('attention'));
 			} else {
 				$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
@@ -1847,6 +1847,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 						$oFile->Update();
 						$oPost->files->add($oFile);
 					}
+					$oPost->Update();
 				}
 				/**
 				 * Удаляем временную куку
@@ -2077,6 +2078,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$oFile->Update();
 					$oPost->files->add($oFile);
 				}
+				$oPost->Update();
 			}
 			/**
 			 * Удаляем временную куку
