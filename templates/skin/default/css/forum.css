@@ -61,7 +61,21 @@
 .forums {}
 .forums .body-message { color: #666; text-align: center; background: #f0f0f0; padding: 40px 100px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 10px; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -webkit-background-clip: padding-box }
 .forums .empty { color: #666; text-align: center; padding: 15px }
-.forums-list {}
+
+.toggle-section .js-forum-cat-toggler {
+	float: right;
+	display: inline-block;
+	vertical-align: text-top;
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	background: url(../images/icons.png) no-repeat;
+	background-position: -24px -96px
+}
+.toggle-section.collapsed .js-forum-cat-toggler {
+	background-position: 0 -96px
+}
+
 .forums-list .js-forum-cat-toggler {
 	display: inline-block;
 	vertical-align: text-top;
@@ -384,21 +398,6 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 	border-bottom: 1px solid #eee
 }
 
-/* Admin*/
-#forums-tree {}
-#forums-tree .head { background: #F1F9F1; padding: 3px 5px; margin-top: 10px }
-#forums-tree .title { font-weight: bold }
-#forums-tree .moder-list { font-size: 10px; padding-left: 7px; display: block; background: #F8E0B2; border-top: 1px solid #EEA518 }
-
-.table-perms {}
-.table-perms button { padding: 5px 7px }
-.table-perms th { background: #F1F9F1; color: #808080; font-weight: bold }
-.table-perms td { text-align: center }
-.table-perms td div { font-weight: bold }
-.table-perms .perm-red { background-color: #ECD5D8; color: #E86D7F }
-.table-perms .perm-green { background-color: #CCFFBF; color: #00960C }
-.table-perms .perm-yellow { background-color: #FFFDA7; color: #AFA81D }
-.table-perms .perm-blue { background-color: #DEE0ED; color: #4D589E }
 
 /* Buttons */
 .button.button-orange {

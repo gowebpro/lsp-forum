@@ -27,6 +27,7 @@ To update forum do this:
 * Deactivate plugin
 * Replace files
 * Activate plugin
+
 **Re-activation of the need for changes to the database**
 
 
