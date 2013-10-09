@@ -34,13 +34,62 @@ class PluginForum extends Plugin {
 	 */
 	public function Activate() {
 		if (!$this->isTableExists('prefix_forum')) {
+			/**
+			 * Simple install
+			 */
 			$this->ExportSQL(dirname(__FILE__).'/sql/install.sql');
-		}
-		if (!$this->isTableExists('prefix_forum_topic_view')) {
-			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.0.3.sql');
-		}
-		if (!$this->isTableExists('prefix_forum_marker')) {
-			$this->ExportSQL(dirname(__FILE__).'/sql/update_to_1.1.sql');
+		} else {
+			/**
+			 * Update
+			 */
+			if ($this->isFieldExists('prefix_forum','forum_status')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120418.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum','forum_quick_reply')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120423.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum_topic','topic_user_ip')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120426.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum_post','post_new_topic')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120501.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum','forum_limit_rating_topic')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120502.sql');
+			}
+			if (!$this->isTableExists('prefix_forum_moderator')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120819.sql');
+			}
+			if (!$this->isTableExists('prefix_forum_readonly')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120826.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum','forum_permissions')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120828.sql');
+			}
+			if ($this->isFieldExists('prefix_forum','forum_moder')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20120920.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum','forum_icon')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20121210.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum_post','post_parent_id')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130406.sql');
+			}
+			if (!$this->isTableExists('prefix_forum_user')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130519.sql');
+			}
+			if (!$this->isTableExists('prefix_forum_marker')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130609.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum','forum_options')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130624.sql');
+			}
+			if (!$this->isTableExists('prefix_forum_file')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130820.sql');
+			}
+			if (!$this->isFieldExists('prefix_forum_post','post_rating')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20130925.sql');
+			}
 		}
 		$this->addEnumType('prefix_vote', 'target_type', 'forum_post');
 		return true;
