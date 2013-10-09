@@ -53,8 +53,8 @@
 
 						<li id="forum-{$oForum->getId()}" class="forum-item level{$iForumLevel}">
 						{include file="$sTemplatePathForum/actions/ActionForum/admin/forums_list_item.tpl"
-							bFirst=$smarty.foreach.forums_tree.first
-							bLast=$smarty.foreach.forums_tree.last
+							bFirst=$oForum->getFirst()
+							bLast=$oForum->getLast()
 							bRefreshEnable=$iForumLevel>0
 							bModerList=$iForumLevel>0
 						}

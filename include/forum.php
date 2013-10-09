@@ -37,6 +37,37 @@ function forum_create_list($aForums=array(),$aList=array(),$sDepthGuide="",$iLev
 }
 
 /**
+ * Устанавливает роли (первый, последний) в своем дереве
+ *
+ * @param	array	$aForums
+ * @return	array
+ */
+function forums_set_role($aForums) {
+	/**
+	 * Первый элемент ветки
+	 */
+	$oFirst = current($aForums);
+	$oFirst->setFirst(1);
+	/**
+	 * Последний элемент ветки
+	 */
+	$oLast = end($aForums);
+	$oLast->setLast(1);
+	/**
+	 * Устанавливаем роли для дочерних элементов
+	 */
+	foreach ($aForums as $oForum) {
+		$aChildrens = $oForum->getChildren();
+		$bHasChildren = !empty($aChildrens);
+		if ($bHasChildren) {
+			$aChildrens = forums_set_role($aChildrens);
+			$oForum->setChildren($aChildrens);
+		}
+	}
+	return $aForums;
+}
+
+/**
  * Проверяет введен ли пароль
  *
  * @param	object $oForum

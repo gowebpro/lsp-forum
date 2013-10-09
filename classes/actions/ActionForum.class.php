@@ -2743,6 +2743,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$aForumsList=$aForumsTree=array();
 		if ($aForums) {
 			/**
+			 * Кое-какие правила
+			 */
+			$aForums=forums_set_role($aForums);
+			/**
 			 * Дерево форумов
 			 */
 			$aForumsList=forum_create_list($aForums);
