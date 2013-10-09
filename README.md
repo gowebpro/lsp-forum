@@ -6,6 +6,7 @@ ATTENTION
 
 **To use this plugin requires Livestreet CMS version 1.0 or later.**
 
+
 Simple Install
 --------------
 
@@ -17,9 +18,22 @@ To install forum do this:
 * Upload to FTP, in the plugins folder
 * Activate plugin
 
+
+Simple Update
+-------------
+
+To update forum do this:
+
+* Deactivate plugin
+* Replace files
+* Activate plugin
+**Re-activation of the need for changes to the database**
+
+
 Wiki
 ----
 [Go to wiki](https://github.com/Xmk/lsplugin-forum/wiki)
+
 
 License
 -------
