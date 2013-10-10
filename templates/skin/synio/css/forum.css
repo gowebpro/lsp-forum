@@ -578,6 +578,12 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 	background-position: -249px -55px
 }
 
+
+/* Sidebar */
+.block.block-type-forum {
+}
+
+
 /* Buttons */
 a.button { color: #434343 }
 

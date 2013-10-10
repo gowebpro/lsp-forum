@@ -355,6 +355,7 @@ return array(
 
 	'block_stream' => 'Forum',
 	'block_stream_empty' => 'No messages',
+	'block_forum' => 'Last active',
 
 	'panel_spoiler' => 'Spoiler',
 	'panel_spoiler_title' => 'Spoiler title',

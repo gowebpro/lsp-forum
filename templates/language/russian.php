@@ -417,6 +417,7 @@ return array(
 	 */
 	'block_stream' => 'Форум',
 	'block_stream_empty' => 'Новых сообщений нет',
+	'block_forum' => 'Последняя активность на форуме',
 	/**
 	 * Редактор
 	 */
