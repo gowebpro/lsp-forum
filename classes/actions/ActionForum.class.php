@@ -462,7 +462,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$aLastTopics=$this->PluginForum_Forum_GetTopicItemsAll(
 			array(
 				'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
-				'#order'=>array('last_post_id'=>'desc'),
+				'#order'=>array('last_post_date'=>'desc'),
 				'#page'=>array(1,Config::Get('block.stream.row'))
 			)
 		);
