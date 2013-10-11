@@ -468,10 +468,12 @@ ls.forum.attach = (function ($) {
 	 */
 	this.deleteFile = function(idFile) {
 		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.attach_file_delete_confirm'), {'id':idFile}, function(e) {
-			var sId = $(this).data('params').id;
-			ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':sId}, function(data){
+			var sFileId = $(this).data('params').id;
+			// id поста возьмем из формы
+			var sPostId = $('#js-attach-upload-file').data('post-id');
+			ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':sFileId,'post':sPostId}, function(data){
 				if (!data.bStateError) {
-					$('#file_'+sId).remove();
+					$('#file_'+sFileId).remove();
 					ls.msg.notice(data.sMsgTitle,data.sMsg);
 				} else {
 					ls.msg.error(data.sMsgTitle,data.sMsg);
@@ -486,7 +488,9 @@ ls.forum.attach = (function ($) {
 	 * Установка описания для файла
 	 */
 	this.setFileDescription = function(id, text) {
-		ls.ajax(aRouter['forum']+'ajax/attach/text', {'id':id, 'text':text}, function(result){
+		// id поста возьмем из формы
+		var sPostId = $('#js-attach-upload-file').data('post-id');
+		ls.ajax(aRouter['forum']+'ajax/attach/text', {'id':id, 'post':sPostId, 'text':text}, function(result){
 			if (!result.bStateError) {
 
 			} else {

@@ -293,7 +293,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if ($oForumOld=$this->PluginForum_Forum_GetForumById(getRequestStr('moder_form_forum'))) {
 				if ($oForumOld->getId() != $oForum->getId()) {
 					//удаляем старую связку
-					$oForumOld->moderators->delete($oModerator);
+					$oForumOld->moderators->delete($oModerator->getId());
 					$this->PluginForum_Forum_SaveForum($oForumOld);
 					//создаем новую
 					$oForum->moderators->add($oModerator);
@@ -367,7 +367,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Удаляем модератора
 		 */
-		$oModerator->Delete();
+		$this->PluginForum_Forum_DeleteModerator($oModerator);
 		/**
 		 * Рендерим шаблон для предпросмотра топика
 		 */
@@ -727,15 +727,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oFile = $this->PluginForum_Forum_GetFileById(getRequestStr('id'));
 		if ($oFile) {
 			/**
-			 * TODO: Найти выход из ситуации
-			 * getPostId заменен на m2m
+			 * Проверяем права
 			 */
-			if ($oFile->getPostId()) {
-				/**
-				 * Проверяем права
-				 */
-				if ($oPost=$this->PluginForum_Forum_GetPostById($oFile->getPostId()) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
-					$oPost->files->delete($oFile);
+			if ($oPost=$this->PluginForum_Forum_GetPostById(getRequestStr('post'))) {
+				if ($this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+					$oPost->files->delete($oFile->getId());
 					$this->PluginForum_Forum_UpdatePost($oPost);
 					$bDelete = true;
 				}
@@ -779,17 +775,11 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oFile = $this->PluginForum_Forum_GetFileById(getRequestStr('id'));
 		if ($oFile) {
 			/**
-			 * TODO: Найти выход из ситуации
-			 * getPostId заменен на m2m
+			 * Проверяем прав
 			 */
-			if ($oFile->getPostId()) {
-				/**
-				 * Проверяем права
-				 */
-				if ($oPost=$this->Topic_GetTopicById($oFile->getPostId()) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
-					$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
-					$this->PluginForum_Forum_UpdateFile($oFile);
-				}
+			if ($oPost=$this->Topic_GetTopicById(getRequestStr('post')) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
+				$this->PluginForum_Forum_UpdateFile($oFile);
 			} else {
 				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
 				$this->PluginForum_Forum_UpdateFile($oFile);
