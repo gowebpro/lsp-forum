@@ -292,7 +292,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oForum->setLastPostId((int)$iLastPostId);
 		$oForum->setLastPostDate($sLastPostDate);
 
-		return $oForum->Save();
+		return $this->UpdateForum($oForum);
 	}
 
 	/**
@@ -313,7 +313,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$oTopic->setCountPost((int)$iCountPost);
 		$oTopic->setLastPostId((int)$iLastPostId);
 		$oTopic->setLastPostDate($sLastPostDate);
-		return $oTopic->Save();
+		return $this->UpdateTopic($oTopic);
 	}
 
 	/**
@@ -912,7 +912,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 					$oMarker->setUserId($sUserId);
 					$oMarker->setForumId($sForumId);
 					$oMarker->setMarkDate((string)$sMarkDate);
-					$oMarker->Add();
+					$this->AddMarker($oMarker);
 				}
 			}
 			/**
@@ -928,7 +928,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 							$oMarker->setForumId($sForumId);
 							$oMarker->setTopicId($sTopicId);
 							$oMarker->setMarkDate((string)$sMarkDate);
-							$oMarker->Add();
+							$this->AddMarkerTopic($oMarker);
 						}
 					}
 				}
@@ -942,7 +942,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 					$oUserForum->setUserId($sUserId);
 				}
 				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
-				$oUserForum->Save();
+				$this->SaveUser($oUserForum);
 			}
 			$this->Session_Drop("mark{$sUserId}");
 			return true;
