@@ -1976,7 +1976,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем список файлов пользователя
 		 */
-		$this->Viewer_Assign('aFilesMy', $this->PluginForum_Forum_GetFileItemsByUserId($this->oUserCurrent->getId()));
+		if ($this->User_IsAuthorization()) {
+			$this->Viewer_Assign('aFilesMy', $this->PluginForum_Forum_GetFileItemsByUserId($this->oUserCurrent->getId()));
+		}
 		/**
 		 * Обрабатываем отправку формы
 		 */
