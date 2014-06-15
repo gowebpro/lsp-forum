@@ -90,6 +90,9 @@ class PluginForum extends Plugin {
 			if (!$this->isFieldExists('prefix_forum_post','post_rating')) {
 				$this->ExportSQL(dirname(__FILE__).'/sql/update20130925.sql');
 			}
+			if (!$this->isFieldExists('prefix_forum_user','user_last_sync')) {
+				$this->ExportSQL(dirname(__FILE__).'/sql/update20140615.sql');
+			}
 		}
 		$this->addEnumType('prefix_vote', 'target_type', 'forum_post');
 		return true;

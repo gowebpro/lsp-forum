@@ -14,18 +14,18 @@
  * Регистрация хуков
  *
  */
-class PluginForum_HookForumMarker extends Hook {
+class PluginForum_HookForumSync extends Hook {
 	public function RegisterHook() {
 		$this->AddHook('module_user_authorization_after', 'SessionStart', __CLASS__);
 		$this->AddHook('module_user_logout_before', 'SessionDrop', __CLASS__);
 	}
 
 	public function SessionStart() {
-		$this->PluginForum_Forum_LoadMarkers();
+		$this->PluginForum_Forum_SyncOut();
 	}
 
 	public function SessionDrop() {
-		$this->PluginForum_Forum_SaveMarkers();
+		$this->PluginForum_Forum_SyncIn();
 	}
 
 }
