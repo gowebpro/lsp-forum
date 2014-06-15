@@ -67,9 +67,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Текущий пользователь форума
 		 */
 		if ($this->oUserCurrent) {
-		//	if (!$this->oUserForum=$this->PluginForum_Forum_GetUserById($this->oUserCurrent->getId())) {
-		//		$this->oUserForum=Engine::GetEntity('PluginForum_Forum_User');
-		//	}
+			$this->oUserForum=$this->PluginForum_Forum_GetUserById($this->oUserCurrent->getId());
 		}
 		/**
 		 * Закрытый режим
@@ -2094,8 +2092,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Обновляем инфу о пользователе
 			 */
-	//		$this->oUserForum->setPostCount($this->oUserForum->getPostCount() + 1);
-	//		$this->PluginForum_Forum_SaveUser($oUserForum);
+			$this->PluginForum_Forum_increaseUserPosts($this->oUserForum);
 
 			/**
 			 * Список емайлов на которые не нужно отправлять уведомление
@@ -2350,6 +2347,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if ($this->PluginForum_Forum_DeletePosts($oPost)) {
 			$this->Hook_Run('forum_post_delete_after',array('oPost'=>$oPost));
+			/**
+			 * Обновляем инфу о пользователе
+			 */
+			$this->PluginForum_Forum_increaseUserPosts($this->oUserForum);
 			/**
 			 * Обновляем счетчик форума
 			 */
@@ -3086,6 +3087,25 @@ class PluginForum_ActionForum extends ActionPlugin {
 	}
 
 	/**
+	 * Управление пользователями
+	 */
+	protected function _adminUsers() {
+		$this->sMenuSubItemSelect='users';
+		/**
+		 * Получаем список
+		 */
+
+		/**
+		 * Загружаем переменные в шаблон
+		 */
+
+		/**
+		 * Устанавливаем шаблон вывода
+		 */
+		$this->SetTemplateAction('admin/users');
+	}
+
+	/**
 	 * Права доступа
 	 */
 	protected function _adminPerms() {
@@ -3204,6 +3224,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 						return parent::EventNotFound();
 				}
 				$this->sMenuSubItemSelect='forums';
+				break;
+			/**
+			 * Пользователи
+			 */
+			case 'users':
+				$this->_adminUsers();
 				break;
 			/**
 			 * Права доступа

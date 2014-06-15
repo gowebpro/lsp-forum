@@ -1,6 +1,7 @@
 {assign var="oUser" value=$oPost->getUser()}
 {assign var="aFiles" value=$oPost->getFiles()}
 {assign var="oVote" value=$oPost->getVote()}
+{assign var="oUserForum" value=$oPost->getUserForum()}
 
 {if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
 	{assign var="bVoteInfoShow" value=true}
@@ -27,6 +28,11 @@
 						<p class="info-item"><span>{$aLang.profile_birthday}</span>: {date_format date=$oUser->getProfileBirthday() format="j.n.Y"}</p>
 					{/if}
 					<p class="info-item"><span>{$aLang.profile_date_registration}:</span> {date_format date=$oUser->getDateRegister() format="j.n.Y"}</p>
+					{if $oUserForum}
+						<p class="info-item"><span>{$aLang.plugin.forum.user_info_posts}:</span> {$oUserForum->getPostCount()}</p>
+					{else}
+						<p class="info-item"><span>{$aLang.plugin.forum.user_info_posts}:</span> 0</p>
+					{/if}
 				</section>
 			{else}
 				<section class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>

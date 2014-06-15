@@ -39,6 +39,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	const MARKER_TOPIC			= 'T';
 	const MARKER_TOPIC_FORUM	= 'TF';
 	const MARKER_USER			= 'L';
+	const MARKER_CNTS			= 'C';
 	/**
 	 * Дополнительные данные форумов
 	 */
@@ -722,21 +723,27 @@ class PluginForum_ModuleForum extends ModuleORM {
 		$sOne=false;
 		if (!is_array($aPosts)) {
 			$sOne=$aPosts->getId();
-			$aPosts=array($aPosts->getId() => $aPosts);
+			$aPosts=array($sOne => $aPosts);
 		}
 		$aPostId=array();
+		$aUsersId=array();
 		/**
 		 * Формируем ID дополнительных данных, которые нужно получить
 		 */
 		foreach ($aPosts as $oPost) {
 			$aPostId[]=$oPost->getId();
+			$aUsersId[$oPost->getUserId()]=1;
 		}
 		/**
 		 * Получаем дополнительные данные
 		 */
 		$aVote=array();
+		$aUsers=array();
 		if (isset($aAllowData['vote']) && $this->oUserCurrent) {
 			$aVote=$this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
+		}
+		if ($aUsersId) {
+			$aUsers=$this->GetUserItemsByArrayUserId(array_keys($aUsersId));
 		}
 		/**
 		 * Добавляем данные к результату - списку топиков
@@ -746,6 +753,11 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$oPost->setVote($aVote[$oPost->getId()]);
 			} else {
 				$oPost->setVote(null);
+			}
+			if (isset($aUsers[$oPost->getUserId()])) {
+				$oPost->setUserForum($aUsers[$oPost->getUserId()]);
+			} else {
+				$oPost->setUserForum(null);
 			}
 		}
 
@@ -762,7 +774,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if ($oUser=$this->User_GetUserCurrent()) {
 			$aMark=$this->Session_Get("mark{$oUser->getId()}");
 			$aMark=unserialize(stripslashes($aMark));
-			return $aMark;
+			return (array)$aMark;
 		}
 		return array();
 	}
@@ -899,8 +911,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 			/**
 			 * Чистим БД
 			 */
-			$aForumMark=$this->GetMarkerItemsByUserId($oUser->getId());
-			$aTopicMark=$this->GetMarkerTopicItemsByUserId($oUser->getId());
+			$aForumMark=$this->GetMarkerItemsByUserId($sUserId);
+			$aTopicMark=$this->GetMarkerTopicItemsByUserId($sUserId);
 			foreach ($aForumMark as $oMarker) $oMarker->Delete();
 			foreach ($aTopicMark as $oMarker) $oMarker->Delete();
 			/**
@@ -936,14 +948,23 @@ class PluginForum_ModuleForum extends ModuleORM {
 			/**
 			 * Сохраняем трекер пользователя
 			 */
-			if (isset($aMark[self::MARKER_USER])) {
-				if (!$oUserForum=$this->GetUserById($sUserId)) {
-					$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
-					$oUserForum->setUserId($sUserId);
-				}
-				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
-				$this->SaveUser($oUserForum);
+			if (!$oUserForum=$this->GetUserById($sUserId)) {
+				$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
+				$oUserForum->setUserId($sUserId);
 			}
+			//синхрнизаци не было, делаем пересчет постовпостов
+			if (!$oUserForum->getLastSync()) {
+				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByUserId($sUserId, array('#where'=>array('post_new_topic = ?'=>array(0))));
+				$oUserForum->setPostCount(count($aUserPosts));
+			}
+			if (isset($aMark[self::MARKER_USER])) {
+				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
+			}
+			if (isset($aMark[self::MARKER_CNTS])){
+				$oUserForum->setPostCount((int)$aMark[self::MARKER_CNTS]);
+			}
+			$oUserForum->setLastSync(date('Y-m-d H:i:s'));
+			$this->SaveUser($oUserForum);
 			$this->Session_Drop("mark{$sUserId}");
 			return true;
 		}
@@ -957,10 +978,12 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function LoadMarkers() {
 		if ($oUser=$this->User_GetUserCurrent()) {
+			$sUserId=$oUser->getId();
 			$aMarkData=array();
-			$aForumMark=$this->GetMarkerItemsByUserId($oUser->getId());
-			$aTopicMark=$this->GetMarkerTopicItemsByUserId($oUser->getId());
-			$oUserForum=$this->GetUserById($oUser->getId());
+
+			$aForumMark=$this->GetMarkerItemsByUserId($sUserId);
+			$aTopicMark=$this->GetMarkerTopicItemsByUserId($sUserId);
+			$oUserForum=$this->GetUserById($sUserId);
 			foreach ($aForumMark as $oMarker) {
 				$aMarkData[self::MARKER_FORUM][$oMarker->getForumId()]=$oMarker->getMarkDate();
 			}
@@ -970,6 +993,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 			if ($oUserForum) {
 				$aMarkData[self::MARKER_USER]=$oUserForum->getLastMark();
+				$aMarkData[self::MARKER_CNTS]=$oUserForum->getPostCount();
 			}
 			return $this->SetMarking($aMarkData);
 		}
@@ -1030,6 +1054,67 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function DeleteAttach(PluginForum_ModuleForum_EntityFile $oFile) {
 		@unlink($this->Image_GetServerPath($oFile->getPath()));
 		return	$this->PluginForum_Forum_DeleteFile($oFile);
+	}
+
+	/**
+	 * Увеличить счетчик постов пользователя
+	 *
+	 * @params	object	$oUser
+	 * @params	integer	$iVal
+	 * @return	boolean
+	 */
+	public function increaseUserPosts($oUser,$iVal=1) {
+		if ($oUser) {
+			$aMark=$this->GetMarking();
+			$aMark[self::MARKER_CNTS]=(isset($aMark[self::MARKER_CNTS])?$aMark[self::MARKER_CNTS]:0)+$iVal;
+			return $this->SetMarking($aMark);
+		}
+		return false;
+	}
+	/**
+	 * Уменьшить счетчик постов пользователя
+	 *
+	 * @params	object	$oUser
+	 * @params	integer	$iVal
+	 * @return	boolean
+	 */
+	public function decreaseUserPosts($oUser,$iVal=1) {
+		return increaseUserPosts($oUser,-$iVal);
+	}
+	/**
+	 * Посчитать счетчик постов всех пользователей
+	 *
+	 * @params	object	$oUser
+	 * @params	integer	$iVal
+	 * @return	boolean
+	 */
+	public function recountUsersPosts() {
+		$aSorted=array();
+		$aAllPosts=$this->PluginForum_Forum_GetPostItemsAll(array('#where'=>array('post_new_topic = ?'=>array(0))));
+		foreach ($aAllPosts as $oPost) {
+			$aSorted[$oPost->getUserId()][]=$oPost->getId();
+		}
+		foreach ($aSorted as $sUserId=>$aPostsId) {
+			if (!$oUserForum=$this->GetUserById($sUserId)) {
+				$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
+				$oUserForum->setUserId($sUserId);
+			}
+			$oUserForum->setPostCount(count($aPostsId));
+			$oUserForum->Save();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Синхронизация
+	 *
+	 */
+	public function SyncIn() {
+		$this->SaveMarkers();
+	}
+	public function SyncOut() {
+		$this->LoadMarkers();
 	}
 
 }
