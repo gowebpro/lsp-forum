@@ -18,12 +18,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 */
 	protected $oUserCurrent=null;
 	/**
-	 * Текущий юзер
-	 *
-	 * @var PluginForum_ModuleForum_EntityUser
-	 */
-	protected $oUserForum=null;
-	/**
 	 * Главное меню
 	 *
 	 * @var string
@@ -63,12 +57,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Получаем текущего пользователя
 		 */
 		$this->oUserCurrent=$this->User_GetUserCurrent();
-		/**
-		 * Текущий пользователь форума
-		 */
-		if ($this->oUserCurrent) {
-			$this->oUserForum=$this->PluginForum_Forum_GetUserById($this->oUserCurrent->getId());
-		}
 		/**
 		 * Закрытый режим
 		 */
@@ -2092,7 +2080,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Обновляем инфу о пользователе
 			 */
-			$this->PluginForum_Forum_increaseUserPosts($this->oUserForum);
+			$this->PluginForum_Forum_increaseUserPosts($this->oUserCurrent);
 
 			/**
 			 * Список емайлов на которые не нужно отправлять уведомление
@@ -2350,7 +2338,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Обновляем инфу о пользователе
 			 */
-			$this->PluginForum_Forum_increaseUserPosts($this->oUserForum);
+			$this->PluginForum_Forum_decreaseUserPosts($oPost->getUserId());
 			/**
 			 * Обновляем счетчик форума
 			 */

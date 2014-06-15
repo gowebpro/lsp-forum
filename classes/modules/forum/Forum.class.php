@@ -616,8 +616,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Получаем дополнительные данные
 		 */
-		$aMark=$this->GetMarking();
 		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+			$aMark=$this->GetMarking();
 			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
 			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
 		}
@@ -677,8 +677,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Получаем дополнительные данные
 		 */
-		$aMark=$this->GetMarking();
 		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+			$aMark=$this->GetMarking();
 			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
 			$aTopicMark=isset($aMark[self::MARKER_TOPIC]) ? $aMark[self::MARKER_TOPIC] : array();
 			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
@@ -743,6 +743,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			$aVote=$this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
 		}
 		if ($aUsersId) {
+			//добавь кеш
 			$aUsers=$this->GetUserItemsByArrayUserId(array_keys($aUsersId));
 		}
 		/**
@@ -960,9 +961,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 			if (isset($aMark[self::MARKER_USER])) {
 				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
 			}
-			if (isset($aMark[self::MARKER_CNTS])){
-				$oUserForum->setPostCount((int)$aMark[self::MARKER_CNTS]);
-			}
+		//	if (isset($aMark[self::MARKER_CNTS])){
+			//	$oUserForum->setPostCount((int)$aMark[self::MARKER_CNTS]);
+		//	}
 			$oUserForum->setLastSync(date('Y-m-d H:i:s'));
 			$this->SaveUser($oUserForum);
 			$this->Session_Drop("mark{$sUserId}");
@@ -1063,11 +1064,28 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @params	integer	$iVal
 	 * @return	boolean
 	 */
-	public function increaseUserPosts($oUser,$iVal=1) {
-		if ($oUser) {
-			$aMark=$this->GetMarking();
-			$aMark[self::MARKER_CNTS]=(isset($aMark[self::MARKER_CNTS])?$aMark[self::MARKER_CNTS]:0)+$iVal;
-			return $this->SetMarking($aMark);
+	public function increaseUserPosts($sUserId,$iVal=1) {
+		if ($sUserId) {
+		//	$aMark=$this->GetMarking();
+		//	$aMark[self::MARKER_CNTS]=(isset($aMark[self::MARKER_CNTS])?$aMark[self::MARKER_CNTS]:0)+$iVal;
+		//	return $this->SetMarking($aMark);
+			if ($sUserId instanceof Entity) {
+				$sUserId = $sUserId->getId();
+			}
+			if (!$oUserForum=$this->GetUserById($sUserId)) {
+				$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
+				$oUserForum->setUserId($sUserId);
+			}
+			//если синхрнизаци не было, делаем пересчет постов
+			if (!$oUserForum->getLastSync()) {
+				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByUserId($sUserId, array('#where'=>array('post_new_topic = ?'=>array(0))));
+				$oUserForum->setPostCount(count($aUserPosts));
+			} else {
+				$oUserForum->setPostCount($oUserForum->getPostCount()+$iVal);
+			}
+			$oUserForum->setLastSync(date('Y-m-d H:i:s'));
+			return $oUserForum->Save();
+			//да сделай ты кеш
 		}
 		return false;
 	}
@@ -1079,7 +1097,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	boolean
 	 */
 	public function decreaseUserPosts($oUser,$iVal=1) {
-		return increaseUserPosts($oUser,-$iVal);
+		return $this->increaseUserPosts($oUser,-$iVal);
 	}
 	/**
 	 * Посчитать счетчик постов всех пользователей
