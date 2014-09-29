@@ -93,8 +93,8 @@
 					data-option-url="{router page='forum'}ajax/vote/info/"
 					data-vote-type="forum_post"
 					data-vote-id="{$oPost->getId()}"
-					class="vote
-						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.travel.acl.vote.post.time')}
+					class="vote-topic
+						{if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId())}
 							{if $oPost->getRating() > 0}
 								vote-count-positive
 							{elseif $oPost->getRating() < 0}
