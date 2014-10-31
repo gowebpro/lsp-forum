@@ -1514,6 +1514,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			$this->PluginForum_Forum_RecountForum($oForumOld);
 			$this->PluginForum_Forum_RecountForum($oForumNew);
+			/**
+			 * Если нужно, добавляем в сообщение информацию о перемещени
+			 */
+			if (Config::Get('plugin.forum.move_info_post')) {
+				$sTextFull = $this->Lang_Get('plugin.forum.topic_move_post_template', array('sOldForum'=>$oForumOld->getUrlHtml(), 'sNewForum'=>$oForumNew->getUrlHtml() ));
+				$oMovePost = $this->PluginForum_Forum_createPost(array(
+					'user'=>$this->oUserCurrent->getId(),
+					'text'=>$sTextFull,
+					'topic'=>$oTopic->getId()
+				));
+			}
 			Router::Location($oTopic->getUrlFull());
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('system_error'),$this->Lang_Get('error'));

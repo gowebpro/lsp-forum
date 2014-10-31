@@ -188,6 +188,7 @@ return array(
 	'topic_move_posts_for' => 'Вам нужно выбрать тему, в которую вы хотите перенести сообщения',
 	'topic_move_posts_error_self' => 'Сообщения итак находятся в выбранной теме',
 	'topic_move_posts_error_topic' => 'Вам нужно выбрать новую тему для сообщений',
+	'topic_move_post_template' => 'Тема была перемещена из форума %%sOldForum%% в форум %%sNewForum%%',
 	'topic_post_count' => 'Сообщений в теме',
 	'topic_acl' => 'Вам не хватает рейтинга для создания темы в этом форуме',
 	'topic_time_limit' => 'Вам нельзя создавать темы слишком часто',

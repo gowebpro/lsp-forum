@@ -275,6 +275,15 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		$aOptions[$sName]=$sValue;
 		$this->setOptions(addslashes(serialize($aOptions)));
 	}
+
+
+	/**
+	 * Возвращает Титл объекта завернутый в ссылку
+	 */
+	public function getUrlHtml($bStrong=false) {
+		return "<b><a href='{$this->getUrlFull()}'>{$this->getTitle()}</a></b>";
+	}
+
 }
 
 ?>

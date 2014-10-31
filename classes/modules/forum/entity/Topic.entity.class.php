@@ -39,7 +39,7 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	public function getPaging() {
 		$iCountItems=$this->getCountPost();
 		$oForum=$this->getForum();
-		$iPerPage=$oForum->getOptionsValue('posts_per_page')?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
+		$iPerPage=($oForum&&$oForum->getOptionsValue('posts_per_page'))?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iCountItems--;
 			$iPerPage--;

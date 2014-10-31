@@ -72,6 +72,43 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Функция создает и публикует сообщение в тему
+	 *	@param	array	$aData
+	 *	@return	object|boolean
+	 */
+	public function createPost($aData=array()){
+		$sText = isset($aData['text']) ? $aData['text'] : null;
+		$sUser = isset($aData['user']) ? $aData['user'] : null;
+		$sTopic = isset($aData['topic']) ? $aData['topic'] : null;
+		$sTitle = isset($aData['title']) ? $aData['title'] : null;
+		$sGuest = isset($aData['guest']) ? $aData['guest'] : 'unknown';
+
+		if ($sText) {
+			$oPost = Engine::GetEntity('PluginForum_Forum_Post');
+			$oPost->setTitle($sTitle);
+			$oPost->setUserIp(func_getIp());
+			$oPost->setDateAdd(date('Y-m-d H:i:s'));
+			$oPost->setTextHash(md5($sText));
+			$oPost->setTextSource($sText);
+			$oPost->setText($this->PluginForum_Forum_TextParse($sText));
+			if ($sUser) {
+				$oPost->setUserId($sUser);
+			} else {
+				$oPost->setUserId(0);
+				$oPost->setGuestName(strip_tags($sGuest));
+			}
+			if ($sTopic) {
+				$oPost->setTopicId($sTopic);
+				return $this->PluginForum_Forum_AddPost($oPost);
+			} else {
+				return $oPost;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Перемещает сообщения в другую тему
 	 *
 	 * @param	array	$aPostsId
