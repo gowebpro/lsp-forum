@@ -175,6 +175,7 @@ return array(
 	'topic_move_posts_for' => 'You need to choose a topic in which you want to transfer messages',
 	'topic_move_posts_error_self' => 'Messages are so chosen topic',
 	'topic_move_posts_error_topic' => 'You need to choose a new theme for posts',
+	'topic_move_post_template' => 'Topic move from %%sOldForum%% to %%sNewForum%%',
 	'topic_post_count' => 'Posts in topic',
 	'topic_acl' => 'You lack the ratings to create topics in this forum',
 	'topic_time_limit' => 'You may not post new threads too often',

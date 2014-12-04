@@ -74,7 +74,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Функция создает и публикует сообщение в тему
 	 *	@param	array	$aData
-	 *	@return	object|boolean
+	 *	@return	object
 	 */
 	public function createPost($aData=array()){
 		$sText = isset($aData['text']) ? $aData['text'] : null;
@@ -105,7 +105,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
