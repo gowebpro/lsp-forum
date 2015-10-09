@@ -33,7 +33,7 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	public function Init() {
 		parent::Init();
 		$this->aValidateRules[]=array('topic_title','string','min'=>Config::Get('plugin.forum.topic.title_min_length'),'max'=>Config::Get('plugin.forum.topic.title_max_length'),'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.new_topic_title'));
-		$this->aValidateRules[]=array('topic_description','string','max'=>100,'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.new_topic_description'));
+		$this->aValidateRules[]=array('topic_description','string','max'=>Config::Get('plugin.forum.topic.descr_max_length'),'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.new_topic_description'));
 	}
 
 	public function getPaging() {
