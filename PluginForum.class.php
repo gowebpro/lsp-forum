@@ -94,7 +94,9 @@ class PluginForum extends Plugin {
 				$this->ExportSQL(dirname(__FILE__).'/sql/update20140615.sql');
 			}
 		}
-		$this->addEnumType('prefix_vote', 'target_type', 'forum_post');
+		if ($this->isTableExists('prefix_vote')) {
+			$this->addEnumType('prefix_vote', 'target_type', 'forum_post');
+		}
 		return true;
 	}
 
@@ -122,14 +124,20 @@ class PluginForum extends Plugin {
 		$this->Viewer_AppendScript(Plugin::GetWebPath(__CLASS__).'templates/framework/js/forum.js');
 		/**
 		 * Добавляем в подписку новые типы
+		 *  - при наличи модуля Subscribe
 		 */
-		$this->Subscribe_AddTargetType('forum_new_topic',array());
-		$this->Subscribe_AddTargetType('topic_new_post',array());
+		if (class_exists('ModuleSubscribe')){
+			$this->Subscribe_AddTargetType('forum_new_topic',array());
+			$this->Subscribe_AddTargetType('topic_new_post',array());
+		}
 		/**
 		 * Добавляем в ленту новые типы событий
+		 *  - при наличии модуля Stream
 		 */
-		$this->Stream_AddEventType('add_forum_topic', array('related' => 'forumTopic','unique'=>true));
-		$this->Stream_AddEventType('add_forum_post', array('related' => 'forumPost','unique'=>true));
+		if (class_exists('ModuleStream')){
+			$this->Stream_AddEventType('add_forum_topic', array('related' => 'forumTopic','unique'=>true));
+			$this->Stream_AddEventType('add_forum_post', array('related' => 'forumPost','unique'=>true));
+		}
 		/**
 		 * Добавляем в ленту текстовки новых типов событий
 		 */
