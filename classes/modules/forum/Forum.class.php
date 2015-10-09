@@ -355,6 +355,19 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Выполняет необходимые действия после удаления топика
+	 *
+	 * @param	object	$oTopic
+	 * @return	boolean
+	 */
+	public function DeleteTopicAfter($oTopic) {
+		//чистим кеш
+		$this->Cache_Clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG,array('PluginForum_ModuleForum_EntityPost_save'));
+
+		return true;
+	}
+
+	/**
 	 * Формируем права доступа
 	 *
 	 * @param	object	$oForum

@@ -1598,6 +1598,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return;
 		}
 		if ($this->PluginForum_Forum_DeleteTopic($oTopic)) {
+			$this->PluginForum_Forum_DeleteTopicAfter($oTopic);
 			/**
 			 * Обновляем свойства форума
 			 */
