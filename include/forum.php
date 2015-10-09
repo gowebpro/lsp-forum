@@ -88,7 +88,7 @@ function forum_parse_title($sTitle) {
 	if (Config::Get('plugin.forum.title_format')) {
 		$sTitle = preg_replace('#(\.|\?|!|\(|\)){3,}#', '\1\1\1', $sTitle);
 	}
-	$sTitle = rtrim($sTitle, '(^A-Za-z0-9!?)');
+	//$sTitle = rtrim($sTitle, '(^A-Za-z0-9!?)');
 	return strip_tags($sTitle);
 }
 
