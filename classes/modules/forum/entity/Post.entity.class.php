@@ -24,7 +24,7 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	 */
 	public function Init() {
 		parent::Init();
-		$this->aValidateRules[]=array('post_title','string','min'=>2,'max'=>100,'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.post_create_title'),'on'=>array('post'));
+		$this->aValidateRules[]=array('post_title','string','min'=>Config::Get('plugin.forum.post.title_min_length'),'max'=>Config::Get('plugin.forum.post.title_max_length'),'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.post_create_title'),'on'=>array('post'));
 		$this->aValidateRules[]=array('post_text_source','string','min'=>5,'max'=>Config::Get('plugin.forum.post_max_length'),'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.post_create_text'),'on'=>array('topic','post'));
 		$this->aValidateRules[]=array('post_text_source','post_unique','on'=>array('topic','post'));
 		if (!$this->User_IsAuthorization()) {

@@ -17,7 +17,7 @@
 class PluginForum_HookMobile extends Hook {
 	public function RegisterHook() {
 		if (class_exists('MobileDetect') && MobileDetect::IsMobileTemplate()) {
-			$this->AddHook('init_action','InitAction');
+			$this->AddHook('init_action','InitAction',0,__CLASS__);
 		}
 	}
 

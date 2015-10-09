@@ -43,6 +43,16 @@ $config['post_max_length']		= 5000;
 
 
 /**
+ * Ограничение на количество символов в заголовках
+ */
+$config['topic']['title_min_length'] = 2;
+$config['topic']['title_min_length'] = 100;
+
+$config['post']['title_min_length'] = 2;
+$config['post']['title_min_length'] = 100;
+
+
+/**
  * Добавлять в перемещенную тему пост с информацией по перемещению?
  */
 $config['move_info_post']		= true;
