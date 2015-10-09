@@ -11,17 +11,17 @@
 				{if $oTopic->getPinned()==1}
 					<span class="badge">{$aLang.plugin.forum.topic_pinned}</span>
 				{/if}
-				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
+				<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>
 				{include file="$sTemplatePathForum/paging_post.tpl" aPaging=$oTopic->getPaging()}
 			</h4>
 			{if $oTopic->getDescription()}
 			<p class="lighter">
-				<small>{$oTopic->getDescription()}</small>
+				<small>{$oTopic->getDescription()|escape:'html'}</small>
 			</p>
 			{/if}
 			<p>
 				{$aLang.plugin.forum.header_author}:
-				<span class="author"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></span>,
+				<span class="author"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></span>,
 				{date_format date=$oTopic->getDateAdd()}
 			</p>
 		</td>
@@ -38,10 +38,10 @@
 					{$aLang.plugin.forum.post_writer}:
 					<span class="author user-avatar">
 						{if $oPoster}
-							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()}" /></a>
-							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
+							<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(24)}" title="{$oPoster->getLogin()|escape:'html'}" /></a>
+							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()|escape:'html'}</a>
 						{else}
-							<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+							<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a>
 						{/if}
 					</span>
 				</li>

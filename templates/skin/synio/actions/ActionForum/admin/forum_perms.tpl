@@ -13,7 +13,7 @@
 <div class="forums">
 	<div class="fBox forum-acp">
 		<header class="forums-header">
-			<h3>{$aLang.plugin.forum.perms} &laquo;{$oForum->getTitle()}&raquo;</h3>
+			<h3>{$aLang.plugin.forum.perms} &laquo;{$oForum->getTitle()|escape:'html'}&raquo;</h3>
 		</header>
 
 		<div class="forums-content">

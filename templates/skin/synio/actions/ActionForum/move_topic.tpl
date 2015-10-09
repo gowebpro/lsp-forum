@@ -2,7 +2,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.plugin.forum.topic_move} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.topic_move} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></h4>
 
 <div class="fBox">
 	<form action="" method="POST" enctype="multipart/form-data">
@@ -13,7 +13,7 @@
 						{$aLang.plugin.forum.topic_move_for}
 						<select id="topic_move_id" name="topic_move_id">
 							{foreach from=$aForumsList item=aItem}
-							<option value="{$aItem.id}"{if $_aRequest.topic_move_id==$aItem.id} selected{/if}>{$aItem.title}</option>
+							<option value="{$aItem.id}"{if $_aRequest.topic_move_id==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
 							{/foreach}
 						</select>
 					</label>

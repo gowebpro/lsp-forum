@@ -14,10 +14,10 @@
 			{if $oUser}
 				<section class="avatar">
 					<div class="status {if $oUser->isOnline()}status-online{else}status-offline{/if}">{if $oUser->isOnline()}{$aLang.user_status_online}{else}{$aLang.user_status_offline}{/if}</div>
-					<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></a>
+					<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()|escape:'html'}" src="{$oUser->getProfileAvatarPath(100)}" /></a>
 				</section>
 				<section class="login">
-					<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a>
+					<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
 				</section>
 				<section class="info">
 					{if $oUser->getProfileName()}
@@ -29,8 +29,8 @@
 					<p class="info-item"><span>{$aLang.profile_date_registration}:</span> {date_format date=$oUser->getDateRegister() format="j.n.Y"}</p>
 				</section>
 			{else}
-				<section class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>
-				<section class="login">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a></section>
+				<section class="avatar"><img alt="{$oPost->getGuestName()|escape:'html'}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>
+				<section class="login">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a></section>
 			{/if}
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
@@ -49,7 +49,7 @@
 					{date_format date=$oPost->getDateAdd()}
 					{if $oPost->getTitle()}
 						<span class="divide">|</span>
-						<strong>{$oPost->getTitle()}</strong>
+						<strong>{$oPost->getTitle()|escape:'html'}</strong>
 					{/if}
 					{hook run='forum_post_header_info_item' post=$oPost}
 				</div>
@@ -64,13 +64,13 @@
 					{assign var="oEditor" value=$oPost->getEditor()}
 					<div class="edit">
 						{$aLang.plugin.forum.post_editing}
-						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()}</a>
+						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()|escape:'html'}</a>
 						{if $oPost->getDateEdit()}
 							<span class="divide">-</span>
 							{date_format date=$oPost->getDateEdit()}
 						{/if}
 						{if $oPost->getEditReason()}
-							<span class="reason">{$oPost->getEditReason()}</span>
+							<span class="reason">{$oPost->getEditReason()|escape:'html'}</span>
 						{/if}
 					</div>
 				{/if}
@@ -79,7 +79,7 @@
 					{foreach from=$aFiles item=oFile name=post_files}
 						<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
 							<i class="icon-file"></i>
-							{$oFile->getName()}
+							{$oFile->getName()|escape:'html'}
 						</a>{if !$smarty.foreach.post_files.last}, {/if}
 					{/foreach}
 					</div>
@@ -158,10 +158,10 @@
 	{if $oUserCurrent && !$noFooter}
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
-			<a href="#" class="button js-post-quote" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
+			<a href="#" class="button js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
 				<i class="icon-leaf"></i> {$aLang.plugin.forum.button_quote}
 			</a>
-			<a href="{$oTopic->getUrlFull()}reply" class="button js-post-reply" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">
+			<a href="{$oTopic->getUrlFull()}reply" class="button js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
 				<i class="icon-comment"></i> {$aLang.plugin.forum.button_reply}
 			</a>
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}

@@ -11,7 +11,7 @@
 				<section class="forum-block toggle-section" id="category-{$oForum->getId()}">
 					<header class="forum-header">
 						<i class="js-forum-cat-toggler"></i>
-						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 					</header>
 					<div class="forum-content">
 						{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}

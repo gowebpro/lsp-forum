@@ -9,9 +9,9 @@
 
 <h4 class="page-subheader">
 {if $bEditTopic}
-	{$aLang.plugin.forum.topic_edit}: &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;
+	{$aLang.plugin.forum.topic_edit}: &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>&raquo;
 {else}
-	{$aLang.plugin.forum.post_edit_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;
+	{$aLang.plugin.forum.post_edit_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>&raquo;
 {/if}
 </h4>
 
@@ -27,19 +27,19 @@
 	{if $bEditTopic}
 	<p>
 		<label for="topic_title">{$aLang.plugin.forum.new_topic_title}:</label>
-		<input type="text" id="topic_title" name="topic_title" value="{$_aRequest.topic_title}" class="input-text input-width-full" /><br />
+		<input type="text" id="topic_title" name="topic_title" value="{$_aRequest.topic_title|escape:'html'}" class="input-text input-width-full" /><br />
 		<span class="note">{$aLang.plugin.forum.new_topic_title_notice}</span>
 	</p>
 
 	<p>
 		<label for="topic_description">{$aLang.plugin.forum.new_topic_description}:</label>
-		<input type="text" id="topic_description" name="topic_description" value="{$_aRequest.topic_description}" class="input-text input-width-full" /><br />
+		<input type="text" id="topic_description" name="topic_description" value="{$_aRequest.topic_description|escape:'html'}" class="input-text input-width-full" /><br />
 		<span class="note">{$aLang.plugin.forum.new_topic_description_notice}</span>
 	</p>
 	{else}
 	<p>
 		<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
-		<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
+		<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title|escape:'html'}" class="input-text input-width-full" /><br />
 		<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 	</p>
 	{/if}
@@ -65,7 +65,7 @@
 
 	<p>
 		<label for="post_edit_reason">{$aLang.plugin.forum.post_edit_reason}:</label>
-		<input type="text" id="post_edit_reason" name="post_edit_reason" value="{$_aRequest.post_edit_reason}" class="input-text input-width-full" /><br />
+		<input type="text" id="post_edit_reason" name="post_edit_reason" value="{$_aRequest.post_edit_reason|escape:'html'}" class="input-text input-width-full" /><br />
 		<span class="note">{$aLang.plugin.forum.post_edit_reason_notice}</span>
 	</p>
 

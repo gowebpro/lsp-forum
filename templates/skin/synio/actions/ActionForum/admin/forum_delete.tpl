@@ -10,7 +10,7 @@
 <div class="forums">
 	<div class="fBox forum-acp">
 		<header class="forums-header">
-			<h3>{$aLang.plugin.forum.delete} &laquo;{$oForum->getTitle()}&raquo;</h3>
+			<h3>{$aLang.plugin.forum.delete} &laquo;{$oForum->getTitle()|escape:'html'}&raquo;</h3>
 		</header>
 
 		<div class="forums-content">
@@ -26,7 +26,7 @@
 							<td class="cell-labeled">
 								<select id="forum_move_id_topics" name="forum_move_id_topics">
 								{foreach from=$aForumsList item=aItem}
-									<option value="{$aItem.id}"{if $_aRequest.forum_move_id_topics==$aItem.id} selected{/if}>{$aItem.title}</option>
+									<option value="{$aItem.id}"{if $_aRequest.forum_move_id_topics==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
 								{/foreach}
 								</select>
 								<span class="note">{$aLang.plugin.forum.delete_move_items_note}</span>
@@ -41,7 +41,7 @@
 							<td class="cell-labeled">
 								<select id="forum_delete_move_childrens" name="forum_delete_move_childrens">
 								{foreach from=$aForumsList item=aItem}
-									<option value="{$aItem.id}"{if $_aRequest.forum_delete_move_childrens==$aItem.id} selected{/if}>{$aItem.title}</option>
+									<option value="{$aItem.id}"{if $_aRequest.forum_delete_move_childrens==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
 								{/foreach}
 								</select>
 								<span class="note">{$aLang.plugin.forum.delete_move_childrens_note}</span>

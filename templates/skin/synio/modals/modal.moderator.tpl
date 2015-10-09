@@ -10,7 +10,7 @@
 			<select id="moder_forum_id" name="moder_forum_id" class="input-width-full">
 				<option value="-1">--</option>
 				{foreach from=$aForumsList item=aItem}
-				<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title}</option>
+				<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title|escape:'html'}</option>
 				{/foreach}
 			</select></p>
 

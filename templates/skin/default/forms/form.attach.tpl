@@ -29,10 +29,10 @@
 			{foreach from=$aFiles item=oFile}
 				<li id="file_{$oFile->getId()}" class="forum-attach-files-item">
 					<div class="forum-attach-files-item-header">
-						<span class="forum-attach-files-item-title">{$oFile->getName()}</span>
+						<span class="forum-attach-files-item-title">{$oFile->getName()|escape:'html'}</span>
 						<span class="forum-attach-files-item-size">{$oFile->getSizeFormat()}</span>
 					</div>
-					<textarea onblur="ls.forum.attach.setFileDescription({$oFile->getId()}, this.value)">{$oFile->getText()}</textarea><br />
+					<textarea onblur="ls.forum.attach.setFileDescription({$oFile->getId()}, this.value)">{$oFile->getText()|escape:'html'}</textarea><br />
 					<a href="javascript:ls.forum.attach.deleteFile({$oFile->getId()})" class="file-delete">{$aLang.plugin.forum.attach_file_delete}</a>
 				</li>
 			{/foreach}

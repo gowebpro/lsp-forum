@@ -7,10 +7,10 @@
 		<li class="js-title-comment" title="{$oPost->getText()|trim|truncate:150:'...'|escape:'html'}">
 			{if $oUser}
 				<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(48)}" alt="avatar" class="avatar" /></a>
-				<a href="{$oUser->getUserWebPath()}" class="author">{$oUser->getLogin()}</a> &rarr;
+				<a href="{$oUser->getUserWebPath()}" class="author">{$oUser->getLogin()|escape:'html'}</a> &rarr;
 			{else}
 				<img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" alt="avatar" class="avatar" />
-				{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()} &rarr;
+				{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'} &rarr;
 			{/if}
 			<a href="{$oForum->getUrlFull()}" class="blog-name">{$oForum->getTitle()|escape:'html'}</a> &rarr;
 			<a href="{$oPost->getUrlFull()}" class="stream-topic">{$oTopic->getTitle()|escape:'html'}</a>

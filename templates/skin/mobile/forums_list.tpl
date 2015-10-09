@@ -9,7 +9,7 @@
 					<img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/>
 				</a>
 				<h3>
-					<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>
+					<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a>
 				</h3>
 				{if $aSubForums}
 				<p>
@@ -17,7 +17,7 @@
 					{foreach from=$aSubForums item=oSubForum name=subforums}
 						{if $oSubForum->getAllowShow()}
 							{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
-							<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>
+							<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
 						{/if}
 					{/foreach}
 				</p>
@@ -37,9 +37,9 @@
 						{assign var="oPoster" value=$oPost->getUser()}
 						{$aLang.plugin.forum.post_last}
 						{if $oPoster}
-							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>,
+							<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()|escape:'html'}</a>,
 						{else}
-							<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>,
+							<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a>,
 						{/if}
 						{if $oForum->getAllowRead() && $oForum->getAutorization()}
 							<a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">

@@ -7,11 +7,11 @@
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 			{if $oUser}
-				<section class="avatar"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(100)}" /></section>
-				<section class="login"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></section>
+				<section class="avatar"><img alt="{$oUser->getLogin()|escape:'html'}" src="{$oUser->getProfileAvatarPath(100)}" /></section>
+				<section class="login"><a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></section>
 			{else}
 				<section class="avatar"><img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>
-				<section class="login">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a></section>
+				<section class="login">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a></section>
 			{/if}
 			{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
 		</aside>
@@ -22,7 +22,7 @@
 					{date_format date=$oPost->getDateAdd()}
 					{if $oPost->getTitle()}
 						<span class="divide">|</span>
-						<strong>{$oPost->getTitle()}</strong>
+						<strong>{$oPost->getTitle()|escape:'html'}</strong>
 					{/if}
 					{hook run='forum_post_header_info_item' post=$oPost}
 				</div>

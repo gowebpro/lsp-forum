@@ -13,8 +13,8 @@
 				{assign var=aPosts value=$oFile->getPosts()}
 				<li class="attach-files-item" data-id="{$oFile->getId()}">
 					<div class="attach-files-item-main">
-						<span class="file-name">{$oFile->getName()}</span>
-						<span class="file-text">{$oFile->getText()}</span>
+						<span class="file-name">{$oFile->getName()|escape:'html'}</span>
+						<span class="file-text">{$oFile->getText()|escape:'html'}</span>
 					</div>
 					<div class="attach-files-item-note">
 						<span class="file-hover">{$aLang.plugin.forum.attach_this}</span>

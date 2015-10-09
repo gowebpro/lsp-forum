@@ -10,7 +10,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.plugin.forum.topic_move_posts} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.topic_move_posts} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></h4>
 
 <form action="" method="POST" enctype="multipart/form-data" id="form_posts_list">
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
@@ -24,7 +24,7 @@
 				<option value="">{$aLang.plugin.forum.select_forum}</option>
 				{if $aForumsList}
 					{foreach from=$aForumsList item=aItem}
-						<option value="{$aItem.id}"{if $_aRequest.forum_id==$aItem.id} selected{/if}>{$aItem.title}</option>
+						<option value="{$aItem.id}"{if $_aRequest.forum_id==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
 					{/foreach}
 				{/if}
 			</select>
@@ -34,7 +34,7 @@
 				<option value="">{$aLang.plugin.forum.select_topic}</option>
 				{if $aTopicList}
 					{foreach from=$aTopicList item=oTopic}
-						<option value="{$oTopic->getId()}"{if $_aRequest.topic_id==$oTopic->getId()} selected{/if}>{$oTopic->getTitle()}</option>
+						<option value="{$oTopic->getId()}"{if $_aRequest.topic_id==$oTopic->getId()} selected{/if}>{$oTopic->getTitle()|escape:'html'}</option>
 					{/foreach}
 				{/if}
 			</select>
@@ -60,9 +60,9 @@
 						</td>
 						<td>
 							{if $oUser}
-								<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a>
+								<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
 							{else}
-								{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}
+								{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}
 							{/if}
 							(<a href="{$oPost->getUrlFull()}" name="post-{$oPost->getId()}" onclick="return ls.forum.linkToPost({$oPost->getId()})">#{$oPost->getNumber()}</a>)
 						</td>

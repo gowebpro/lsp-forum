@@ -13,11 +13,11 @@
 							{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 
 							{if $oUser}
-								<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(48)}" /></a>
-								<p><a rel="author" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></p>
+								<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()|escape:'html'}" src="{$oUser->getProfileAvatarPath(48)}" /></a>
+								<p><a rel="author" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></p>
 							{else}
 								<img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" />
-								<p>{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</p>
+								<p>{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</p>
 							{/if}
 							<time datetime="{date_format date=$oPost->getDateAdd() format='c'}" title="{date_format date=$oPost->getDateAdd() format='j F Y, H:i'}">
 								{date_format date=$oPost->getDateAdd() format="j F Y, H:i"}
@@ -32,7 +32,7 @@
 			<div class="forum-post-body">
 				{hook run='forum_post_content_begin' post=$oPost}
 				{if $oPost->getTitle()}
-					<h2>{$oPost->getTitle()}</h2>
+					<h2>{$oPost->getTitle()|escape:'html'}</h2>
 				{/if}
 				<div class="text">
 					{$oPost->getText()}

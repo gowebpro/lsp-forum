@@ -10,7 +10,7 @@
 	<div class="forums">
 		<section class="fBox forums-list">
 			<header class="forums-header">
-				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 			</header>
 			<div class="forums-content">
 				{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}

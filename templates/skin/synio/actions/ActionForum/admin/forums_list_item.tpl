@@ -18,8 +18,8 @@
 		<a class="js-tip-help icon-remove" title="{$aLang.plugin.forum.delete}" href="{router page='forum'}admin/forums/delete/{$oForum->getId()}"></a>
 	</div>
 	<div class="forum-item-main">
-		<img class="forum-item-icon" src="{$oForum->getIconPath(32)}" alt="{$oForum->getTitle()}" />
-		<span class="forum-item-title">{$oForum->getTitle()}</span>
+		<img class="forum-item-icon" src="{$oForum->getIconPath(32)}" alt="{$oForum->getTitle()|escape:'html'}" />
+		<span class="forum-item-title">{$oForum->getTitle()|escape:'html'}</span>
 	</div>
 	{if $bModerList}
 	<span class="js-forum-moder-toogler js-tip-help fl-r icon-plus-sign" id="toggler-moder-list-{$oForum->getId()}" title="{$aLang.plugin.forum.moderators_list}"></span>

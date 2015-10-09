@@ -20,7 +20,7 @@
 <div class="forums">
 	<header class="forums-header">
 	{if $sType == 'edit'}
-		<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title}&raquo;</h3>
+		<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title|escape:'html'}&raquo;</h3>
 	{else}
 		<h3>{$aLang.plugin.forum["create_"|cat:$sNewType]}</h3>
 	{/if}
@@ -42,7 +42,7 @@
 					<label for="forum_title"><strong>{$aLang.plugin.forum.create_title}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_title" name="forum_title" value="{$_aRequest.forum_title}" class="input-text input-width-full" />
+					<input type="text" id="forum_title" name="forum_title" value="{$_aRequest.forum_title|escape:'html'}" class="input-text input-width-full" />
 				</td>
 			</tr>
 			<tr>
@@ -50,7 +50,7 @@
 					<label for="forum_url"><strong>{$aLang.plugin.forum.create_url}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_url" name="forum_url" value="{$_aRequest.forum_url}" class="input-text input-width-full" />
+					<input type="text" id="forum_url" name="forum_url" value="{$_aRequest.forum_url|escape:'html'}" class="input-text input-width-full" />
 					<span class="note">{$aLang.plugin.forum.create_url_note}</span>
 				</td>
 			</tr>
@@ -59,7 +59,7 @@
 					<label for="forum_sort"><strong>{$aLang.plugin.forum.create_sort}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'}" class="input-text input-width-full" />
+					<input type="text" id="forum_sort" name="forum_sort" value="{$_aRequest.forum_sort|default:'0'|escape:'html'}" class="input-text input-width-full" />
 					<span class="note">{$aLang.plugin.forum.create_sort_notice}</span>
 				</td>
 			</tr>
@@ -70,7 +70,7 @@
 					<label for="forum_description"><strong>{$aLang.plugin.forum.create_description}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<textarea id="forum_description" name="forum_description" rows="5" class="input-text input-width-full">{$_aRequest.forum_description}</textarea>
+					<textarea id="forum_description" name="forum_description" rows="5" class="input-text input-width-full">{$_aRequest.forum_description|escape:'html'}</textarea>
 				</td>
 			</tr>
 			<tr>
@@ -80,7 +80,7 @@
 				<td class="cell-labeled">
 					<select id="forum_parent" name="forum_parent">
 					{foreach from=$aForumsList item=aItem}
-						<option value="{$aItem.id}"{if $_aRequest.forum_parent==$aItem.id} selected{/if}>{$aItem.title}</option>
+						<option value="{$aItem.id}"{if $_aRequest.forum_parent==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
 					{/foreach}
 					</select>
 				</td>
@@ -128,7 +128,7 @@
 					<label for="forum_password"><strong>{$aLang.plugin.forum.create_password}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password}" class="input-text input-text input-width-200" />
+					<input type="text" id="forum_password" name="forum_password" value="{$_aRequest.forum_password|escape:'html'}" class="input-text input-text input-width-200" />
 					<span class="note">{$aLang.plugin.forum.create_password_notice}</span>
 				</td>
 			</tr>
@@ -137,7 +137,7 @@
 					<label for="forum_limit_rating_topic"><strong>{$aLang.plugin.forum.create_rating}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')}" class="input-text input-width-100" />
+					<input type="text" id="forum_limit_rating_topic" name="forum_limit_rating_topic" value="{$_aRequest.forum_limit_rating_topic|default:$oConfig->Get('plugin.forum.acl.create.topic.rating')|escape:'html'}" class="input-text input-width-100" />
 					<span class="note">{$aLang.plugin.forum.create_rating_notice}</span>
 				</td>
 			</tr>
@@ -153,7 +153,7 @@
 					<label for="forum_redirect_url"><strong>{$aLang.plugin.forum.create_redirect_url}:</strong></label>
 				</td>
 				<td class="cell-labeled">
-					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url}" class="input-text input-width-full" />
+					<input type="text" id="forum_redirect_url" name="forum_redirect_url" value="{$_aRequest.forum_redirect_url|escape:'html'}" class="input-text input-width-full" />
 					<span class="note">{$aLang.plugin.forum.create_redirect_url_notice}</span>
 				</td>
 			</tr>

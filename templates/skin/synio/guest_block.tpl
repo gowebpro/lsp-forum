@@ -2,7 +2,7 @@
 
 	<p>
 		<label for="guest_name">{$aLang.plugin.forum.guest_name}:</label>
-		<input type="text" id="guest_name" name="guest_name" value="{$_aRequest.guest_name}" class="input-text input-width-400" /><br />
+		<input type="text" id="guest_name" name="guest_name" value="{$_aRequest.guest_name|escape:'html'}" class="input-text input-width-400" /><br />
 		<span class="note">{$aLang.plugin.forum.guest_name_notice}</span>
 	</p>
 

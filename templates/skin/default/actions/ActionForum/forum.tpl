@@ -10,7 +10,7 @@
 	<div class="forums">
 		<section class="forums-list">
 			<header class="forums-header">
-				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+				<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 			</header>
 			<div class="forums-content">
 				{include file="$sTemplatePathForum/forums_list.tpl" aForums=$aSubForums}
@@ -37,7 +37,7 @@
 				<section class="fl-r">
 					<a href="{router page='rss'}forum/{if $oForum->getUrl()}{$oForum->getUrl()}{else}{$oForum->getId()}{/if}/" class="rss">RSS</a>
 				</section>
-				<h3>{$oForum->getTitle()}</h3>
+				<h3>{$oForum->getTitle()|escape:'html'}</h3>
 			</header>
 			<div class="forums-content">
 				{include file="$sTemplatePathForum/topics.tpl"}

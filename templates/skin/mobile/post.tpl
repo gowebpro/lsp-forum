@@ -24,11 +24,11 @@
 							{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 
 							{if $oUser}
-								<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()}" src="{$oUser->getProfileAvatarPath(48)}" /></a>
-								<p><a rel="author" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a></p>
+								<a href="{$oUser->getUserWebPath()}"><img alt="{$oUser->getLogin()|escape:'html'}" src="{$oUser->getProfileAvatarPath(48)}" /></a>
+								<p><a rel="author" href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></p>
 							{else}
 								<img alt="{$oPost->getGuestName()}" src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" />
-								<p>{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</p>
+								<p>{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</p>
 							{/if}
 							<time datetime="{date_format date=$oPost->getDateAdd() format='c'}" title="{date_format date=$oPost->getDateAdd() format='j F Y, H:i'}">
 								{date_format date=$oPost->getDateAdd() format="j F Y, H:i"}
@@ -43,7 +43,7 @@
 			<div class="forum-post-body">
 				{hook run='forum_post_content_begin' post=$oPost}
 				{if $oPost->getTitle()}
-					<h2>{$oPost->getTitle()}</h2>
+					<h2>{$oPost->getTitle()|escape:'html'}</h2>
 				{/if}
 				<div class="text">
 					{$oPost->getText()}
@@ -52,13 +52,13 @@
 					{assign var="oEditor" value=$oPost->getEditor()}
 					<div class="edit">
 						{$aLang.plugin.forum.post_editing}
-						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()}</a>
+						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()|escape:'html'}</a>
 						{if $oPost->getDateEdit()}
 							<span class="divide">-</span>
 							{date_format date=$oPost->getDateEdit()}
 						{/if}
 						{if $oPost->getEditReason()}
-							<span class="reason">{$oPost->getEditReason()}</span>
+							<span class="reason">{$oPost->getEditReason()|escape:'html'}</span>
 						{/if}
 					</div>
 				{/if}
@@ -67,7 +67,7 @@
 					{foreach from=$aFiles item=oFile name=post_files}
 						<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
 							{* <i class="icon-file"></i> *}
-							{$oFile->getName()}
+							{$oFile->getName()|escape:'html'}
 						</a>
 						{if !$smarty.foreach.post_files.last}, {/if}
 					{/foreach}
@@ -82,14 +82,14 @@
 		<ul class="slide slide-post-info-extra" id="post-extra-target-{$oPost->getId()}">
 			{if $oUserCurrent && $oUser}
 			<li>
-				<a href="{router page='talk'}add/?talk_users={$oUser->getLogin()}">{$aLang.send_message_to_author}</a>
+				<a href="{router page='talk'}add/?talk_users={$oUser->getLogin()|escape:'html'}">{$aLang.send_message_to_author}</a>
 			</li>
 			{/if}
 			<li>
-				<a href="#" class="js-post-quote" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_quote}</a>
+				<a href="#" class="js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_quote}</a>
 			</li>
 			<li>
-				<a href="{$oTopic->getUrlFull()}reply" class="js-post-reply" data-name="{if $oUser}{$oUser->getLogin()}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_reply}</a>
+				<a href="{$oTopic->getUrlFull()}reply" class="js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_reply}</a>
 			</li>
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 			<li>

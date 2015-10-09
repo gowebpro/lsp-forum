@@ -2,7 +2,7 @@
 
 {if $aModerators}
 	{foreach from=$aModerators item=oModerator name=moderators}
-		{$oModerator->getLogin()}
+		{$oModerator->getLogin()|escape:'html'}
 		<a class="js-tip-help icon-edit" title="{$aLang.plugin.forum.moderator_edit}" href="#" onclick="return ls.forum.admin.editModerator('{$oModerator->getHash()}');"></a>
 		<a class="js-tip-help icon-remove" title="{$aLang.plugin.forum.moderator_del}" href="#" onclick="return ls.forum.admin.delModerator('{$oModerator->getHash()}');"></a>
 		{if !$smarty.foreach.moderators.last}, {/if}

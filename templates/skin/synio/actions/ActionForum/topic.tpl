@@ -58,7 +58,7 @@
 			<label for="topic_subscribe">{$aLang.plugin.forum.subscribe_topic}</label>
 		</section>
 		{/if}
-		<h3>{$oTopic->getTitle()}</h3>
+		<h3>{$oTopic->getTitle()|escape:'html'}</h3>
 	{/if}
 	</header>
 	<div class="forums-content">

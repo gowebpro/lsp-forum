@@ -31,12 +31,12 @@
 								<section class="files-item-wrapper">
 								<div class="files-item-user">
 								{if $oUser}
-									<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()}</a>
+									<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
 								{/if}
 								</div>
 								<div class="files-item-main">
-									<span class="file-name">{$oFile->getName()}</span>
-									<span class="file-text">{$oFile->getText()}</span>
+									<span class="file-name">{$oFile->getName()|escape:'html'}</span>
+									<span class="file-text">{$oFile->getText()|escape:'html'}</span>
 								</div>
 								<div class="files-item-detail">
 									<span class="file-size">{$aLang.plugin.forum.attach_file_size}: <strong>{$oFile->getSizeFormat()}</strong></span>

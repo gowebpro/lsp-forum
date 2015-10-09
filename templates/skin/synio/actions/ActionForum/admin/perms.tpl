@@ -25,7 +25,7 @@
 					{foreach from=$aPerms item=oPerm}
 					<tr>
 						<td>
-							<strong>{$oPerm->getName()}</strong>
+							<strong>{$oPerm->getName()|escape:'html'}</strong>
 						</td>
 						<td>
 							{$aLang.plugin.forum.in_progress}

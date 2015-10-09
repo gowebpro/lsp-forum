@@ -7,7 +7,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>&raquo;</h4>
 
 <div class="fBox">
 	<form action="" method="POST" enctype="multipart/form-data" id="form-post-add">
@@ -21,7 +21,7 @@
 
 					<p>
 						<label for="post_title">{$aLang.plugin.forum.post_create_title}:</label>
-						<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title}" class="input-text input-width-full" /><br />
+						<input type="text" id="post_title" name="post_title" value="{$_aRequest.post_title|escape:'html'}" class="input-text input-width-full" /><br />
 						<span class="note">{$aLang.plugin.forum.post_create_title_notice}</span>
 					</p>
 

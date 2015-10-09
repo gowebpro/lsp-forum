@@ -19,7 +19,7 @@
 	</div>
 	<div class="forum-item-main">
 		<img class="forum-item-icon" src="{$oForum->getIconPath(32)}" alt="{$oForum->getTitle()}" />
-		<span class="forum-item-title">{$oForum->getTitle()}</span>
+		<span class="forum-item-title">{$oForum->getTitle()|escape:'html'}</span>
 	</div>
 	{if $bModerList}
 	<span class="js-forum-moder-toogler js-tip-help fl-r icon-plus-sign" id="toggler-moder-list-{$oForum->getId()}" title="{$aLang.plugin.forum.moderators_list}"></span>

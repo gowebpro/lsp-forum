@@ -50,7 +50,7 @@
 								{if $aItem.level > 0}
 									<a class="js-tip-help icon-refresh" title="{$aLang.plugin.forum.refresh}" href="{router page='forum'}admin/forums/refresh/{$oForum->getId()}/?security_ls_key={$LIVESTREET_SECURITY_KEY}"></a>
 								{/if}
-								<span class="title">{$oForum->getTitle()}</span>
+								<span class="title">{$oForum->getTitle()|escape:'html'}</span>
 								{if $aItem.level > 0}
 									<span class="js-forum-moder-toogler js-tip-help fl-r icon-plus-sign" id="toggler-moder-list-{$oForum->getId()}" title="{$aLang.plugin.forum.moderators_list}"></span>
 									<span class="moder-list" id="moder-list-{$oForum->getId()}" style="display:none">

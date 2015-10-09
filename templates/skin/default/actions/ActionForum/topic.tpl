@@ -25,7 +25,7 @@
 		<section class="fl-r">
 			<a href="{router page='rss'}forum_topic/{$oTopic->getId()}/" class="rss">RSS</a>
 		</section>
-		<h3>{$oTopic->getTitle()}</h3>
+		<h3>{$oTopic->getTitle()|escape:'html'}</h3>
 	</header>
 	{include file="$sTemplatePathForum/post.tpl" oPost=$oHeadPost bFirst=true}
 </div>
@@ -54,7 +54,7 @@
 			<label for="topic_subscribe">{$aLang.plugin.forum.subscribe_topic}</label>
 		</section>
 		{/if}
-		<h3>{$oTopic->getTitle()}</h3>
+		<h3>{$oTopic->getTitle()|escape:'html'}</h3>
 	{/if}
 	</header>
 	{foreach from=$aPosts item=oPost name=posts}

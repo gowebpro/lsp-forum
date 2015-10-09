@@ -2,7 +2,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.plugin.forum.topic_delete} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.topic_delete} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></h4>
 
 <div class="fBox">
 	<form action="" method="POST" enctype="multipart/form-data">

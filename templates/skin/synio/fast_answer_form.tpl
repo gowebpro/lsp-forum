@@ -3,7 +3,7 @@
 <div class="forum-fast-reply" style="display:none" id="fast-reply-form">
 	{include file='editor.tpl' sImgToLoad='post_text' sSettingsTinymce='ls.settings.getTinymceComment()' sSettingsMarkitup='ls.forum.getMarkitupMini()'}
 
-	<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>&raquo;</h4>
+	<h4 class="page-subheader">{$aLang.plugin.forum.reply_for|ls_lang:'topic%%'} &laquo;<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>&raquo;</h4>
 
 	<form action="{$oTopic->getUrlFull()}reply/" method="POST" enctype="multipart/form-data" id="form-fast-reply">
 		{hook run='form_forum_fast_reply_begin'}

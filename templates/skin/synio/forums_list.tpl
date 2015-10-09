@@ -12,7 +12,7 @@
 						<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/></a>
 					</td>
 					<td class="cell-name">
-						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a></h3>
+						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 						<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
 						{if $sDisplaySubforumList && $aSubForums}
 						<p class="details">
@@ -21,7 +21,7 @@
 								{assign var='sDisplayOnIndex' value=$oSubForum->getOptionsValue('display_on_index')}
 								{if $sDisplayOnIndex && $oSubForum->getAllowShow()}
 									{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
-									<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()}</a>
+									<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
 								{/if}
 							{/foreach}
 						</p>
@@ -31,7 +31,7 @@
 							<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
 							{foreach from=$aModerators item=oModerator name=moderators}
 								{assign var='oUserModer' value=$oModerator->getUser()}
-								<a href="{$oUserModer->getUserWebPath()}"><img src="{$oUserModer->getProfileAvatarPath(24)}" title="{$oUserModer->getLogin()}" /></a>
+								<a href="{$oUserModer->getUserWebPath()}"><img src="{$oUserModer->getProfileAvatarPath(24)}" title="{$oUserModer->getLogin()|escape:'html'}" /></a>
 							{/foreach}
 						</p>
 						{/if}
@@ -51,15 +51,15 @@
 							{assign var="oPoster" value=$oPost->getUser()}
 							<div class="author">
 								{if $oPoster}
-									<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(48)}" title="{$aLang.plugin.forum.post_writer}: {$oPoster->getLogin()}" /></a>
+									<a href="{$oPoster->getUserWebPath()}"><img src="{$oPoster->getProfileAvatarPath(48)}" title="{$aLang.plugin.forum.post_writer}: {$oPoster->getLogin()|escape:'html'}" /></a>
 								{else}
-									<a href="{$oTopic->getUrlFull()}lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}" /></a>
+									<a href="{$oTopic->getUrlFull()}lastpost"><img src="{cfg name='path.static.skin'}/images/avatar_male_48x48.png" title="{$aLang.plugin.forum.post_writer}: {$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}" /></a>
 								{/if}
 							</div>
 							<ul class="last-post">
 								<li>
 									{if $oForum->getAllowRead() && $oForum->getAutorization()}
-										<a href="{$oTopic->getUrlFull()}newpost">{$oTopic->getTitle()}</a>
+										<a href="{$oTopic->getUrlFull()}newpost">{$oTopic->getTitle()|escape:'html'}</a>
 									{else}
 										<em>{$aLang.plugin.forum.forum_closed}</em>
 									{/if}
@@ -67,9 +67,9 @@
 								<li>
 									{$aLang.plugin.forum.post_writer}:
 									{if $oPoster}
-										<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>
+										<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()|escape:'html'}</a>
 									{else}
-										<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>
+										<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a>
 									{/if}
 								</li>
 								<li>

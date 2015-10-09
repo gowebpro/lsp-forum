@@ -8,7 +8,7 @@
 			{if $oTopic->getPinned()==1}
 				<span class="badge">{$aLang.plugin.forum.topic_pinned|upper}</span>
 			{/if}
-			<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a>
+			<a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a>
 			{include file="$sTemplatePathForum/paging_post.tpl" aPaging=$oTopic->getPaging()}
 		</h3>
 		<p>
@@ -19,9 +19,9 @@
 		<p>
 			{$aLang.plugin.forum.post_last}:
 			{if $oPoster}
-				<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()}</a>,
+				<a href="{$oPoster->getUserWebPath()}">{$oPoster->getLogin()|escape:'html'}</a>,
 			{else}
-				<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()}</a>,
+				<a href="{$oTopic->getUrlFull()}lastpost">{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</a>,
 			{/if}
 			<a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">
 				<time datetime="{date_format date=$oPost->getDateAdd() format='c'}" title="{date_format date=$oPost->getDateAdd() format='j F Y, H:i'}">

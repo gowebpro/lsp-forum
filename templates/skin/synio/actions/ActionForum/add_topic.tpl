@@ -1,7 +1,7 @@
 {if $oForum}
 	{include file='header.tpl' noSidebar=true}
 	<h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
-	<h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()}</a>&raquo;</h4>
+	<h4 class="page-subheader">{$aLang.plugin.forum.new_topic_for}: &laquo;<a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a>&raquo;</h4>
 {else}
 	{include file='header.tpl' noSidebar=true menu_content='create'}
 {/if}
@@ -55,13 +55,13 @@
 
 					<p>
 						<label for="topic_title">{$aLang.plugin.forum.new_topic_title}:</label>
-						<input type="text" id="topic_title" name="topic_title" value="{$_aRequest.topic_title}" class="input-text input-width-full" /><br />
+						<input type="text" id="topic_title" name="topic_title" value="{$_aRequest.topic_title|escape:'html'}" class="input-text input-width-full" /><br />
 						<span class="note">{$aLang.plugin.forum.new_topic_title_notice}</span>
 					</p>
 
 					<p>
 						<label for="topic_description">{$aLang.plugin.forum.new_topic_description}:</label>
-						<input type="text" id="topic_description" name="topic_description" value="{$_aRequest.topic_description}" class="input-text input-width-full" /><br />
+						<input type="text" id="topic_description" name="topic_description" value="{$_aRequest.topic_description|escape:'html'}" class="input-text input-width-full" /><br />
 						<span class="note">{$aLang.plugin.forum.new_topic_description_notice}</span>
 					</p>
 

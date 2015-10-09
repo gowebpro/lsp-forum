@@ -2,7 +2,7 @@
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
-<h4 class="page-subheader">{$aLang.plugin.forum.topic_delete} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()}</a></h4>
+<h4 class="page-subheader">{$aLang.plugin.forum.topic_delete} <a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></h4>
 
 <form action="" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="security_ls_key" value="{$LIVESTREET_SECURITY_KEY}" /> 
