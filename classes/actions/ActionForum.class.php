@@ -2328,8 +2328,19 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Возможно, мы собрались удалить первый пост?
 		 */
 		if ($oTopic->getFirstPostId() == $oPost->getId()) {
-			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_delete_not_allow'),$this->Lang_Get('error'));
-			return Router::Action('error');
+			//$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.post_delete_not_allow'),$this->Lang_Get('error'));
+			//return Router::Action('error');
+
+			// костыль begin
+			if (isPost('submit_topic_delete')) {
+				return $this->submitTopicDelete($oTopic);
+			}
+			$this->Viewer_SetHtmlTitle('');
+			$this->Viewer_Assign('oTopic', $oTopic);
+			$this->_addTitle($this->Lang_Get('plugin.forum.topic_delete').': '.$oTopic->getTitle());
+			$this->SetTemplateAction('delete_topic');
+			// костыль end
+			return ;
 		}
 		/**
 		 * Проверяем, есть ли права на редактирование
