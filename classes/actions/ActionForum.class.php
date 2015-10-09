@@ -1872,10 +1872,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 					 */
 					$aExcludeMail[]=$this->oUserCurrent->getMail();
 					/**
-					 * Добавляем автора топика в подписчики на новые ответы к этому топику
-					 */
-					$this->Subscribe_AddSubscribeSimple('topic_new_post',$oTopic->getId(),$this->oUserCurrent->getMail());
-					/**
 					 * Добавляем событие в ленту
 					 */
 					$this->Stream_write($oTopic->getUserId(), 'add_forum_topic', $oTopic->getId());
@@ -1883,13 +1879,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 				/**
 				 * Отправка уведомления подписчикам форума
 				 */
-				$this->Subscribe_Send('forum_new_topic',$oForum->getId(),'notify.topic_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_topic'),array(
+				$this->PluginForum_Forum_SendSubscribeNewTopic($oForum->getId(), array(
 					'oForum' => $oForum,
 					'oTopic' => $oTopic,
 					'oPost' => $oPost,
 					'oUser' => $this->oUserCurrent,
-				),$aExcludeMail,__CLASS__);
-
+				), $aExcludeMail);
 				Router::Location($oTopic->getUrlFull());
 			} else {
 				$this->Message_AddErrorSingle($this->Lang_Get('system_error'));
@@ -2111,12 +2106,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Отправка уведомления подписчикам темы
 			 */
-			$this->Subscribe_Send('topic_new_post',$oTopic->getId(),'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),array(
+			$this->PluginForum_Forum_SendSubscribeNewPost($oTopic->getId(), array(
 				'oForum' => $oForum,
 				'oTopic' => $oTopic,
 				'oPost' => $oPost,
 				'oUser' => $this->oUserCurrent,
-			),$aExcludeMail,__CLASS__);
+			), $aExcludeMail);
 			/**
 			 * Отправка уведомления на отвеченные посты
 			 */
