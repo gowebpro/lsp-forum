@@ -46,10 +46,10 @@ $config['post_max_length']		= 5000;
  * Ограничение на количество символов в заголовках
  */
 $config['topic']['title_min_length'] = 2;
-$config['topic']['title_min_length'] = 100;
+$config['topic']['title_max_length'] = 100;
 
 $config['post']['title_min_length'] = 2;
-$config['post']['title_min_length'] = 100;
+$config['post']['title_max_length'] = 100;
 
 
 /**
