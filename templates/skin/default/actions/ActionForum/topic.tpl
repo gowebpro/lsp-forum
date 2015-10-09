@@ -33,7 +33,7 @@
 
 {if count($aPosts) > 0}
 
-{add_block group='toolbar' name="$sTemplatePathForum/toolbar_post.tpl" iCountPost=count($aPosts)}
+{add_block group='toolbar' name='toolbar_post.tpl' iCountPost=count($aPosts) plugin='forum'}
 
 <div id="topic-controls-top" class="controllers clearfix">
 	{include file="$sTemplatePathForum/paging.tpl" aPaging=$aPaging}
