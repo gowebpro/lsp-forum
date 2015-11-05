@@ -441,7 +441,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true);
+		if (!$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true)) {
+			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.block_stream_empty'),$this->Lang_Get('attention'));
+			return;
+		}
 		/**
 		 * Получаем последние топики
 		 */
