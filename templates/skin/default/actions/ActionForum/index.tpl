@@ -4,7 +4,7 @@
 <h2 class="page-header">{$aLang.plugin.forum.forums}</h2>
 
 <div class="forums">
-	{if count($aForums) > 0}
+	{if $aForums}
 		{foreach from=$aForums item=oForum}
 			{if $oForum->getAllowShow()}
 				{assign var='aSubForums' value=$oForum->getChildren()}
