@@ -23,10 +23,16 @@
 					{if $oUser->getProfileName()}
 						<p class="info-item"><span>{$aLang.settings_profile_name}:</span> {$oUser->getProfileName()|escape:'html'}</p>
 					{/if}
+					<p class="info-item"><span>{$aLang.user_rating}:</span> {if $oUser->getRating()>0}+{/if}{$oUser->getRating()}</p>
 					{if $oUser->getProfileBirthday()}
 						<p class="info-item"><span>{$aLang.profile_birthday}</span>: {date_format date=$oUser->getProfileBirthday() format="j.n.Y"}</p>
 					{/if}
 					<p class="info-item"><span>{$aLang.profile_date_registration}:</span> {date_format date=$oUser->getDateRegister() format="j.n.Y"}</p>
+					{if $oUserForum}
+						<p class="info-item"><span>{$aLang.plugin.forum.user_info_posts}:</span> {$oUserForum->getPostCount()}</p>
+					{else}
+						<p class="info-item"><span>{$aLang.plugin.forum.user_info_posts}:</span> 0</p>
+					{/if}
 				</section>
 			{else}
 				<section class="avatar"><img alt="{$oPost->getGuestName()|escape:'html'}" src="{cfg name='path.static.skin'}/images/avatar_male_100x100.png" /></section>

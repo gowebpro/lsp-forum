@@ -255,9 +255,10 @@
 
 
 /* Post */
-.forum-post { background: #fafafa; border-bottom: 1px solid #dce1e6; padding: 0 0 5px }
-.forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
-.forum-post-side { float: left; width: 160px }
+.forum-post { background: #fafafa; border-bottom: 1px solid #dce1e6; margin-bottom: 5px }
+.forum-post-one { border-top: 1px solid #dbdbdb }
+.forum-post-first { }
+.forum-post-side { float: left; width: 160px; }
 .forum-post-side section { text-align: center; padding: 5px }
 .forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }
 .forum-post-side section p span { color: #000 }
@@ -267,12 +268,12 @@
 .forum-post-side section.avatar .status.status-offline { background: rgba(200, 0, 0, 0.4) }
 .forum-post-side section.avatar img { border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; -webkit-background-clip: padding-box }
 .forum-post-side section.login { font-size: 14px; font-weight: bold }
-.forum-post-content { float: none; margin-left: 161px; border-left: 1px solid #eee; width: auto }
+.forum-post-content { float: none; margin-left: 161px; width: auto; border-left: 1px solid #eee; }
 .forum-post-content.no-side { margin-left: 0px; border-left: 0px }
 .forum-post-header { border-bottom: 1px solid #eee; margin-bottom: 10px; padding: 5px 10px }
 .forum-post-details { color: #666 }
-.forum-post-body { min-height: 80px }
-.forum-post-body .text { padding: 10px }
+.forum-post-body { position: relative; min-height: 80px }
+.forum-post-body .text { position: relative; padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #eee; padding: 10px; margin: 10px 0 0 }
 .forum-post-body .reason { background: #eee; padding: 3px 6px }
 .forum-post-body .attach {
@@ -292,7 +293,10 @@
 	white-space: nowrap;
 	margin: 2px 4px
 }
-.forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 0 }
+.forum-post-vote .vote.vote-nobuttons  .vote-up,
+.forum-post-vote .vote.vote-nobuttons  .vote-down { display: none; }
+.forum-post-vote .vote.vote-not-expired {}
+.forum-post-footer { border-top: 1px solid #eee; padding: 5px 0 }
 .forum-post.new .forum-post-header {
 	background: #cdf5a6
 }

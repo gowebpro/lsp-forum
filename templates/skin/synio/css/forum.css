@@ -341,13 +341,14 @@
 
 
 /* Post */
-.forum-post { _background: #fafafa; border-bottom: 1px solid #DCE1E6; padding: 0 0 5px }
+.forum-post { border-top: 1px solid #dce1e6; margin-bottom: 5px }
 .forum-post-wrap { }
-.forum-post-one, .forum-post-first { border-top: 1px solid #dbdbdb }
+.forum-post-one { border-top: 1px solid #dce1e6; border-bottom: 1px solid #dce1e6; }
+.forum-post-first { border-top: 0 }
 .forum-post-side {
 	float: left;
 	width: 160px;
-	padding: 6px 0
+	padding: 6px 0;
 }
 .forum-post-side section { text-align: center; padding: 5px }
 .forum-post-side section p { line-height: 135%; color: #888; font-size: 10px }
@@ -362,8 +363,8 @@
 	float: none;
 	position: relative;
 	margin-left: 161px;
+	width: auto;
 	border-left: 1px solid #ebf0f4;
-	width: auto
 }
 .forum-post-content.no-side { margin-left: 0px; border-left: 0px }
 .forum-post-header {
@@ -373,7 +374,7 @@
 .forum-post-details { color: #666 }
 .forum-post-body {
 	position: relative;
-	min-height: 120px
+	min-height: 120px;
 }
 .forum-post-body .text { padding: 10px }
 .forum-post-body .edit { color: #888; font-size: 9px; border-top: 1px solid #ebf0f4; padding: 10px; margin: 10px 0 0 }
@@ -395,7 +396,7 @@
 	white-space: nowrap;
 	margin: 2px 4px
 }
-.forum-post-vote .vote-topic.vote-not-self.not-voted.vote-not-expired .vote-item.vote-count:hover		{ 
+.forum-post-vote .vote-topic.vote-not-self.not-voted.vote-not-expired .vote-item.vote-count:hover { 
 	background: #4ec4ff;
 	background: -moz-linear-gradient(top,  #4ec4ff 0%, #22b3fe 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4ec4ff), color-stop(100%,#22b3fe));

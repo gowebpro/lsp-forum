@@ -24,6 +24,7 @@
 					{if $oUser->getProfileName()}
 						<p class="info-item"><span>{$aLang.settings_profile_name}:</span> {$oUser->getProfileName()|escape:'html'}</p>
 					{/if}
+					<p class="info-item"><span>{$aLang.user_rating}:</span> {if $oUser->getRating()>0}+{/if}{$oUser->getRating()}</p>
 					{if $oUser->getProfileBirthday()}
 						<p class="info-item"><span>{$aLang.profile_birthday}</span>: {date_format date=$oUser->getProfileBirthday() format="j.n.Y"}</p>
 					{/if}
@@ -115,6 +116,13 @@
 							{elseif $oVote->getDirection() < 0}
 								voted-down
 							{/if}
+						{/if}
+
+						{if (strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time') && !$oVote) || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId())}
+							vote-nobuttons
+						{/if}
+						{if strtotime($oPost->getDateAdd()) > $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
+							vote-not-expired
 						{/if}
 
 						{if $bVoteInfoShow}js-infobox-vote-forum_post{/if}">
