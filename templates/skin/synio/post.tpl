@@ -1,6 +1,7 @@
 {assign var="oUser" value=$oPost->getUser()}
 {assign var="aFiles" value=$oPost->getFiles()}
 {assign var="oVote" value=$oPost->getVote()}
+{assign var="oUserForum" value=$oPost->getUserForum()}
 
 {if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
 	{assign var="bVoteInfoShow" value=true}
