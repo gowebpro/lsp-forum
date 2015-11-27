@@ -1279,7 +1279,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 * Счетчик просмотров топика и маркировка
 			 */
 			$this->PluginForum_Forum_UpdateTopicViews($oTopic);
-			$this->PluginForum_Forum_MarkTopic($oTopic,end($aPosts));
+			$this->PluginForum_Forum_MarkTopic($oTopic,$aPosts ? end($aPosts) : $oHeadPost);
 			/**
 			 * Check
 			 */
