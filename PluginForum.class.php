@@ -40,6 +40,10 @@ class PluginForum extends Plugin {
 			$this->ExportSQL(dirname(__FILE__).'/sql/install.sql');
 		} else {
 			/**
+			 * Fixes
+			 */
+			$this->ExportSQL(dirname(__FILE__).'/sql/primary_fix.sql');
+			/**
 			 * Update
 			 */
 			if ($this->isFieldExists('prefix_forum','forum_status')) {
