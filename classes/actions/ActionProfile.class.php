@@ -114,6 +114,14 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		 */
 		$iCountCreated = (int)$this->Viewer_GetSmartyObject()->getTemplateVars('iCountCreated');
 		$this->Viewer_Assign('iCountCreated',$iCountCreated+$iCountForumTopic+$iCountForumPost);
+		/**
+		 * Загружаем в шаблон JS текстовки
+		 */
+		$this->Lang_AddLangJs(
+			array(
+				'panel_spoiler_placeholder'
+			)
+		);
 	}
 }
 ?>
