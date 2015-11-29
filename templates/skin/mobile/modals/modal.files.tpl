@@ -1,4 +1,4 @@
-<div id="modal-attach-files" class="slide slide-files">
+<div id="modal-attach-files" class="slide slide-bg-grey slide-files mb-20">
 	<header class="modal-header">
 		<h3>{$aLang.plugin.forum.attach_my_files}</h3>
 		<span class="note">{$aLang.plugin.forum.attach_my_files_notice}</span>
@@ -30,4 +30,8 @@
 		</div>
 		{/if}
 	</div>
+
+	<footer class="modal-footer">
+		<button type="submit" class="button jqmClose">{$aLang.topic_photoset_upload_close}</button>
+	</footer>
 </div>

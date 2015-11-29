@@ -1,7 +1,6 @@
 {assign var="noSidebar" value=true}
 {include file='header.tpl'}
 {include file="$sTemplatePathForum/modals/modal.post_anchor.tpl"}
-{include file="$sTemplatePathForum/modals/modal.confirm_box.tpl"}
 
 {assign var="oSubscribeTopic" value=$oTopic->getSubscribeNewPost()}
 

@@ -127,6 +127,13 @@ class PluginForum extends Plugin {
 		 */
 		$this->Viewer_AppendScript(Plugin::GetWebPath(__CLASS__).'templates/framework/js/forum.js');
 		/**
+		 * Подключаем JS
+		 * - для мобильной версии шаблона
+		 */
+		if (class_exists('MobileDetect') && MobileDetect::IsMobileTemplate(false)) {
+			$this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__).'js/template.js');
+		}
+		/**
 		 * Добавляем в подписку новые типы
 		 *  - при наличи модуля Subscribe
 		 */

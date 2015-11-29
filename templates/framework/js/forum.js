@@ -235,6 +235,24 @@ ls.forum = (function ($) {
 		$('#insert-spoiler').jqm();
 	};
 	/**
+	 * Инициализация всплывающих подсказок
+	 */
+	this.initHints = function() {
+		$('.js-infobox-vote-forum_post').poshytip({
+			content: function() {
+				var id = $(this).data('vote-id');
+				return $('#vote-info-forum_post-'+id).html();
+			},
+			className: 'infobox-standart',
+			alignTo: 'target',
+			alignX: 'center',
+			alignY: 'top',
+			offsetX: 2,
+			liveEvents: true,
+			showTimeout: 100
+		});
+	};
+	/**
 	 * Инициализация селекторов
 	 */
 	this.initSelect = function() {
@@ -377,15 +395,28 @@ ls.forum.attach = (function ($) {
 		});
 
 		$('#js-attach-my-files').click(function() {
-			$('#modal-attach-files').jqmShow();
+			self.showMyFiles();
 			return false;
 		});
-		$('#modal-attach-files').jqm();
 		$('#modal-attach-files .attach-files-item').click(function() {
-			$('#modal-attach-files').jqmHide();
+			self.hideMyFiles();
 			self.attach($(this).data('id'));
 			return false;
 		});
+		self.initModals();
+	};
+
+	/**
+	 * Инициализация модальных окон
+	 */
+	this.initModals = function() {
+		$('#modal-attach-files').jqm();
+	};
+	this.showMyFiles = function() {
+		$('#modal-attach-files').jqmShow();
+	};
+	this.hideMyFiles = function() {
+		$('#modal-attach-files').jqmHide();
 	};
 
 	/**
@@ -662,6 +693,7 @@ jQuery(document).ready(function($){
 	ls.forum.initButtons();
 	ls.forum.initSpoilers();
 	ls.forum.initModals();
+	ls.forum.initHints();
 	/**
 	 * Инициализация компонентов
 	 */
@@ -684,20 +716,6 @@ jQuery(document).ready(function($){
 	//будет актуально в девелоперской версии лс
 	//	oVars.vote.addClass('js-tooltip-vote-forum').tooltip('enter');
 	};
-
-	$('.js-infobox-vote-forum_post').poshytip({
-		content: function() {
-			var id = $(this).data('vote-id');
-			return $('#vote-info-forum_post-'+id).html();
-		},
-		className: 'infobox-standart',
-		alignTo: 'target',
-		alignX: 'center',
-		alignY: 'top',
-		offsetX: 2,
-		liveEvents: true,
-		showTimeout: 100
-	});
 
 	ls.hook.run('forum_template_init_end',[],window);
 });
