@@ -77,7 +77,8 @@ class PluginForum_HookForum extends Hook {
 		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'block.stream_nav.tpl');
 	}
 
-	public function WriteItem() {
+	public function WriteItem($aParams=array()) {
+		$this->Viewer_Assign('isPopup',(isset($aParams['isPopup'])) ? $aParams['isPopup'] : false);
 		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'write_item.tpl');
 	}
 }

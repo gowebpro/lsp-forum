@@ -714,6 +714,20 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 	margin-bottom: 20px;
 }
 
+
+.icon-submit-forum {
+	width: 25px;
+	height: 25px;
+	/* background-position: -100px -140px; */
+	background: url(../images/icons.png) -100px -140px no-repeat
+}
+.icon-submit-forum-userbar {
+	width: 15px;
+	height: 15px;
+	/* background-position: -60px -198px; */
+	background: url(../images/icons.png) -60px -198px no-repeat
+}
+
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
 	*background: url(../images/write.png) no-repeat;
 	background-position: -230px 0

@@ -562,10 +562,10 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .modal-editor textarea { height: 300px }
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
-	*background: url(../images/write.png) no-repeat;
-	background-position: -230px 0
+	background: url(../images/write.png) no-repeat;
+	background-position: 0px 0
 }
-.modal.modal-write .write-list li.write-item-type-forum:hover  .write-item-image { background-position: -230px -115px }
+.modal.modal-write .write-list li.write-item-type-forum:hover  .write-item-image { background-position: 0px -115px }
 
 .modal.modal-files {
 	width: 600px;
