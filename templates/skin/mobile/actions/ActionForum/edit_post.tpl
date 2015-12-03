@@ -3,6 +3,7 @@
 {include file='editor.tpl' sImgToLoad='post_text' sSettingsTinymce='ls.settings.getTinymce()' sSettingsMarkitup='ls.forum.getMarkitup()'}
 {include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
 {include file="$sTemplatePathForum/modals/modal.files.tpl"}
+{include file="$sTemplatePathForum/modals/modal.attach_upload.tpl"}
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 

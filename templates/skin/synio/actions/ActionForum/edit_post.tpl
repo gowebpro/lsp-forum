@@ -4,6 +4,7 @@
 {include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
 {include file="$sTemplatePathForum/modals/modal.confirm_box.tpl"}
 {include file="$sTemplatePathForum/modals/modal.files.tpl"}
+{include file="$sTemplatePathForum/modals/modal.attach_upload.tpl"}
 
 <h2 class="page-header">{include file="$sTemplatePathForum/breadcrumbs.tpl"}</h2>
 
