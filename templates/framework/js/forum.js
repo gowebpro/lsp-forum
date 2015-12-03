@@ -376,7 +376,7 @@ ls.forum = (function ($) {
 
 /**
  * Attach
- * last update: 8.13
+ * last update: 12.15
  */
 ls.forum.attach = (function ($) {
 	this.swfu;
@@ -386,9 +386,9 @@ ls.forum.attach = (function ($) {
 	this.init = function() {
 		var self = this;
 
-		$('#js-attach-upload-file').on('change', function(e) {
-			self.upload();
-		});
+	//	$('#js-attach-upload-file').on('change', function(e) {
+	//		self.upload();
+	//	});
 		$('.js-attach-file-download').click(function(e) {
 			self.download($(this).data('file-id'));
 			return false;
@@ -411,6 +411,7 @@ ls.forum.attach = (function ($) {
 	 */
 	this.initModals = function() {
 		$('#modal-attach-files').jqm();
+		$('#forum-attach-upload-form').jqm({trigger: '#forum-attach-upload'});
 	};
 	this.showMyFiles = function() {
 		$('#modal-attach-files').jqmShow();
@@ -424,10 +425,11 @@ ls.forum.attach = (function ($) {
 	 */
 	this.initSwfUpload = function(opt) {
 		opt = opt || {};
+		opt.button_placeholder_id = 'forum-attach-upload';
 		opt.post_params.ls_fattach_target_tmp = $.cookie('ls_fattach_target_tmp') ? $.cookie('ls_fattach_target_tmp') : 0;
-		opt.upload_url = aRouter['forum'] + 'ajax/attach/upload/';
+		opt.upload_url = aRouter.forum + 'ajax/attach/upload/';
 		opt.file_types_description = 'attach';
-		opt.button_text = '<span class="button">'+ls.lang.get('plugin.forum.attach_upload_file_choose')+'</span>';
+		opt.button_text = '<a class="button">'+ls.lang.get('plugin.forum.attach_upload_file_choose')+'</a>';
 
 		$(ls.swfupload).unbind('load').bind('load',function() {
 			this.swfu = ls.swfupload.init(opt);
@@ -467,6 +469,7 @@ ls.forum.attach = (function ($) {
 	 * Добавляет пустую форму файла
 	 */
 	this.addFileEmpty = function() {
+		$('#attach_file_empty').remove();
 		var $template = $('<li id="attach_file_empty" class="attach-upload-progress">'
 			+'<div id="attach_file_empty_filename" class="attach-upload-progress-filename"></div>'
 			+'<div id="attach_file_empty_progress" class="progress-bar">'
@@ -492,6 +495,7 @@ ls.forum.attach = (function ($) {
 		} else {
 			ls.msg.error(data.sMsgTitle,data.sMsg);
 		}
+		ls.forum.attach.closeForm();
 	};
 
 	/**
@@ -501,7 +505,7 @@ ls.forum.attach = (function ($) {
 		var $window = ls.forum.configConfirmBox(ls.lang.get('plugin.forum.attach_file_delete_confirm'), {'id':idFile}, function(e) {
 			var sFileId = $(this).data('params').id;
 			// id поста возьмем из формы
-			var sPostId = $('#js-attach-upload-file').data('post-id');
+			var sPostId = $('#forum-attach-post-id').val();
 			ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':sFileId,'post':sPostId}, function(data){
 				if (!data.bStateError) {
 					$('#file_'+sFileId).remove();
@@ -520,8 +524,8 @@ ls.forum.attach = (function ($) {
 	 */
 	this.setFileDescription = function(id, text) {
 		// id поста возьмем из формы
-		var sPostId = $('#js-attach-upload-file').data('post-id');
-		ls.ajax(aRouter['forum']+'ajax/attach/text', {'id':id, 'post':sPostId, 'text':text}, function(result){
+		var sPostId = $('#forum-attach-post-id').val();
+		ls.ajax(aRouter.forum+'ajax/attach/text', {'id':id, 'post':sPostId, 'text':text}, function(result){
 			if (!result.bStateError) {
 
 			} else {
@@ -538,13 +542,13 @@ ls.forum.attach = (function ($) {
 
 		var post_id = 0;
 
-		if ($('#js-attach-upload-file').length) {
-			post_id = $('#js-attach-upload-file').data('post-id');
+		if ($('#forum-attach-post-id').length) {
+			post_id = $('#forum-attach-post-id').val();;
 		}
 
 		var params = { id:id, post_id:post_id }
 
-		ls.ajax(aRouter['forum'] + 'ajax/attach/file/', params, function (data) {
+		ls.ajax(aRouter.forum + 'ajax/attach/file/', params, function (data) {
 			if (data.bStateError) {
 				$('#attach_file_empty').remove();
 				ls.msg.error(data.sMsgTitle,data.sMsg);
@@ -558,27 +562,26 @@ ls.forum.attach = (function ($) {
 	 * Загрузка файла на сервер
 	 */
 	this.upload = function() {
+		ls.forum.attach.closeForm();
 		ls.forum.attach.addFileEmpty();
-
-		var input = $('#js-attach-upload-file');
-		var form = $('<form method="post" enctype="multipart/form-data">'
-			+'<input type="hidden" name="is_iframe" value="true" />'
-			+'<input type="hidden" name="post_id" value="' + input.data('post-id') + '" />'
-			+'</form>').hide().appendTo('body');
-
-		input.clone(true).insertAfter(input);
-		input.appendTo(form);
-
-		ls.ajaxSubmit(aRouter['forum'] + 'ajax/attach/upload/', form, function (data) {
+		ls.ajaxSubmit(aRouter.forum+'ajax/attach/upload/', $('#forum-attach-upload-form'), function (data) {
 			if (data.bStateError) {
-				$('#attach_file_empty').remove();
 				ls.msg.error(data.sMsgTitle,data.sMsg);
 			} else {
 				ls.forum.attach.addFile(data);
 			}
-			form.remove();
+			$('#attach_file_empty').remove();
 		});
 	};
+
+	this.closeForm = function() {
+		$('#forum-attach-upload-form').jqmHide();
+		return false;
+	}
+	this.showForm = function() {
+		$('#forum-attach-upload-form').jqmShow();
+		return false;
+	}
 
 	/**
 	 * Загрузка файла с сервера

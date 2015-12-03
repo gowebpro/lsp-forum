@@ -1,8 +1,7 @@
 <div id="modal-attach-files" class="slide slide-bg-grey slide-files mb-20">
 	<header class="modal-header">
 		<h3>{$aLang.plugin.forum.attach_my_files}</h3>
-		<span class="note">{$aLang.plugin.forum.attach_my_files_notice}</span>
-		<a href="#" class="close jqmClose"></a>
+		<small class="note">{$aLang.plugin.forum.attach_my_files_notice}</small>
 	</header>
 
 	<div class="modal-content">

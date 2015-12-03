@@ -27,7 +27,7 @@
 			{/if}
 		{/foreach}
 	{else}
-		<div class="notice-empty">
+		<div class="body-message">
 		{if $oUserCurrent && $oUserCurrent->isAdministrator()}
 			{assign var="sRoot" value='root%%'|cat:$aRouter.forum}
 			{$aLang.plugin.forum.welcome|ls_lang:$sRoot}

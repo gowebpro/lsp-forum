@@ -57,29 +57,32 @@ ls.forum.attach.initModals = function() {
 
 };
 ls.forum.attach.showMyFiles = function() {
-	$('#modal-attach-files').slideDown();
+	$('#modal-attach-files').slideDown('fast');
 };
 ls.forum.attach.hideMyFiles = function() {
-	$('#modal-attach-files').slideUp();
+	$('#modal-attach-files').slideUp('fast');
 };
 
 ls.forum.attach.showForm = function() {
 	$('#forum-attach-upload-input').appendTo('#forum-attach-wrapper');
-	$('#forum-attach-upload-input').show();
+	$('#forum-attach-upload-input').slideDown('fast');
+	return false;
 };
 ls.forum.attach.closeForm = function() {
 	$('#forum-attach-upload-input').appendTo('#forum-attach-upload-form');
 	$('#forum-attach-upload-form').hide();
+	return false;
 };
-ls.forum.attach.upload = function() {
-	ls.forum.attach.closeForm();
-	ls.forum.attach.addFileEmpty();
-	ls.ajaxSubmit(aRouter.forum+'ajax/attach/upload/', $('#forum-attach-upload-form'), function (data) {
+ls.forum.attach.deleteFile = function(idFile) {
+	if (!confirm(ls.lang.get('plugin.forum.attach_file_delete_confirm'))) {return;}
+	// id поста возьмем из формы
+	var idPost = $('#forum-attach-post-id').val();
+	ls.ajax(aRouter['forum']+'ajax/attach/delete', {'id':idFile,'post':idPost}, function(data){
 		if (data.bStateError) {
-			$('#attach_file_empty').remove();
 			ls.msg.error(data.sMsgTitle,data.sMsg);
 		} else {
-			ls.forum.attach.addFile(data);
+			ls.msg.notice(data.sMsgTitle,data.sMsg);
+			$('#file_'+idFile).remove();
 		}
 	});
 };
@@ -89,9 +92,7 @@ jQuery(document).ready(function($){
 //	ls.hook.run('ls_template_init_start',[],window);
 
 	//tmp
-	$('#forum-attach-upload').click(function() {
-		ls.forum.attach.showForm();
-	});
+	$('#forum-attach-upload').click(ls.forum.attach.showForm);
 
 	// Хук конца инициализации javascript-составляющих шаблона
 //	ls.hook.run('ls_template_init_end',[],window);

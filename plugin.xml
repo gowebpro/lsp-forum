@@ -6,10 +6,9 @@
 	</name>
 	<author>
 		<lang name="default">Chiffa</lang>
-		<lang name="russian">Чиффа</lang>
 	</author>
-	<homepage>http://xmk.github.io/lsplugin-forum/</homepage>
-	<version>1.0.6</version>
+	<homepage>http://xmk.github.io/lsplugin-forum</homepage>
+	<version>1.0.7</version>
 	<settings>{forum}admin/</settings>
 	<requires>
 		<livestreet>1.0</livestreet>

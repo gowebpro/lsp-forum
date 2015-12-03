@@ -4,12 +4,13 @@
 		if (jQuery.browser.flash) {
 			ls.forum.attach.initSwfUpload({
 				post_params: { 'post_id': {json var=$_aRequest.post_id} },
-				button_placeholder_id: 'js-attach-upload-file-flash',
+			//	button_placeholder_id: 'js-attach-upload-file-flash',
 				file_types: "{$oConfig->get('plugin.forum.attach.format_swf')}"
 			});
 		}
 	});
 </script>
+
 
 <div class="forum-attach-upload">
 	<header>
@@ -39,11 +40,6 @@
 		{/if}
 	</ul>
 
-	<footer>
-		<label class="form-input-file">
-			<span class="button" id="js-attach-upload-file-flash">{$aLang.plugin.forum.attach_upload_file_choose}</span>
-			<input type="file" name="Filedata" id="js-attach-upload-file" data-post-id="{$_aRequest.post_id}" />
-		</label>
-	</footer>
+	<a href="#" id="forum-attach-upload" class="link-dotted">{$aLang.plugin.forum.attach_upload_file_choose}</a>
 </div>
 {/if}

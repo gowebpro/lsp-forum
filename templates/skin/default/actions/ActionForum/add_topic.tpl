@@ -10,6 +10,7 @@
 {include file="$sTemplatePathForum/modals/modal.editor_spoiler.tpl" sToLoad='post_text'}
 {include file="$sTemplatePathForum/modals/modal.confirm_box.tpl"}
 {include file="$sTemplatePathForum/modals/modal.files.tpl"}
+{include file="$sTemplatePathForum/modals/modal.attach_upload.tpl"}
 
 <form action="" method="POST" enctype="multipart/form-data" id="form-topic-add">
 	{hook run='form_forum_add_topic_begin'}
