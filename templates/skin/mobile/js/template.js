@@ -49,7 +49,10 @@ ls.forum.initHints = function() {
  */
 ls.forum.initModals = function() {
 	$('.slide').each(function() {
-		$(this).find('.jqmClose').click($.proxy($(this).slideUp, $(this)));
+		$(this).find('.jqmClose').click(function() {
+			$(this).slideUp('fast');
+			return false;
+		}.bind(this));
 	});
 };
 
@@ -58,9 +61,11 @@ ls.forum.attach.initModals = function() {
 };
 ls.forum.attach.showMyFiles = function() {
 	$('#modal-attach-files').slideDown('fast');
+	return false;
 };
 ls.forum.attach.hideMyFiles = function() {
 	$('#modal-attach-files').slideUp('fast');
+	return false;
 };
 
 ls.forum.attach.showForm = function() {

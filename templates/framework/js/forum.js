@@ -429,7 +429,7 @@ ls.forum.attach = (function ($) {
 		opt.post_params.ls_fattach_target_tmp = $.cookie('ls_fattach_target_tmp') ? $.cookie('ls_fattach_target_tmp') : 0;
 		opt.upload_url = aRouter.forum + 'ajax/attach/upload/';
 		opt.file_types_description = 'attach';
-		opt.button_text = '<a class="button">'+ls.lang.get('plugin.forum.attach_upload_file_choose')+'</a>';
+		opt.button_text = '<a href="#" class="link-dotted">'+ls.lang.get('plugin.forum.attach_upload_file_choose')+'</a>';
 
 		$(ls.swfupload).unbind('load').bind('load',function() {
 			this.swfu = ls.swfupload.init(opt);
