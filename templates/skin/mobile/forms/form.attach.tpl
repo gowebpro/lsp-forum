@@ -1,16 +1,4 @@
 {if $oUserCurrent}
-<script type="text/javascript">
-	jQuery(function($){
-		if (jQuery.browser.flash) {
-			ls.forum.attach.initSwfUpload({
-				post_params: { 'post_id': {json var=$_aRequest.post_id} },
-				button_placeholder_id: 'js-attach-upload-file-flash',
-				file_types: "{$oConfig->get('plugin.forum.attach.format_swf')}"
-			});
-		}
-	});
-</script>
-
 <div class="forum-attach-upload">
 	<header>
 		<h2>{$aLang.plugin.forum.attach_upload_title}</h2>

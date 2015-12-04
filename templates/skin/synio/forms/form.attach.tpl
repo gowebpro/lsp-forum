@@ -4,7 +4,6 @@
 		if (jQuery.browser.flash) {
 			ls.forum.attach.initSwfUpload({
 				post_params: { 'post_id': {json var=$_aRequest.post_id} },
-			//	button_placeholder_id: 'js-attach-upload-file-flash',
 				file_types: "{$oConfig->get('plugin.forum.attach.format_swf')}"
 			});
 		}
