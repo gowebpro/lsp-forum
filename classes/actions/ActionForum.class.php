@@ -256,11 +256,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		$oModerator->setAllowPinTopic( (int)getRequest('moder_opt_pintopic',0,'post') === 1 );
 		$oModerator->setIsActive(1);
 		/**
-		 * Код
+		 * Генерируем код
 		 */
 		require_once Config::Get('path.root.engine').'/lib/external/XXTEA/encrypt.php';
-		$sCode=$oForum->getId().'_'.$oUser->getId();
-		$sCode=rawurlencode(base64_encode(xxtea_encrypt($sCode,Config::Get('plugin.forum.encrypt'))));
+		$sCode=rawurlencode(base64_encode(xxtea_encrypt("{$oForum->getId()}_{$oUser->getId()}",Config::Get('plugin.forum.encrypt'))));
 		$oModerator->setHash($sCode);
 		/**
 		 * Добавляем\сохраняем
@@ -269,9 +268,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Свзяка модератор - форум
 		 */
-		if ($sAction == 'update') {
+		if ($sAction == 'add') {
 			$oForum->moderators->add($oModerator);
-			$this->PluginForum_Forum_SaveForum($oForum);
+			$oForum=$this->PluginForum_Forum_SaveForum($oForum);
 		} else {
 			/**
 			 * Сменился форум
@@ -283,7 +282,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$this->PluginForum_Forum_SaveForum($oForumOld);
 					//создаем новую
 					$oForum->moderators->add($oModerator);
-					$this->PluginForum_Forum_SaveForum($oForum);
+					$oForum=$this->PluginForum_Forum_SaveForum($oForum);
 				}
 			}
 		}

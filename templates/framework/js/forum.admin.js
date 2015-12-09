@@ -75,12 +75,9 @@ ls.forum.admin = (function ($) {
 
 	this._updateModerList = function(data) {
 		if (data.sForumId) {
-			var f = $('#forum-' + data.sForumId);
+			var f = $('#moder-list-' + data.sForumId);
 			if (f) {
-				var m = f.find('.moder-list');
-				if (m) {
-					m.html(data.sText);
-				}
+				f.html(data.sText);
 			}
 		}
 	};

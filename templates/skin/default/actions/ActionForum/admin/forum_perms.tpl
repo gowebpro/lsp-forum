@@ -46,8 +46,8 @@
 			<tr>
 				<td class="ta-c">
 					{$oPerm->getName()}
-					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms')"><i class="icon-plus"></i></button>
-					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms',1)"><i class="icon-minus"></i></button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms')"><i class="icon-plus icon-white"></i></button>
+					<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms',1)"><i class="icon-minus icon-white"></i></button>
 				</td>
 				<td class="perm-red">
 					<div>{$aLang.plugin.forum.perms_show}</div>
