@@ -756,7 +756,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		if (!$this->User_IsAuthorization()) {
 			$this->Message_AddErrorSingle($this->Lang_Get('not_access'),$this->Lang_Get('error'));
-			return Router::Action('error');
+			return false;
 		}
 		/**
 		 * Поиск файла по id
@@ -766,14 +766,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			/**
 			 * Проверяем прав
 			 */
-			if ($oPost=$this->Topic_GetTopicById(getRequestStr('post')) && $this->ACL_IsAllowEditForumPost($oPost,$this->oUserCurrent)) {
+			if ($oFile->getUserId() == $this->oUserCurrent->getId()) {
 				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
 				$this->PluginForum_Forum_UpdateFile($oFile);
-			} else {
-				$oFile->setText(htmlspecialchars(strip_tags(getRequestStr('text'))));
-				$this->PluginForum_Forum_UpdateFile($oFile);
+				return true;
 			}
 		}
+		$this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
+		return false;
 	}
 
 	/**
