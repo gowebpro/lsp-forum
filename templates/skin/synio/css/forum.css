@@ -649,3 +649,19 @@ a.button { color: #434343 }
 	color: #fff;
 }
 .button.button-red:hover { background: #D14836 }
+
+
+/* Hints */
+.infobox.infobox-forum {
+	background: rgba(153,50,204,.9);
+	color: #fff;
+	border-radius: 10px;
+	padding: 15px;
+	font-size: 12px;
+	line-height: 16px;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,.2);
+	box-shadow: 0 0 15px rgba(0,0,0,.2);
+}
+.infobox.infobox-forum .tip-arrow {
+	border-color: rgba(153,50,204,.9);
+}

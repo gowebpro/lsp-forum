@@ -251,6 +251,12 @@ ls.forum = (function ($) {
 			liveEvents: true,
 			showTimeout: 100
 		});
+		$('.js-tiptop-help').poshytip({
+			className: 'infobox-forum',
+			alignY: 'top',
+			followCursor: true,
+			showTimeout: 100
+		});
 	};
 	/**
 	 * Инициализация селекторов
