@@ -2754,12 +2754,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$aForumsList=forum_create_list($aForums);
 			$aForumsTree=$this->PluginForum_Forum_buildTree($aForums);
 		}
+		$aForumsStat=$this->PluginForum_Forum_GetAdminStats();
 		/**
 		 * Загружаем переменные в шаблон
 		 */
 		$this->Viewer_Assign('aForums',$aForums);
 		$this->Viewer_Assign('aForumsTree',$aForumsTree);
 		$this->Viewer_Assign('aForumsList',$aForumsList);
+		$this->Viewer_Assign('aForumsStat',$aForumsStat);
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */

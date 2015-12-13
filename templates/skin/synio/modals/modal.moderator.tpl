@@ -1,23 +1,27 @@
 <div id="moder_form_modal" class="modal modal-moderator" >
-	<header class="modal-header">
-		<h3>{$aLang.plugin.forum.moderator_add}</h3>
-		<a href="#" class="close jqmClose"></a>
-	</header>
+	<form id="moder-form">
+		<header class="modal-header">
+			<h3>
+				{$aLang.plugin.forum.moderator_add}
+				<select id="moder_forum_id" name="moder_forum_id">
+					<option value="-1">--</option>
+					{foreach from=$aForumsList item=aItem}
+						<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title|escape:'html'}</option>
+					{/foreach}
+				</select>
+			</h3>
+			<a href="#" class="close jqmClose"></a>
+		</header>
 
-	<div class="modal-content">
-		<form id="moder-form">
-			<p><label for="moder_forum_id">{$aLang.plugin.forum.moderator_select_forum}:</label>
-			<select id="moder_forum_id" name="moder_forum_id" class="input-width-full">
-				<option value="-1">--</option>
-				{foreach from=$aForumsList item=aItem}
-				<option value="{$aItem.id}"{if $aItem.level == 0}disabled="disabled"{/if}>{$aItem.title|escape:'html'}</option>
-				{/foreach}
-			</select></p>
+		<div class="modal-content">
+			<p>
+				<label for="moder_name">{$aLang.plugin.forum.moderator_select_user}:</label>
+				<input type="text" id="moder_name" name="moder_name" placeholder="{$aLang.plugin.forum.moderator_select_user_placeholder}" class="input-text autocomplete-users" />
 
-			<p><label for="moder_name">{$aLang.plugin.forum.moderator_select_user}:</label>
-			<input type="text" id="moder_name" name="moder_name" placeholder="{$aLang.plugin.forum.moderator_select_user_placeholder}" class="input-text input-width-full autocomplete-users" /></p>
-
-			<p><a href="#" class="link-dotted help-link" onclick="jQuery('#moder_form_options').toggle(); return false;">{$aLang.plugin.forum.moderator_options}</a></p>
+				<a href="#" class="moder-options-button" onclick="jQuery('#moder_form_options').toggle();jQuery(this).toggleClass('active');return false;">
+					<i class="icon-plus"></i> {$aLang.plugin.forum.moderator_options}
+				</a>
+			</p>
 
 			<div class="moder-options" id="moder_form_options" style="display:none">
 				<label><input type="checkbox" id="moder_opt_viewip" name="moder_opt_viewip" class="input-checkbox" value="1"{if $_aRequest.moder_opt_viewip==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_viewip}</label>
@@ -30,11 +34,11 @@
 				<label><input type="checkbox" id="moder_opt_openclosetopic" name="moder_opt_openclosetopic" class="input-checkbox" value="1"{if $_aRequest.moder_opt_openclosetopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_openclosetopic}</label>
 				<label><input type="checkbox" id="moder_opt_pintopic" name="moder_opt_pintopic" class="input-checkbox" value="1"{if $_aRequest.moder_opt_pintopic==1} checked{/if} /> {$aLang.plugin.forum.moderator_options_pintopic}</label>
 			</div>
-
+		</div>
+		<div class="modal-footer">
 			<input type="hidden" name="moder_form_action" id="moder_form_action" />
 			<input type="hidden" name="moder_form_forum" id="moder_form_forum" />
-
-			<button type="button" onclick="return ls.forum.admin.applyModerForm('moder-form')" class="button button-primary">OK</button>
-		</form>
-	</div>
+			<button type="button" onclick="return ls.forum.admin.applyModerForm('moder-form')" class="button button-primary">Add moderator</button>
+		</div>
+	</form>
 </div>

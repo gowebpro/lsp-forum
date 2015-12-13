@@ -53,19 +53,19 @@
 								<button type="button" class="button" onclick="ls.forum.admin.permsCheckRow({$oPerm->getId()},'forum-perms',1)"><i class="icon-minus"></i></button>
 							</td>
 							<td class="perm-red">
-								<div>{$aLang.plugin.forum.perms_show}</div>
+								<label for="show_{$oPerm->getId()}">{$aLang.plugin.forum.perms_show}</label>
 								<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('show',{$oPerm->getId()},'forum-perms')" name="show[{$oPerm->getId()}]" id="show_{$oPerm->getId()}" value="1"{if $_aRequest.show[$oPerm->getId()]} checked{/if} />
 							</td>
 							<td class="perm-green">
-								<div>{$aLang.plugin.forum.perms_read}</div>
+								<label for="read_{$oPerm->getId()}">{$aLang.plugin.forum.perms_read}</label>
 								<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('read',{$oPerm->getId()},'forum-perms')" name="read[{$oPerm->getId()}]" id="read_{$oPerm->getId()}" value="1"{if $_aRequest.read[$oPerm->getId()]} checked{/if} />
 							</td>
 							<td class="perm-yellow">
-								<div>{$aLang.plugin.forum.perms_reply}</div>
+								<label for="reply_{$oPerm->getId()}">{$aLang.plugin.forum.perms_reply}</label>
 								<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('reply',{$oPerm->getId()},'forum-perms')" name="reply[{$oPerm->getId()}]" id="reply_{$oPerm->getId()}" value="1"{if $_aRequest.reply[$oPerm->getId()]} checked{/if}{if $bCategory} disabled="disabled"{/if} />
 							</td>
 							<td class="perm-blue">
-								<div>{$aLang.plugin.forum.perms_start}</div>
+								<label for="start_{$oPerm->getId()}">{$aLang.plugin.forum.perms_start}</label>
 								<input type="checkbox" onclick="return ls.forum.admin.permsCheckBox('start',{$oPerm->getId()},'forum-perms')" name="start[{$oPerm->getId()}]" id="start_{$oPerm->getId()}" value="1"{if $_aRequest.start[$oPerm->getId()]} checked{/if}{if $bCategory} disabled="disabled"{/if} />
 							</td>
 						</tr>

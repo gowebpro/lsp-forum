@@ -14,20 +14,54 @@ ls.forum = ls.forum || {};
 
 ls.forum.admin = (function ($) {
 
-	this.initModerToggler = function() {
-		$('.js-forum-moder-toogler').click(function() {
-			var forumId = parseInt($(this).attr('id').replace('toggler-moder-list-',''));
-			var list=$('#moder-list-'+forumId);
-			if (list.is(":visible")) {
-				$(this).addClass('icon-plus-sign').removeClass('icon-minus-sign');
-				$(list).slideUp();
+	this.init = function() {
+		// panel
+		$('.js-forum-panel-slide').click(function(){
+			var p_curr = $(this);
+
+			var f = p_curr.data('f'),
+				c = p_curr.attr('rel');
+
+			var f_wrap = $('#forum'+f);
+			var a_panel = $('#forum'+f+'_panel');
+			var s_panel = $('#forum'+f+'_panel_info');
+
+			var info_block = $('#forum'+f+'_'+c+'_block');
+
+			var panel_a = a_panel.find('> .active').not(p_curr);
+			var panel_s = s_panel.find('> .active').not(info_block);
+
+			panel_a.removeClass('active');
+			panel_s.removeClass('active').slideUp('fast');
+
+			if (info_block.hasClass('active')) {
+				info_block.slideUp('fast');
+				info_block.removeClass('active');
+				p_curr.removeClass('active');
+				f_wrap.removeClass('open');
 			} else {
-				$(this).removeClass('icon-plus-sign').addClass('icon-minus-sign');
-				$(list).slideDown();
+				info_block.slideDown('fast');
+				info_block.addClass('active');
+				p_curr.addClass('active');
+				f_wrap.addClass('open');
 			}
 			return false;
 		});
+
+		// inputs
+		$('#forum_url').keypress(ls.tools.latinecFilter);
+		$('#forum_limit_rating_topic').keypress(ls.tools.floatFilter);
+		$('#forum_topics_per_page, #forum_posts_per_page').keypress(ls.tools.numberFilter);
+
+		// modals
 		$('#moder_form_modal').jqm();
+	};
+
+	this._updateModerList = function(data) {
+		if (data.sForumId) {
+			var fc = $('#forum'+data.sForumId+'_moders_block');
+			if (fc) fc.html(data.sText);
+		}
 	};
 
 	this.showModerForm = function(data,sAction) {
@@ -71,15 +105,6 @@ ls.forum.admin = (function ($) {
 			}
 		}.bind(this));
 		return false;
-	};
-
-	this._updateModerList = function(data) {
-		if (data.sForumId) {
-			var f = $('#moder-list-' + data.sForumId);
-			if (f) {
-				f.html(data.sText);
-			}
-		}
 	};
 
 	this.addModerator = function(sForumId) {
@@ -144,8 +169,7 @@ ls.forum.admin = (function ($) {
 
 jQuery(document).ready(function($){
 
-	$('#forum_url').keypress(ls.tools.latinecFilter);
-	$('#forum_limit_rating_topic').keypress(ls.tools.floatFilter);
+	ls.forum.admin.init();
 
 });
 

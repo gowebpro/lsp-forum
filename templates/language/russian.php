@@ -62,6 +62,10 @@ return array(
 	'stats_topic_count' => 'Создано тем',
 	'stats_user_count' => 'Зарегистрировано пользователей',
 	'stats_user_last' => 'Последний зарегистрировавшийся пользователь',
+	'stats_activity' => 'Активность',
+	'stats_last_post' => 'Последнее сообщение',
+	'stats_last_topic' => 'Поледняя тема',
+
 
 	'categories' => 'Категории',
 	/**

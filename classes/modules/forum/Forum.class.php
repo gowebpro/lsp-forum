@@ -256,6 +256,39 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Получает статистику форумов
+	 *
+	* @return	array
+	 */
+	public function GetAdminStats() {
+		$aStats=array();
+		/**
+		 * Получаем количество всех постов
+		 */
+		$iCountPosts=$this->oMapperForum->GetCountPosts();
+		/**
+		 * Получаем количество всех топиков
+		 */
+	//	$iCountTopics=$this->oMapperForum->GetCountTopics();
+
+		$aForums = $this->GetForumItemsAll();
+
+		foreach ($aForums as $oForum) {
+			$aStats[$oForum->getId()]=array();
+			//считаем активность
+			$iActivity = (100/$iCountPosts)*($oForum->getCountPost());
+			$iActivity = rtrim(rtrim(number_format(round($iActivity,2),2,'.',''),'0'),'.');
+			$aStats[$oForum->getId()]['activity']=$iActivity;
+			//последний топик
+			if ($oLastTopic = $oForum->getTopic()) {
+				$aStats[$oForum->getId()]['last_topic']=$oLastTopic;
+			}
+		}
+
+		return $aStats;
+	}
+
+	/**
 	 * Считает инфу по количеству постов и топиков в подфорумах
 	 *
 	 * @param	object	$oForum

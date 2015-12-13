@@ -8,12 +8,6 @@
 {include file="$sTemplatePathForum/modals/modal.moderator.tpl"}
 
 <div class="forums">
-	<script type="text/javascript">
-		jQuery(document).ready(function($){
-			ls.forum.admin.initModerToggler();
-		});
-	</script>
-
 	<div class="fBox forum-acp">
 		<header class="forums-header">
 			<h3>{$aLang.plugin.forum.acp_forums_control}</h3>
@@ -37,7 +31,9 @@
 
 				{if $aForums}
 					<div class="forums-tree-wrapper">
-					{assign var="iNesting" value="-1"}
+					{assign var="iNesting" value="0"}
+
+					<ul class="services-tree">
 					{foreach from=$aForumsTree item=aItem name=forums_tree}
 						{assign var=oForum value=$aItem.entity}
 						{assign var=iForumLevel value=$aItem.level}
@@ -45,8 +41,7 @@
 						{if $iNesting < $iForumLevel}
 						<ul class="forums-tree" id="forums-tree-{$oForum->getId()}">
 						{elseif $iNesting > $iForumLevel}
-							{section name=closelist1 loop=$iNesting-$iForumLevel+1}</li></ul>{/section}
-							<ul class="forums-tree" id="forums-tree-{$oForum->getId()}">
+							{section name=closelist1 loop=$iNesting-$iForumLevel}</li></ul>{/section}
 						{elseif not $smarty.foreach.forums_tree.first}
 							</li>
 						{/if}
@@ -57,12 +52,14 @@
 							bLast=$oForum->getLast()
 							bRefreshEnable=$iForumLevel>0
 							bModerList=$iForumLevel>0
+							bStats=$iForumLevel>0
 						}
 						{assign var="iNesting" value=$iForumLevel}
 						{if $smarty.foreach.forums_tree.last}
-							{section name=closelist2 loop=$iNesting+1}</li></ul>{/section}
+							{section name=closelist2 loop=$iNesting}</li></ul>{/section}
 						{/if}
 					{/foreach}
+					</ul>
 					</div>
 				{else}
 					<div class="empty">{$aLang.plugin.forum.clear}</div>
