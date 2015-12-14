@@ -75,7 +75,7 @@
 }
 .fContainer {
 	background: #fbfcfc;
-	border: 1px solid #dbe4ef
+	border: 1px solid #d0e8f2
 }
 .fContainer.fPad {
 	padding: 10px
@@ -146,7 +146,7 @@
 	visibility: visible
 }
 .forums-content { padding: 8px }
-.forums-note { padding: 20px 40px; color: #82aabe; border-width: 1px 0px 0px; border-style: solid; border-color: #DCE1E6 }
+.forums-note { padding: 20px 40px; color: #82aabe; border-width: 1px 0px 0px; border-style: solid; border-color: #d0e8f2 }
 .forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #ebf0f4; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
 
@@ -189,7 +189,7 @@
 .table a.date { color: #434951 }
 .table .link-to-msg { background: url(../images/icon_link.png) no-repeat; display: inline-block; width: 16px; height: 9px }
 .table .cell-subtitle { background: #fff5ee; border-color: #ffefd5; padding: 7px 28px; color: #808080; font-weight: bold }
-.table .cell-icon { width: 1% }
+.table .cell-icon { vertical-align: top; width: 1%; }
 .table .last-post {}
 
 .fLayout-withright {
@@ -439,7 +439,7 @@
 
 /* Stats */
 .forum-stats {}
-.forum-stats .table .cell-icon { width: 60px; text-align: center }
+.forum-stats .table .cell-icon { vertical-align: middle; width: 60px; text-align: center }
 .forum-stats .table .cell-content { }
 .forum-stats .table .cell-content span.count { font-weight: bold }
 .forum-stats-icon-stats { width: 64px; height: 64px; background: url(../images/statistics.png) no-repeat center }
