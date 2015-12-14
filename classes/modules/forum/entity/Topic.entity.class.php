@@ -94,6 +94,17 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	public function setReadDate($data) {
 		$this->_aDataMore['marker_date']=$data;
 	}
-}
 
+	/**
+	 * Метка: популярная тема
+	 */
+	public function getHot() {
+		if ($oForum=$this->getForum()) {
+			if ($iCountHot=$oForum->getOptionsValue('posts_hot_topic')) {
+				return ($this->getCountPost() >= $iCountHot);
+			}
+		}
+		return false;
+	}
+}
 ?>

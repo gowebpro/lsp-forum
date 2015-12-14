@@ -95,9 +95,9 @@
 							<td class="cell-labeled">
 								<select id="forum_perms" name="forum_perms">
 									<option value="">{$aLang.plugin.forum.create_perms_not}</option>
-								{foreach from=$aForumsList item=aItem}
-									<option value="{$aItem.id}"{if $_aRequest.forum_perms==$aItem.id} selected{/if}>{$aItem.title}</option>
-								{/foreach}
+									{foreach from=$aForumsList item=aItem}
+										<option value="{$aItem.id}"{if $_aRequest.forum_perms==$aItem.id} selected{/if}>{$aItem.title}</option>
+									{/foreach}
 								</select>
 								<br><span class="note">{$aLang.plugin.forum.create_perms_notice}</span>
 							</td>
@@ -213,7 +213,7 @@
 								<label for="forum_topics_per_page"><strong>{$aLang.plugin.forum.create_topics_per_page}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<input type="text" id="forum_topics_per_page" name="forum_topics_per_page" value="{$_aRequest.forum_topics_per_page|default:0|escape:'html'}" class="input-text input-width-100" />
+								<input type="text" id="forum_topics_per_page" name="forum_topics_per_page" value="{$_aRequest.forum_topics_per_page|default:0|escape:'html'}" class="input-text input-width-100 js-input-number" />
 								<span class="note">{$aLang.plugin.forum.create_topics_per_page_notice|ls_lang:"default%%`$oConfig->Get('plugin.forum.topic_per_page')`"}</span>
 							</td>
 						</tr>
@@ -222,8 +222,17 @@
 								<label for="forum_posts_per_page"><strong>{$aLang.plugin.forum.create_posts_per_page}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<input type="text" id="forum_posts_per_page" name="forum_posts_per_page" value="{$_aRequest.forum_posts_per_page|default:0|escape:'html'}" class="input-text input-width-100" />
+								<input type="text" id="forum_posts_per_page" name="forum_posts_per_page" value="{$_aRequest.forum_posts_per_page|default:0|escape:'html'}" class="input-text input-width-100 js-input-number" />
 								<span class="note">{$aLang.plugin.forum.create_posts_per_page_notice|ls_lang:"default%%`$oConfig->Get('plugin.forum.post_per_page')`"}</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="cell-label">
+								<label for="forum_posts_hot_topic"><strong>{$aLang.plugin.forum.create_posts_hot_topic}:</strong></label>
+							</td>
+							<td class="cell-labeled">
+								<input type="text" id="forum_posts_hot_topic" name="forum_posts_hot_topic" value="{$_aRequest.forum_posts_hot_topic|default:0|escape:'html'}" class="input-text input-width-100 js-input-number" />
+								<span class="note">{$aLang.plugin.forum.create_posts_hot_topic_notice|ls_lang:"default%%`$oConfig->Get('plugin.forum.post_per_page')`"}</span>
 							</td>
 						</tr>
 

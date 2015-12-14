@@ -51,7 +51,7 @@ ls.forum.admin = (function ($) {
 		// inputs
 		$('#forum_url').keypress(ls.tools.latinecFilter);
 		$('#forum_limit_rating_topic').keypress(ls.tools.floatFilter);
-		$('#forum_topics_per_page, #forum_posts_per_page').keypress(ls.tools.numberFilter);
+		$('.js-input-number').keypress(ls.tools.numberFilter);
 
 		// modals
 		$('#moder_form_modal').jqm();

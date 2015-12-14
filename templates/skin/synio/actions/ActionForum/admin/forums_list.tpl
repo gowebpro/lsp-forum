@@ -33,7 +33,7 @@
 					<div class="forums-tree-wrapper">
 					{assign var="iNesting" value="0"}
 
-					<ul class="services-tree">
+					<ul class="forums-tree" id="forums-tree">
 					{foreach from=$aForumsTree item=aItem name=forums_tree}
 						{assign var=oForum value=$aItem.entity}
 						{assign var=iForumLevel value=$aItem.level}

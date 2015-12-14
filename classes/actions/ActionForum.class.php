@@ -2584,6 +2584,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			if (isPost('forum_posts_per_page')) {
 				$oForum->setOptionsValue('posts_per_page',getRequestStr('forum_posts_per_page'));
 			}
+			if (isPost('forum_posts_hot_topic')) {
+				$oForum->setOptionsValue('posts_hot_topic',getRequestStr('forum_posts_hot_topic'));
+			}
 			/**
 			 * Копируем права доступа
 			 */
@@ -2668,6 +2671,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 			}
 			if (isPost('forum_posts_per_page')) {
 				$oForum->setOptionsValue('posts_per_page',getRequestStr('forum_posts_per_page'));
+			}
+			if (isPost('forum_posts_hot_topic')) {
+				$oForum->setOptionsValue('posts_hot_topic',getRequestStr('forum_posts_hot_topic'));
 			}
 			/**
 			 * Копируем права доступа
@@ -2812,6 +2818,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 					$_REQUEST['forum_display_on_index']=$oForumEdit->getOptionsValue('display_on_index');
 					$_REQUEST['forum_topics_per_page']=$oForumEdit->getOptionsValue('topics_per_page');
 					$_REQUEST['forum_posts_per_page']=$oForumEdit->getOptionsValue('posts_per_page');
+					$_REQUEST['forum_posts_hot_topic']=$oForumEdit->getOptionsValue('posts_hot_topic');
 
 					$sNewType=($oForumEdit->getParentId()==0) ? 'category' : 'forum';
 					$this->Viewer_Assign('oForumEdit', $oForumEdit);

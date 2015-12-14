@@ -149,8 +149,18 @@
 .forums-note { padding: 20px 40px; color: #82aabe; border-width: 1px 0px 0px; border-style: solid; border-color: #DCE1E6 }
 .forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #ebf0f4; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
-.table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
-.table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 7px }
+
+.table-forum-stats, .table-forums, .table-topics {
+	margin: 0px;
+}
+.table-forum-stats th, .table-forums th, .table-topics th {
+	background: #F1F9F1;
+	padding: 7px;
+	color: #808080;
+}
+.table-forum-stats td, .table-forums td, .table-topics td {
+	padding: 7px;
+}
 
 .table-forums .cell-name { width: auto }
 .table-forums .cell-stats  { width: 13% }
@@ -165,16 +175,6 @@
 .table-topics h4 a { color: #404040 }
 .table-topics h4 a:hover { color: #000 }
 .table-topics .unread h4 a { font-weight: bold }
-
-.table-forum-admin { margin: 0 }
-.table-forum-admin .cell-checkbox {
-	width: 20px;
-	padding: 12px 0 10px 10px
-}
-.table-forum-admin .cell-label { width: 30%; max-width: 400px; min-width: 240px; vertical-align: top; text-align: right }
-.table-forum-admin .cell-labeled {}
-.table-forum-admin .cell-half { width: 50% }
-.table-forum-admin .note { display: block }
 
 .form-item.webmoney li {
 	height: 32px;
@@ -449,17 +449,30 @@
 .forum-copyright span { font-size: 10px; display: block }
 
 /* Icons */
-.forum-icon, .topic-icon { display: block; margin: auto; background-repeat: no-repeat }
-.forum-icon { width: 48px; height: 48px }
-.forum-icon.archive { }
-.unread .forum-icon img { opacity: .5 }
+.forum-icon, .topic-icon {
+	display: block;
+	margin: auto;
+	background-repeat: no-repeat;
+	opacity: 1;
+}
 
-.topic-icon { width: 32px; height: 32px; background-image: url(../icons/topic_read.png) }
-.topic-icon.close { background-image: url(../icons/topic_close.png) }
-.topic-icon.hot { background-image: url(../icons/topic_hot.png) }
-.topic-icon.poll { background-image: url(../icons/topic_poll.png) }
-.topic-icon.poll.hot { background-image: url(../icons/topic_poll_hot.png) }
-.unread .topic-icon { opacity: .5; *background-image: url(../icons/topic_unread.png) }
+.forum-item .forum-icon { width: 48px; height: 48px }
+	.forum-item.archive .forum-icon { }
+	.forum-item.link .forum-icon { }
+	.forum-item.unread .forum-icon {
+		opacity: .5;
+	}
+
+.topic-item .topic-icon {
+	width: 32px;
+	height: 32px;
+	background-image: url(../icons/topic_read.png);
+}
+	.topic-item.hot .topic-icon { background-image: url(../icons/topic_hot.png); }
+	.topic-item.poll .topic-icon { background-image: url(../icons/topic_poll.png); }
+	.topic-item.poll.hot .topic-icon { background-image: url(../icons/topic_poll_hot.png); }
+	.topic-item.close .topic-icon { background-image: url(../icons/topic_close.png); }
+	.topic-item.unread .topic-icon { opacity: .5; *background-image: url(../icons/topic_unread.png); }
 
 /* Other */
 .controllers { margin: 15px 0 }
