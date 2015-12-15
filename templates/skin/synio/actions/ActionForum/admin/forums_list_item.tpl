@@ -94,7 +94,7 @@
 						<ul>
 							<li>
 								{$aLang.plugin.forum.stats_last_post}:
-								<strong>{if $oForum->getLastPostDate()}{$oForum->getLastPostDate()}{else}-{/if}</strong>
+								<strong>{if $oForum->getLastPostDate()}{date_format date=$oForum->getLastPostDate()}{else}-{/if}</strong>
 							</li>
 							{if $aForumStats.last_topic}
 								{$oLastTopic = $aForumStats.last_topic}
