@@ -11,13 +11,14 @@
 */
 
 class PluginForum_ModuleForum_EntityTopic extends EntityORM {
+	protected $__aRelationsData = array();
 	protected $_aDataMore = array();
 
 	protected $aRelations = array(
-		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
-		'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id'),
-		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
-	//	'polls'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityPoll','poll_id','db.table.forum_poll_rel','topic_id')
+	//	'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
+	//	'forum'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityForum','forum_id'),
+	//	'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
+	//	'polls'=>array(self::RELATION_TYPE_HAS_MANY,'PluginForum_ModuleForum_EntityPoll','post_id')
 	);
 
 	protected function _getDataMore($sKey) {
@@ -105,6 +106,36 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 			}
 		}
 		return false;
+	}
+
+
+	// relations:
+	protected function _getDataRelation($sKey) {
+		if (isset($this->__aRelationsData[$sKey])) {
+			return $this->__aRelationsData[$sKey];
+		}
+		return null;
+	}
+
+	// relation Forum, Post, User
+	public function getForum() {
+		return $this->_getDataRelation('Forum');
+	}
+	public function getPost() {
+		return $this->_getDataRelation('Post');
+	}
+	public function getUser() {
+		return $this->_getDataRelation('User');
+	}
+
+	public function setForum($data) {
+		$this->__aRelationsData['Forum']=$data;
+	}
+	public function setPost($data) {
+		$this->__aRelationsData['Post']=$data;
+	}
+	public function setUser($data) {
+		$this->__aRelationsData['User']=$data;
 	}
 }
 ?>

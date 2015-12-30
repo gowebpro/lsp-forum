@@ -11,11 +11,13 @@
 */
 
 class PluginForum_ModuleForum_EntityPost extends EntityORM {
+	protected $__aRelationsData = array();
+
 	protected $aRelations = array(
 	//	self::RELATION_TYPE_TREE,
-		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id'),
-		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
-		'editor'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','post_editor_id'),
+	//	'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id'),
+	//	'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
+	//	'editor'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','post_editor_id'),
 		'files'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityFile','file_id','db.table.forum_file_rel','post_id')
 	);
 
@@ -73,6 +75,47 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	 */
 	public function getRating() {
 		return number_format(round($this->_getDataOne('post_rating'),2), 0, '.', '');
+	}
+
+	// relations:
+	protected function _getDataRelation($sKey) {
+		if (isset($this->__aRelationsData[$sKey])) {
+			return $this->__aRelationsData[$sKey];
+		}
+		return null;
+	}
+
+	// relation Vote, Topic, User, ForumUser
+	public function getVote() {
+		return $this->_getDataRelation('Vote');
+	}
+	public function getTopic() {
+		return $this->_getDataRelation('Topic');
+	}
+	public function getUser() {
+		return $this->_getDataRelation('User');
+	}
+	public function getEditor() {
+		return $this->_getDataRelation('Editor');
+	}
+	public function getUserForum() {
+		return $this->_getDataRelation('F_User');
+	}
+
+	public function setVote($data) {
+		$this->__aRelationsData['Vote']=$data;
+	}
+	public function setTopic($data) {
+		$this->__aRelationsData['Topic']=$data;
+	}
+	public function setUser($data) {
+		$this->__aRelationsData['User']=$data;
+	}
+	public function setEditor($data) {
+		$this->__aRelationsData['Editor']=$data;
+	}
+	public function setUserForum($data) {
+		$this->__aRelationsData['F_User']=$data;
 	}
 
 }

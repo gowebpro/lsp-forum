@@ -11,6 +11,7 @@
 */
 
 class PluginForum_ModuleForum_EntityForum extends EntityORM {
+	protected $__aRelationsData = array();
 	protected $_aDataMore = array();
 
 	/**
@@ -25,9 +26,7 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 
 	protected $aRelations = array(
 		self::RELATION_TYPE_TREE,
-		'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','last_user_id'),
-		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','last_topic_id'),
-		'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
+	//	'post'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityPost','last_post_id'),
 		'moderators'=>array(self::RELATION_TYPE_MANY_TO_MANY,'PluginForum_ModuleForum_EntityModerator','moderator_id','db.table.forum_moderator_rel','forum_id')
 	);
 
@@ -171,31 +170,49 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return $this->Subscribe_GetSubscribeByTargetAndMail('forum_new_topic',$this->getId(),$oUserCurrent->getMail());
 	}
 
+
+	/**
+	 * Опции модератора
+	 */
 	public function isModerator() {
-		return $this->_getDataMore('moderator');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || $oModerator);
 	}
+
 	public function getModViewIP() {
-		return $this->_getDataMore('mod_viewip');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getViewIp()));
 	}
 	public function getModDeletePost() {
-		return $this->_getDataMore('mod_deletepost');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
 	}
 	public function getModDeleteTopic() {
-		return $this->_getDataMore('mod_deletetopic');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
 	}
 	public function getModMovePost() {
-		return $this->_getDataMore('mod_movepost');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowMovePost()));
 	}
 	public function getModMoveTopic() {
-		return $this->_getDataMore('mod_movetopic');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
 	}
 	public function getModOpencloseTopic() {
-		return $this->_getDataMore('mod_openclosetopic');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
 	}
 	public function getModPinTopic() {
-		return $this->_getDataMore('mod_pintopic');
+		$oModerator = $this->getModerator();
+		return (LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
 	}
+
+	/**
+	 * Права доступа
+	 */
 	public function getAllowShow() {
+		$oModerator = $this->getModerator();
 		return $this->_getDataMore('allow_show');
 	}
 	public function getAllowRead() {
@@ -214,30 +231,6 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return $this->_getDataMore('marker');
 	}
 
-	public function setIsModerator($data) {
-		$this->_aDataMore['moderator']=$data;
-	}
-	public function setModViewIP($data) {
-		$this->_aDataMore['mod_viewip']=$data;
-	}
-	public function setModDeletePost($data) {
-		$this->_aDataMore['mod_deletepost']=$data;
-	}
-	public function setModDeleteTopic($data) {
-		$this->_aDataMore['mod_deletetopic']=$data;
-	}
-	public function setModMovePost($data) {
-		$this->_aDataMore['mod_movepost']=$data;
-	}
-	public function setModMoveTopic($data) {
-		$this->_aDataMore['mod_movetopic']=$data;
-	}
-	public function setModOpencloseTopic($data) {
-		$this->_aDataMore['mod_openclosetopic']=$data;
-	}
-	public function setModPinTopic($data) {
-		$this->_aDataMore['mod_pintopic']=$data;
-	}
 	public function setAllowShow($data) {
 		$this->_aDataMore['allow_show']=$data;
 	}
@@ -257,6 +250,10 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		$this->_aDataMore['marker']=$data;
 	}
 
+
+	/**
+	 * Опции форума
+	 */
 	public function getOptions() {
 		$aValue=unserialize(stripslashes((string)$this->_getDataOne('forum_options')));
 		return $aValue ? $aValue : array();
@@ -284,6 +281,29 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return "<b><a href='{$this->getUrlFull()}'>{$this->getTitle()}</a></b>";
 	}
 
-}
 
+	// relations:
+	protected function _getDataRelation($sKey) {
+		if (isset($this->__aRelationsData[$sKey])) {
+			return $this->__aRelationsData[$sKey];
+		}
+		return null;
+	}
+
+
+	// relation Post
+	public function getPost() {
+		return $this->_getDataRelation('Post');
+	}
+	public function getModerator() {
+		return $this->_getDataRelation('Moderator');
+	}
+
+	public function setPost($data) {
+		$this->__aRelationsData['Post']=$data;
+	}
+	public function setModerator($data) {
+		$this->__aRelationsData['Moderator']=$data;
+	}
+}
 ?>

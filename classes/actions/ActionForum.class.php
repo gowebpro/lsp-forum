@@ -10,6 +10,7 @@
 *----------------------------------------------------------------------------
 */
 
+
 class PluginForum_ActionForum extends ActionPlugin {
 	/**
 	 * Текущий пользователь
@@ -998,6 +999,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Маркируем все форумы как прочитанные
 		 */
 		if (getRequestStr('markread') === 'all') {
+			//todo: alert
 			$this->PluginForum_Forum_MarkAll();
 			Router::Location(Router::GetPath('forum'));
 		}
@@ -1022,7 +1024,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 	/**
 	 * Маркируем форум как прочитанный
-	 *
+	 *	todo: alert
 	 */
 	public function EventMarkForum() {
 		/**
@@ -1201,17 +1203,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Получаем форум
 		 */
 		if (!($oForum=$oTopic->getForum())) {
 			return parent::EventNotFound();
 		}
-		/**
-		 * Дополнительные данные
-		 */
 		$oForum=$this->PluginForum_Forum_GetForumsAdditionalData($oForum,PluginForum_ModuleForum::FORUM_DATA_TOPIC);
-		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Права доступа
 		 */
@@ -2529,7 +2528,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		$aForums=$this->PluginForum_Forum_GetOpenForumsTree();
+		$aForums=$this->PluginForum_Forum_GetOpenForumsTree(true);
 		/**
 		 * Дерево форумов
 		 */

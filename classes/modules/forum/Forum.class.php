@@ -2,7 +2,7 @@
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
-* @Version: 1.0
+* @Version: 1.1
 * @Author: Chiffa
 * @LiveStreet Version: 1.0
 * @File Name: Forum.class.php
@@ -31,7 +31,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Префикс подфорумов для дерева
 	 */
-	const DEPTH_GUIDE			= '--';
+	const DEPTH_GUIDE			= '|&mdash;';
 	/**
 	 * Маркеры
 	 */
@@ -43,10 +43,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 	/**
 	 * Дополнительные данные форумов
 	 */
-	const FORUM_DATA_INDEX		= 'marker,calculate,perms';
-	const FORUM_DATA_FORUM		= 'marker,calculate,perms,moder';
-	const FORUM_DATA_TOPIC		= 'marker,perms,moder';
-	const FORUM_DATA_RSS		= 'perms';
+	const FORUM_DATA_INDEX		= 'Index';
+	const FORUM_DATA_FORUM		= 'Forum';
+	const FORUM_DATA_TOPIC		= 'Topic';
+	const FORUM_DATA_RSS		= 'Rss';
 	/**
 	 * Объект текущего пользователя
 	 */
@@ -184,8 +184,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 	/**
 	 * Получает статистику форума
+	 *	todo: opt
 	 *
-	* @return	array
+	 * @return	array
 	 */
 	public function GetForumStats() {
 		$aStats=array();
@@ -292,21 +293,23 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * Считает инфу по количеству постов и топиков в подфорумах
 	 *
 	 * @param	object	$oForum
+	 * @param	boolean	$bPerm
+	 * @param	boolean	$bMark
 	 * @return	object
 	 */
-	public function CalcChildren($oForum,$bPerm=1,$bNoModer=1,$bMark=0) {
+	protected function CalcChildren($oForum, $bPerm=1, $bMark=0) {
 		if ($bMark) {
-			$aMark=$this->GetMarking();
-			$sUserMark=(isset($aMark[self::MARKER_USER])) ? $aMark[self::MARKER_USER] : null;
-			$sMarkDate=(isset($aMark[self::MARKER_FORUM][$oForum->getId()])) ? $aMark[self::MARKER_FORUM][$oForum->getId()] : $sUserMark;
+			$aMark = $this->GetMarking();
+			$sUserMark = (isset($aMark[self::MARKER_USER])) ? $aMark[self::MARKER_USER] : null;
+			$sMarkDate = (isset($aMark[self::MARKER_FORUM][$oForum->getId()])) ? $aMark[self::MARKER_FORUM][$oForum->getId()] : $sUserMark;
 			if (!$oForum->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate()))) {
 				$oForum->setRead(true);
 			}
 		}
-		$aChildren=$oForum->getChildren();
+		$aChildren = $oForum->getChildren();
 		if (!empty($aChildren)) {
 			foreach ($aChildren as $oChildren) {
-				$oChildren=$this->CalcChildren($oChildren,$bPerm,$bNoModer,$bMark);
+				$oChildren = $this->CalcChildren($oChildren, $bPerm, $bMark);
 				if (!$oChildren->getRead()) {
 					$oForum->setRead(false);
 				}
@@ -317,7 +320,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$oForum->setCountPost($oForum->getCountPost() + $oChildren->getCountPost());
 			}
 		}
-		return $bPerm ? $this->BuildPerms($oForum,$bNoModer) : $oForum;
+		return $bPerm ? $this->BuildPerms($oForum) : $oForum;
 	}
 
 	/**
@@ -406,26 +409,11 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	object	$oForum
 	 * @return	object
 	 */
-	public function BuildPerms($oForum,$bNoModers=false) {
+	public function BuildPerms($oForum) {
 		$oUser = $this->User_GetUserCurrent();
-		$oParent = $oForum->getParentId() ? $this->BuildPerms($oForum->getParent(),true) : null;
-		/**
-		 * Права модератора
-		 */
-		if (!$bNoModers) {
-			$sId = $oUser ? $oUser->getId() : 0;
-			$oModerator = $this->PluginForum_Forum_GetModeratorByUserIdAndForumId($sId,$oForum->getId());
+		$oParent = $oForum->getParentId() ? $this->BuildPerms($oForum->getParent()) : null;
 
-			$oForum->setIsModerator(LS::Adm() || $oModerator);
-			$oForum->setModViewIP(LS::Adm() || ($oModerator && $oModerator->getViewIp()));
-			$oForum->setModDeletePost(LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
-			$oForum->setModDeleteTopic(LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
-			$oForum->setModMovePost(LS::Adm() || ($oModerator && $oModerator->getAllowMovePost()));
-			$oForum->setModMoveTopic(LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
-			$oForum->setModOpencloseTopic(LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
-			$oForum->setModPinTopic(LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
-		}
-		$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
+		$aPermissions = unserialize(stripslashes($oForum->getPermissions()));
 
 		$oForum->setAllowShow(forum_check_perms($aPermissions['show_perms'],$oUser,true));
 		$oForum->setAllowRead(forum_check_perms($aPermissions['read_perms'],$oUser,true));
@@ -466,29 +454,32 @@ class PluginForum_ModuleForum extends ModuleORM {
 
 	/**
 	 * Возвращает список форумов, открытых для пользователя в виде дерева
-	 * TODO: Проверять права доступа и исключать ненужные форумы из списка
 	 *
-	 * @param	object	$oForum
-	 * @param	boolean	$bIdOnly
+	 * @param	boolean	$bNoAllowData
 	 * @return	array
 	 */
-	public function GetOpenForumsTree() {
-		$oUserCurrent=$this->User_GetUserCurrent();
+	public function GetOpenForumsTree($bNoAllowData=false) {
+		$aResult = array();
 		/**
 		 * Строит дерево
 		 */
-		$aForums=$this->LoadTreeOfForum(
-			array(
-				'#order'=>array('forum_sort'=>'asc')
-			)
-		);
+		$aForums = $this->LoadTreeOfForum(array(
+			'#order' => array('forum_sort'=>'asc')
+		));
 		/**
-		 * Подцепляем дополнительные данные
+		 * Получаем доп.данные
 		 */
-		if (!empty($aForums)) {
-			$aForums=$this->GetForumsAdditionalData($aForums,self::FORUM_DATA_INDEX);
+		$sRelationShemeCode = $bNoAllowData ? self::FORUM_DATA_RSS : self::FORUM_DATA_INDEX;
+		$aForums = $this->GetForumsAdditionalData($aForums, $sRelationShemeCode);
+		/**
+		 * Оставляем в результате только с разрешенными правами
+		 */
+		foreach ($aForums as $oForum) {
+			if ($oForum->getAllowShow()) {
+				$aResult[] = $oForum;
+			}
 		}
-		return $aForums;
+		return $aResult;
 	}
 
 	/**
@@ -516,6 +507,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 		return $bIdOnly ? array_keys($aRes) : $aRes;
 	}
+
 
 	/**
 	 * Обновление просмотров топика
@@ -720,60 +712,154 @@ class PluginForum_ModuleForum extends ModuleORM {
 	}
 
 	/**
+	 * Возвращает нужную схему загрузки связей для форума
+	 *
+	 * @param	string $sCode	константа
+	 * @return	array
+	 */
+	public function GetForumRelationSheme($sCode=null) {
+		switch ($sCode) {
+			// Схема загрузки связей для страницы RSS
+			case self::FORUM_DATA_RSS:
+				return array('perms');
+			// Схема загрузки связей для страницы топика
+			case self::FORUM_DATA_TOPIC:
+				return array('marker', 'perms', 'moder');
+			// Схема загрузки связей для страницы форума
+			case self::FORUM_DATA_FORUM:
+				return array('calculate', 'marker', 'perms', 'moder', 'post'=>array('user'=>array(), 'topic'=>array()));
+			// Схема загрузки связей для главной страницы
+			case self::FORUM_DATA_INDEX: case null: default:
+				return array('calculate', 'marker', 'perms', 'moder', 'post'=>array('user'=>array(), 'topic'=>array()));
+		}
+	}
+
+	/**
 	 * Получает дополнительные данные(объекты) для форумов
 	 *
 	 * @param	array $aForums	Список форумов
 	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
 	 * @return	array
 	 */
-	public function GetForumsAdditionalData($aForums,$aAllowData=null) {
-		if (is_null($aAllowData)) {
-			$aAllowData=array('marker','calculate','perms','moder');
-		}
-		if (is_string($aAllowData)) {
-			$aAllowData=explode(',', $aAllowData);
-		}
+	public function GetForumsAdditionalData($aForums, $sAllowDataCode=null)
+	{
+		$aAllowData = $this->GetForumRelationSheme($sAllowDataCode);
 		func_array_simpleflip($aAllowData);
-		$sOne=false;
+		$sOne = false;
 		if (!is_array($aForums)) {
-			$sOne=$aForums->getId();
-			$aForums=array($aForums->getId() => $aForums);
+			$sOne = $aForums->getId();
+			$aForums = array($sOne => $aForums);
 		}
+		$aForumsByParentId = array();
+		$aForumsId = array();
+		$aPostsId = array();
 		/**
 		 * Получаем дополнительные данные
 		 */
 		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-			$aMark=$this->GetMarking();
-			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
-			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+			$aMark = $this->GetMarking();
+			$aForumMark = isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
+			$sUserMark = isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
 		}
-		/**
-		 * Добавляем данные к результату - списку форумов
-		 */
 		foreach ($aForums as $oForum) {
-			/**
-			 * Calculate
-			 */
 			if (isset($aAllowData['calculate'])) {
-				$oForum=$this->CalcChildren($oForum, isset($aAllowData['perms']) ? 1 : 0, isset($aAllowData['moder']) ? 0 : 1, isset($aAllowData['marker']) ? 1 : 0);
+				// Рекурсивная калькуляция материалов + права + принадлежность к модераторам + маркировка
+				$oForum = $this->CalcChildren($oForum, isset($aAllowData['perms']) ? 1 : 0, isset($aAllowData['marker']) ? 1 : 0);
 			} else {
-				/**
-				 * Marker
-				 */
+				// Маркировка
 				if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-					$sMarkDate=(isset($aForumMark[$oForum->getId()]) && strtotime($aForumMark[$oForum->getId()]) > strtotime($sUserMark)) ? $aForumMark[$oForum->getId()] : $sUserMark;
+					$sMarkDate = (isset($aForumMark[$oForum->getId()]) && strtotime($aForumMark[$oForum->getId()]) > strtotime($sUserMark))
+							? $aForumMark[$oForum->getId()] : $sUserMark;
 					if (!$oForum->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate()))) {
 						$oForum->setRead(true);
 					} else {
 						$oForum->setRead(false);
 					}
 				}
-				/**
-				 * Perms
-				 */
+				// Права доступа + принадлежность к модераторам
 				if (isset($aAllowData['perms'])) {
-					$oForum=$this->BuildPerms($oForum,isset($aAllowData['moder']) ? 0 : 1);
+					$oForum = $this->BuildPerms($oForum);
 				}
+			}
+			// собираем объекты всей ветки
+			if ($aDescendants = $oForum->getChildren()) {//getDescendants()
+				foreach ($aDescendants as $oDescendant) {
+					$aForumsByParentId[$oDescendant->getParetId()][] = $oDescendant;
+					$aPostsId[] = $oDescendant->getLastPostId();
+					$aForumsId[] = $oDescendant->getId();
+				}
+			}
+			$aPostsId[] = $oForum->getLastPostId();
+			$aForumsId[] = $oForum->getId();
+		}
+		/**
+		 * Получаем доп.данные
+		 */
+		$aPosts = array();
+		$aModerators = array();
+		if (isset($aAllowData['post']) && $aPostsId) {
+			$aPosts = $this->GetPostItemsByArrayPostId($aPostsId);
+			$aPosts = (isset($aAllowData['post']) && is_array($aAllowData['post'])) ? $this->GetPostsAdditionalData($aPosts, $aAllowData['post']) : $this->GetPostsAdditionalData($aPosts);
+		}
+		if (isset($aAllowData['moder']) && $this->oUserCurrent) {
+			$aModerators = $this->GetModeratorItemsAll(array(
+				'#where' => array(
+					'user_id = ?d' => array($this->oUserCurrent->getId()),
+					'forum_id IN (?a)' => array($aForumsId)
+				),
+				'#index-from' => 'forum_id'
+			));
+		}
+		/**
+		 * Добавляем данные к массиву объектов веток
+		 */
+		foreach ($aForumsByParentId as $sParent => $aChildrens) {
+			foreach ($aChildrens as $oChildren) {
+				if (!isset($aAllowData['calculate'])) {
+					/**
+					 * TODO: избавится от дублирования
+					 */
+					if (isset($aAllowData['marker']) && $this->oUserCurrent) {
+						$sMarkDate = (isset($aForumMark[$oChildren->getId()]) && strtotime($aForumMark[$oChildren->getId()]) > strtotime($sUserMark))
+								? $aForumMark[$oChildren->getId()] : $sUserMark;
+						if (!$oChildren->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oChildren->getLastPostDate()))) {
+							$oChildren->setRead(true);
+						} else {
+							$oChildren->setRead(false);
+						}
+					}
+					if (isset($aAllowData['perms'])) {
+						$oChildren = $this->BuildPerms($oChildren);
+					}
+				}
+				if (isset($aPosts[$oChildren->getLastPostId()])) {
+					$oChildren->setPost($aPosts[$oChildren->getLastPostId()]);
+				} else {
+					$oChildren->setPost(null);
+				}
+				if (isset($aModerators[$oChildren->getId()])) {
+					$oChildren->setModerator($aModerators[$oChildren->getId()]);
+				} else {
+					$oChildren->setModerator(null);
+				}
+			}
+		}
+		/**
+		 * Добавляем данные к результату - списку форумов
+		 */
+		foreach ($aForums as $oForum) {
+			if (isset($aPosts[$oForum->getLastPostId()])) {
+				$oForum->setPost($aPosts[$oForum->getLastPostId()]);
+			} else {
+				$oForum->setPost(null);
+			}
+			if (isset($aModerators[$oChildren->getId()])) {
+				$oChildren->setModerator($aModerators[$oChildren->getId()]);
+			} else {
+				$oChildren->setModerator(null);
+			}
+			if (isset($aForumsByParentId[$oForum->getId()])) {
+				$oForum->setChildren($aForumsByParentId[$oForum->getId()]);
 			}
 		}
 
@@ -787,44 +873,112 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
 	 * @return	array
 	 */
-	public function GetTopicsAdditionalData($aTopics,$aAllowData=null) {
+	public function GetTopicsAdditionalData($aTopics, $aAllowData=null)
+	{
 		if (is_null($aAllowData)) {
-			$aAllowData=array('marker');
+			$aAllowData = array('marker', 'forum'=>array(), 'post'=>array(), 'user'=>array());
 		}
 		if (is_string($aAllowData)) {
-			$aAllowData=explode(',', $aAllowData);
+			$aAllowData = explode(',', $aAllowData);
 		}
 		func_array_simpleflip($aAllowData);
-		$sOne=false;
+		$sOne = false;
 		if (!is_array($aTopics)) {
-			$sOne=$aTopics->getId();
-			$aTopics=array($aTopics->getId() => $aTopics);
+			$sOne = $aTopics->getId();
+			$aTopics = array($sOne => $aTopics);
+		}
+		$aForumsId = array();
+		$aPostsId = array();
+		$aUsersId = array();
+		/**
+		 * Формируем ID дополнительных данных, которые нужно получить
+		 */
+		foreach ($aTopics as $oTopic) {
+			$aForumsId[] = $oTopic->getForumId();
+			$aPostsId[]  = $oTopic->getLastPostId();
+			$aUsersId[]  = $oTopic->getUserId();
 		}
 		/**
 		 * Получаем дополнительные данные
 		 */
+		$aForums = array();
+		$aPosts = array();
+		$aUsers = array();
+		/**
+		 * если нужно подцепить маркировку
+		 */
 		if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-			$aMark=$this->GetMarking();
-			$aForumMark=isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
-			$aTopicMark=isset($aMark[self::MARKER_TOPIC]) ? $aMark[self::MARKER_TOPIC] : array();
-			$sUserMark=isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+			$aMark = $this->GetMarking();
+			$aForumMark = isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
+			$aTopicMark = isset($aMark[self::MARKER_TOPIC]) ? $aMark[self::MARKER_TOPIC] : array();
+			$sUserMark = isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
+		}
+		/**
+		 * если нужно подцепить форумы
+		 */
+		if (isset($aAllowData['forum']) && $aForumsId) {
+			$aForums = $this->GetForumItemsByArrayForumId($aForumsId);
+		}
+		/**
+		 * если нужно подцепить посты
+		 */
+		if (isset($aAllowData['post']) && $aPostsId) {
+			$aPosts = $this->GetPostItemsByArrayPostId($aPostsId);
+			foreach ($aPosts as $oPost) {
+				$aUsersId[] = $oPost->getUserId();
+			}
+		}
+		/**
+		 * Подцепляем пользователей
+		 */
+		if (isset($aAllowData['user'])) {
+			$aUsers = (isset($aAllowData['user']) && is_array($aAllowData['user'])) ? $this->User_GetUsersAdditionalData($aUsersId, $aAllowData['user']) : $this->User_GetUsersAdditionalData($aUsersId);
+		}
+		/**
+		 * Добавляем данные списку постов
+		 */
+		foreach ($aPosts as $oPost) {
+			if (isset($aTopics[$oPost->getTopicId()])) {
+				$oPost->setTopic($aTopics[$oPost->getTopicId()]);
+			} else {
+				$oPost->setTopic(null);
+			}
+			if (isset($aUsers[$oPost->getUserId()])) {
+				$oPost->setUser($aUsers[$oPost->getUserId()]);
+			} else {
+				$oPost->setUser(null);
+			}
 		}
 		/**
 		 * Добавляем данные к результату - списку топиков
 		 */
 		foreach ($aTopics as $oTopic) {
-			/**
-			 * Marker
-			 */
 			if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-				$sMarkDate=(isset($aForumMark[$oTopic->getForumId()]) && strtotime($aForumMark[$oTopic->getForumId()]) > strtotime($sUserMark)) ? $aForumMark[$oTopic->getForumId()] : $sUserMark;
-				$sMarkDate=(isset($aTopicMark[$oTopic->getId()]) && strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sMarkDate)) ? $aTopicMark[$oTopic->getId()] : $sMarkDate;
+				$sMarkDate = (isset($aForumMark[$oTopic->getForumId()]) && strtotime($aForumMark[$oTopic->getForumId()]) > strtotime($sUserMark))
+						? $aForumMark[$oTopic->getForumId()] : $sUserMark;
+				$sMarkDate = (isset($aTopicMark[$oTopic->getId()]) && strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sMarkDate))
+						? $aTopicMark[$oTopic->getId()] : $sMarkDate;
 				if (!$oTopic->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oTopic->getLastPostDate()))) {
 					$oTopic->setRead(true);
 				} else {
 					$oTopic->setRead(false);
 				}
 				$oTopic->setReadDate($sMarkDate);
+			}
+			if (isset($aForums[$oTopic->getForumId()])) {
+				$oTopic->setForum($aForums[$oTopic->getForumId()]);
+			} else {
+				$oTopic->setForum(null);
+			}
+			if (isset($aPosts[$oTopic->getLastPostId()])) {
+				$oTopic->setPost($aPosts[$oTopic->getLastPostId()]);
+			} else {
+				$oTopic->setPost(null);
+			}
+			if (isset($aUsers[$oTopic->getUserId()])) {
+				$oTopic->setUser($aUsers[$oTopic->getUserId()]);
+			} else {
+				$oTopic->setUser(null);
 			}
 		}
 
@@ -838,42 +992,87 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	array|null $aAllowData Список дополнительных данных, которые нужно подключать к топикам
 	 * @return	array
 	 */
-	public function GetPostsAdditionalData($aPosts, $aAllowData=null) {
+	public function GetPostsAdditionalData($aPosts, $aAllowData=null)
+	{
 		if (is_null($aAllowData)) {
-			$aAllowData=array('vote');
+			$aAllowData = array('vote', 'topic'=>array(), 'user'=>array(), 'editor'=>array(), 'files');
 		}
 		if (is_string($aAllowData)) {
-			$aAllowData=explode(',', $aAllowData);
+			$aAllowData = explode(',', $aAllowData);
 		}
 		func_array_simpleflip($aAllowData);
-		$sOne=false;
+		$sOne = false;
 		if (!is_array($aPosts)) {
-			$sOne=$aPosts->getId();
-			$aPosts=array($sOne => $aPosts);
+			$sOne = $aPosts->getId();
+			$aPosts = array($sOne => $aPosts);
 		}
-		$aPostId=array();
-		$aUsersId=array();
+		$aPostId = array();
+		$aUsersId = array();
+		$aTopicsId = array();
 		/**
 		 * Формируем ID дополнительных данных, которые нужно получить
 		 */
 		foreach ($aPosts as $oPost) {
-			$aPostId[]=$oPost->getId();
-			$aUsersId[$oPost->getUserId()]=1;
+			$aPostId[]   = $oPost->getId();
+			$aTopicsId[] = $oPost->getTopicId();
+			$aUsersId[]  = $oPost->getUserId();
+			$aUsersId[]  = $oPost->getEditorId();
 		}
 		/**
 		 * Получаем дополнительные данные
 		 */
-		$aVote=array();
-		$aUsers=array();
-		if (isset($aAllowData['vote']) && $this->oUserCurrent) {
-			$aVote=$this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
-		}
-		if ($aUsersId) {
-			//добавь кеш
-			$aUsers=$this->GetUserItemsByArrayUserId(array_keys($aUsersId));
+		$aVote = array();
+		$aTopics = array();
+		$aUsers = array();
+		$aForumUsers = array();
+		if ($aPostId) {
+			/**
+			 * если нужно подцепить голосования
+			 */
+			if (isset($aAllowData['vote']) && $this->oUserCurrent) {
+				$aVote = $this->Vote_GetVoteByArray($aPostId,'forum_post',$this->oUserCurrent->getId());
+			}
+			/**
+			 * если нужно подцепить топики
+			 */
+			if (isset($aAllowData['topic']) && $aTopicsId) {
+				$aTopics = $this->GetTopicItemsByArrayTopicId($aTopicsId);
+				foreach ($aTopics as $oTopic) {
+					$aUsersId[] = $oTopic->getUserId();
+				}
+			}
+			/**
+			 * Подцепляем ForumUser
+			 */
+			if (isset($aAllowData['user']) && $aUsersId) {
+				$aForumUsers = $this->GetUserItemsByArrayUserId($aUsersId);
+			}
+			/**
+			 * Подцепляем пользователей
+			 */
+			if (isset($aAllowData['user']) || isset($aAllowData['editor'])) {
+				// сюда можно захуяривать данные для User'a (то есть 'vote','session','friend','geo_target','note')
+				// по умолчанию стоит пустой массив, то есть не запрашивает всю эту ненужную хуйню
+				// данные для хозяина поста и редакторов сливаются
+				$aUsersAllowData=isset($aAllowData['user']) ? $aAllowData['user'] : array();
+				if (isset($aAllowData['editor'])) {
+					$aUsersAllowData=func_array_merge_assoc($aUsersAllowData,$aAllowData['editor']);
+				}
+				$aUsers = is_array($aUsersAllowData) ? $this->User_GetUsersAdditionalData($aUsersId, $aUsersAllowData) : $this->User_GetUsersAdditionalData($aUsersId);
+			}
+			/**
+			 * Добавляем данные к списку топиков
+			 */
+			foreach ($aTopics as $oTopic) {
+				if (isset($aUsers[$oTopic->getUserId()])) {
+					$oTopic->setUser($aUsers[$oTopic->getUserId()]);
+				} else {
+					$oTopic->setUser(null);
+				}
+			}
 		}
 		/**
-		 * Добавляем данные к результату - списку топиков
+		 * Добавляем данные к результату - списку постов
 		 */
 		foreach ($aPosts as $oPost) {
 			if (isset($aVote[$oPost->getId()])) {
@@ -881,8 +1080,23 @@ class PluginForum_ModuleForum extends ModuleORM {
 			} else {
 				$oPost->setVote(null);
 			}
+			if (isset($aTopics[$oPost->getTopicId()])) {
+				$oPost->setTopic($aTopics[$oPost->getTopicId()]);
+			} else {
+				$oPost->setTopic(null);
+			}
 			if (isset($aUsers[$oPost->getUserId()])) {
-				$oPost->setUserForum($aUsers[$oPost->getUserId()]);
+				$oPost->setUser($aUsers[$oPost->getUserId()]);
+			} else {
+				$oPost->setUser(null);
+			}
+			if (isset($aUsers[$oPost->getEditorId()])) {
+				$oPost->setEditor($aUsers[$oPost->getEditorId()]);
+			} else {
+				$oPost->setEditor(null);
+			}
+			if (isset($aForumUsers[$oPost->getUserId()])) {
+				$oPost->setUserForum($aForumUsers[$oPost->getUserId()]);
 			} else {
 				$oPost->setUserForum(null);
 			}
@@ -1180,7 +1394,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function DeleteAttach(PluginForum_ModuleForum_EntityFile $oFile) {
 		@unlink($this->Image_GetServerPath($oFile->getPath()));
-		return	$this->PluginForum_Forum_DeleteFile($oFile);
+		return $this->PluginForum_Forum_DeleteFile($oFile);
 	}
 
 	/**
