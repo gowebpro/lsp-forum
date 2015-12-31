@@ -2,9 +2,9 @@
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
-* @Version: 1.0
+* @Version: 1.1
 * @Author: Chiffa
-* @LiveStreet Version: 1.0
+* @LiveStreet version: 1.0
 * @File Name: config.php
 * @License: CC BY-NC, http://creativecommons.org/licenses/by-nc/3.0/
 *----------------------------------------------------------------------------
@@ -63,14 +63,26 @@ $config['move_info_post']		= true;
  * Настройки статистики
  */
 $config['stats'] = array(
-	/* Показывать пользователей онлайн (при наличии модуля Visitors) */
-	'online' => true,
-	/* Максимально отображаемое количество пользователей в списке */
-	'users_count' => 20,
-	/* Показывать блок с именниниками */
-	'bdays' => true,
-	/* Показывать последнего зарегистрировавшегося? */
-	'last_user' => true,
+	'global' => array(
+		'count_post' => true,		// показать кол-во сообщений
+		'count_topic' => true,		// показать кол-во тем
+		'count_user' => true,		// показать кол-во юзеров (на сайте)
+		'last_user' => true,		// показывать последнего зарегистрировавшегося?
+	),
+	/**
+	 * Пользователи онлайн
+	 */
+	'online' => array(
+		'enable' => true,
+		'count' => 20
+	),
+	/**
+	 * Именинники
+	 */
+	'bdays' => array(
+		'enable' => true,
+		'count' => 20
+	),
 );
 
 /**
@@ -131,6 +143,7 @@ $config['attach']['count_max'] = 10; // максимальное количес�
 $config['attach']['format'] = 'zip,rar'; // допустимые форматы файлов
 $config['attach']['format_swf'] = '*.zip;*.rar;*.7-zip;*.ZIP;*.RAR;*.7-ZIP'; // настройка для flash загрузчика
 
+
 /**
  * Активация плагина
  */
@@ -154,57 +167,9 @@ $config['path_uploads_forum']	= '___plugin.forum.path_uploads___/forums';		//П�
 $config['path_uploads_smiles']	= '___plugin.forum.path_uploads___/smiles';		//Путь для загрузок смайлов
 $config['path_uploads_files']	= '___plugin.forum.path_uploads___/files';		//Путь для загрузок файлов
 
-/**
- * Настройка Jevix
- */
-$aJevix = array(
-	'cfgAllowTags' => array(
-		array(
-			array('spoiler')
-		),
-	),
-	'cfgAllowTagParams' => array(
-		array(
-			'spoiler',
-			array('name' => '#text')
-		),
-		array(
-			'blockquote',
-			array('reply' => '#int')
-		)
-	),
-	'cfgSetTagCallbackFull' => array(
-		array(
-			'spoiler',
-			array('_this_','CallbackTagSpoiler'),
-		),
-		array(
-			'blockquote',
-			array('_this_','CallbackTagQuote'),
-		),
-	)
+$config['components'] = array(
+	'session' => 1 //
 );
-Config::Set('jevix.forum', array_merge_recursive(Config::Get('jevix.default'), $aJevix));
-
-/**
- * Настройка таблиц
- */
-Config::Set('db.table.forum', '___db.table.prefix___forum');
-Config::Set('db.table.forum_file', '___db.table.prefix___forum_file');
-Config::Set('db.table.forum_file_rel', '___db.table.prefix___forum_file_rel');
-Config::Set('db.table.forum_moderator', '___db.table.prefix___forum_moderator');
-Config::Set('db.table.forum_moderator_rel', '___db.table.prefix___forum_moderator_rel');
-Config::Set('db.table.forum_post', '___db.table.prefix___forum_post');
-Config::Set('db.table.forum_topic', '___db.table.prefix___forum_topic');
-Config::Set('db.table.forum_topic_view', '___db.table.prefix___forum_topic_view');
-Config::Set('db.table.forum_readonly', '___db.table.prefix___forum_readonly');
-
-
-/**
- * Настройки роутера
- */
-Config::Set('router.page.forum', 'PluginForum_ActionForum');
 
 return $config;
-
 ?>
