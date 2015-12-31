@@ -191,28 +191,35 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function GetForumStats() {
 		$aStats=array();
 		/**
-		 * Посетители
+		 * Кто онлайн?
 		 */
-		if (class_exists('PluginAcewidgetmanager_ModuleVisitors') && Config::Get('plugin.forum.stats.online')) {
-			$aStats['online']=array();
-			$nCountVisitors=$this->PluginAcewidgetmanager_Visitors_GetVisitorsCount(300);
-			$nCountGuest=$nCountVisitors;
-			$nCountUsers=0;
+		if (Config::Get('plugin.forum.stats.online')) {
+			$aStats['online'] = array();
 			if ($aUsersLast=$this->User_GetUsersByDateLast(Config::Get('plugin.forum.stats.users_count'))) {
-				$aStats['online']['users']=array();
+				$aStats['online']['users'] = array();
 				foreach ($aUsersLast as $oUser) {
 					if ($oUser->isOnline()) {
 						$aStats['online']['users'][]=$oUser;
-						$nCountUsers++;
-						$nCountGuest--;
 					}
 				}
 				shuffle($aStats['online']['users']);
 			}
-			if ($nCountUsers > $nCountVisitors) $nCountVisitors=$nCountUsers;
-			$aStats['online']['count_visitors']=$nCountVisitors;
-			$aStats['online']['count_users']=$nCountUsers;
-			$aStats['online']['count_quest']=$nCountGuest;
+			$iCountUsers = sizeof($aStats['online']['users']);
+			$iCountGuest = 0;
+			/**
+			 * Если подключен плагин Acewidgetmanager, считаем также гостей
+			 */
+			if (class_exists('PluginAcewidgetmanager_ModuleVisitors')) {
+				$iCountGuest = $this->PluginAcewidgetmanager_Visitors_GetVisitorsCount(300);
+				$iCountGuest = $iCountGuest - $iCountUsers;
+				if ($iCountGuest < 0) {
+					$iCountGuest = 0;
+				}
+			}
+			$iCountOnline = $iCountUsers + $iCountGuest;
+			$aStats['online']['count_visitors'] = $iCountOnline;
+			$aStats['online']['count_users'] = $iCountUsers;
+			$aStats['online']['count_quest'] = $iCountGuest;
 		}
 		/**
 		 * Дни рождения

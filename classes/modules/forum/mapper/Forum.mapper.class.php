@@ -245,6 +245,12 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		return 0;
 	}
 
+	/**
+	 * Получает пользователей, дата рождения которых совпадает с текущей
+	 *
+	 * @param	integer	$iLimit
+	 * @return	integer
+	 */
 	public function GetUsersByBirthday($iLimit) {
 		$sql = 'SELECT user_id
 				FROM '.Config::Get('db.table.user').'

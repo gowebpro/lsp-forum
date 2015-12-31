@@ -5,6 +5,19 @@
 	</header>
 	<div class="forums-content">
 		<table class="table table-forum-stats">
+			<tr>
+				<td class="cell-icon"><div class="forum-stats-icon-stats"></div></td>
+				<td class="cell-content">
+					<div>{$aLang.plugin.forum.stats_post_count}: <span class="count">{$aForumStats.count_all_posts|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
+					<div>{$aLang.plugin.forum.stats_topic_count}: <span class="count">{$aForumStats.count_all_topics|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
+					<div>{$aLang.plugin.forum.stats_user_count}: <span class="count">{$aForumStats.count_all_users|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
+					{if $aForumStats.last_user}
+						{assign var=oUser value=$aForumStats.last_user}
+						<div>{$aLang.plugin.forum.stats_user_last}: <a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></div>
+					{/if}
+				</td>
+			</tr>
+
 			{if $aForumStats.online}
 			<tr>
 				<th colspan="2">
@@ -24,7 +37,7 @@
 						{$aForumStats.online.count_quest|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$aForumStats.online.count_quest|declension:$aLang.plugin.forum.guest_declension:'russian'|lower}
 					{/if}
 					{if $aForumStats.online.users}
-						<div class="userlist">
+						<div class="forum-userlist">
 						{foreach from=$aForumStats.online.users item=oUser name=online_user}
 							<span>
 								<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" /></a>
@@ -47,7 +60,7 @@
 			<tr>
 				<td class="cell-icon"><div class="forum-stats-icon-users"></div></td>
 				<td class="cell-content">
-					<div class="userlist">
+					<div class="forum-userlist">
 					{foreach from=$aForumStats.bdays item=oUser name=bday_user}
 						<span>
 							<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" /></a>
@@ -60,24 +73,6 @@
 				</td>
 			</tr>
 			{/if}
-
-			<tr>
-				<th colspan="2">
-					{$aLang.plugin.forum.stats}
-				</th>
-			</tr>
-			<tr>
-				<td class="cell-icon"><div class="forum-stats-icon-stats"></div></td>
-				<td class="cell-content">
-					<div>{$aLang.plugin.forum.stats_post_count}: <span class="count">{$aForumStats.count_all_posts|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
-					<div>{$aLang.plugin.forum.stats_topic_count}: <span class="count">{$aForumStats.count_all_topics|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
-					<div>{$aLang.plugin.forum.stats_user_count}: <span class="count">{$aForumStats.count_all_users|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')}</span></div>
-					{if $aForumStats.last_user}
-						{assign var=oUser value=$aForumStats.last_user}
-						<div>{$aLang.plugin.forum.stats_user_last}: <a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a></div>
-					{/if}
-				</td>
-			</tr>
 		</table>
 	</div>
 	<div class="forums-note clearfix" style="display:none">
