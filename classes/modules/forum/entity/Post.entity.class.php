@@ -22,6 +22,20 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	);
 
 	/**
+	 * Метод автоматически выполняется перед сохранением объекта сущности (статьи)
+	 * Если пост новый, устанавливается дата создания, иначе редактирования
+	 */
+	protected function beforeSave() {
+		if ($this->_isNew()) {
+			$this->setDateAdd(date('Y-m-d H:i:s'));
+		} else {
+			$this->setDateEdit(date('Y-m-d H:i:s'));
+		}
+		return true;
+	}
+
+	/**
+	 * Инициализация
 	 * Определяем правила валидации
 	 */
 	public function Init() {
@@ -52,14 +66,24 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 		return true;
 	}
 
+
+	/**
+	 * Возвращает полный URL до поста
+	 */
 	public function getUrlFull() {
 		return Router::GetPath('forum')."findpost/{$this->getId()}/";
 	}
 
+	/**
+	 * Возвращает порядковый номер поста в топике (или ID)
+	 */
 	public function getNumber() {
 		return $this->_getDataOne('number') ? $this->_getDataOne('number') : $this->getId();
 	}
 
+	/**
+	 * Возвращает кол-во вложений
+	 */
 	public function getFilesCount() {
 		return 0;
 	}
@@ -69,15 +93,16 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	}
 
 	/**
-	 * Возвращает рейтинг
-	 *
-	 * @return string
+	 * Возвращает рейтинг поста
 	 */
 	public function getRating() {
 		return number_format(round($this->_getDataOne('post_rating'),2), 0, '.', '');
 	}
 
-	// relations:
+
+	/**
+	 * Relations data
+	 */
 	protected function _getDataRelation($sKey) {
 		if (isset($this->__aRelationsData[$sKey])) {
 			return $this->__aRelationsData[$sKey];
@@ -117,6 +142,5 @@ class PluginForum_ModuleForum_EntityPost extends EntityORM {
 	public function setUserForum($data) {
 		$this->__aRelationsData['F_User']=$data;
 	}
-
 }
 ?>

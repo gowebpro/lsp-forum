@@ -12,7 +12,7 @@
 
 class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	protected $__aRelationsData = array();
-	protected $_aDataMore = array();
+	protected $__aCustomData = array();
 
 	/**
 	 * Определяем правила валидации
@@ -34,13 +34,6 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	 * Список запрещенных URL
 	 */
 	protected $aBadUrl = array('admin','topic','findpost');
-
-	protected function _getDataMore($sKey) {
-		if (isset($this->_aDataMore[$sKey])) {
-			return $this->_aDataMore[$sKey];
-		}
-		return null;
-	}
 
 	/**
 	 * Определяем правила валидации
@@ -144,6 +137,15 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return true;
 	}
 
+	/**
+	 * Возвращает окончательный тип форума
+	 *		archive			; архив только для чтения
+	 *		link			; включен редирект
+	 *		category		; запрещен постинг
+	 *		category_closed	; запрещен постинг, установлен пароль
+	 *		forum			; разрешен постинг
+	 *		forum_closed	; разрешен постинг, установлен пароль
+	 */
 	public function getTyped() {
 		if (!$this->getType()) return 'archive';
 		if ($this->getRedirectOn()) return 'link';
@@ -151,6 +153,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return ($this->getCanPost() ? 'category' : 'forum' . $suffix);
 	}
 
+	/**
+	 * Возвращает иконку нужного размера
+	 */
 	public function getIconPath($iSize=48) {
 		if ($sPath=$this->getIcon()) {
 			return preg_replace("#_\d{1,3}x\d{1,3}(\.\w{3,4})$#", ((($iSize==0)?'':"_{$iSize}x{$iSize}") . "\\1"),$sPath);
@@ -159,15 +164,28 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		}
 	}
 
+	/**
+	 * Возвращает полный URL до форума
+	 */
 	public function getUrlFull() {
 		return Router::GetPath('forum').($this->getUrl() ? $this->getUrl() : $this->getId()).'/';
 	}
 
+	/**
+	 * Возвращает состояние подписки на форум
+	 */
 	public function getSubscribeNewTopic() {
 		if (!($oUserCurrent=$this->User_GetUserCurrent())) {
 			return null;
 		}
 		return $this->Subscribe_GetSubscribeByTargetAndMail('forum_new_topic',$this->getId(),$oUserCurrent->getMail());
+	}
+
+	/**
+	 * Возвращает название форума завернутый в ссылку
+	 */
+	public function getUrlHtml($bStrong=false) {
+		return "<b><a href='{$this->getUrlFull()}'>{$this->getTitle()}</a></b>";
 	}
 
 
@@ -178,7 +196,6 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		$oModerator = $this->getModerator();
 		return (LS::Adm() || $oModerator);
 	}
-
 	public function getModViewIP() {
 		$oModerator = $this->getModerator();
 		return (LS::Adm() || ($oModerator && $oModerator->getViewIp()));
@@ -208,59 +225,17 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 		return (LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
 	}
 
-	/**
-	 * Права доступа
-	 */
-	public function getAllowShow() {
-		$oModerator = $this->getModerator();
-		return $this->_getDataMore('allow_show');
-	}
-	public function getAllowRead() {
-		return $this->_getDataMore('allow_read');
-	}
-	public function getAllowReply() {
-		return $this->_getDataMore('allow_reply');
-	}
-	public function getAllowStart() {
-		return $this->_getDataMore('allow_start');
-	}
-	public function getAutorization() {
-		return $this->_getDataMore('autorization');
-	}
-	public function getRead() {
-		return $this->_getDataMore('marker');
-	}
-
-	public function setAllowShow($data) {
-		$this->_aDataMore['allow_show']=$data;
-	}
-	public function setAllowRead($data) {
-		$this->_aDataMore['allow_read']=$data;
-	}
-	public function setAllowReply($data) {
-		$this->_aDataMore['allow_reply']=$data;
-	}
-	public function setAllowStart($data) {
-		$this->_aDataMore['allow_start']=$data;
-	}
-	public function setAutorization($data) {
-		$this->_aDataMore['autorization']=$data;
-	}
-	public function setRead($data) {
-		$this->_aDataMore['marker']=$data;
-	}
-
 
 	/**
 	 * Опции форума
 	 */
 	public function getOptions() {
-		$aValue=unserialize(stripslashes((string)$this->_getDataOne('forum_options')));
+		$aValue = unserialize(stripslashes((string)$this->_getDataOne('forum_options')));
 		return $aValue ? $aValue : array();
 	}
 
 	public function getOptionsValue($sName) {
-		$aOptions=$this->getOptions();
+		$aOptions = $this->getOptions();
 		if (isset($aOptions[$sName])) {
 			return $aOptions[$sName];
 		}
@@ -268,28 +243,21 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	}
 
 	public function setOptionsValue($sName,$sValue) {
-		$aOptions=$this->getOptions();
-		$aOptions[$sName]=$sValue;
+		$aOptions = $this->getOptions();
+		$aOptions[$sName] = $sValue;
 		$this->setOptions(addslashes(serialize($aOptions)));
 	}
 
 
 	/**
-	 * Возвращает Титл объекта завернутый в ссылку
+	 * Relations data
 	 */
-	public function getUrlHtml($bStrong=false) {
-		return "<b><a href='{$this->getUrlFull()}'>{$this->getTitle()}</a></b>";
-	}
-
-
-	// relations:
 	protected function _getDataRelation($sKey) {
 		if (isset($this->__aRelationsData[$sKey])) {
 			return $this->__aRelationsData[$sKey];
 		}
 		return null;
 	}
-
 
 	// relation Post
 	public function getPost() {
@@ -305,5 +273,58 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	public function setModerator($data) {
 		$this->__aRelationsData['Moderator']=$data;
 	}
+
+
+	/**
+	 * Custom Data
+	 */
+	protected function _getDataCustom($sKey) {
+		if (isset($this->__aCustomData[$sKey])) {
+			return $this->__aCustomData[$sKey];
+		}
+		return null;
+	}
+
+	/**
+	 * Права доступа
+	 */
+	public function getAllowShow() {
+		return $this->_getDataCustom('allow_show');
+	}
+	public function getAllowRead() {
+		return $this->_getDataCustom('allow_read');
+	}
+	public function getAllowReply() {
+		return $this->_getDataCustom('allow_reply');
+	}
+	public function getAllowStart() {
+		return $this->_getDataCustom('allow_start');
+	}
+	public function getAutorization() {
+		return $this->_getDataCustom('autorization');
+	}
+	public function getRead() {
+		return $this->_getDataCustom('marker');
+	}
+
+	public function setAllowShow($data) {
+		$this->__aCustomData['allow_show']=$data;
+	}
+	public function setAllowRead($data) {
+		$this->__aCustomData['allow_read']=$data;
+	}
+	public function setAllowReply($data) {
+		$this->__aCustomData['allow_reply']=$data;
+	}
+	public function setAllowStart($data) {
+		$this->__aCustomData['allow_start']=$data;
+	}
+	public function setAutorization($data) {
+		$this->__aCustomData['autorization']=$data;
+	}
+	public function setRead($data) {
+		$this->__aCustomData['marker']=$data;
+	}
+
 }
 ?>

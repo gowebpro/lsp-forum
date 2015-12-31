@@ -333,13 +333,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 		if (!is_array($aPosts)) {
 			$aPosts = array($aPosts);
 		}
-		$aTopics=array();
+		$aTopicsId = array();
 
 		foreach ($aPosts as $oPost) {
-			$aTopics[$oPost->getTopicId()] = 1;
+			$aTopicsId[] = $oPost->getTopicId();
 			$oPost->Delete();
 		}
-		foreach (array_keys($aTopics) as $sTopicId) {
+		foreach (array_unique($$aTopicsId) as $sTopicId) {
 			$this->RecountTopic($sTopicId);
 		}
 		return true;

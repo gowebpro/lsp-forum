@@ -12,7 +12,7 @@
 
 class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	protected $__aRelationsData = array();
-	protected $_aDataMore = array();
+	protected $__aCustomData = array();
 
 	protected $aRelations = array(
 	//	'user'=>array(self::RELATION_TYPE_BELONGS_TO,'ModuleUser_EntityUser','user_id'),
@@ -21,14 +21,9 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	//	'polls'=>array(self::RELATION_TYPE_HAS_MANY,'PluginForum_ModuleForum_EntityPoll','post_id')
 	);
 
-	protected function _getDataMore($sKey) {
-		if (isset($this->_aDataMore[$sKey])) {
-			return $this->_aDataMore[$sKey];
-		}
-		return null;
-	}
 
 	/**
+	 * Инициализация
 	 * Определяем правила валидации
 	 */
 	public function Init() {
@@ -37,28 +32,63 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		$this->aValidateRules[]=array('topic_description','string','max'=>Config::Get('plugin.forum.topic.descr_max_length'),'allowEmpty'=>true,'label'=>$this->Lang_Get('plugin.forum.new_topic_description'));
 	}
 
+
+	/**
+	 * Метод автоматически выполняется перед сохранением объекта сущности (статьи)
+	 * Если топик новый, устанавливается дата создания, иначе редактирования
+	 */
+	protected function beforeSave() {
+		if ($this->_isNew()) {
+			$this->setDateAdd(date('Y-m-d H:i:s'));
+		} else {
+			$this->setDateEdit(date('Y-m-d H:i:s'));
+		}
+		return true;
+	}
+
+	/**
+	 * Выполняется перед удалением
+	 */
+	protected function beforeDelete() {
+		if ($bResult = parent::beforeDelete()) {
+			/**
+			 * Запускаем удаление постов топика
+			 */
+			if ($aPosts = $this->PluginForum_Forum_GetPostItemsByTopicId($this->getId())) {
+				foreach ($aPosts as $oPost) {
+					$oPost->Delete();
+				}
+			}
+		}
+		return $bResult;
+	}
+
+
+	/**
+	 * Пагинация
+	 */
 	public function getPaging() {
-		$iCountItems=$this->getCountPost();
-		$oForum=$this->getForum();
-		$iPerPage=($oForum&&$oForum->getOptionsValue('posts_per_page'))?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
+		$iCountItems = $this->getCountPost();
+		$oForum = $this->getForum();
+		$iPerPage = ($oForum && $oForum->getOptionsValue('posts_per_page')) ? $oForum->getOptionsValue('posts_per_page'): Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iCountItems--;
 			$iPerPage--;
 		}
-		$oEngine=Engine::getInstance();
-		$aPaging=$oEngine->Viewer_MakePaging(
-			$iCountItems,
-			1,$iPerPage,
-			Config::Get('pagination.pages.count'),
-			$this->getUrlFull()
-		);
+		$aPaging = $this->Viewer_MakePaging($iCountItems, 1, $iPerPage, Config::Get('pagination.pages.count'), $this->getUrlFull());
 		return $aPaging;
 	}
 
+	/**
+	 * Возвращает полный URL до топика
+	 */
 	public function getUrlFull() {
 		return Router::GetPath('forum').'topic/'.$this->getId().'/';
 	}
 
+	/**
+	 * Возвращает состояние подписки на топик
+	 */
 	public function getSubscribeNewPost() {
 		if (!($oUserCurrent=$this->User_GetUserCurrent())) {
 			return null;
@@ -66,6 +96,10 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 		return $this->Subscribe_GetSubscribeByTargetAndMail('topic_new_post',$this->getId(),$oUserCurrent->getMail());
 	}
 
+	/**
+	 * Возвращает просмотры топика
+	 * TODO: wtf?
+	 */
 	public function getViews() {
 		$oView = null;
 		if (false === ($data = $this->Cache_Get("topic_views_{$this->getId()}"))) {
@@ -77,31 +111,11 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 
 	/**
-	 * Отметка о прочтении топика
-	 */
-	public function getRead() {
-		return $this->_getDataMore('marker');
-	}
-	public function setRead($data) {
-		$this->_aDataMore['marker']=$data;
-	}
-
-	/**
-	 * Дата последнего прочтения топика
-	 */
-	public function getReadDate() {
-		return $this->_getDataMore('marker_date');
-	}
-	public function setReadDate($data) {
-		$this->_aDataMore['marker_date']=$data;
-	}
-
-	/**
 	 * Метка: популярная тема
 	 */
 	public function getHot() {
-		if ($oForum=$this->getForum()) {
-			if ($iCountHot=$oForum->getOptionsValue('posts_hot_topic')) {
+		if ($oForum = $this->getForum()) {
+			if ($iCountHot = $oForum->getOptionsValue('posts_hot_topic')) {
 				return ($this->getCountPost() >= $iCountHot);
 			}
 		}
@@ -109,7 +123,9 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 
 
-	// relations:
+	/**
+	 * Relation data
+	 */
 	protected function _getDataRelation($sKey) {
 		if (isset($this->__aRelationsData[$sKey])) {
 			return $this->__aRelationsData[$sKey];
@@ -136,6 +152,32 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 	public function setUser($data) {
 		$this->__aRelationsData['User']=$data;
+	}
+
+
+	/**
+	 * Custom data
+	 */
+	protected function _getDataCustom($sKey) {
+		if (isset($this->__aCustomData[$sKey])) {
+			return $this->__aCustomData[$sKey];
+		}
+		return null;
+	}
+
+	// Custom Маркер, Дата маркировки
+	public function getRead() {
+		return $this->_getDataCustom('marker');
+	}
+	public function getReadDate() {
+		return $this->_getDataCustom('marker_date');
+	}
+
+	public function setRead($data) {
+		$this->__aCustomData['marker']=$data;
+	}
+	public function setReadDate($data) {
+		$this->__aCustomData['marker_date']=$data;
 	}
 }
 ?>
