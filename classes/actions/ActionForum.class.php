@@ -2375,6 +2375,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Получаем объект форума
 		 */
