@@ -216,22 +216,17 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 		/**
 		 * Дни рождения
-		 * TODO:
-		 * Написать запрос, возвращающих пользователей, дата рождения которых
-		 * совпадает с текущей...
 		 */
 		if (Config::Get('plugin.forum.stats.bdays')) {
-			if ($aUsers=$this->User_GetUsersByFilter(array('activate'=>1),array(),1,999)) {
-				$aStats['bdays']=array();
+			$__iLimit = 50;
 
-				foreach ($aUsers['collection'] as $oUser) {
-					if ($sProfileBirthday=$oUser->getProfileBirthday()) {
-						if (date('m-d')==date('m-d',strtotime($sProfileBirthday))) {
-							$aStats['bdays'][]=$oUser;
-						}
-					}
-				}
+			$sKey = 'forum_user_bd_'.date('Ymd');
+			if (false === ($aUsersBd = $this->Cache_Get($sKey))) {
+				$aUsersBd = $this->oMapperForum->GetUsersByBirthday($__iLimit);
+				$aUsersBd = $this->User_GetUsersAdditionalData($aUsersBd, array());
+				$this->Cache_Set($aUsersBd, $sKey, array('user_update','user_new'), 60*60*24*1);
 			}
+			$aStats['bdays'] = $aUsersBd;
 		}
 		/**
 		 * Получаем количество всех постов

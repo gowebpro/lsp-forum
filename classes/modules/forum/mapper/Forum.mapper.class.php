@@ -244,6 +244,19 @@ class PluginForum_ModuleForum_MapperForum extends Mapper {
 		}
 		return 0;
 	}
-}
 
+	public function GetUsersByBirthday($iLimit) {
+		$sql = 'SELECT user_id
+				FROM '.Config::Get('db.table.user').'
+				WHERE user_profile_birthday LIKE ?
+				LIMIT 0, ?d';
+		$aResult = array();
+		if ($aRows=$this->oDb->select($sql, '%'.date('m-d').'%', $iLimit)) {
+			foreach ($aRows as $aRow) {
+				$aResult = $aRow['user_id'];
+			}
+		}
+		return $aResult;
+	}
+}
 ?>
