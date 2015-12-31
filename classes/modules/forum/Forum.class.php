@@ -189,32 +189,44 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	array
 	 */
 	public function GetForumStats() {
-		$aStats=array();
+		$aStats = array();
 		/**
 		 * Кто онлайн?
 		 */
-		if (Config::Get('plugin.forum.stats.online')) {
+		if (Config::Get('plugin.forum.stats.online.enable')) {
 			$aStats['online'] = array();
-			if ($aUsersLast=$this->User_GetUsersByDateLast(Config::Get('plugin.forum.stats.users_count'))) {
-				$aStats['online']['users'] = array();
-				foreach ($aUsersLast as $oUser) {
-					if ($oUser->isOnline()) {
-						$aStats['online']['users'][]=$oUser;
+			/**
+			 * Если подключен модуль сессий
+			 */
+			if (Config::Get('plugin.forum.components.session')) {
+				$aSessionsUser = array();
+				$aSessionsGuest = array();
+				$aSessionsAll = $this->PluginForum_Session_GetSessions();
+				foreach ($aSessionsAll as $oSession) {
+					if ($oSession->getUser()) {
+						$aSessionsUser[] = $oSession;
+						$aStats['online']['users'][] = $oSession->getUser();
+					} else {
+						$aSessionsGuest[] = $oSession;
 					}
 				}
-				shuffle($aStats['online']['users']);
-			}
-			$iCountUsers = sizeof($aStats['online']['users']);
-			$iCountGuest = 0;
-			/**
-			 * Если подключен плагин Acewidgetmanager, считаем также гостей
-			 */
-			if (class_exists('PluginAcewidgetmanager_ModuleVisitors')) {
-				$iCountGuest = $this->PluginAcewidgetmanager_Visitors_GetVisitorsCount(300);
-				$iCountGuest = $iCountGuest - $iCountUsers;
-				if ($iCountGuest < 0) {
-					$iCountGuest = 0;
+				$iCountUsers = count($aSessionsUser);
+				$iCountGuest = count($aSessionsGuest);
+			} else {
+				/**
+				 * Запрашиваем юзеров по последней дате посещения
+				 */
+				if ($aUsersLast = $this->User_GetUsersByDateLast(Config::Get('plugin.forum.stats.online.count'))) {
+					$aStats['online']['users'] = array();
+					foreach ($aUsersLast as $oUser) {
+						if ($oUser->isOnline()) {
+							$aStats['online']['users'][] = $oUser;
+						}
+					}
+					shuffle($aStats['online']['users']);
 				}
+				$iCountUsers = count($aStats['online']['users']);
+				$iCountGuest = 0;
 			}
 			$iCountOnline = $iCountUsers + $iCountGuest;
 			$aStats['online']['count_visitors'] = $iCountOnline;
@@ -224,12 +236,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Дни рождения
 		 */
-		if (Config::Get('plugin.forum.stats.bdays')) {
-			$__iLimit = 50;
-
+		if (Config::Get('plugin.forum.stats.bdays.enable')) {
 			$sKey = 'forum_user_bd_'.date('Ymd');
 			if (false === ($aUsersBd = $this->Cache_Get($sKey))) {
-				$aUsersBd = $this->oMapperForum->GetUsersByBirthday($__iLimit);
+				$aUsersBd = $this->oMapperForum->GetUsersByBirthday(Config::Get('plugin.forum.stats.bdays.count'));
 				$aUsersBd = $this->User_GetUsersAdditionalData($aUsersBd, array());
 				$this->Cache_Set($aUsersBd, $sKey, array('user_update','user_new'), 60*60*24*1);
 			}
@@ -238,21 +248,27 @@ class PluginForum_ModuleForum extends ModuleORM {
 		/**
 		 * Получаем количество всех постов
 		 */
-		$aStats['count_all_posts']=$this->oMapperForum->GetCountPosts();
+		if (Config::Get('plugin.forum.stats.global.count_post')) {
+			$aStats['count_all_posts'] = $this->oMapperForum->GetCountPosts();
+		}
 		/**
 		 * Получаем количество всех топиков
 		 */
-		$aStats['count_all_topics']=$this->oMapperForum->GetCountTopics();
+		if (Config::Get('plugin.forum.stats.global.count_topic')) {
+			$aStats['count_all_topics'] = $this->oMapperForum->GetCountTopics();
+		}
 		/**
 		 * Получаем количество всех юзеров
 		 */
-		$aStats['count_all_users']=$this->oMapperForum->GetCountUsers();
+		if (Config::Get('plugin.forum.stats.global.count_user')) {
+			$aStats['count_all_users'] = $this->oMapperForum->GetCountUsers();
+		}
 		/**
 		 * Получаем последнего зарегистрировавшегося
 		 */
-		if (Config::Get('plugin.forum.stats.last_user')) {
-			$aLastUsers=$this->User_GetUsersByDateRegister(1);
-			$aStats['last_user']=end($aLastUsers);
+		if (Config::Get('plugin.forum.stats.global.last_user')) {
+			$aLastUsers = $this->User_GetUsersByDateRegister(1);
+			$aStats['last_user'] = end($aLastUsers);
 		}
 
 		return $aStats;

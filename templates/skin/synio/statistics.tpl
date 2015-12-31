@@ -41,8 +41,7 @@
 							<div class="forum-userlist">
 							{foreach from=$aForumStats.online.users item=oUser name=online_user}
 								<span>
-									<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" /></a>
-									<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
+									<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" />{$oUser->getLogin()|escape:'html'}</a>
 									{if !$smarty.foreach.online_user.last}, {/if}
 								</span>
 							{/foreach}
@@ -64,8 +63,7 @@
 						<div class="forum-userlist">
 						{foreach from=$aForumStats.bdays item=oUser name=bday_user}
 							<span>
-								<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" /></a>
-								<a href="{$oUser->getUserWebPath()}">{$oUser->getLogin()|escape:'html'}</a>
+								<a href="{$oUser->getUserWebPath()}"><img src="{$oUser->getProfileAvatarPath(24)}" alt="{$oUser->getLogin()|escape:'html'}" />{$oUser->getLogin()|escape:'html'}</a>
 								{if !$smarty.foreach.bday_user.last}, {/if}
 							</span>
 						{/foreach}

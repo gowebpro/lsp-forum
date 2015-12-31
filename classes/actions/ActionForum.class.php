@@ -3435,7 +3435,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$this->Viewer_Assign('FORUM_TYPE_ARCHIVE',PluginForum_ModuleForum::FORUM_TYPE_ARCHIVE);
 		$this->Viewer_Assign('FORUM_TYPE_ACTIVE',PluginForum_ModuleForum::FORUM_TYPE_ACTIVE);
-
 		/**
 		 * Загружаем в шаблон JS текстовки
 		 */
