@@ -27,7 +27,7 @@
 						</p>
 						{/if}
 						{if $aModerators}
-						<p class="details userlist">
+						<p class="details forum-userlist">
 							<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
 							{foreach from=$aModerators item=oModerator name=moderators}
 								{assign var='oUserModer' value=$oModerator->getUser()}

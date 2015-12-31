@@ -855,10 +855,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 			} else {
 				$oForum->setPost(null);
 			}
-			if (isset($aModerators[$oChildren->getId()])) {
-				$oChildren->setModerator($aModerators[$oChildren->getId()]);
+			if (isset($aModerators[$oForum->getId()])) {
+				$oForum->setModerator($aModerators[$oForum->getId()]);
 			} else {
-				$oChildren->setModerator(null);
+				$oForum->setModerator(null);
 			}
 			if (isset($aForumsByParentId[$oForum->getId()])) {
 				$oForum->setChildren($aForumsByParentId[$oForum->getId()]);

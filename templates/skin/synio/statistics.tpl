@@ -85,7 +85,7 @@
 		</div>
 		<div class="fl-l">
 		{if $aForumStats.online}
-			{$aForumStats.online.count_visitors|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$aForumStats.count_all_posts|declension:$aLang.plugin.forum.users_declension:'russian'|lower} {$aLang.user_status_online}
+			{$aForumStats.online.count_visitors|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$aForumStats.online.count_visitors|declension:$aLang.plugin.forum.users_declension:'russian'|lower} {$aLang.user_status_online|lower}
 		{/if}
 		</div>
 	</div>
