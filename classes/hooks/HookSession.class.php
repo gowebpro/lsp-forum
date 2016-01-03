@@ -35,11 +35,11 @@ class PluginForum_HookSession extends Hook {
 		$iPageGuest = 0;
 		foreach ($aSessions as $oSession) {
 			if ($oSession->getUser()) {
-				$aPageSessions[] = $oSession;
 				$iPageUsers++;
 			} else {
 				$iPageGuest++;
 			}
+			$aPageSessions[] = $oSession;
 		}
 		$this->Viewer_Assign('aPageSessions', $aPageSessions);
 		$this->Viewer_Assign('iPageSessions', $iPageUsers+$iPageGuest);
