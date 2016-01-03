@@ -761,6 +761,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function GetForumsAdditionalData($aForums, $sAllowDataCode=null)
 	{
+		if (empty($aForums)) {
+			return $aForums;
+		}
 		$aAllowData = $this->GetForumRelationSheme($sAllowDataCode);
 		func_array_simpleflip($aAllowData);
 		$sOne = false;
@@ -893,6 +896,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function GetTopicsAdditionalData($aTopics, $aAllowData=null)
 	{
+		if (empty($aTopics)) {
+			return $aTopics;
+		}
 		if (is_null($aAllowData)) {
 			$aAllowData = array('marker', 'forum'=>array(), 'post'=>array(), 'user'=>array());
 		}
@@ -1012,6 +1018,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function GetPostsAdditionalData($aPosts, $aAllowData=null)
 	{
+		if (empty($aPosts)) {
+			return $aPosts;
+		}
 		if (is_null($aAllowData)) {
 			$aAllowData = array('vote', 'topic'=>array(), 'user'=>array(), 'editor'=>array(), 'files');
 		}

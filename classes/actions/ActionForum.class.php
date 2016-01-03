@@ -1232,6 +1232,35 @@ class PluginForum_ActionForum extends ActionPlugin {
 			return;
 		}
 		/**
+		 * Загружаем переменные темы и форума в шаблон
+		 */
+		$this->Viewer_Assign('oForum',$oForum);
+		$this->Viewer_Assign('oTopic',$oTopic);
+		/**
+		 * Обработка модераторских действий
+		 */
+		if (isPost('submit_topic_mod')) {
+			return $this->submitTopicActions($oTopic);
+		}
+		/**
+		 * Обработка перемещения топика
+		 */
+		if (isPost('submit_topic_move')) {
+			return $this->submitTopicMove($oTopic);
+		}
+		/**
+		 * Обработка перемешения сообщений
+		 */
+		if (isPost('submit_topic_move_posts')) {
+			return $this->submitTopicMovePosts($oTopic);
+		}
+		/**
+		 * Обработка удаления топика
+		 */
+		if (isPost('submit_topic_delete')) {
+			return $this->submitTopicDelete($oTopic);
+		}
+		/**
 		 * Получаем номер страницы
 		 */
 		$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;
@@ -1293,8 +1322,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Загружаем переменные в шаблон
 		 */
-		$this->Viewer_Assign('oForum',$oForum);
-		$this->Viewer_Assign('oTopic',$oTopic);
 		$this->Viewer_Assign('aPosts',$aPosts);
 		$this->Viewer_Assign('iPostsCount',$iPostsCount);
 		$this->Viewer_Assign('aPaging',$aPaging);
@@ -1307,30 +1334,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Задаем шаблон
 		 */
 		$this->SetTemplateAction('topic');
-		/**
-		 * Обработка модераторских действий
-		 */
-		if (isPost('submit_topic_mod')) {
-			return $this->submitTopicActions($oTopic);
-		}
-		/**
-		 * Обработка перемещения топика
-		 */
-		if (isPost('submit_topic_move')) {
-			return $this->submitTopicMove($oTopic);
-		}
-		/**
-		 * Обработка перемешения сообщений
-		 */
-		if (isPost('submit_topic_move_posts')) {
-			return $this->submitTopicMovePosts($oTopic);
-		}
-		/**
-		 * Обработка удаления топика
-		 */
-		if (isPost('submit_topic_delete')) {
-			return $this->submitTopicDelete($oTopic);
-		}
 	}
 
 	/**
@@ -1344,6 +1347,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oTopic=$this->PluginForum_Forum_GetTopicById(getRequestStr('t')))) {
 			return parent::EventNotFound();
 		}
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Получаем форум
 		 */
@@ -1409,6 +1413,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 				 * Получаем список постов
 				 */
 				$aPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId());
+				$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aPosts);
 				/**
 				 * Загружаем переменные в шаблон
 				 */
@@ -1543,13 +1548,16 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Проверка доступа
 		 */
 		if (!(LS::Adm() || ($oForumOld->isModerator() && $oForumOld->getModMovePost()))) {
-			return;
+			return false;
 		}
 		if (!$oTopicNew=$this->PluginForum_Forum_GetTopicById(getRequestStr('topic_id'))) {
 			$this->Message_AddError($this->Lang_Get('plugin.forum.topic_move_posts_error_topic'),$this->Lang_Get('error'));
-			return;
+			return false;
 		}
-		$oForumNew=$oTopicNew->getForum();
+		if (!$oForumNew=$this->PluginForum_Forum_GetForumById($oTopicNew->getForumId())) {
+			$this->Message_AddError($this->Lang_Get('plugin.forum.topic_move_posts_error_forum'),$this->Lang_Get('error'));
+			return false;
+		}
 		/**
 		 * Если выбранная тема является темой сообщений
 		 */
