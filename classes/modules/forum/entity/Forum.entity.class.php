@@ -14,6 +14,9 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	protected $__aRelationsData = array();
 	protected $__aCustomData = array();
 
+	protected $oUserCurrent = null;
+	protected $bUserCurrentAdmin = false;
+
 	/**
 	 * Определяем правила валидации
 	 *
@@ -40,6 +43,14 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	 */
 	public function Init() {
 		parent::Init();
+		/**
+		 * Получаем текущего пользователя
+		 */
+		$this->oUserCurrent = $this->User_GetUserCurrent();
+		$this->bUserCurrentAdmin = ($this->oUserCurrent && $this->oUserCurrent->isAdministrator());
+		/**
+		 * Определяем правила валидации
+		 */
 		$this->aValidateRules[]=array('forum_title','string','min'=>2,'max'=>100,'allowEmpty'=>false,'label'=>$this->Lang_Get('plugin.forum.create_title'));
 		$this->aValidateRules[]=array('forum_url','url','label'=>$this->Lang_Get('plugin.forum.create_url'));
 		$this->aValidateRules[]=array('forum_url','url_unique','label'=>$this->Lang_Get('plugin.forum.create_url'));
@@ -194,35 +205,35 @@ class PluginForum_ModuleForum_EntityForum extends EntityORM {
 	 */
 	public function isModerator() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || $oModerator);
+		return ($this->bUserCurrentAdmin || $oModerator);
 	}
 	public function getModViewIP() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getViewIp()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getViewIp()));
 	}
 	public function getModDeletePost() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowDeletePost()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowDeletePost()));
 	}
 	public function getModDeleteTopic() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowDeleteTopic()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowDeleteTopic()));
 	}
 	public function getModMovePost() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowMovePost()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowMovePost()));
 	}
 	public function getModMoveTopic() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowMoveTopic()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowMoveTopic()));
 	}
 	public function getModOpencloseTopic() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowOpencloseTopic()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowOpencloseTopic()));
 	}
 	public function getModPinTopic() {
 		$oModerator = $this->getModerator();
-		return (LS::Adm() || ($oModerator && $oModerator->getAllowPinTopic()));
+		return ($this->bUserCurrentAdmin || ($oModerator && $oModerator->getAllowPinTopic()));
 	}
 
 

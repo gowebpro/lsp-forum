@@ -61,7 +61,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Закрытый режим
 		 */
-		if (!(LS::Adm()) && Config::Get('plugin.forum.close_mode')) {
+		if (!($this->oUserCurrent->isAdministrator()) && Config::Get('plugin.forum.close_mode')) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -439,7 +439,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		if (!$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true)) {
+		if (!$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser($this->oUserCurrent,true)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.block_stream_empty'),$this->Lang_Get('attention'));
 			return;
 		}
@@ -1355,7 +1355,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверка доступа
 		 */
-		if (!(LS::Adm() || $oForum->isModerator())) {
+		if (!(($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) || $oForum->isModerator())) {
 			return false;
 		}
 		/**
@@ -1490,7 +1490,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверка доступа
 		 */
-		if (!(LS::Adm() || ($oForumOld->isModerator() && $oForumOld->getModMoveTopic()))) {
+		if (!(($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) || ($oForumOld->isModerator() && $oForumOld->getModMoveTopic()))) {
 			return;
 		}
 		if ($oForumNew=$this->PluginForum_Forum_GetForumById(getRequestStr('topic_move_id'))) {
@@ -1547,7 +1547,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверка доступа
 		 */
-		if (!(LS::Adm() || ($oForumOld->isModerator() && $oForumOld->getModMovePost()))) {
+		if (!(($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) || ($oForumOld->isModerator() && $oForumOld->getModMovePost()))) {
 			return false;
 		}
 		if (!$oTopicNew=$this->PluginForum_Forum_GetTopicById(getRequestStr('topic_id'))) {
@@ -1601,7 +1601,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Проверка доступа
 		 */
-		if (!(LS::Adm() || ($oForum->isModerator() && $oForum->getModDeleteTopic()))) {
+		if (!(($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) || ($oForum->isModerator() && $oForum->getModDeleteTopic()))) {
 			return;
 		}
 		if ($this->PluginForum_Forum_DeleteTopic($oTopic)) {
@@ -3166,7 +3166,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 	 * Админка
 	 */
 	public function EventAdmin() {
-		if (!LS::Adm()) {
+		if (!$oUser=$this->User_GetUserCurrent()){
+			return parent::EventNotFound();
+		}
+		if (!$oUser->isAdministrator()){
 			return parent::EventNotFound();
 		}
 
