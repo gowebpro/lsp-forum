@@ -117,7 +117,7 @@ class PluginForum_ActionRss extends PluginForum_Inherit_ActionRss {
 		/**
 		 * Проверяем, существует ли топик
 		 */
-		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sTopicId))) {
 			return parent::EventNotFound();
 		}
 		/**
