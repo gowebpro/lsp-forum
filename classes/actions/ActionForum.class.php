@@ -61,7 +61,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Закрытый режим
 		 */
-		if (!($this->oUserCurrent->isAdministrator()) && Config::Get('plugin.forum.close_mode')) {
+		if (!($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) && Config::Get('plugin.forum.close_mode')) {
 			return parent::EventNotFound();
 		}
 		/**
