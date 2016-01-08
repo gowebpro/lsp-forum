@@ -491,9 +491,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем топики
 		 */
-		$aResult=$this->PluginForum_Forum_GetTopicItemsByForumId($oForum->getId(),array('#order'=>array('topic_pinned'=>'desc','last_post_id'=>'desc','topic_date_add'=>'desc'),'#page'=>array(1,$iLimit)));
+		$aTopicsResult=$this->PluginForum_Forum_GetTopicItemsByForumId($oForum->getId(),array(
+			'#order'=>array('topic_pinned'=>'desc','last_post_id'=>'desc','topic_date_add'=>'desc'),
+			'#limit'=>$iLimit
+		));
 		$aTopics=array();
-		foreach($aResult['collection'] as $oTopic) {
+		foreach($aTopicsResult as $oTopic) {
 			$aTopics[]=array(
 				'id' => $oTopic->getId(),
 				'title' => $oTopic->getTitle(),
