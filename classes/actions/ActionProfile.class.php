@@ -42,8 +42,12 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		/**
 		 * Получаем список топиков
 		 */
-		$aResult=$this->PluginForum_Forum_GetPostItemsByUserId($this->oUserProfile->getId(),array('#where'=>array('post_new_topic = ?'=>array(1)),'#order'=>array('post_date_add'=>'desc'),'#page'=>array($iPage,Config::Get('module.topic.per_page'))));
-		$aPosts=$aResult['collection'];
+		$aResult = $this->PluginForum_Forum_GetPostItemsByUserId($this->oUserProfile->getId(), array(
+			'#where' => array('post_new_topic = ?' => array(1)),
+			'#order' => array('post_date_add' => 'desc'),
+			'#page' => array($iPage, Config::Get('module.topic.per_page'))
+		));
+		$aPosts = $this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
 		/**
 		 * Формируем постраничность
 		 */
@@ -75,8 +79,12 @@ class PluginForum_ActionProfile extends PluginForum_Inherit_ActionProfile {
 		/**
 		 * Получаем список комментов
 		 */
-		$aResult=$this->PluginForum_Forum_GetPostItemsByUserId($this->oUserProfile->getId(),array('#where'=>array('post_new_topic = ?'=>array(0)),'#order'=>array('post_date_add'=>'desc'),'#page'=>array($iPage,Config::Get('module.comment.per_page'))));
-		$aPosts=$aResult['collection'];
+		$aResult = $this->PluginForum_Forum_GetPostItemsByUserId($this->oUserProfile->getId(), array(
+			'#where' => array('post_new_topic = ?'=>array(0)),
+			'#order' => array('post_date_add' => 'desc'),
+			'#page' => array($iPage, Config::Get('module.comment.per_page'))
+		));
+		$aPosts = $this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
 		/**
 		 * Формируем постраничность
 		 */

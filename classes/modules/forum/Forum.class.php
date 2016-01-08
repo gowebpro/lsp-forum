@@ -1035,6 +1035,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		}
 		$aPostId = array();
 		$aUsersId = array();
+		$aForumsId = array();
 		$aTopicsId = array();
 		/**
 		 * Формируем ID дополнительных данных, которые нужно получить
@@ -1049,6 +1050,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 		 * Получаем дополнительные данные
 		 */
 		$aVote = array();
+		$aForums = array();
 		$aTopics = array();
 		$aUsers = array();
 		$aForumUsers = array();
@@ -1066,7 +1068,15 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$aTopics = $this->GetTopicItemsByArrayTopicId($aTopicsId);
 				foreach ($aTopics as $oTopic) {
 					$aUsersId[] = $oTopic->getUserId();
+					$aForumsId[] = $oTopic->getForumId();
 				}
+			}
+			/**
+			 * Подцепляем форумы
+			 *	TODO: проверять на наличие allowData, а лучше запрашивать топики через свою спец.функцию и пох на 1 лишний запрос за юзерами
+			 */
+			if ($aForumsId) {
+				$aForums = $this->GetForumItemsByArrayForumId($aForumsId);
 			}
 			/**
 			 * Подцепляем ForumUser
@@ -1091,6 +1101,11 @@ class PluginForum_ModuleForum extends ModuleORM {
 			 * Добавляем данные к списку топиков
 			 */
 			foreach ($aTopics as $oTopic) {
+				if (isset($aForums[$oTopic->getForumId()])) {
+					$oTopic->setForum($aForums[$oTopic->getForumId()]);
+				} else {
+					$oTopic->setForum(null);
+				}
 				if (isset($aUsers[$oTopic->getUserId()])) {
 					$oTopic->setUser($aUsers[$oTopic->getUserId()]);
 				} else {

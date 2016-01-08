@@ -81,18 +81,21 @@
 						{/if}
 					</div>
 				{/if}
-				{if count($aFiles) > 0}
-					<div class="attach">
-					{foreach from=$aFiles item=oFile name=post_files}
-						<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
-							<i class="icon-file"></i>
-							{$oFile->getName()|escape:'html'}
-						</a>{if !$smarty.foreach.post_files.last}, {/if}
-					{/foreach}
-					</div>
+				{if !$noAttach}
+					{if count($aFiles) > 0}
+						<div class="attach">
+						{foreach from=$aFiles item=oFile name=post_files}
+							<a class="attach-item js-attach-file-download js-tip-help" href="#" data-file-id="{$oFile->getId()}" title='{$aLang.plugin.forum.attach_file_hint|ls_lang:"TEXT%%`$oFile->getText()`":"SIZE%%`$oFile->getSizeFormat()`":"COUNT%%`$oFile->getDownload()`"}'>
+								<i class="icon-file"></i>
+								{$oFile->getName()|escape:'html'}
+							</a>{if !$smarty.foreach.post_files.last}, {/if}
+						{/foreach}
+						</div>
+					{/if}
 				{/if}
 				{hook run='forum_post_content_end' post=$oPost}
 			</div>
+			{if !$noVote}
 			<div class="forum-post-vote cleafix">
 				<div id="vote_area_forum_post_{$oPost->getId()}"
 					data-type="tooltip-toggle"
@@ -160,6 +163,7 @@
 					{/if}
 				</div>
 			</div>
+			{/if}
 		</div>
 	</div>
 	{if $oUserCurrent && !$noFooter}
