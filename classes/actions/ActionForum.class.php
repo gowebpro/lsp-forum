@@ -1305,17 +1305,17 @@ class PluginForum_ActionForum extends ActionPlugin {
 
 		if ($this->User_IsAuthorization()) {
 			/**
-			 * Счетчик просмотров топика и маркировка
+			 * Маркировка
 			 */
-			$this->PluginForum_Forum_UpdateTopicViews($oTopic);
 			$this->PluginForum_Forum_MarkTopic($oTopic,$aPosts ? end($aPosts) : $oHeadPost);
 			/**
 			 * Check
 			 */
 			if ($oTopic->getCountPost() <> $iPostsCount) {
 				$oTopic->setCountPost($iPostsCount);
-				$oTopic->Save();
 			}
+			$oTopic->setViews($oTopic->getViews()+1);
+			$oTopic->Save();
 		}
 		/**
 		 * Если нет временного ключа для нового поста, то генерируем.

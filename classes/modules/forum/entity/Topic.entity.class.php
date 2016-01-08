@@ -97,20 +97,6 @@ class PluginForum_ModuleForum_EntityTopic extends EntityORM {
 	}
 
 	/**
-	 * Возвращает просмотры топика
-	 * TODO: wtf?
-	 */
-	public function getViews() {
-		$oView = null;
-		if (false === ($data = $this->Cache_Get("topic_views_{$this->getId()}"))) {
-			$oView = $this->PluginForum_Forum_GetTopicViewByTopicId($this->getId());
-		} else {
-			$oView = $data['obj'];
-		}
-		return $oView ? $oView->getTopicViews() : 0;
-	}
-
-	/**
 	 * Метка: популярная тема
 	 */
 	public function getHot() {
