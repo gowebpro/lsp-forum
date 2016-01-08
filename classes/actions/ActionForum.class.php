@@ -439,9 +439,9 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем список форумов
 		 */
-		if (!$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser($this->oUserCurrent,true)) {
+		if (!$aForumsId = $this->PluginForum_Forum_GetOpenForumsUser($this->oUserCurrent,true)) {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.block_stream_empty'),$this->Lang_Get('attention'));
-			return;
+			return false;
 		}
 		/**
 		 * Получаем последние топики
@@ -450,18 +450,19 @@ class PluginForum_ActionForum extends ActionPlugin {
 			array(
 				'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
 				'#order'=>array('last_post_date'=>'desc'),
-				'#page'=>array(1,Config::Get('block.stream.row'))
+				'#limit'=>Config::Get('block.stream.row')
 			)
 		);
-		if (!empty($aLastTopics['collection'])) {
-			$oViewer=$this->Viewer_GetLocalViewer();
-			$oViewer->Assign('aLastTopics',$aLastTopics['collection']);
-			$sTextResult=$oViewer->Fetch($this->getTemplatePathPlugin().'blocks/block.stream_forum.tpl');
-			$this->Viewer_AssignAjax('sText',$sTextResult);
-			return;
+		if ($aLastTopics) {
+			$aLastTopics = $this->PluginForum_Forum_GetTopicsAdditionalData($aLastTopics);
+
+			$oViewer = $this->Viewer_GetLocalViewer();
+			$oViewer->Assign('aLastTopics', $aLastTopics);
+			$this->Viewer_AssignAjax('sText', $oViewer->Fetch($this->getTemplatePathPlugin().'blocks/block.stream_forum.tpl'));
+			return true;
 		} else {
 			$this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.block_stream_empty'),$this->Lang_Get('attention'));
-			return;
+			return false;
 		}
 	}
 	/**
