@@ -1822,20 +1822,21 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Добавляем топик
 		 */
-		if ($this->PluginForum_Forum_AddTopic($oTopic)) {
-			/**
-			 * Получаем топик, чтобы подцепить связанные данные
-			 */
-			$oTopic=$this->PluginForum_Forum_GetTopicById($oTopic->getId());
+		if ($oTopic = $oTopic->Save()) {
+			$oTopic->_SetIsNew(false);
+
 			$oPost->setTopicId($oTopic->getId());
 			/**
 			 * Добавляет первый пост
 			 */
-			if ($this->PluginForum_Forum_AddPost($oPost)) {
+			if ($oPost = $oPost->Save()) {
+				$oPost->_SetIsNew(false);
+
 				$this->Hook_Run('forum_topic_add_after', array('oTopic'=>$oTopic,'oPost'=>$oPost,'oForum'=>$oForum));
 				/**
 				 * Привязываем вложения к id поста
 				 * TODO: здесь нужно это делать одним запросом, а не перебором сущностей
+				 *       не нужно второй раз сохранять пост...
 				 */
 				if (count($aFiles)) {
 					foreach($aFiles as $oFile) {
@@ -1843,16 +1844,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 						$this->PluginForum_Forum_UpdateFile($oFile);
 						$oPost->files->add($oFile);
 					}
-					$this->PluginForum_Forum_UpdatePost($oPost);
+					$oPost->Save();
 				}
 				/**
 				 * Удаляем временную куку
 				 */
 				setcookie('ls_fattach_target_tmp', null);
-				/**
-				 * Получаем пост, чтоб подцепить связанные данные
-				 */
-				$oPost=$this->PluginForum_Forum_GetPostById($oPost->getId());
 				/**
 				 * Обновляем данные в топике
 				 */
