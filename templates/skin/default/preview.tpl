@@ -3,7 +3,7 @@
 {hook run='forum_preview_show_start' topic=$oTopic}
 
 <article class="forum-post forum-post-one mb-10" id="post-{$oPost->getId()}">
-	<div class="clearfix">
+	<div class="forum-post-wrap clearfix">
 		<aside class="forum-post-side">
 			{hook run='forum_post_userinfo_begin' post=$oPost user=$oUser}
 			{if $oUser}
