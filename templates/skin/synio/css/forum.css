@@ -695,7 +695,7 @@ a.button { color: #434343 }
 
 
 /* Clearfix */
-.forum-legend:before
+.forum-legend:before,
 .forum-legend:after {
 	content: '';
 	display: table;
