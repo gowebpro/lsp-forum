@@ -11,7 +11,7 @@ class PluginForum_ModuleSession extends Module
 	 */
 	public function Init()
 	{
-
+		//$this->Session_Drop('visitor');
 	}
 
 
@@ -75,18 +75,17 @@ class PluginForum_ModuleSession extends Module
 	 */
 	protected function GetUniqueData()
 	{
-		if (!$aUniqData = $this->Session_Get('visitor')) {
-			$aUniqData = array( 'agent' => false );
+		if (!$sUniqId = $this->Session_Get('visitor')) {
+			$sUniqId = md5(serialize(func_getIp()));
+			$this->Session_Set('visitor',$sUniqId);
+		}
+		$aUniqData = array('id' => $sUniqId, 'agent' => false);
 
-			if ($oUser = $this->User_GetUserCurrent()) {
-				$aUniqData['user'] = $oUser->getId();
-			}
-			if (isset($_SERVER['HTTP_USER_AGENT'])) {
-				$aUniqData['agent'] = $_SERVER['HTTP_USER_AGENT'];
-			}
-
-			$aUniqData['id'] = md5(serialize(func_getIp()) .':'. implode(':', $aUniqData));
-			$this->Session_Set('visitor',$aUniqData);
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$aUniqData['user'] = $oUser->getId();
+		}
+		if (isset($_SERVER['HTTP_USER_AGENT'])) {
+			$aUniqData['agent'] = $_SERVER['HTTP_USER_AGENT'];
 		}
 		return $aUniqData;
 	}
