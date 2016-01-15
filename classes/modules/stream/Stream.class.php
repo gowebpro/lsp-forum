@@ -19,7 +19,8 @@ class PluginForum_ModuleStream extends PluginForum_Inherit_ModuleStream {
 	 * @return unknown
 	 */
 	protected function loadRelatedForumTopic($aIds) {
-		return $this->PluginForum_Forum_GetTopicItemsByArrayTopicId($aIds);
+		$aTopics = $this->PluginForum_Forum_GetTopicItemsByArrayTopicId($aIds);
+		return $this->PluginForum_Forum_GetTopicsAdditionalData($aTopics);
 	}
 
 	/**
@@ -29,7 +30,8 @@ class PluginForum_ModuleStream extends PluginForum_Inherit_ModuleStream {
 	 * @return unknown
 	 */
 	protected function loadRelatedForumPost($aIds) {
-		return $this->PluginForum_Forum_GetPostItemsByArrayPostId($aIds);
+		$aPosts = $this->PluginForum_Forum_GetPostItemsByArrayPostId($aIds);
+		return $this->PluginForum_Forum_GetPostsAdditionalData($aPosts);
 	}
 
 }
