@@ -2,7 +2,7 @@
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
-* @Version: 1.0
+* @Version: 1.1
 * @Author: Chiffa
 * @LiveStreet Version: 1.0
 * @File Name: ActionRss.class.php
@@ -69,6 +69,7 @@ class PluginForum_ActionRss extends PluginForum_Inherit_ActionRss {
 		}
 		if (!empty($aFirstPostsId)) {
 			$aFirstPosts=$this->PluginForum_Forum_GetPostItemsByArrayPostId($aFirstPostsId);
+			$aFirstPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aFirstPosts);
 		}
 		/**
 		 * Формируем записи RSS
@@ -120,6 +121,7 @@ class PluginForum_ActionRss extends PluginForum_Inherit_ActionRss {
 		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sTopicId))) {
 			return parent::EventNotFound();
 		}
+		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Проверяем, существует ли форум
 		 */
@@ -136,8 +138,8 @@ class PluginForum_ActionRss extends PluginForum_Inherit_ActionRss {
 		/**
 		 * Получаем сообщения
 		 */
-		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#page'=>array(1,100)));
-		$aPosts=$aResult['collection'];
+		$aPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(), array('#limit'=>array(100)));
+		$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aPosts);
 		/**
 		 * Формируем данные канала RSS
 		 */
@@ -190,18 +192,18 @@ class PluginForum_ActionRss extends PluginForum_Inherit_ActionRss {
 		/**
 		 * Получаем список форумов
 		 */
-		$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true);
+		$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser($this->User_GetUserCurrent(),true);
 		/**
 		 * Получаем последние топики
 		 */
-		$aResult=$this->PluginForum_Forum_GetTopicItemsAll(
+		$aTopics=$this->PluginForum_Forum_GetTopicItemsAll(
 			array(
 				'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
 				'#order'=>array('last_post_id'=>'desc'),
-				'#page'=>array(1,30)
+				'#limit'=>array(30)
 			)
 		);
-		$aTopics=$aResult['collection'];
+		$aTopics = $this->PluginForum_Forum_GetTopicsAdditionalData($aTopics);
 		/**
 		 * Формируем данные канала RSS
 		 */
