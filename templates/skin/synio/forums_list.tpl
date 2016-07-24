@@ -15,25 +15,25 @@
 						<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 						<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
 						{if $sDisplaySubforumList && $aSubForums}
-						<p class="details">
-							<strong>{$aLang.plugin.forum.subforums}:</strong>
-							{foreach from=$aSubForums item=oSubForum name=subforums}
-								{assign var='sDisplayOnIndex' value=$oSubForum->getOptionsValue('display_on_index')}
-								{if $sDisplayOnIndex && $oSubForum->getAllowShow()}
-									{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
-									<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
-								{/if}
-							{/foreach}
-						</p>
+							<p class="details">
+								<strong>{$aLang.plugin.forum.subforums}:</strong>
+								{foreach from=$aSubForums item=oSubForum name=subforums}
+									{assign var='sDisplayOnIndex' value=$oSubForum->getOptionsValue('display_on_index')}
+									{if $sDisplayOnIndex && $oSubForum->getAllowShow()}
+										{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
+										<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
+									{/if}
+								{/foreach}
+							</p>
 						{/if}
 						{if $aModerators}
-						<p class="details forum-userlist">
-							<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
-							{foreach from=$aModerators item=oModerator name=moderators}
-								{assign var='oUserModer' value=$oModerator->getUser()}
-								<a href="{$oUserModer->getUserWebPath()}"><img src="{$oUserModer->getProfileAvatarPath(24)}" title="{$oUserModer->getLogin()|escape:'html'}" /></a>
-							{/foreach}
-						</p>
+							<p class="details forum-userlist">
+								<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
+								{foreach from=$aModerators item=oModerator name=moderators}
+									{assign var='oUserModer' value=$oModerator->getUser()}
+									<a href="{$oUserModer->getUserWebPath()}"><img src="{$oUserModer->getProfileAvatarPath(24)}" title="{$oUserModer->getLogin()|escape:'html'}" /></a>
+								{/foreach}
+							</p>
 						{/if}
 					</td>
 					{if $oForum->getRedirectOn()}

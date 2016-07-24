@@ -5,6 +5,7 @@
 			{assign var='oPost' value=$oForum->getPost()}
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			{assign var='aModerators' value=$oForum->getModerators()}
+			{assign var='sDisplaySubforumList' value=$oForum->getOptionsValue('display_subforum_list')}
 			<tr class="forum-item{if !$oForum->getRead() && !$oForum->getRedirectOn()} unread{/if}{if !$oForum->getType()} archive{/if}{if $oForum->getRedirectOn()} link{/if}">
 				<td class="cell-icon">
 					<a class="forum-icon" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/></a>
@@ -12,24 +13,24 @@
 				<td class="cell-name">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
 					<p class="details">{$oForum->getDescription()|escape:'html'|nl2br}</p>
-					{if $aSubForums}
-					<p class="details">
-						<strong>{$aLang.plugin.forum.subforums}:</strong>
-						{foreach from=$aSubForums item=oSubForum name=subforums}
-							{if $oSubForum->getAllowShow()}
-								{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
-								<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
-							{/if}
-						{/foreach}
-					</p>
+					{if $sDisplaySubforumList && $aSubForums}
+						<p class="details">
+							<strong>{$aLang.plugin.forum.subforums}:</strong>
+							{foreach from=$aSubForums item=oSubForum name=subforums}
+								{if $oSubForum->getAllowShow()}
+									{if !$smarty.foreach.subforums.first && !$smarty.foreach.subforums.last}, {/if}
+									<a href="{$oSubForum->getUrlFull()}">{$oSubForum->getTitle()|escape:'html'}</a>
+								{/if}
+							{/foreach}
+						</p>
 					{/if}
 					{if $aModerators}
-					<p class="details">
-						<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
-						{foreach from=$aModerators item=oModerator name=moderators}
-						<em>{$oModerator->getLogin()|escape:'html'}</em>{if !$smarty.foreach.moderators.last}, {/if}
-						{/foreach}
-					</p>
+						<p class="details">
+							<strong>{$aModerators|@count|declension:$aLang.plugin.forum.moderators_declension:'russian'}:</strong>
+							{foreach from=$aModerators item=oModerator name=moderators}
+							<em>{$oModerator->getLogin()|escape:'html'}</em>{if !$smarty.foreach.moderators.last}, {/if}
+							{/foreach}
+						</p>
 					{/if}
 				</td>
 				{if $oForum->getRedirectOn()}
