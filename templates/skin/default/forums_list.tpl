@@ -5,9 +5,9 @@
 			{assign var='oPost' value=$oForum->getPost()}
 			{assign var='aSubForums' value=$oForum->getChildren()}
 			{assign var='aModerators' value=$oForum->getModerators()}
-			<tr{if !$oForum->getRead() && !$oForum->getRedirectOn()} class="unread"{/if}>
+			<tr class="forum-item{if !$oForum->getRead() && !$oForum->getRedirectOn()} unread{/if}{if !$oForum->getType()} archive{/if}{if $oForum->getRedirectOn()} link{/if}">
 				<td class="cell-icon">
-					<a class="forum-icon{if !$oForum->getType()} archive{/if}" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if !$oForum->getRead()}{$aLang.plugin.forum.forum_unread}{else}{$aLang.plugin.forum.forum_read}{/if}"{/if}/></a>
+					<a class="forum-icon" href="{$oForum->getUrlFull()}"><img src="{$oForum->getIconPath()}" alt="icon" {if !$oForum->getRedirectOn()}title="{if $oForum->getRead()}{$aLang.plugin.forum.forum_read}{else}{$aLang.plugin.forum.forum_unread}{/if}"{/if}/></a>
 				</td>
 				<td class="cell-name">
 					<h3><a href="{$oForum->getUrlFull()}">{$oForum->getTitle()|escape:'html'}</a></h3>
@@ -47,9 +47,9 @@
 						{assign var="oPoster" value=$oPost->getUser()}
 						<ul class="last-post">
 							{if $oForum->getAllowRead() && $oForum->getAutorization()}
-							<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></li>
+								<li><a href="{$oTopic->getUrlFull()}">{$oTopic->getTitle()|escape:'html'}</a></li>
 							{else}
-							<li><em>{$aLang.plugin.forum.forum_closed}</em></li>
+								<li><em>{$aLang.plugin.forum.forum_closed}</em></li>
 							{/if}
 							<li>
 								{$aLang.plugin.forum.post_writer}:
@@ -63,9 +63,9 @@
 								</span>
 							</li>
 							{if $oForum->getAllowRead() && $oForum->getAutorization()}
-							<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
+								<li><a class="date" title="{$aLang.plugin.forum.post_last_view}" href="{$oTopic->getUrlFull()}lastpost">{date_format date=$oPost->getDateAdd()}</a></li>
 							{else}
-							<li><span title="{$aLang.plugin.forum.post_last_view}">{date_format date=$oPost->getDateAdd()}</span></li>
+								<li><span title="{$aLang.plugin.forum.post_last_view}">{date_format date=$oPost->getDateAdd()}</span></li>
 							{/if}
 						</ul>
 					{/if}

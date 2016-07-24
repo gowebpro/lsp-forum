@@ -50,7 +50,6 @@ class PluginForum_ModuleSession extends Module
 	 */
 	protected function GetSessionsArray()
 	{
-		$sFileName = $this->GetFilePath();
 		$aData = array();
 		if ($sContent = @file_get_contents($this->GetFilePath())) {
 			$aData = $this->CheckSessionsArray(unserialize(stripslashes($sContent)));

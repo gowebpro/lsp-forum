@@ -2,9 +2,9 @@
 	{assign var='oUser' value=$oTopic->getUser()}
 	{assign var='oPost' value=$oTopic->getPost()}
 	{assign var='oPoster' value=$oPost->getUser()}
-	<tr id="topic-{$oTopic->getId()}"{if !$oTopic->getRead()} class="unread"{/if}>
+	<tr id="topic-{$oTopic->getId()}" class="topic-item{if !$oTopic->getRead()} unread{/if}{if $oTopic->getHot()} hot{/if}{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}">
 		<td class="cell-icon">
-			<a class="topic-icon{if $oTopic->getPinned()} pinned{/if}{if $oTopic->getState()} close{/if}" href="{$oTopic->getUrlFull()}" title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
+			<a class="topic-icon" href="{$oTopic->getUrlFull()}" title="{if $oTopic->getRead()}{$aLang.plugin.forum.topic_read}{else}{$aLang.plugin.forum.topic_unread}{/if}"></a>
 		</td>
 		<td class="cell-name">
 			<h4>
