@@ -8,7 +8,7 @@
 	border-top: 1px solid #e0d3bd
 }
 
-.forum-acp .forums-content > section {
+.forum-acp .forums-content > div > section {
 	padding: 15px
 }
 .forum-acp .forums-content h3 {
