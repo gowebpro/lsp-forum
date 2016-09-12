@@ -697,8 +697,15 @@ h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margi
 .modal-post .modal-content input { margin: 10px 0 0 }
 .modal-confirm { width: 320px; margin-left: -160px }
 .modal-confirm .modal-content p { margin-bottom: 20px }
-.modal-editor { width: 640px; margin-left: -320px; z-index: 2700 }
-.modal-editor textarea { height: 300px }
+.modal-editor {
+	top: 5%;
+	margin-left: -320px;
+	width: 640px;
+	z-index: 2700;
+}
+.modal-editor textarea {
+	height: 300px;
+}
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
 	background: url(../images/write.png) no-repeat;
