@@ -199,10 +199,22 @@
 	width: 20px;
 	padding: 12px 0 10px 10px
 }
-.table-forum-admin .cell-label { width: 30%; max-width: 400px; min-width: 240px; vertical-align: top; text-align: right }
-.table-forum-admin .cell-labeled {}
-.table-forum-admin .cell-half { width: 50% }
-.table-forum-admin .note { display: block }
+.table-forum-admin .cell-label {
+	width: 30%;
+	max-width: 400px;
+	min-width: 240px;
+	vertical-align: top;
+	text-align: right;
+}
+.table-forum-admin .cell-labeled {
+}
+.table-forum-admin .cell-half {
+	width: 50%;
+}
+.table-forum-admin .note {
+	display: block;
+}
+
 
 .table-perms {
 	border-collapse: collapse;

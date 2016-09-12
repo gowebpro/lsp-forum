@@ -104,31 +104,117 @@
 .forums-note { padding: 20px 40px; color: #999; border-width: 1px 0px; border-style: solid; border-color: #DCE1E6; margin-bottom: 10px }
 .forums-footer-block { border-width: 1px 0px; border-style: solid; border-color: #eee; background: #F7F7F7; margin: 10px 0; padding: 10px }
 
-.table-forum-stats th, .table-forum-admin th, .table-forums th, .table-topics th { background: #F1F9F1; padding: 7px; color: #808080 }
-.table-forum-stats td, .table-forum-admin td, .table-forums td, .table-topics td { padding: 10px }
 
-.table-forums .cell-name { width: auto }
-.table-forums .cell-stats  { width: 15% }
-.table-forums .cell-post { width: 200px }
-.table-forums h3 { font-size: 12px; font-weight: bold; margin-bottom: 3px }
-
-.table-topics .cell-name { width: auto }
-.table-topics .cell-stats  { width: 15% }
-.table-topics .cell-post { width: 180px }
-.table-topics .w33 { width: 33% }
-.table-topics h4 { font-size: 14px; font-weight: normal; line-height: 135%; margin: 0px }
-.table-topics h4 a { color: #404040 }
-.table-topics h4 a:hover { color: #000 }
-.table-topics .unread h4 a { font-weight: bold }
-
-.table-forum-admin .cell-checkbox {
-	width: 20px;
-	padding: 12px 0 10px 10px
+.table-forum-stats th, .table-forums th, .table-topics th {
+	background: #F1F9F1;
+	padding: 7px;
+	color: #808080;
 }
-.table-forum-admin .cell-label { width: 30%; max-width: 400px; min-width: 240px; vertical-align: top; text-align: right }
-.table-forum-admin .cell-labeled {}
-.table-forum-admin .cell-half { width: 50% }
-.table-forum-admin .note { display: block }
+.table-forum-stats td, .table-forums td, .table-topics td {
+	padding: 10px;
+}
+
+.table-topics td,
+.table-forums td {
+	vertical-align: top;
+}
+
+.table-topics td p.details,
+.table-forums td p.details {
+	color: #666;
+	font-size: 10px;
+	margin: 2px 0;
+}
+.table-topics td p.details a,
+.table-forums td p.details a {
+	color: #666;
+	text-decoration: underline;
+}
+.table-topics td a.date,
+.table-forums td a.date {
+	color: #434951;
+}
+.table-topics td .author,
+.table-forums td .author {
+	font-weight: bold;
+}
+.table-topics td .author img,
+.table-forums td .author img {
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-webkit-background-clip: padding-box;
+}
+.table-topics td .link-to-msg,
+.table-forums td .link-to-msg {
+	background: url(../images/icon_link.png) no-repeat;
+	display: inline-block;
+	width: 16px;
+	height: 9px;
+}
+.table-topics .cell-subtitle,
+.table-forums .cell-subtitle {
+	background: #fff5ee;
+	padding: 7px 28px;
+	color: #808080;
+	font-weight: bold;
+}
+.table-topics .cell-icon,
+.table-forums .cell-icon {
+	width: 1%;
+}
+.table-topics .last-post,
+.table-forums .last-post {
+}
+
+
+.table-forums .cell-name {
+	width: auto;
+}
+.table-forums .cell-stats {
+	width: 15%;
+}
+.table-forums .cell-post {
+	width: 200px;
+}
+.table-forums h3 {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 3px;
+}
+
+.table-topics .cell-name {
+	width: auto;
+}
+.table-topics .cell-stats {
+	width: 15%;
+}
+.table-topics .cell-post {
+	width: 180px;
+}
+.table-topics .w33 {
+	width: 33%;
+}
+.table-topics h4 {
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 135%;
+	margin: 0px;
+}
+.table-topics h4 a {
+	color: #404040;
+}
+.table-topics h4 a:hover {
+	color: #000;
+}
+.table-topics .unread h4 a {
+	font-weight: bold;
+}
+
 
 .form-item.webmoney li {
 	height: 32px;
@@ -138,16 +224,6 @@
 	vertical-align: middle
 }
 
-
-.table p.details { color: #666; font-size: 10px; margin: 2px 0 }
-.table p.details a { color: #666; text-decoration: underline }
-.table a.date { color: #434951 }
-.table span.author { font-weight: bold }
-.table span.author img { vertical-align: middle; width: 20px; height: 20px; border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; -webkit-border-radius: 4px; -webkit-background-clip: padding-box }
-.table .link-to-msg { background: url(../images/icon_link.png) no-repeat; display: inline-block; width: 16px; height: 9px }
-.table .cell-subtitle { background: #fff5ee; padding: 7px 28px; color: #808080; font-weight: bold }
-.table .cell-icon { width: 1% }
-.table .last-post {}
 
 .forum-topic {}
 
