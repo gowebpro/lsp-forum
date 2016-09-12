@@ -614,57 +614,65 @@ span.yesno_no { background: #f6e3e3; border: 1px solid #e3b4b4; border-left: 0; 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 /* Text */
-.text blockquote .quote-head {
-	font-size: 12px;
+.forum-quote {
+	position: relative;
+	margin: 5px 0!important;
+	border-right: 1px dashed #ededf2;
+	border-bottom: 1px dashed #ededf2;
+}
+.forum-quote > .quote-head {
+	margin: -10px -15px 10px;
 	padding: 8px 10px;
 	background: #f6f6f6;
-	background: -moz-linear-gradient(top, #f6f6f6 0%, #e5e5e5 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#e5e5e5));
-	margin: -10px -15px;
-	border-top: 1px solid #ededf2;
-	border-right: 1px solid #ededf2;
-	font-weight: bold
+	background: -moz-linear-gradient(top, #f6f6f6 0%, #ededf2 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#ededf2));
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-color: #ededf2;
+	font-size: 12px;
+	color: #888;
 }
-.text blockquote .quote-text {
-	padding: 15px 0px
+.forum-quote > .quote-head a {
+	margin-right: 10px;
+	font-weight: bold;
 }
-.text blockquote .quote-text blockquote {
+.forum-quote .forum-quote {
 	border-color: #e4ffe4
 }
-.text blockquote .quote-text .quote-head {
-	border-color: #e4ffe4;
+.forum-quote .forum-quote > .quote-head {
+	border-color: #d0f0d0;
 	background: #e4ffe4;
 	background: -moz-linear-gradient(top, #e4ffe4 0%, #d0f0d0 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4ffe4), color-stop(100%,#d0f0d0))
 }
-.text blockquote .quote-text .quote-text blockquote {
+.forum-quote .forum-quote .forum-quote {
 	border-color: #f5ffbe
 }
-.text blockquote .quote-text .quote-text .quote-head {
-	border-color: #f5ffbe;
+.forum-quote .forum-quote .forum-quote > .quote-head {
+	border-color: #f2ffa9;
 	background: #f5ffbe;
 	background: -moz-linear-gradient(top, #f5ffbe 0%, #f2ffa9 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5ffbe), color-stop(100%,#f2ffa9))
 }
-.text blockquote .quote-text .quote-text .quote-text blockquote {
+.forum-quote .forum-quote .forum-quote .forum-quote {
 	border-color: #d5fff7
 }
-.text blockquote .quote-text .quote-text .quote-text .quote-head {
-	border-color: #d5fff7;
+.forum-quote .forum-quote .forum-quote .forum-quote > .quote-head {
+	border-color: #b8f0e5;
 	background: #d5fff7;
 	background: -moz-linear-gradient(top, #d5fff7 0%, #b8f0e5 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d5fff7), color-stop(100%,#b8f0e5))
 }
-.text blockquote .quote-text .quote-text .quote-text .quote-text blockquote {
+.forum-quote .forum-quote .forum-quote .forum-quote .forum-quote {
 	border-color: #f1d6ff
 }
-.text blockquote .quote-text .quote-text .quote-text .quote-text .quote-head {
-	border-color: #f1d6ff;
+.forum-quote .forum-quote .forum-quote .forum-quote .forum-quote > .quote-head {
+	border-color: #e3bef7;
 	background: #f1d6ff;
 	background: -moz-linear-gradient(top, #f1d6ff 0%, #e3bef7 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1d6ff), color-stop(100%,#e3bef7))
 }
-.text blockquote .quote-text pre {
+.forum-quote pre {
 	padding: 10px 0;
 	border: 1px solid #f0f0f0
 }

@@ -510,9 +510,31 @@ span.yesno_no { background: #f6e3e3; border: 1px solid #e3b4b4; border-left: 0; 
 h4.page-subheader { font-size: 16px; font-weight: bold; line-height: 130%; margin: 0 0 10px }
 
 /* Text */
-.text blockquote .quote-head { font-size: 12px; padding: 8px 10px; background: #F6F6F6; background: -moz-linear-gradient(top, #F6F6F6 0%, #E5E5E5 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6F6F6), color-stop(100%,#E5E5E5)); margin: -15px -20px; border-top: 1px solid #EDEDF2; border-right: 1px solid #EDEDF2; font-weight: bold }
-.text blockquote .quote-text { padding: 25px 0px 0px }
-.text blockquote .quote-text pre { padding: 0 }
+.forum-quote {
+	position: relative;
+	margin: 5px 0!important;
+	border-right: 1px dashed #ededf2;
+	border-bottom: 1px dashed #ededf2;
+	font-size: 12px;
+}
+.forum-quote .quote-head {
+	margin: -15px -20px 15px;
+	padding: 8px 10px;
+	background: #f6f6f6;
+	background: -moz-linear-gradient(top, #f6f6f6 0%, #E5E5E5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#E5E5E5));
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-color: #ededf2;
+	font-size: 12px;
+}
+.forum-quote > .quote-head a {
+	margin-right: 10px;
+	font-weight: bold;
+}
+.forum-quote pre {
+	padding: 0;
+}
 
 .text .spoiler-wrap { width: 98%; clear: both; margin: 8px auto; padding: 0; background: #E9E9E6 }
 .text .spoiler-wrap .spoiler-wrap { margin: 2px auto 4px }

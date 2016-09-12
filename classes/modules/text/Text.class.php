@@ -35,15 +35,25 @@ class PluginForum_ModuleText extends PluginForum_Inherit_ModuleText {
 	public function CallbackTagQuote($sTag,$aParams,$sContent) {
 		$sText='';
 		if (isset($aParams['reply'])) {
-			if ($oPost=$this->PluginForum_Forum_GetPostById($aParams['reply'])) {
-				$sUserLogin=$oPost->getUser() ? "<a href=\"{$oPost->getUser()->getUserWebPath()}\" class=\"ls-user\">{$oPost->getUser()->getLogin()}</a>" : $this->Lang_Get('plugin.forum.guest_prefix').$oPost->getGuestName();
-				$sHeadQuote="<div class='quote-head'><a class='icon-share-alt' href='{$oPost->getUrlFull()}' title='{$this->Lang_Get('plugin.forum.post_view')}'></a> {$sUserLogin} ({$oPost->getDateAdd()}):</div>";
-				$sTextQuote="<div class='quote-text'>{$sContent}</div>";
-				$sFullQuote="<blockquote>{$sHeadQuote}{$sTextQuote}</blockquote> ";
-				$sText.=$sFullQuote;
+			if ($oPost = $this->PluginForum_Forum_GetPostById($aParams['reply'])) {
+				$_sDataUserLogin = $this->Lang_Get('plugin.forum.guest_prefix') .
+						( $oPost->getGuestName() ? $oPost->getGuestName() : 'unknown' );
+				$_sDataUserUrl = '';
+				if ($oPost->getUserId() && ( $oPostUser = $this->User_GetUserById($oPost->getUserId()) )) {
+					$_sDataUserLogin = $oPostUser->getLogin();
+					$_sDataUserUrl = $oPostUser->getUserWebPath();
+				}
+				$_sDataPostDate = $oPost->getDateAdd();
+				$_sDataPostUrl = $oPost->getUrlFull();
+				$sText = "<blockquote class='forum-quote'
+								data-user_login='{$_sDataUserLogin}'
+								data-user_url='{$_sDataUserUrl}'
+								data-post_date='{$_sDataPostDate}'
+								data-post_url='{$_sDataPostUrl}'
+							>{$sContent}</blockquote>";
 			}
 		} else {
-			$sText="<blockquote>{$sContent}</blockquote>";
+			$sText = "<blockquote>{$sContent}</blockquote>";
 		}
 		return $sText;
 	}

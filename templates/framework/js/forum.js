@@ -160,6 +160,7 @@ ls.forum = (function ($) {
 				preview.show().html(result.sText);
 				ls.hook.run('ls_forum_preview_after',[form, preview, result]);
 				ls.forum.initSpoilers();
+				ls.forum.initQuotes();
 			}
 		});
 		return false;
@@ -206,7 +207,7 @@ ls.forum = (function ($) {
 		$('.spoiler-body').each(function() {
 			var $body = $(this);
 			if (!$body.data('init')) {
-				var title = $body.attr('data-name') || ls.lang.get('panel_spoiler_placeholder');
+				var title = $body.data('name') || ls.lang.get('panel_spoiler_placeholder');
 				var $head = $('<div class="spoiler-head folded">'+ title +'</div>');
 				$head.insertBefore($body).click(function() {
 					if ($body.is(":visible")) {
@@ -223,6 +224,23 @@ ls.forum = (function ($) {
 				});
 				$body.append($fold);
 				$body.data('init', true);
+			}
+		});
+	};
+	/**
+	 * Инициализация цитат
+	 */
+	this.initQuotes = function() {
+		var self = this;
+		$('.forum-quote').each(function() {
+			var item = $(this);
+			if (!item.data('init')) {
+				var head = $('<div class="quote-head">'
+					+ ( item.data('user_url') ? '<a href="' + item.data('user_url') + '" class="ls-user">' + item.data('user_login') + '</a>' : item.data('user_login') )
+					+ '<a href="' + item.data('post_url') + '"><i class="icon-share-alt"></i>' + item.data('post_date') +'</a>'
+					+ '</div>');
+				item.prepend(head);
+				item.data('init', true);
 			}
 		});
 	};
@@ -701,6 +719,7 @@ jQuery(document).ready(function($){
 	ls.forum.initToggler();
 	ls.forum.initButtons();
 	ls.forum.initSpoilers();
+	ls.forum.initQuotes();
 	ls.forum.initModals();
 	ls.forum.initHints();
 	/**
