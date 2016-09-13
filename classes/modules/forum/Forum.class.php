@@ -562,19 +562,30 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	array	$aExcludeMail
 	 */
 	public function SendSubscribeNewTopic($sTargetId, $aParams=array(), $aExcludeMail=array()) {
-		if (!class_exists('ModuleSubscribe')) return false;
-		if (!(isset($aParams['oUser'])&&isset($aParams['oTopic']))) return false;
-
+		if (!class_exists('ModuleSubscribe')) {
+			return false;
+		}
+		if ( !(isset($aParams['oUser']) && isset($aParams['oTopic'])) ) {
+			return false;
+		}
 		$sMail = $aParams['oUser']->getMail();
 		$sTopicId = $aParams['oTopic']->getId();
-
-		// Добавляем автора топика в подписчики на новые топики к этом форуме
-		$this->Subscribe_AddSubscribeSimple('forum_new_topic',$sTargetId,$sMail);
-		// Добавляем автора топика в подписчики на новые ответы к этому топику
-		$this->Subscribe_AddSubscribeSimple('topic_new_post',$sTopicId,$sMail);
-
-		// Отправка уведомления подписчикам форума
-		$this->Subscribe_Send('forum_new_topic',$sTargetId,'notify.topic_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_topic'),$aParams,$aExcludeMail,__CLASS__);
+		/**
+		 * Добавляем автора топика в подписчики на новые топики к этом форуме
+		 */
+		if (Config::Get('plugin.forum.subscribe.topic.forum_new_topic')) {
+			$this->Subscribe_AddSubscribeSimple('forum_new_topic', $sTargetId, $sMail);
+		}
+		/**
+		 * Добавляем автора топика в подписчики на новые ответы к этому топику
+		 */
+		if (Config::Get('plugin.forum.subscribe.topic.topic_new_post')) {
+			$this->Subscribe_AddSubscribeSimple('topic_new_post', $sTopicId, $sMail);
+		}
+		/**
+		 * Отправка уведомления подписчикам форума
+		 */
+		$this->Subscribe_Send('forum_new_topic', $sTargetId, 'notify.topic_new.tpl', $this->Lang_Get('plugin.forum.notify_subject_new_topic'), $aParams, $aExcludeMail, __CLASS__);
 	}
 	/**
 	 * Операции с подписками при создании нового поста 
@@ -584,16 +595,23 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	array	$aExcludeMail
 	 */
 	public function SendSubscribeNewPost($sTargetId, $aParams=array(), $aExcludeMail=array()) {
-		if (!class_exists('ModuleSubscribe')) return false;
-		if (!isset($aParams['oUser'])) return false;
-
+		if (!class_exists('ModuleSubscribe')) {
+			return false;
+		}
+		if (!isset($aParams['oUser'])) {
+			return false;
+		}
 		$sMail = $aParams['oUser']->getMail();
-
-		// Добавляем автора поста в подписчики на новые ответы к этому топику
-		$this->Subscribe_AddSubscribeSimple('topic_new_post',$sTargetId,$sMail);
-
-		// Отправка уведомления подписчикам топика
-		$this->Subscribe_Send('topic_new_post',$sTargetId,'notify.post_new.tpl',$this->Lang_Get('plugin.forum.notify_subject_new_post'),$aParams,$aExcludeMail,__CLASS__);
+		/**
+		 * Добавляем автора поста в подписчики на новые ответы к этому топику
+		 */
+		if (Config::Get('plugin.forum.subscribe.post.topic_new_post')) {
+			$this->Subscribe_AddSubscribeSimple('topic_new_post', $sTargetId, $sMail);
+		}
+		/**
+		 * Отправка уведомления подписчикам топика
+		 */
+		$this->Subscribe_Send('topic_new_post', $sTargetId, 'notify.post_new.tpl', $this->Lang_Get('plugin.forum.notify_subject_new_post'), $aParams, $aExcludeMail, __CLASS__);
 	}
 
 
