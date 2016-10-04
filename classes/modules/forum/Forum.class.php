@@ -479,22 +479,21 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function GetOpenForumsTree($bNoAllowData=false) {
 		$aResult = array();
 		/**
-		 * Строит дерево
+		 * Получаем дерево форумов
 		 */
-		$aForums = $this->LoadTreeOfForum(array(
-			'#order' => array('forum_sort'=>'asc')
-		));
-		/**
-		 * Получаем доп.данные
-		 */
-		$sRelationShemeCode = $bNoAllowData ? self::FORUM_DATA_RSS : self::FORUM_DATA_INDEX;
-		$aForums = $this->GetForumsAdditionalData($aForums, $sRelationShemeCode);
-		/**
-		 * Оставляем в результате только с разрешенными правами
-		 */
-		foreach ($aForums as $oForum) {
-			if ($oForum->getAllowShow()) {
-				$aResult[] = $oForum;
+		if ($aForums = $this->LoadTreeOfForum(array( '#order' => array('forum_sort' => 'asc') ))) {
+			/**
+			 * Получаем доп.данные
+			 */
+			$sRelationShemeCode = $bNoAllowData ? self::FORUM_DATA_RSS : self::FORUM_DATA_INDEX;
+			$aForums = $this->GetForumsAdditionalData($aForums, $sRelationShemeCode);
+			/**
+			 * Оставляем в результате только с разрешенными правами
+			 */
+			foreach ($aForums as $oForum) {
+				if ($oForum->getAllowShow()) {
+					$aResult[] = $oForum;
+				}
 			}
 		}
 		return $aResult;
@@ -508,22 +507,18 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	array
 	 */
 	public function GetOpenForumsUser($oUser=null,$bIdOnly=false) {
-		$aForums=$this->GetForumItemsAll();
-		/**
-		 * Фильтруем список форумов
-		 */
-		$aRes=array();
-		if (!empty($aForums)) {
+		$aResult = array();
+		if ($aForums = $this->GetForumItemsAll()) {
 			foreach ($aForums as $oForum) {
-				$aPermissions=unserialize(stripslashes($oForum->getPermissions()));
+				$aPermissions = unserialize(stripslashes($oForum->getPermissions()));
 				if (forum_check_perms($aPermissions['show_perms'],$oUser,true)
-				and forum_check_perms($aPermissions['read_perms'],$oUser,true)
-				and $this->isForumAuthorization($oForum)) {
-					$aRes[$oForum->getId()]=$oForum;
+								and forum_check_perms($aPermissions['read_perms'],$oUser,true)
+								and $this->isForumAuthorization($oForum)) {
+					$aResult[$oForum->getId()]=$oForum;
 				}
 			}
 		}
-		return $bIdOnly ? array_keys($aRes) : $aRes;
+		return $bIdOnly ? array_keys($aResult) : $aResult;
 	}
 
 
