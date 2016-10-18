@@ -1,10 +1,10 @@
-{assign var="oUser" value=$oPost->getUser()}
-{assign var="aFiles" value=$oPost->getFiles()}
-{assign var="oVote" value=$oPost->getVote()}
-{assign var="oUserForum" value=$oPost->getUserForum()}
+{$oUser = $oPost->getUser()}
+{$aFiles = $oPost->getFiles()}
+{$oVote = $oPost->getVote()}
+{$oUserForum = $oPost->getUserForum()}
 
 {if $oVote || ($oUserCurrent && $oPost->getUserId() == $oUserCurrent->getId()) || strtotime($oPost->getDateAdd()) < $smarty.now-$oConfig->GetValue('plugin.forum.acl.vote.post.time')}
-	{assign var="bVoteInfoShow" value=true}
+	{$bVoteInfoShow = true}
 {/if}
 
 <article class="forum-post{if $bFirst} forum-post-first{/if}{if strtotime($oPost->getDateAdd()) > strtotime($oTopic->getReadDate())} new{/if} js-post" id="post-{$oPost->getId()}">
@@ -53,7 +53,7 @@
 					{$aLang.plugin.forum.post} <a href="{$oPost->getUrlFull()}" name="post-{$oPost->getId()}" onclick="return ls.forum.linkToPost({$oPost->getId()})">#{$oPost->getNumber()}</a>
 				</div>
 				<div class="forum-post-details">
-					{date_format date=$oPost->getDateAdd()}
+					{date_format date=$oPost->getDateAdd() day="day H:i" format="j F Y, H:i"}
 					{if $oPost->getTitle()}
 						<span class="divide">|</span>
 						<strong>{$oPost->getTitle()|escape:'html'}</strong>
@@ -68,7 +68,7 @@
 					{$oPost->getText()}
 				</div>
 				{if $oPost->getEditorId()}
-					{assign var="oEditor" value=$oPost->getEditor()}
+					{$oEditor = $oPost->getEditor()}
 					<div class="edit">
 						{$aLang.plugin.forum.post_editing}
 						<a href="{$oEditor->getUserWebPath()}">{$oEditor->getLogin()|escape:'html'}</a>

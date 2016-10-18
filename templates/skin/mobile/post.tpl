@@ -65,7 +65,7 @@
 							<p>{$aLang.plugin.forum.guest_prefix}{$oPost->getGuestName()|escape:'html'}</p>
 						{/if}
 						<time datetime="{date_format date=$oPost->getDateAdd() format='c'}" title="{date_format date=$oPost->getDateAdd() format='j F Y, H:i'}">
-							{date_format date=$oPost->getDateAdd() format="j F Y, H:i"}
+							{date_format date=$oPost->getDateAdd() day="day H:i" format="j F Y, H:i"}
 						</time>
 
 						{hook run='forum_post_userinfo_end' post=$oPost user=$oUser}
