@@ -110,10 +110,12 @@
 	{include file="$sTemplatePathForum/fast_answer_form.tpl"}
 {/if}
 
-<footer class="forums-footer-block clearfix">
+<footer class="forum-legend">
 	<div class="fl-r">
 		{include file="$sTemplatePathForum/jumpmenu.tpl"}
 	</div>
+
+	{hook run='forum_topic_show_legend' oTopic=$oTopic}
 </footer>
 
 {include file='footer.tpl'}

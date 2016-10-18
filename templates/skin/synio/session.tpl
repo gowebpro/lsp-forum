@@ -25,7 +25,7 @@
 			{if $oSessionUser}
 				<span><a href="{$oSessionUser->getUserWebPath()}"><img src="{$oSessionUser->getProfileAvatarPath(24)}" alt="{$oSessionUser->getLogin()|escape:'html'}" />{$oSessionUser->getLogin()|escape:'html'}</a></span>
 			{/if}
-			{if !$oSession@last}, {/if}
+			{if $iPageUsers > $oSession@index+1}, {/if}
 		{/foreach}
 	</div>
 </div>
