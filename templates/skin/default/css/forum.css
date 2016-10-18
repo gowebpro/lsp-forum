@@ -513,6 +513,28 @@
 .forums .lighter { color: #a4a4a4 }
 .forums .badge { display: inline-block; height: 16px; line-height: 16px; padding: 0 5px; font-size: 9px; font-weight: bold; text-transform: uppercase; color: #fff; text-shadow: rgba(0,0,0,0.2) 0px -1px 0px; background-color: #5055b2; background-image: url(../images/highlight.png); background-repeat: repeat-x; background-position: 0 -1px; vertical-align: middle; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; -webkit-background-clip: padding-box }
 
+.pagination_mini {
+	display: inline;
+	margin-left: 7px;
+	font-size: 0.8em;
+}
+.pagination_mini li {
+	display: inline;
+}
+.pagination_mini li a {
+	background: #5f5f5f;
+	color: #fff;
+	text-decoration: none;
+	padding: 2px 6px;
+	-webkit-background-clip: padding-box;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+.pagination_mini li a:hover {
+	background: #444;
+	color: #fff;}
+
 span.divide { color: gray; font-weight: normal; padding: 0 2px }
 span.yesno_yes, span.yesno_no { display: inline-block !important; padding: 3px; min-width: 50px; max-width: 60px; text-align: center; height: 20px !important }
 span.yesno_yes { background: #e3f6e5; border: 1px solid #b4e3b9; border-right: 0; border-top-left-radius: 6px; border-bottom-left-radius: 6px; -moz-border-radius-topleft: 6px; -moz-border-radius-bottomleft: 6px; -webkit-border-top-left-radius: 6px; -webkit-border-bottom-left-radius: 6px; -webkit-background-clip: padding-box }
