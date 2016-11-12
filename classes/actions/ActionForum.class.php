@@ -1272,16 +1272,20 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем посты
 		 */
-		$aWhere=array();
+		$aFilter = array(
+			'topic_id' => $oTopic->getId(),
+			'#order' => array('post_date_add' => 'asc', 'post_id' => 'asc'),
+			'#page' => array($iPage, $iPerPage)
+		);
 		if ($bLineMod) {
 			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
 			$oHeadPost->setNumber(1);
 			$oHeadPost=$this->PluginForum_Forum_GetPostsAdditionalData($oHeadPost);
 			$this->Viewer_Assign('oHeadPost',$oHeadPost);
-			$aWhere=array_merge($aWhere,array('post_id <> ?d'=>array($oHeadPost->getId())));
+			$aFilter['post_id <> ?d'] = $oHeadPost->getId();
 			$iPerPage--;
 		}
-		$aResult=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>$aWhere,'#page'=>array($iPage,$iPerPage)));
+		$aResult=$this->PluginForum_Forum_GetPostItemsByFilter($aFilter);
 		$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
 		$iPostsCount=$aResult['count'];
 		if ($bLineMod) $iPostsCount++;
