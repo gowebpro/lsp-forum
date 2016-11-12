@@ -2318,10 +2318,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
 			return parent::EventNotFound();
 		}
-		/**
-		 * Relations
-		 */
-		$oTopic=$oPost->getTopic();
+		$oPost=$this->PluginForum_Forum_GetPostsAdditionalData($oPost);
 		/**
 		 * Проверяем, есть ли права на редактирование
 		 */
@@ -2332,7 +2329,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Возможно, мы собрались удалить первый пост?
 		 */
-		if ($oTopic->getFirstPostId() == $oPost->getId()) {
+		if (($oTopic=$oPost->getTopic()) && ($oTopic->getFirstPostId() == $oPost->getId())) {
 			// костыль begin
 			if (isPost('submit_topic_delete')) {
 				return $this->submitTopicDelete($oTopic);

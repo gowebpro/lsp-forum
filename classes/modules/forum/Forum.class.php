@@ -357,7 +357,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			$aTopicsId[] = $oPost->getTopicId();
 			$oPost->Delete();
 		}
-		foreach (array_unique($$aTopicsId) as $sTopicId) {
+		foreach (array_unique($aTopicsId) as $sTopicId) {
 			$this->RecountTopic($sTopicId);
 		}
 		return true;
