@@ -1167,9 +1167,9 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	array
 	 */
 	public function GetMarking() {
-		if ($oUser=$this->User_GetUserCurrent()) {
-			$aMark=$this->Session_Get("mark{$oUser->getId()}");
-			$aMark=unserialize(stripslashes($aMark));
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$aMark = $this->Cache_Get("mark{$oUser->getId()}");
+			$aMark = unserialize(stripslashes($aMark));
 			return (array)$aMark;
 		}
 		return array();
@@ -1182,8 +1182,8 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	boolean
 	 */
 	public function SetMarking($aMark) {
-		if ($oUser=$this->User_GetUserCurrent()) {
-			$this->Session_Set("mark{$oUser->getId()}",addslashes(serialize($aMark)));
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$this->Cache_Set(addslashes(serialize($aMark)), "mark{$oUser->getId()}");
 			return true;
 		}
 		return false;
@@ -1196,7 +1196,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @return	boolean
 	 */
 	public function CheckForumMarking(PluginForum_ModuleForum_EntityForum $oForum) {
-		$sForumId=$oForum->getId();
+		$sForumId = $oForum->getId();
 		/**
 		 * Таблица маркировки
 		 */
