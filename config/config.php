@@ -177,7 +177,7 @@ $config['path_uploads_smiles']	= '___plugin.forum.path_uploads___/smiles';		//П
 $config['path_uploads_files']	= '___plugin.forum.path_uploads___/files';		//Путь для загрузок файлов
 
 $config['components'] = array(
-	'session' => 1 //
+	'session' => 1 // 1 - вкл; 0 - выкл; (true\false)
 );
 
 return $config;

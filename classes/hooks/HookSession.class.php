@@ -16,9 +16,14 @@
  */
 class PluginForum_HookSession extends Hook {
 	public function RegisterHook() {
-		$this->AddHook('init_action', 'SessionInit');
-		$this->AddHook('template_forum_show_legend', 'ShowForum');
-		$this->AddHook('template_forum_topic_show_legend', 'ShowTopic');
+		/**
+		 * Регистрируем, только если включен компонент
+		 */
+		if (Config::Get('plugin.forum.components.session')) {
+			$this->AddHook('init_action', 'SessionInit');
+			$this->AddHook('template_forum_show_legend', 'ShowForum');
+			$this->AddHook('template_forum_topic_show_legend', 'ShowTopic');
+		}
 	}
 
 	public function SessionInit() {
