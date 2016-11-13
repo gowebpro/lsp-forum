@@ -17,9 +17,9 @@
 class PluginForum_HookSession extends Hook {
 	public function RegisterHook() {
 		/**
-		 * Регистрируем, только если включен компонент
+		 * Регистрируем, только если включено
 		 */
-		if (Config::Get('plugin.forum.components.session')) {
+		if (Config::Get('plugin.forum.stats.online.enable') && Config::Get('plugin.forum.components.session')) {
 			$this->AddHook('init_action', 'SessionInit');
 			$this->AddHook('template_forum_show_legend', 'ShowForum');
 			$this->AddHook('template_forum_topic_show_legend', 'ShowTopic');
