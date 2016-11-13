@@ -1268,15 +1268,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Получаем номер страницы
 		 */
 		$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;
-		$iPerPage=$oForum->getOptionsValue('posts_per_page')?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
-		/**
-		 * Получаем посты
-		 */
-		$aFilter = array(
-			'topic_id' => $oTopic->getId(),
-			'#order' => array('post_date_add' => 'asc', 'post_id' => 'asc'),
-			'#page' => array($iPage, $iPerPage)
-		);
+		$iPerPage=$oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
+
 		if ($bLineMod) {
 			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
 			$oHeadPost->setNumber(1);
@@ -1285,6 +1278,14 @@ class PluginForum_ActionForum extends ActionPlugin {
 			$aFilter['post_id <> ?d'] = $oHeadPost->getId();
 			$iPerPage--;
 		}
+		/**
+		 * Получаем посты
+		 */
+		$aFilter = array(
+			'topic_id' => $oTopic->getId(),
+			'#order' => array('post_date_add' => 'asc'),
+			'#page' => array($iPage, $iPerPage)
+		);
 		$aResult=$this->PluginForum_Forum_GetPostItemsByFilter($aFilter);
 		$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
 		$iPostsCount=$aResult['count'];
@@ -2378,45 +2379,36 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем ID топика из URL
 		 */
-		$sId=$this->GetParamEventMatch(0,1);
+		$sTopicId = $this->GetParamEventMatch(0,1);
 		/**
 		 * Получаем топик по ID
 		 */
-		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
+		if (!($oTopic = $this->PluginForum_Forum_GetTopicById($sTopicId))) {
 			return parent::EventNotFound();
 		}
-		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Получаем объект форума
 		 */
-		if (!($oForum=$oTopic->getForum())) {
-			return parent::EventNotFound();
-		}
-		/**
-		 * Получаем последний пост
-		 */
-		if (!($oLastPost=$oTopic->getPost())) {
+		if (!($oForum = $this->PluginForum_Forum_GetForumById($oTopic->getForumId()))) {
 			return parent::EventNotFound();
 		}
 		/**
 		 * Определяем на какой странице находится пост
 		 */
-		$sPage='';
-		$iPostsCount=(int)$oTopic->getCountPost();
-		$iPerPage=$oForum->getOptionsValue('posts_per_page')?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
+		$sPage = '';
+		$iPostsCount = $this->PluginForum_Forum_GetCountItemsByFilter(array('topic_id' => $oTopic->getId()), 'Post');
+		$iPerPage = $oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
 			$iPerPage--;
 		}
-		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
-			if ($iCountPage > 1) {
-				$sPage="page{$iCountPage}";
-			}
+		if (($iCountPage = ceil($iPostsCount/$iPerPage)) && ($iCountPage > 1)) {
+			$sPage = 'page' . $iCountPage;
 		}
 		/**
 		 * Редирект
 		 */
-		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oLastPost->getId()}");
+		Router::Location($oTopic->getUrlFull() . $sPage . '#post-' . $oTopic->getLastPostId());
 	}
 
 	/**
@@ -2427,51 +2419,50 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем ID топика из URL
 		 */
-		$sId=$this->GetParamEventMatch(0,1);
+		$sTopicId = $this->GetParamEventMatch(0, 1);
 		/**
 		 * Получаем топик по ID
 		 */
-		if (!($oTopic=$this->PluginForum_Forum_GetTopicById($sId))) {
-			return parent::EventNotFound();
-		}
-		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
-		/**
-		 * Получаем форум
-		 */
-		if (!($oForum=$oTopic->getForum())){
+		if (!($oTopic = $this->PluginForum_Forum_GetTopicById($sId))) {
 			return parent::EventNotFound();
 		}
 		/**
-		 * Дополнительные данные
+		 * Получаем объект форума
 		 */
-		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
+		if (!($oForum = $this->PluginForum_Forum_GetForumById($oTopic->getForumId()))) {
+			return parent::EventNotFound();
+		}
+		$oTopic = $this->PluginForum_Forum_GetTopicsAdditionalData($oTopic, 'marker');
 		/**
 		 * Получаем непрочитанные посты
 		 */
-		$aRightPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>array('post_date_add > ?'=>array($oTopic->getReadDate())),'#page'=>array(1,1)));
-		if (empty($aRightPosts['count'])) {
-			return Router::Location($oTopic->getUrlFull().'lastpost');
+		$aPostsRightFilter = array(
+			'topic_id' => $oTopic->getId(),
+			'post_date_add > ?' => $oTopic->getReadDate()
+		);
+		$aPostsRight = $this->PluginForum_Forum_GetPostItemsByFilter($aPostsRightFilter);
+		if (!$aPostsRight) {
+			Router::Location($oTopic->getUrlFull() . 'lastpost');
+			return;
 		}
-		$oPost=$aRightPosts['collection'][0];
+		$oPost = $aPostsRight[0];
 		/**
 		 * Определяем на какой странице находится пост
 		 */
-		$sPage='';
-		$iPostsCount=(int)$oTopic->getCountPost()-((int)$aRightPosts['count']-1);
-		$iPerPage=$oForum->getOptionsValue('posts_per_page')?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
+		$sPage = '';
+		$iPostsCount = (int)$oTopic->getCountPost() - (count($aPostsRight)-1);
+		$iPerPage = $oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
 			$iPerPage--;
 		}
-		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
-			if ($iCountPage > 1) {
-				$sPage="page{$iCountPage}";
-			}
+		if (($iCountPage = ceil($iPostsCount/$iPerPage)) && ($iCountPage > 1)) {
+			$sPage = 'page' . $iCountPage;
 		}
 		/**
 		 * Редирект
 		 */
-		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oPost->getId()}");
+		Router::Location($oTopic->getUrlFull() . $sPage . '#post-' . $oPost->getId());
 	}
 
 	/**
@@ -2481,47 +2472,49 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Получаем ID топика из URL
 		 */
-		$sPostId=$this->GetParamEventMatch(0,1);
+		$sPostId = $this->GetParamEventMatch(0,1);
 		/**
 		 * Получаем пост по ID
 		 */
-		if (!($oPost=$this->PluginForum_Forum_GetPostById($sPostId))) {
+		if (!($oPost = $this->PluginForum_Forum_GetPostById($sPostId))) {
 			return parent::EventNotFound();
 		}
-		$oPost=$this->PluginForum_Forum_GetPostsAdditionalData($oPost);
-		/**
-		 * Получаем топик по ID
-		 */
-		if (!($oTopic=$oPost->getTopic())) {
-			return parent::EventNotFound();
-		}
-		$oTopic=$this->PluginForum_Forum_GetTopicsAdditionalData($oTopic);
 		/**
 		 * Получаем объект форума
 		 */
-		if (!($oForum=$oTopic->getForum())) {
+		$aForumJoinFilter = array(
+			'#join_table' => Config::Get('db.table.forum_topic'),
+			'#relation_key' => 'forum_id',
+			'#by_key' => 'topic_id',
+			'#by_value' => $oPost->getTopicId()
+		);
+		if (!($oForum = $this->PluginForum_Forum_GetForumByFilter($aForumJoinFilter))) {
 			return parent::EventNotFound();
 		}
-		$aLeftPosts=$this->PluginForum_Forum_GetPostItemsByTopicId($oTopic->getId(),array('#where'=>array('post_id < ?'=>array($oPost->getId())),'#page'=>array(1,1)));
+		/**
+		 * Получаем количество постов, написаных ДО нужного
+		 */
+		$aPostsLeftFilter = array(
+			'topic_id' => $oPost->getTopicId(),
+			'post_id < ?' => $oPost->getId()
+		);
+		$iPostsCount = $this->PluginForum_Forum_GetCountItemsByFilter($aPostsLeftFilter, 'Post');
 		/**
 		 * Определяем на какой странице находится пост
 		 */
-		$sPage='';
-		$iPostsCount=(int)$aLeftPosts['count']+1;
-		$iPerPage=$oForum->getOptionsValue('posts_per_page')?$oForum->getOptionsValue('posts_per_page'):Config::Get('plugin.forum.post_per_page');
+		$sPage = '';
+		$iPerPage = $oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
 			$iPerPage--;
 		}
-		if ($iCountPage=ceil($iPostsCount/$iPerPage)) {
-			if ($iCountPage > 1) {
-				$sPage="page{$iCountPage}";
-			}
+		if (($iCountPage = ceil(($iPostsCount + 1) / $iPerPage)) && ($iCountPage > 1)) {
+			$sPage = 'page' . $iCountPage;
 		}
 		/**
 		 * Редирект
 		 */
-		Router::Location($oTopic->getUrlFull()."{$sPage}#post-{$oPost->getId()}");
+		Router::Location(Router::GetPath('forum/topic') . $oPost->getTopicId() . '/' . $sPage . '#post-' . $oPost->getId());
 	}
 
 
