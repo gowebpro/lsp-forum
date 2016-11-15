@@ -1124,7 +1124,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 		/**
 		 * Делим топики на важные и обычные
 		 */
-		$bUnread=false;
 		$aPinned=array();
 		$aTopics=array();
 		foreach ($aResult['collection'] as $oTopic) {
@@ -1132,9 +1131,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$aPinned[]=$oTopic;
 			} else {
 				$aTopics[]=$oTopic;
-			}
-			if (!$oTopic->getRead()) {
-				$bUnread=true;
 			}
 		}
 		/**
@@ -1154,12 +1150,6 @@ class PluginForum_ActionForum extends ActionPlugin {
 				$aSubForums[] = $aChildrens[$sId];
 			}
 			$oForum->setChildren($aSubForums);
-		}
-		/**
-		 * Маркировка
-		 */
-		if (!$bUnread) {
-			$this->PluginForum_Forum_CheckForumMarking($oForum);
 		}
 		/**
 		 * JumpMenu
@@ -1269,33 +1259,31 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 */
 		$iPage=$this->GetParamEventMatch(1,2) ? $this->GetParamEventMatch(1,2) : 1;
 		$iPerPage=$oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
-
-		if ($bLineMod) {
-			$oHeadPost=$this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
-			$oHeadPost->setNumber(1);
-			$oHeadPost=$this->PluginForum_Forum_GetPostsAdditionalData($oHeadPost);
-			$this->Viewer_Assign('oHeadPost',$oHeadPost);
-			$aFilter['post_id <> ?d'] = $oHeadPost->getId();
-			$iPerPage--;
-		}
 		/**
 		 * Получаем посты
 		 */
-		$aFilter = array(
+		$aPostsFilter = array(
 			'topic_id' => $oTopic->getId(),
-			'#order' => array('post_date_add' => 'asc'),
-			'#page' => array($iPage, $iPerPage)
+			'#order' => array('post_date_add' => 'asc')
 		);
-		$aResult=$this->PluginForum_Forum_GetPostItemsByFilter($aFilter);
-		$aPosts=$this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
-		$iPostsCount=$aResult['count'];
-		if ($bLineMod) $iPostsCount++;
+		if ($bLineMod) {
+			$oHeadPost = $this->PluginForum_Forum_GetPostById($oTopic->getFirstPostId());
+			$oHeadPost = $this->PluginForum_Forum_GetPostsAdditionalData($oHeadPost);
+			$oHeadPost->setNumber(1);
+			$this->Viewer_Assign('oHeadPost', $oHeadPost);
+			$aPostsFilter['post_id <>'] = $oHeadPost->getId();
+			$iPerPage--;
+		}
+		$aPostsFilter['#page'] = array($iPage, $iPerPage);
+		$aResult = $this->PluginForum_Forum_GetPostItemsByFilter($aPostsFilter);
+		$aPosts = $this->PluginForum_Forum_GetPostsAdditionalData($aResult['collection']);
+		$iPostsCount = $aResult['count'];
 		/**
 		 * Номера постов
 		 */
 		for ($i=1; $i <= count($aPosts); $i++) {
-			$oPost=$aPosts[$i-1];
-			$iNumber=ceil(($iPage-1)*$iPerPage+$i);
+			$oPost = $aPosts[$i-1];
+			$iNumber = ceil(($iPage-1)*$iPerPage+$i);
 			if ($bLineMod) $iNumber++;
 			$oPost->setNumber($iNumber);
 		}
@@ -1314,11 +1302,8 @@ class PluginForum_ActionForum extends ActionPlugin {
 			 */
 			$this->PluginForum_Forum_MarkTopic($oTopic,$aPosts ? end($aPosts) : $oHeadPost);
 			/**
-			 * Check
+			 * Просмотры
 			 */
-			if ($oTopic->getCountPost() <> $iPostsCount) {
-				$oTopic->setCountPost($iPostsCount);
-			}
 			$oTopic->setViews($oTopic->getViews()+1);
 			$oTopic->Save();
 		}
@@ -2445,12 +2430,12 @@ class PluginForum_ActionForum extends ActionPlugin {
 			Router::Location($oTopic->getUrlFull() . 'lastpost');
 			return;
 		}
-		$oPost = $aPostsRight[0];
+		$oPost = array_shift($aPostsRight);
 		/**
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage = '';
-		$iPostsCount = (int)$oTopic->getCountPost() - (count($aPostsRight)-1);
+		$iPostsCount = (int)$oTopic->getCountPost() - count($aPostsRight);
 		$iPerPage = $oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
@@ -2479,16 +2464,10 @@ class PluginForum_ActionForum extends ActionPlugin {
 		if (!($oPost = $this->PluginForum_Forum_GetPostById($sPostId))) {
 			return parent::EventNotFound();
 		}
-		/**
-		 * Получаем объект форума
-		 */
-		$aForumJoinFilter = array(
-			'#join_table' => Config::Get('db.table.forum_topic'),
-			'#relation_key' => 'forum_id',
-			'#by_key' => 'topic_id',
-			'#by_value' => $oPost->getTopicId()
-		);
-		if (!($oForum = $this->PluginForum_Forum_GetForumByFilter($aForumJoinFilter))) {
+		if (!($oTopic = $this->PluginForum_Forum_GetTopicById($oPost->getTopicId()))) {
+			return parent::EventNotFound();
+		}
+		if (!($oForum = $this->PluginForum_Forum_GetForumById($oTopic->getForumId()))) {
 			return parent::EventNotFound();
 		}
 		/**
@@ -2503,7 +2482,7 @@ class PluginForum_ActionForum extends ActionPlugin {
 		 * Определяем на какой странице находится пост
 		 */
 		$sPage = '';
-		$iPerPage = $oForum->getOptionsValue('posts_per_page') ?: Config::Get('plugin.forum.post_per_page');
+		$iPerPage = ($oForum->getOptionsValue('posts_per_page')) ?: Config::Get('plugin.forum.post_per_page');
 		if (Config::Get('plugin.forum.topic_line_mod')) {
 			$iPostsCount--;
 			$iPerPage--;
