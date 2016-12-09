@@ -205,8 +205,8 @@ class PluginForum extends Plugin
         if (!$this->isFieldExists('prefix_forum_post', 'post_rating')) {
             $this->ExportSQL(dirname(__FILE__) . '/sql/update20130925.sql');
         }
-        if (!$this->isFieldExists('prefix_forum_user', 'user_last_sync')) {
-            $this->ExportSQL(dirname(__FILE__) . '/sql/update20140615.sql');
+        if (!$this->isFieldExists('prefix_forum_user', 'mark_all')) {
+            $this->ExportSQL(dirname(__FILE__) . '/sql/update20161210.sql');
         }
     }
 
