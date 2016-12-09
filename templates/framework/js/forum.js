@@ -93,7 +93,7 @@ ls.forum = (function ($) {
         var idPost = $(this).attr('data-post-id');
         ls.forum.configReplyForm(idPost);
         var $post = $(this).parents('#post-' + idPost);
-        var $text = $post.find('.forum-post-body .text').html();
+        var $text = $post.find('.forum-post-body .js-post-text-source').html();
         $.markItUp({
             target: $('#post_text'),
             replaceWith: '<blockquote reply="' + idPost + '">' + $.trim($text) + '</blockquote>'

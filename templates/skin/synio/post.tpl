@@ -67,6 +67,9 @@
 				<div class="text">
 					{$oPost->getText()}
 				</div>
+				<div class="js-post-text-source" style="display: none;">
+					{$oPost->getTextSource()}
+				</div>
 				{if $oPost->getEditorId()}
 					{$oEditor = $oPost->getEditor()}
 					<div class="edit">
