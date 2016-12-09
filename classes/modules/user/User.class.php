@@ -62,9 +62,9 @@ class PluginForum_ModuleUser extends ModuleORM
 
     /**
      * Отмечаем форум как прочитанный
-     * @param PluginForum_ModuleForum_EntityForum_ $oForum
+     * @param PluginForum_ModuleForum_EntityForum $oForum
      */
-    public function MarkForum(PluginForum_ModuleForum_EntityForum_$oForum)
+    public function MarkForum(PluginForum_ModuleForum_EntityForum $oForum)
     {
         if ($this->oUserCurrent) {
             $sMarkAll = $this->oUserCurrent->getMarkAll();
@@ -72,17 +72,19 @@ class PluginForum_ModuleUser extends ModuleORM
             $aMarkTopic = $this->oUserCurrent->getMarkTopic();
             $aMarkTopicRel = $this->oUserCurrent->getMarkTopicRel();
 
-            $aMarkForum[$oTopic->getId()] = time();
+            $sForumId = $oForum->getId();
 
-            if (isset($aMarkTopicRel[$oTopic->getForumId()]) {
-                $aForumTopicsId = $aMarkTopicRel[$oTopic->getForumId()];
+            $aMarkForum[$sForumId] = time();
+
+            if (isset($aMarkTopicRel[$sForumId])) {
+                $aForumTopicsId = $aMarkTopicRel[$sForumId];
 
                 foreach ($aForumTopicsId as $sForumTopicId) {
                     if (isset($aMarkTopic[$sForumTopicId])) {
                         unset($aMarkTopic[$sForumTopicId]);
                     }
                 }
-                unset($aMarkTopicRel[$oTopic->getForumId()]);
+                unset($aMarkTopicRel[$sForumId]);
             }
 
             $this->oUserCurrent->setMarkForum($aMarkForum);
@@ -90,6 +92,7 @@ class PluginForum_ModuleUser extends ModuleORM
             $this->oUserCurrent->setMarkTopicRel($aMarkTopicRel);
             $this->oUserCurrent->Save();
         }
+        return true;
     }
 
     /**
@@ -134,7 +137,7 @@ class PluginForum_ModuleUser extends ModuleORM
             }
 
             $aMarkTopic[$sTopicId] = $sLastPostDate;
-            if ($sLastPostDate >= $sTopicLastPostDate)) {
+            if ($sLastPostDate >= $sTopicLastPostDate) {
                 $aMarkTopicRel[$sForumId][$sTopicId] = true;
             }
 
