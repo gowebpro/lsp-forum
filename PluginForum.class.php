@@ -73,7 +73,7 @@ class PluginForum extends Plugin
          * Подключаем JS
          * - для мобильной версии шаблона
          */
-        if (class_exists('MobileDetect') && MobileDetect::IsMobileTemplate(false)) {
+        if ((Config::Get('view.skin') == 'mobile') || (class_exists('MobileDetect') && MobileDetect::IsMobileTemplate(false))) {
             $this->Viewer_AppendScript(Plugin::GetTemplatePath(__CLASS__) . 'js/template.js');
         }
         /**
