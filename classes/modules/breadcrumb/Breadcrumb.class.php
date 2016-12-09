@@ -46,6 +46,17 @@ class PluginForum_ModuleBreadcrumb extends Module
         return $this->aItems;
     }
 
+    /**
+     * Добавляем HTML тайтлы их хлебных крошек
+     */
+    public function AddHtmlTitles()
+    {
+        $aItems = $this->GetCollection();
+        foreach ($aItems as $oItem) {
+            $this->Viewer_AddHtmlTitle($oItem->getTitle());
+        }
+    }
+
     public function Shutdown()
     {
         $this->Viewer_Assign('aBreadcrumbs', $this->aItems);

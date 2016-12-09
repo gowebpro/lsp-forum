@@ -38,12 +38,6 @@ class PluginForum_ActionForum extends ActionPlugin
      * @var string
      */
     protected $sMenuSubItemSelect = '';
-    /**
-     * Заголовки
-     *
-     * @var array
-     */
-    protected $aTitles = array('before' => array(), 'after' => array());
 
 
     /**
@@ -68,7 +62,7 @@ class PluginForum_ActionForum extends ActionPlugin
         /**
          * Заголовок
          */
-        $this->_addTitle($this->Lang_Get('plugin.forum.forums'));
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.forums'));
         /**
          * Устанавливаем дефолтный эвент
          */
@@ -967,7 +961,7 @@ class PluginForum_ActionForum extends ActionPlugin
         /**
          * Заголовок
          */
-        $this->_addTitle($this->Lang_Get('plugin.forum.authorization'));
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.authorization'));
         /**
          * Устанавливаем шаблон вывода
          */
@@ -1126,12 +1120,13 @@ class PluginForum_ActionForum extends ActionPlugin
          * Хлебные крошки
          */
         $this->PluginForum_Breadcrumb_Push($oForum, true);
+        $this->PluginForum_Breadcrumb_AddHtmlTitles();
         /**
          * Если установлен пароль
          */
         if (!$this->PluginForum_Forum_isForumAuthorization($oForum)) {
             $this->EventForumLogin($oForum);
-            return;
+            return false;
         }
         /**
          * Получаем текущую страницу
@@ -1236,16 +1231,17 @@ class PluginForum_ActionForum extends ActionPlugin
          * Хлебные крошки
          */
         $this->PluginForum_Breadcrumb_Push($oForum);
+        $this->PluginForum_Breadcrumb_AddHtmlTitles();
         /**
          * Заголовок
          */
-        $this->_addTitle($oTopic->getTitle());
+        $this->Viewer_AddHtmlTitle($oTopic->getTitle());
         /**
          * Если установлен пароль
          */
         if (!$this->PluginForum_Forum_isForumAuthorization($oForum)) {
             $this->EventForumLogin($oForum);
-            return;
+            return false;
         }
         /**
          * Загружаем переменные темы и форума в шаблон
@@ -1485,10 +1481,9 @@ class PluginForum_ActionForum extends ActionPlugin
                 return parent::EventNotFound();
         }
         /**
-         * Заголовки
+         * Заголовок
          */
-        $this->Viewer_SetHtmlTitle('');
-        $this->_addTitle($this->Lang_Get('plugin.forum.topic_' . $sAction) . ': ' . $oTopic->getTitle());
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.topic_' . $sAction));
         /**
          * Задаем шаблон
          */
@@ -1684,10 +1679,7 @@ class PluginForum_ActionForum extends ActionPlugin
              * Хлебные крошки
              */
             $this->PluginForum_Breadcrumb_Push($oForum);
-            /**
-             * Заголовки
-             */
-            $this->_addTitle($this->Lang_Get('plugin.forum.new_topic_for') . ' ' . $oForum->getTitle(), 'after');
+            $this->PluginForum_Breadcrumb_AddHtmlTitles();
         } else {
             /**
              * Получаем список форумов
@@ -1708,11 +1700,11 @@ class PluginForum_ActionForum extends ActionPlugin
                  */
                 $this->Message_AddError($this->Lang_Get('plugin.forum.new_topic_forum_error_empty'));
             }
-            /**
-             * Заголовки
-             */
-            $this->_addTitle($this->Lang_Get('plugin.forum.new_topic'), 'after');
         }
+        /**
+         * Заголовок
+         */
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.new_topic'));
         /**
          * Если нет временного ключа для нового поста, то генерируем. если есть, то загружаем файлы по этому ключу
          */
@@ -1974,7 +1966,7 @@ class PluginForum_ActionForum extends ActionPlugin
         /**
          * Заголовки
          */
-        $this->_addTitle($this->Lang_Get('plugin.forum.reply_for', array('topic' => $oTopic->getTitle())), 'after');
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.reply_for', array('topic' => $oTopic->getTitle())));
         /**
          * Устанавливаем шаблон вывода
          */
@@ -2209,13 +2201,14 @@ class PluginForum_ActionForum extends ActionPlugin
          * Хлебные крошки
          */
         $this->PluginForum_Breadcrumb_Push($oForum);
+        $this->PluginForum_Breadcrumb_AddHtmlTitles();
         /**
          * Заголовки
          */
         if ($bEditTopic) {
-            $this->_addTitle($this->Lang_Get('plugin.forum.topic_edit') . ' ' . $oForum->getTitle(), 'after');
+            $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.topic_edit') . ' ' . $oTopic->getTitle());
         } else {
-            $this->_addTitle($this->Lang_Get('plugin.forum.post_edit_for', array('topic' => $oTopic->getTitle())), 'after');
+            $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.post_edit_for', array('topic' => $oTopic->getTitle())));
         }
         if (!is_numeric(getRequest('post_id'))) {
             $_REQUEST['post_id'] = '';
@@ -2357,12 +2350,17 @@ class PluginForum_ActionForum extends ActionPlugin
             if (isPost('submit_topic_delete')) {
                 return $this->submitTopicDelete($oTopic);
             }
-            $this->Viewer_SetHtmlTitle('');
+            /**
+             * Хлебные крошки
+             */
+            $this->PluginForum_Breadcrumb_Push($oTopic->getForum());
+            $this->PluginForum_Breadcrumb_AddHtmlTitles();
+            $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.topic_delete') . ': ' . $oTopic->getTitle());
+
             $this->Viewer_Assign('oTopic', $oTopic);
-            $this->_addTitle($this->Lang_Get('plugin.forum.topic_delete') . ': ' . $oTopic->getTitle());
             $this->SetTemplateAction('delete_topic');
             // костыль end
-            return;
+            return false;
         }
         /**
          * Вызов хуков
@@ -3199,7 +3197,7 @@ class PluginForum_ActionForum extends ActionPlugin
         }
 
         $this->sMenuItemSelect = 'admin';
-        $this->_addTitle($this->Lang_Get('plugin.forum.acp'));
+        $this->Viewer_AddHtmlTitle($this->Lang_Get('plugin.forum.acp'));
         /**
          * Подключаем CSS
          */
@@ -3396,42 +3394,10 @@ class PluginForum_ActionForum extends ActionPlugin
 
 
     /**
-     * Заголовки
-     */
-    private function _addTitle($sTitle = null, $sAction = 'before')
-    {
-        if (!(in_array($sAction, array('before', 'after')))) {
-            $sAction = 'before';
-        }
-        if ($sTitle)
-            $this->aTitles[$sAction][] = $sTitle;
-    }
-
-
-    /**
      * Завершение работы экшена
      */
     public function EventShutdown()
     {
-        /**
-         * Titles. Before breadcrumbs
-         */
-        foreach ($this->aTitles['before'] as $sTitle) {
-            $this->Viewer_AddHtmlTitle($sTitle);
-        }
-        /**
-         * Breadcrumbs
-         */
-        $aBreadcrumbs = $this->PluginForum_Breadcrumb_GetCollection();
-        foreach ($aBreadcrumbs as $oItem) {
-            $this->Viewer_AddHtmlTitle($oItem->getTitle());
-        }
-        /**
-         * Titles. After breadcrumbs
-         */
-        foreach ($this->aTitles['after'] as $sTitle) {
-            $this->Viewer_AddHtmlTitle($sTitle);
-        }
         /**
          * Загружаем в шаблон необходимые переменные
          */
