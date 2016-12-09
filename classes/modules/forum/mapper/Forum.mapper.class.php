@@ -274,7 +274,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper
      * Получает пользователей, дата рождения которых совпадает с текущей
      *
      * @param    integer $iLimit
-     * @return    integer
+     * @return    array
      */
     public function GetUsersByBirthday($iLimit)
     {
@@ -285,7 +285,7 @@ class PluginForum_ModuleForum_MapperForum extends Mapper
         $aResult = array();
         if ($aRows = $this->oDb->select($sql, '%' . date('m-d') . '%', $iLimit)) {
             foreach ($aRows as $aRow) {
-                $aResult = $aRow['user_id'];
+                $aResult[] = $aRow['user_id'];
             }
         }
         return $aResult;
