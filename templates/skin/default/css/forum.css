@@ -901,6 +901,7 @@ h4.page-subheader {
     padding: 0;
 }
 
+
 .text .spoiler-wrap {
     width: 98%;
     clear: both;
@@ -920,26 +921,31 @@ h4.page-subheader {
 }
 
 .text .spoiler-head {
+    position: relative;
     display: block;
     border-width: 0;
     font-size: 11px;
-    padding: 1px 14px 3px;
+    padding: 6px 14px 5px;
     margin-left: 6px;
-    line-height: 15px;
+    line-height: 14px;
     font-weight: bold;
     color: #2A2A2A;
     text-align: left !important;
     cursor: pointer
 }
-
-.text .spoiler-head.folded {
-    padding-left: 14px;
-    background: transparent url(../images/sp_folded.gif) no-repeat left center
+.text .spoiler-head::before {
+    position: absolute;
+    top: 7px;
+    left: 3px;
+    border: 5px solid #000;
+    border-right-width: 0;
+    border-top-color: transparent;
+    border-bottom-color: transparent;;
+    transition: transform 0.2s;
+    content: "";
 }
-
-.text .spoiler-head.unfolded {
-    padding-left: 14px;
-    background: transparent url(../images/sp_unfolded.gif) no-repeat left center
+.text .spoiler-head.unfolded::before {
+    transform: rotate(90deg);
 }
 
 .text .spoiler-body {

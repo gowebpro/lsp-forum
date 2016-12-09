@@ -839,6 +839,7 @@ h4.page-subheader {
 }
 
 .text .spoiler-head {
+    position: relative;
     display: block;
     border-width: 0;
     font-size: 11px;
@@ -850,15 +851,19 @@ h4.page-subheader {
     text-align: left !important;
     cursor: pointer
 }
-
-.text .spoiler-head.folded {
-    padding-left: 14px;
-    background: transparent url(../images/sp_folded.gif) no-repeat left center;
+.text .spoiler-head::before {
+    position: absolute;
+    top: 8px;
+    left: 3px;
+    border: 5px solid #000;
+    border-right-width: 0;
+    border-top-color: transparent;
+    border-bottom-color: transparent;;
+    transition: transform 0.2s;
+    content: "";
 }
-
-.text .spoiler-head.unfolded {
-    padding-left: 14px;
-    background: transparent url(../images/sp_unfolded.gif) no-repeat left center
+.text .spoiler-head.unfolded::before {
+    transform: rotate(90deg);
 }
 
 .text .spoiler-body {
