@@ -44,4 +44,122 @@ class PluginForum_ModuleUser extends ModuleORM
         return $this->GetUserItemsByArrayUserId($aIds);
     }
 
+    /**
+     * Отмечаем прочтенным всё
+     * @return bool
+     */
+    public function MarkAll()
+    {
+        if ($this->oUserCurrent) {
+            $this->oUserCurrent->setMarkAll(time());
+            $this->oUserCurrent->setMarkForum(array());
+            $this->oUserCurrent->setMarkTopic(array());
+            $this->oUserCurrent->setMarkTopicRel(array());
+            $this->oUserCurrent->Save();
+        }
+        return true;
+    }
+
+    /**
+     * Отмечаем форум как прочитанный
+     * @param PluginForum_ModuleForum_EntityForum_ $oForum
+     */
+    public function MarkForum(PluginForum_ModuleForum_EntityForum_$oForum)
+    {
+        if ($this->oUserCurrent) {
+            $sMarkAll = $this->oUserCurrent->getMarkAll();
+            $aMarkForum = $this->oUserCurrent->getMarkForum();
+            $aMarkTopic = $this->oUserCurrent->getMarkTopic();
+            $aMarkTopicRel = $this->oUserCurrent->getMarkTopicRel();
+
+            $aMarkForum[$oTopic->getId()] = time();
+
+            if (isset($aMarkTopicRel[$oTopic->getForumId()]) {
+                $aForumTopicsId = $aMarkTopicRel[$oTopic->getForumId()];
+
+                foreach ($aForumTopicsId as $sForumTopicId) {
+                    if (isset($aMarkTopic[$sForumTopicId])) {
+                        unset($aMarkTopic[$sForumTopicId]);
+                    }
+                }
+                unset($aMarkTopicRel[$oTopic->getForumId()]);
+            }
+
+            $this->oUserCurrent->setMarkForum($aMarkForum);
+            $this->oUserCurrent->setMarkTopic($aMarkTopic);
+            $this->oUserCurrent->setMarkTopicRel($aMarkTopicRel);
+            $this->oUserCurrent->Save();
+        }
+    }
+
+    /**
+     * Отмечаем топик как прочитанный
+     * @param PluginForum_ModuleForum_EntityTopic $oTopic
+     * @param PluginForum_ModuleForum_EntityPost $oLastPost
+     */
+    public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic, $oLastPost = null)
+    {
+        if ($this->oUserCurrent) {
+            $sMarkAll = $this->oUserCurrent->getMarkAll();
+            $aMarkForum = $this->oUserCurrent->getMarkForum();
+            $aMarkTopic = $this->oUserCurrent->getMarkTopic();
+            $aMarkTopicRel = $this->oUserCurrent->getMarkTopicRel();
+
+            $sForumId = $oTopic->getForumId();
+            $sTopicId = $oTopic->getId();
+
+            $sTopicLastPostDate = strtotime($oTopic->getLastPostDate());
+            $sLastPostDate = (!$oLastPost) ? $sTopicLastPostDate : strtotime($oLastPost->getDateAdd());
+            /**
+             * Имеется более свежая отметка о прочтении всего
+             */
+            if (strtotime($sMarkAll) >= $sLastPostDate) {
+                return false;
+            }
+            /**
+             * Имеется более свежая отметка о прочтении форума
+             */
+            if (isset($aMarkForum[$sForumId])) {
+                if ($aMarkForum[$sForumId] >= $sLastPostDate) {
+                    return false;
+                }
+            }
+            /**
+             * Отметка о прочтении топика имеется и она более свежая
+             */
+            if (isset($aMarkTopic[$sTopicId])) {
+                if ($aMarkTopic[$sTopicId] >= $sLastPostDate) {
+                    return false;
+                }
+            }
+
+            $aMarkTopic[$sTopicId] = $sLastPostDate;
+            if ($sLastPostDate >= $sTopicLastPostDate)) {
+                $aMarkTopicRel[$sForumId][$sTopicId] = true;
+            }
+
+            /**
+             * Проверка прочтенности всех тем форума
+             * Если нужно, отмечаем форум как прочитанный
+             */
+            $bForumMarkNeed = true;
+            if ($aForumTopicsId = $this->PluginForum_Forum_GetTopicsIdByForumId($sForumId)) {
+                foreach ($aForumTopicsId as $sForumTopicId) {
+                    if (!isset($aMarkTopicRel[$sForumId][$sForumTopicId])) {
+                        $bForumMarkNeed = false;
+                        break;
+                    }
+                }
+            }
+            if (!$bForumMarkNeed) {
+                $this->oUserCurrent->setMarkTopic($aMarkTopic);
+                $this->oUserCurrent->setMarkTopicRel($aMarkTopicRel);
+                $this->oUserCurrent->Save();
+            } else {
+                $this->MarkForum($this->PluginForum_Forum_GetForumById($sForumId));
+            }
+        }
+        return true;
+    }
+
 }

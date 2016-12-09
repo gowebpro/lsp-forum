@@ -291,11 +291,10 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
 CREATE TABLE IF NOT EXISTS `prefix_forum_user` (
 	`user_id` int(11) unsigned NOT NULL,
 	`user_post_count` int(11) unsigned NOT NULL,
-	`user_last_mark` datetime DEFAULT NULL,
-	`user_last_sync` datetime DEFAULT NULL,
   `mark_all` datetime DEFAULT NULL,
   `mark_forum` text DEFAULT NULL,
   `mark_topic` text DEFAULT NULL,
+	`mark_topic_rel` text DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

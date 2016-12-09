@@ -1015,8 +1015,11 @@ class PluginForum_ActionForum extends ActionPlugin
          * Маркируем все форумы как прочитанные
          */
         if (getRequestStr('markread') === 'all') {
-            //todo: alert
-        //    $this->PluginForum_Forum_MarkAll();
+            if ($this->PluginForum_User_MarkAll()) {
+                $this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.mark_all_success'), null, true);
+            } else {
+                $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'), true);
+            }
             Router::Location(Router::GetPath('forum'));
         }
         /**
@@ -1040,7 +1043,6 @@ class PluginForum_ActionForum extends ActionPlugin
 
     /**
      * Маркируем форум как прочитанный
-     *    todo: alert
      */
     public function EventMarkForum()
     {
@@ -1058,18 +1060,14 @@ class PluginForum_ActionForum extends ActionPlugin
             if (!($oForum = $this->PluginForum_Forum_GetForumById($sUrl))) {
                 return parent::EventNotFound();
             }
-            if ($oForum->getUrl()) {
-                Router::Location($oForum->getUrlFull());
-            }
         }
-        /**
-         * Маркируем форум
-         */
-     //   $this->PluginForum_Forum_MarkForum($oForum);
-        /**
-         * Редирект
-         */
+        if ($this->PluginForum_User_MarkForum($oForum)) {
+            $this->Message_AddNoticeSingle($this->Lang_Get('plugin.forum.mark_forum_success'), null, true);
+        } else {
+            $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'), true);
+        }
         Router::Location($oForum->getUrlFull());
+        return true;
     }
 
     /**
@@ -1318,7 +1316,7 @@ class PluginForum_ActionForum extends ActionPlugin
             /**
              * Маркировка
              */
-      //      $this->PluginForum_Forum_MarkTopic($oTopic, $aPosts ? end($aPosts) : $oHeadPost);
+            $this->PluginForum_User_MarkTopic($oTopic, $aPosts ? end($aPosts) : $oHeadPost);
             /**
              * Просмотры
              */

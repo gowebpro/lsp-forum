@@ -123,6 +123,23 @@ class PluginForum_ModuleForum_MapperForum extends Mapper
     }
 
     /**
+     * Получаем список ID всех топиков форума
+     * @param $sForumId
+     */
+    public function GetTopicsIdByForumId($sForumId) {
+        $sql = 'SELECT topic_id
+				FROM ' . Config::Get('db.table.forum_topic') . '
+				WHERE forum_id = ?';
+        $aResult = array();
+        if ($aRows = $this->oDb->select($sql, $sForumId)) {
+            foreach ($aRows as $aRow) {
+                $aResult[] = $aRow['topic_id'];
+            }
+        }
+        return $aResult;
+    }
+
+    /**
      * Получает количество тем в форуме по ID
      *
      * @param    integer $sFid
