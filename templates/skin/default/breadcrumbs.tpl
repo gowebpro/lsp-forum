@@ -1,6 +1,16 @@
 <a href="{router page='forum'}">{$aLang.plugin.forum.forums}</a>
 
-{foreach from=$aBreadcrumbs item=aItem name=breadcrumbs}
-	<span>&raquo;</span> <a href="{$aItem.url}">{$aItem.title|escape:'html'}</a>
-	{if !$smarty.foreach.breadcrumbs.last}{/if}
+{foreach $aBreadcrumbs as $oItem}
+    {strip}
+		<span>&raquo;</span>
+        {if $oItem->getLink()}
+			<a href="{$oItem->getUrl()}">
+        {/if}
+
+        {$oItem->getTitle()|escape:'html'}
+
+        {if $oItem->getLink()}
+			</a>
+        {/if}
+    {/strip}
 {/foreach}
