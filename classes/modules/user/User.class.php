@@ -1,4 +1,5 @@
 <?php
+
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
@@ -67,7 +68,7 @@ class PluginForum_ModuleUser extends ModuleORM
     public function MarkForum(PluginForum_ModuleForum_EntityForum $oForum)
     {
         if ($this->oUserCurrent) {
-            $sMarkAll = $this->oUserCurrent->getMarkAll();
+            $iMarkAll = $this->oUserCurrent->getMarkAll();
             $aMarkForum = $this->oUserCurrent->getMarkForum();
             $aMarkTopic = $this->oUserCurrent->getMarkTopic();
             $aMarkTopicRel = $this->oUserCurrent->getMarkTopicRel();
@@ -103,7 +104,7 @@ class PluginForum_ModuleUser extends ModuleORM
     public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic, $oLastPost = null)
     {
         if ($this->oUserCurrent) {
-            $sMarkAll = $this->oUserCurrent->getMarkAll();
+            $iMarkAll = $this->oUserCurrent->getMarkAll();
             $aMarkForum = $this->oUserCurrent->getMarkForum();
             $aMarkTopic = $this->oUserCurrent->getMarkTopic();
             $aMarkTopicRel = $this->oUserCurrent->getMarkTopicRel();
@@ -116,7 +117,7 @@ class PluginForum_ModuleUser extends ModuleORM
             /**
              * Имеется более свежая отметка о прочтении всего
              */
-            if (strtotime($sMarkAll) >= $sLastPostDate) {
+            if ($iMarkAll >= $sLastPostDate) {
                 return false;
             }
             /**
@@ -139,30 +140,114 @@ class PluginForum_ModuleUser extends ModuleORM
             $aMarkTopic[$sTopicId] = $sLastPostDate;
             if ($sLastPostDate >= $sTopicLastPostDate) {
                 $aMarkTopicRel[$sForumId][$sTopicId] = true;
-            }
-
-            /**
-             * Проверка прочтенности всех тем форума
-             * Если нужно, отмечаем форум как прочитанный
-             */
-            $bForumMarkNeed = true;
-            if ($aForumTopicsId = $this->PluginForum_Forum_GetTopicsIdByForumId($sForumId)) {
-                foreach ($aForumTopicsId as $sForumTopicId) {
-                    if (!isset($aMarkTopicRel[$sForumId][$sForumTopicId])) {
-                        $bForumMarkNeed = false;
-                        break;
+                /**
+                 * Проверка прочтенности всех тем форума
+                 * Если нужно, отмечаем форум как прочитанный
+                 */
+                $bForumMarkNeed = true;
+                if ($aForumTopicsId = $this->PluginForum_Forum_GetTopicsIdByForumId($sForumId)) {
+                    foreach ($aForumTopicsId as $sForumTopicId) {
+                        if (!isset($aMarkTopicRel[$sForumId][$sForumTopicId])) {
+                            $bForumMarkNeed = false;
+                            break;
+                        }
                     }
                 }
+                if ($bForumMarkNeed) {
+                    $this->MarkForum($this->PluginForum_Forum_GetForumById($sForumId));
+                    return true;
+                }
             }
-            if (!$bForumMarkNeed) {
-                $this->oUserCurrent->setMarkTopic($aMarkTopic);
-                $this->oUserCurrent->setMarkTopicRel($aMarkTopicRel);
-                $this->oUserCurrent->Save();
-            } else {
-                $this->MarkForum($this->PluginForum_Forum_GetForumById($sForumId));
-            }
+            $this->oUserCurrent->setMarkTopic($aMarkTopic);
+            $this->oUserCurrent->setMarkTopicRel($aMarkTopicRel);
+            $this->oUserCurrent->Save();
         }
         return true;
     }
 
+    /**
+     * Возвращает отметку прочтения форума
+     * @param PluginForum_ModuleForum_EntityForum $oForum
+     * @return PluginForum_ModuleForum_EntityForum
+     */
+    public function SetMarkForum(PluginForum_ModuleForum_EntityForum $oForum)
+    {
+        if ($this->oUserCurrent && $oForum->getLastPostDate()) {
+            $iMarkAll = $this->oUserCurrent->getMarkAll();
+            $aMarkForum = $this->oUserCurrent->getMarkForum();
+
+            $sForumLastPostDate = strtotime($oForum->getLastPostDate());
+            $bForumReadStatus = false;
+            /**
+             * Глобальный маркер свежее последнего поста в форуме
+             */
+            if ($iMarkAll >= $sForumLastPostDate) {
+                $bForumReadStatus = true;
+            }
+            /**
+             * Маркер форума свежее последнего поста
+             */
+            if (!$bForumReadStatus) {
+                if (isset($aMarkForum[$oForum->getId()])) {
+                    if ($aMarkForum[$oForum->getId()] >= $sForumLastPostDate) {
+                        $bForumReadStatus = true;
+                    }
+                }
+            }
+            $oForum->setRead($bForumReadStatus);
+        }
+        return $oForum;
+    }
+
+    /**
+     * Возвращает отметку о прочтении темы
+     * @param PluginForum_ModuleForum_EntityTopic $oTopic
+     * @return PluginForum_ModuleForum_EntityTopic
+     */
+    public function SetMarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic)
+    {
+        if ($this->oUserCurrent && $oTopic->getLastPostDate()) {
+            $iMarkAll = $this->oUserCurrent->getMarkAll();
+            $aMarkForum = $this->oUserCurrent->getMarkForum();
+            $aMarkTopic = $this->oUserCurrent->getMarkTopic();
+
+            $sTopicId = $oTopic->getId();
+            $sForumId = $oTopic->getForumId();
+            $iTopicLastPostDate = strtotime($oTopic->getLastPostDate());
+            $bTopicReadStatus = false;
+            $sTopicReadDate = null;
+            /**
+             * Глобальный маркер свежее последнего поста в топике
+             */
+            if ($iMarkAll >= $iTopicLastPostDate) {
+                $bTopicReadStatus = true;
+                $sTopicReadDate = date('Y-m-d H:i:s', $iMarkAll);
+            }
+            /**
+             * Маркер форума свежее последнего поста
+             */
+            if (!$bTopicReadStatus) {
+                if (isset($aMarkForum[$sForumId])) {
+                    if ($aMarkForum[$sForumId] >= $iTopicLastPostDate) {
+                        $bTopicReadStatus = true;
+                        $sTopicReadDate = date('Y-m-d H:i:s', $aMarkForum[$sForumId]);
+                    }
+                }
+            }
+            /**
+             * Маркер топика свежее последнего поста
+             */
+            if (!$bTopicReadStatus) {
+                if (isset($aMarkTopic[$sTopicId])) {
+                    if ($aMarkTopic[$sTopicId] >= $iTopicLastPostDate) {
+                        $bTopicReadStatus = true;
+                    }
+                    $sTopicReadDate = date('Y-m-d H:i:s', $aMarkTopic[$sTopicId]);
+                }
+            }
+            $oTopic->setRead($bTopicReadStatus);
+            $oTopic->setReadDate($sTopicReadDate);
+        }
+        return $oTopic;
+    }
 }

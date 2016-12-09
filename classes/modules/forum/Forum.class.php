@@ -329,14 +329,7 @@ class PluginForum_ModuleForum extends ModuleORM
     protected function CalcChildren($oForum, $bPerm = 1, $bMark = 0)
     {
         if ($bMark) {
-            /*
-            $aMark = $this->GetMarking();
-            $sUserMark = (isset($aMark[self::MARKER_USER])) ? $aMark[self::MARKER_USER] : null;
-            $sMarkDate = (isset($aMark[self::MARKER_FORUM][$oForum->getId()])) ? $aMark[self::MARKER_FORUM][$oForum->getId()] : $sUserMark;
-            if (!$oForum->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate()))) {
-                $oForum->setRead(true);
-            }
-            */
+            $oForum = $this->PluginForum_User_SetMarkForum($oForum);
         }
         $aChildren = $oForum->getChildren();
         if (!empty($aChildren)) {
@@ -826,11 +819,7 @@ class PluginForum_ModuleForum extends ModuleORM
          * Получаем дополнительные данные
          */
         if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-            /*
-            $aMark = $this->GetMarking();
-            $aForumMark = isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
-            $sUserMark = isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
-            */
+            // возможно лучше массово получать статус чтения?
         }
         foreach ($aForums as $oForum) {
             if (isset($aAllowData['calculate'])) {
@@ -839,15 +828,7 @@ class PluginForum_ModuleForum extends ModuleORM
             } else {
                 // Маркировка
                 if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-                    /*
-                    $sMarkDate = (isset($aForumMark[$oForum->getId()]) && strtotime($aForumMark[$oForum->getId()]) > strtotime($sUserMark))
-                        ? $aForumMark[$oForum->getId()] : $sUserMark;
-                    if (!$oForum->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oForum->getLastPostDate()))) {
-                        $oForum->setRead(true);
-                    } else {
-                        $oForum->setRead(false);
-                    }
-                    */
+                    $oForum = $this->PluginForum_User_SetMarkForum($oForum);
                 }
                 // Права доступа + принадлежность к модераторам
                 if (isset($aAllowData['perms'])) {
@@ -893,15 +874,7 @@ class PluginForum_ModuleForum extends ModuleORM
                      * TODO: избавится от дублирования
                      */
                     if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-                        /*
-                        $sMarkDate = (isset($aForumMark[$oChildren->getId()]) && strtotime($aForumMark[$oChildren->getId()]) > strtotime($sUserMark))
-                            ? $aForumMark[$oChildren->getId()] : $sUserMark;
-                        if (!$oChildren->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oChildren->getLastPostDate()))) {
-                            $oChildren->setRead(true);
-                        } else {
-                            $oChildren->setRead(false);
-                        }
-                        */
+                        $oChildren = $this->PluginForum_User_SetMarkForum($oChildren);
                     }
                     if (isset($aAllowData['perms'])) {
                         $oChildren = $this->BuildPerms($oChildren);
@@ -986,12 +959,7 @@ class PluginForum_ModuleForum extends ModuleORM
          * если нужно подцепить маркировку
          */
         if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-            /*
-            $aMark = $this->GetMarking();
-            $aForumMark = isset($aMark[self::MARKER_FORUM]) ? $aMark[self::MARKER_FORUM] : array();
-            $aTopicMark = isset($aMark[self::MARKER_TOPIC]) ? $aMark[self::MARKER_TOPIC] : array();
-            $sUserMark = isset($aMark[self::MARKER_USER]) ? $aMark[self::MARKER_USER] : null;
-            */
+
         }
         /**
          * если нужно подцепить форумы
@@ -1034,18 +1002,7 @@ class PluginForum_ModuleForum extends ModuleORM
          */
         foreach ($aTopics as $oTopic) {
             if (isset($aAllowData['marker']) && $this->oUserCurrent) {
-                /*
-                $sMarkDate = (isset($aForumMark[$oTopic->getForumId()]) && strtotime($aForumMark[$oTopic->getForumId()]) > strtotime($sUserMark))
-                    ? $aForumMark[$oTopic->getForumId()] : $sUserMark;
-                $sMarkDate = (isset($aTopicMark[$oTopic->getId()]) && strtotime($aTopicMark[$oTopic->getId()]) > strtotime($sMarkDate))
-                    ? $aTopicMark[$oTopic->getId()] : $sMarkDate;
-                if (!$oTopic->getLastPostDate() || ($sMarkDate && strtotime($sMarkDate) >= strtotime($oTopic->getLastPostDate()))) {
-                    $oTopic->setRead(true);
-                } else {
-                    $oTopic->setRead(false);
-                }
-                $oTopic->setReadDate($sMarkDate);
-                */
+                $oTopic = $this->PluginForum_User_SetMarkTopic($oTopic);
             }
             if (isset($aForums[$oTopic->getForumId()])) {
                 $oTopic->setForum($aForums[$oTopic->getForumId()]);
@@ -1342,7 +1299,8 @@ class PluginForum_ModuleForum extends ModuleORM
      * Получаем список ID всех топиков форума
      * @param $sForumId
      */
-    public function GetTopicsIdByForumId($sForumId) {
+    public function GetTopicsIdByForumId($sForumId)
+    {
         return $this->oMapperForum->GetTopicsIdByForumId($sForumId);
     }
 }
