@@ -291,7 +291,7 @@ CREATE TABLE IF NOT EXISTS `prefix_forum_readonly` (
 CREATE TABLE IF NOT EXISTS `prefix_forum_user` (
 	`user_id` int(11) unsigned NOT NULL,
 	`user_post_count` int(11) unsigned NOT NULL,
-  `mark_all` datetime DEFAULT NULL,
+  `mark_all` INT(11) DEFAULT NULL,
   `mark_forum` text DEFAULT NULL,
   `mark_topic` text DEFAULT NULL,
 	`mark_topic_rel` text DEFAULT NULL,
