@@ -779,29 +779,32 @@ h4.page-subheader {
 }
 
 /* Text */
-.forum-topic .text blockquote {
-    padding: 0;
-    margin-bottom: 10px;
+.forum-quote {
+    position: relative;
+    margin: 10px 0 !important;
     -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+    background-color: #F6F6F6;
 }
 
-.forum-topic .text blockquote .quote-head {
-    font-size: 12px;
+.forum-quote > .quote-head {
+    margin: -3px -10px 10px;
     padding: 5px 10px;
-    background-color: #E5E5E5;
+    background-color: #dfdfdf;
     font-weight: bold;
 }
 
-.forum-topic .text blockquote .quote-text {
-    background-color: #F6F6F6;
-    padding: 5px 10px;
+.forum-quote > .quote-head a {
+    margin-right: 10px;
+    font-weight: bold;
 }
 
 .forum-topic .text blockquote .quote-text pre {
     padding: 0;
 }
 
+
+/* Clearfix */
 .forum-post-header:before,
 .forum-post-header:after {
     content: " ";
