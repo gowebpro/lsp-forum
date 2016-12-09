@@ -1,8 +1,8 @@
 <a href="{router page='forum'}">{$aLang.plugin.forum.forums}</a>
 
 {foreach $aBreadcrumbs as $oItem}
+    <span>&raquo;</span>
     {strip}
-        <span>&raquo;</span>
         {if $oItem->getLink()}
             <a href="{$oItem->getUrl()}">
         {/if}
