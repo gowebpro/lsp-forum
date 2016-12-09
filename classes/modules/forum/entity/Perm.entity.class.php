@@ -1,4 +1,5 @@
 <?php
+
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
@@ -10,8 +11,10 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleForum_EntityPerm extends EntityORM {
-	protected $aRelations = array();
+class PluginForum_ModuleForum_EntityPerm extends EntityORM
+{
+    protected $aRelations = array();
 
 }
+
 ?>

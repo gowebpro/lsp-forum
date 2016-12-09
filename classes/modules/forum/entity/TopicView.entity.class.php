@@ -1,4 +1,5 @@
 <?php
+
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
@@ -10,10 +11,11 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleForum_EntityTopicView extends EntityORM {
-	protected $aRelations = array(
-		'topic'=>array(self::RELATION_TYPE_BELONGS_TO,'PluginForum_ModuleForum_EntityTopic','topic_id')
-	);
+class PluginForum_ModuleForum_EntityTopicView extends EntityORM
+{
+    protected $aRelations = array(
+        'topic' => array(self::RELATION_TYPE_BELONGS_TO, 'PluginForum_ModuleForum_EntityTopic', 'topic_id')
+    );
 }
 
 ?>

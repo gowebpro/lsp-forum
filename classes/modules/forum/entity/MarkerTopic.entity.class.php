@@ -1,4 +1,5 @@
 <?php
+
 /*---------------------------------------------------------------------------
 * @Module Name: Forum
 * @Description: Forum for LiveStreet
@@ -10,7 +11,8 @@
 *----------------------------------------------------------------------------
 */
 
-class PluginForum_ModuleForum_EntityMarkerTopic extends EntityORM {
+class PluginForum_ModuleForum_EntityMarkerTopic extends EntityORM
+{
 
 }
 

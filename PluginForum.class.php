@@ -142,7 +142,7 @@ class PluginForum extends Plugin
      */
     private function simpleInstall()
     {
-        $this->ExportSQL(dirname(__FILE__).'/sql/install.sql');
+        $this->ExportSQL(dirname(__FILE__) . '/sql/install.sql');
     }
 
     /**
@@ -164,7 +164,7 @@ class PluginForum extends Plugin
             $this->ExportSQL(dirname(__FILE__) . '/sql/update20120423.sql');
         }
         if (!$this->isFieldExists('prefix_forum_topic', 'topic_user_ip')) {
-            $this->ExportSQL(dirname(__FILE__).'/sql/update20120426.sql');
+            $this->ExportSQL(dirname(__FILE__) . '/sql/update20120426.sql');
         }
         if (!$this->isFieldExists('prefix_forum_post', 'post_new_topic')) {
             $this->ExportSQL(dirname(__FILE__) . '/sql/update20120501.sql');

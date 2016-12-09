@@ -14,28 +14,31 @@
  * Обрабатывает блок активности форум
  *
  */
-class PluginForum_BlockForum extends Block {
+class PluginForum_BlockForum extends Block
+{
 
-	public function Exec() {
-		/**
-		 * Получаем список форумов, открытых для пользователя
-		 */
-		$aForumsId=$this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(),true);
-		/**
-		 * Получаем последние топики
-		 */
-		if ($aForumsId) {
-			$aLastTopics=$this->PluginForum_Forum_GetTopicItemsAll(
-				array(
-					'#where'=>array('forum_id IN (?a)'=>array($aForumsId)),
-					'#order'=>array('last_post_id'=>'desc'),
-					'#page'=>array(1,Config::Get('block.stream.row'))
-				)
-			);
-			if (!empty($aLastTopics['collection'])) {
-				$this->Viewer_Assign('aLastTopics',$aLastTopics['collection']);
-			}
-		}
-	}
+    public function Exec()
+    {
+        /**
+         * Получаем список форумов, открытых для пользователя
+         */
+        $aForumsId = $this->PluginForum_Forum_GetOpenForumsUser(LS::CurUsr(), true);
+        /**
+         * Получаем последние топики
+         */
+        if ($aForumsId) {
+            $aLastTopics = $this->PluginForum_Forum_GetTopicItemsAll(
+                array(
+                    '#where' => array('forum_id IN (?a)' => array($aForumsId)),
+                    '#order' => array('last_post_id' => 'desc'),
+                    '#page' => array(1, Config::Get('block.stream.row'))
+                )
+            );
+            if (!empty($aLastTopics['collection'])) {
+                $this->Viewer_Assign('aLastTopics', $aLastTopics['collection']);
+            }
+        }
+    }
 }
+
 ?>

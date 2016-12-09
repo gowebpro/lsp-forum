@@ -14,73 +14,85 @@
  * Регистрация хуков
  *
  */
-class PluginForum_HookForum extends Hook {
-	public function RegisterHook() {
-		$this->AddHook('template_forum_copyright','ForumCopyright',__CLASS__,100);
-		$this->AddHook('template_main_menu_item','MainMenu',__CLASS__,100);
-		$this->AddHook('template_menu_profile_created_item','MenuProfileCreated',__CLASS__,100);
-		$this->AddHook('template_menu_create_item_select','MenuCreateItemSelect',__CLASS__,100);
-		$this->AddHook('template_menu_create_item','MenuCreateItem',__CLASS__,100);
-		$this->AddHook('template_stream_list_event_add_forum_topic','StreamEventAddForumTopic');
-		$this->AddHook('template_stream_list_event_add_forum_post','StreamEventAddForumPost');
-		$this->AddHook('template_block_stream_nav_item','BlockStreamNav');
-		$this->AddHook('template_write_item','WriteItem',__CLASS__,100);
-		$this->AddHook('template_footer_menu_navigate_item','MainMenu',__CLASS__,100);
-	}
+class PluginForum_HookForum extends Hook
+{
+    public function RegisterHook()
+    {
+        $this->AddHook('template_forum_copyright', 'ForumCopyright', __CLASS__, 100);
+        $this->AddHook('template_main_menu_item', 'MainMenu', __CLASS__, 100);
+        $this->AddHook('template_menu_profile_created_item', 'MenuProfileCreated', __CLASS__, 100);
+        $this->AddHook('template_menu_create_item_select', 'MenuCreateItemSelect', __CLASS__, 100);
+        $this->AddHook('template_menu_create_item', 'MenuCreateItem', __CLASS__, 100);
+        $this->AddHook('template_stream_list_event_add_forum_topic', 'StreamEventAddForumTopic');
+        $this->AddHook('template_stream_list_event_add_forum_post', 'StreamEventAddForumPost');
+        $this->AddHook('template_block_stream_nav_item', 'BlockStreamNav');
+        $this->AddHook('template_write_item', 'WriteItem', __CLASS__, 100);
+        $this->AddHook('template_footer_menu_navigate_item', 'MainMenu', __CLASS__, 100);
+    }
 
 
-	public function ForumCopyright() {
-		if (Config::Get('plugin.forum.donator')) {
-			return;
-		}
-		$aPlugins=$this->Plugin_GetList();
-		if (!(isset($aPlugins['forum']))) {
-			return;
-		}
-		$aForumData=$aPlugins['forum']['property'];
-		$this->Viewer_Assign('aForumData',$aForumData);
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'copyright.tpl');
-	}
+    public function ForumCopyright()
+    {
+        if (Config::Get('plugin.forum.donator')) {
+            return;
+        }
+        $aPlugins = $this->Plugin_GetList();
+        if (!(isset($aPlugins['forum']))) {
+            return;
+        }
+        $aForumData = $aPlugins['forum']['property'];
+        $this->Viewer_Assign('aForumData', $aForumData);
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'copyright.tpl');
+    }
 
-	public function MainMenu() {
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'main_menu.tpl');
-	}
+    public function MainMenu()
+    {
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'main_menu.tpl');
+    }
 
-	public function MenuProfileCreated() {
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'menu.profile_created.tpl');
-	}
+    public function MenuProfileCreated()
+    {
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'menu.profile_created.tpl');
+    }
 
-	public function MenuCreateItemSelect() {
-		$this->Viewer_Assign('sCurrentViewMode',1);
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'menu.create.content.tpl');
-	}
+    public function MenuCreateItemSelect()
+    {
+        $this->Viewer_Assign('sCurrentViewMode', 1);
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'menu.create.content.tpl');
+    }
 
-	public function MenuCreateItem() {
-		$this->Viewer_Assign('sCurrentViewMode',2);
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'menu.create.content.tpl');
-	}
+    public function MenuCreateItem()
+    {
+        $this->Viewer_Assign('sCurrentViewMode', 2);
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'menu.create.content.tpl');
+    }
 
-	public function StreamEventAddForumTopic($aParams=array()) {
-		if (isset($aParams['oStreamEvent'])) {
-			$this->Viewer_Assign('oStreamEvent',$aParams['oStreamEvent']);
-			return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'event.add_topic.tpl');
-		}
-	}
+    public function StreamEventAddForumTopic($aParams = array())
+    {
+        if (isset($aParams['oStreamEvent'])) {
+            $this->Viewer_Assign('oStreamEvent', $aParams['oStreamEvent']);
+            return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'event.add_topic.tpl');
+        }
+    }
 
-	public function StreamEventAddForumPost($aParams=array()) {
-		if (isset($aParams['oStreamEvent'])) {
-			$this->Viewer_Assign('oStreamEvent',$aParams['oStreamEvent']);
-			return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'event.add_post.tpl');
-		}
-	}
+    public function StreamEventAddForumPost($aParams = array())
+    {
+        if (isset($aParams['oStreamEvent'])) {
+            $this->Viewer_Assign('oStreamEvent', $aParams['oStreamEvent']);
+            return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'event.add_post.tpl');
+        }
+    }
 
-	public function BlockStreamNav() {
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'block.stream_nav.tpl');
-	}
+    public function BlockStreamNav()
+    {
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'block.stream_nav.tpl');
+    }
 
-	public function WriteItem($aParams=array()) {
-		$this->Viewer_Assign('isPopup',(isset($aParams['isPopup'])) ? $aParams['isPopup'] : false);
-		return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__).'write_item.tpl');
-	}
+    public function WriteItem($aParams = array())
+    {
+        $this->Viewer_Assign('isPopup', (isset($aParams['isPopup'])) ? $aParams['isPopup'] : false);
+        return $this->Viewer_Fetch(Plugin::GetTemplatePath(__CLASS__) . 'write_item.tpl');
+    }
 }
+
 ?>

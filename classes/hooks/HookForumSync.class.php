@@ -14,19 +14,24 @@
  * Регистрация хуков
  *
  */
-class PluginForum_HookForumSync extends Hook {
-	public function RegisterHook() {
-		$this->AddHook('module_user_authorization_after', 'SessionStart', __CLASS__);
-		$this->AddHook('module_user_logout_before', 'SessionDrop', __CLASS__);
-	}
+class PluginForum_HookForumSync extends Hook
+{
+    public function RegisterHook()
+    {
+        $this->AddHook('module_user_authorization_after', 'SessionStart', __CLASS__);
+        $this->AddHook('module_user_logout_before', 'SessionDrop', __CLASS__);
+    }
 
-	public function SessionStart() {
-		$this->PluginForum_Forum_SyncOut();
-	}
+    public function SessionStart()
+    {
+        $this->PluginForum_Forum_SyncOut();
+    }
 
-	public function SessionDrop() {
-		$this->PluginForum_Forum_SyncIn();
-	}
+    public function SessionDrop()
+    {
+        $this->PluginForum_Forum_SyncIn();
+    }
 
 }
+
 ?>

@@ -15,31 +15,31 @@
  * Настройка Jevix
  */
 $aJevix = array(
-	'cfgAllowTags' => array(
-		array(
-			array('spoiler')
-		),
-	),
-	'cfgAllowTagParams' => array(
-		array(
-			'spoiler',
-			array('name' => '#text')
-		),
-		array(
-			'blockquote',
-			array('reply' => '#int')
-		)
-	),
-	'cfgSetTagCallbackFull' => array(
-		array(
-			'spoiler',
-			array('_this_','CallbackTagSpoiler'),
-		),
-		array(
-			'blockquote',
-			array('_this_','CallbackTagQuote'),
-		),
-	)
+    'cfgAllowTags' => array(
+        array(
+            array('spoiler')
+        ),
+    ),
+    'cfgAllowTagParams' => array(
+        array(
+            'spoiler',
+            array('name' => '#text')
+        ),
+        array(
+            'blockquote',
+            array('reply' => '#int')
+        )
+    ),
+    'cfgSetTagCallbackFull' => array(
+        array(
+            'spoiler',
+            array('_this_', 'CallbackTagSpoiler'),
+        ),
+        array(
+            'blockquote',
+            array('_this_', 'CallbackTagQuote'),
+        ),
+    )
 );
 
 Config::Set('jevix.forum', array_merge_recursive(Config::Get('jevix.default'), $aJevix));
