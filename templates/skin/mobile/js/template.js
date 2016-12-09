@@ -12,7 +12,7 @@ ls.forum.deletePost = function ($t) {
         return;
     }
     var idPost = $t.attr('data-post-id');
-    window.location = aRouter.forum + 'topic/delete/' + sId;
+    window.location = aRouter.forum + 'topic/delete/' + idPost;
     return false;
 };
 
@@ -71,8 +71,9 @@ ls.forum.attach.hideMyFiles = function () {
 };
 
 ls.forum.attach.showForm = function () {
-    $('#forum-attach-upload-input').appendTo('#forum-attach-wrapper');
-    $('#forum-attach-upload-input').slideDown('fast');
+    var uploadInput = $('#forum-attach-upload-input');
+    uploadInput.appendTo('#forum-attach-wrapper');
+    uploadInput.slideDown('fast');
     return false;
 };
 ls.forum.attach.closeForm = function () {

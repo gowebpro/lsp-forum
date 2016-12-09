@@ -9,7 +9,7 @@
  *----------------------------------------------------------------------------
  */
 
-var ls = ls || {}
+var ls = ls || {};
 
 /**
  * Main
@@ -39,8 +39,8 @@ ls.forum = (function ($) {
 
     this.configReplyForm = function (idPost, bScroll) {
         bScroll = bScroll || true;
-        if ($('#fast-reply-form')) {
-            var $form = $('#fast-reply-form');
+        var $form = $('#fast-reply-form');
+        if ($form.length) {
             if ($form.is(":hidden")) {
                 $form.slideDown();
             }
@@ -404,7 +404,7 @@ ls.forum = (function ($) {
                     name: ls.lang.get('panel_clear_tags'), className: 'editor-clean', replaceWith: function (markitup) {
                     return markitup.selection.replace(/<(.*?)>/g, "")
                 }
-                },
+                }
             ]
         }
     };
@@ -513,7 +513,7 @@ ls.forum = (function ($) {
                     name: ls.lang.get('panel_clear_tags'), className: 'editor-clean', replaceWith: function (markitup) {
                     return markitup.selection.replace(/<(.*?)>/g, "")
                 }
-                },
+                }
             ]
         }
     };
@@ -546,7 +546,7 @@ ls.forum.attach = (function ($) {
             self.showMyFiles();
             return false;
         });
-        $('#modal-attach-files .attach-files-item').click(function () {
+        $('.attach-files-item').click(function () {
             self.hideMyFiles();
             self.attach($(this).data('id'));
             return false;
@@ -593,8 +593,9 @@ ls.forum.attach = (function ($) {
 
     this.swfHandlerUploadProgress = function (e, file, bytesLoaded, percent) {
         $('#attach_file_empty_filename').text(file.name);
-        $('#attach_file_empty_progress').find('.js-upload-label').text(percent >= 100 ? 'Complete..' : percent + '%');
-        $('#attach_file_empty_progress').find('.js-upload-percents').css({'width': percent + '%'});
+        var progressEmpty = $('#attach_file_empty_progress');
+        progressEmpty.find('.js-upload-label').text(percent >= 100 ? 'Complete..' : percent + '%');
+        progressEmpty.find('.js-upload-percents').css({'width': percent + '%'});
     };
 
     this.swfHandlerFileDialogComplete = function (e, numFilesSelected, numFilesQueued) {
@@ -688,14 +689,14 @@ ls.forum.attach = (function ($) {
     this.attach = function (id) {
         ls.forum.attach.addFileEmpty();
 
-        var post_id = 0;
-
-        if ($('#forum-attach-post-id').length) {
-            post_id = $('#forum-attach-post-id').val();
-            ;
+        var attachPostId = $('#forum-attach-post-id');
+        if (!attachPostId.length) {
+            return false;
         }
 
-        var params = {id: id, post_id: post_id}
+        var post_id = attachPostId.val();
+
+        var params = { id: id, post_id: post_id }
 
         ls.ajax(aRouter.forum + 'ajax/attach/file/', params, function (data) {
             if (data.bStateError) {
@@ -705,7 +706,7 @@ ls.forum.attach = (function ($) {
                 ls.forum.attach.addFile(data);
             }
         });
-    }
+    };
 
     /**
      * Загрузка файла на сервер
@@ -726,11 +727,11 @@ ls.forum.attach = (function ($) {
     this.closeForm = function () {
         $('#forum-attach-upload-form').jqmHide();
         return false;
-    }
+    };
     this.showForm = function () {
         $('#forum-attach-upload-form').jqmShow();
         return false;
-    }
+    };
 
     /**
      * Загрузка файла с сервера
@@ -857,7 +858,7 @@ jQuery(document).ready(function ($) {
      */
     ls.blocks.options.type.stream_forum = {
         url: aRouter['forum'] + 'ajax/getlasttopics/'
-    }
+    };
     /**
      * Голосование
      */

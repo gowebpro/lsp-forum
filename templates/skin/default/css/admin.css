@@ -20,7 +20,7 @@
 .forum-acp .system-message-error {
     padding: 20px;
     text-align: center;
-    margin: 0px
+    margin: 0;
 }
 
 .forum-acp-notice {
@@ -88,8 +88,8 @@
 
 .forums-tree-wrapper ul li .forum-item-wrapper {
     display: block;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     min-height: 34px;
     border: 1px solid #e1ea83;
     overflow: hidden;
@@ -135,8 +135,8 @@ a.forum-panel-item:hover {
 
 .forums-tree-wrapper ul li .forum-item-icon {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     padding: 1px;
     background: rgba(0, 0, 0, 0.1);
 }
@@ -181,8 +181,8 @@ a.forum-panel-item:hover {
 
 .files-wrapper ul li .files-item-wrapper {
     display: block;
-    padding: 0px;
-    margin: 3px 0px;
+    padding: 0;
+    margin: 3px 0;
     border: 1px solid #e1ea83
 }
 

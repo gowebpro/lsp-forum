@@ -75,14 +75,14 @@
 .forum-note {
     padding: 20px 40px;
     color: #999;
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #DCE1E6;
     margin-bottom: 10px
 }
 
 .forum-footer {
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #e1e1e1;
     background: #F7F7F7;
@@ -714,7 +714,7 @@
     font-weight: bold;
     text-transform: uppercase;
     color: #fff;
-    text-shadow: rgba(0, 0, 0, 0.2) 0px -1px 0px;
+    text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0;
     background-color: #5055b2;
     background-image: url(../images/highlight.png);
     background-repeat: repeat-x;
@@ -722,7 +722,6 @@
     vertical-align: middle;
     border-radius: 3px;
     -moz-border-radius: 3px;
-    -khtml-border-radius: 3px;
     -webkit-border-radius: 3px;
     -webkit-background-clip: padding-box
 }
@@ -766,7 +765,7 @@ span.yesno_no {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     -moz-border-radius-topright: 6px;
-    moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomright: 6px;
     -webkit-border-top-right-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
     -webkit-background-clip: padding-box
@@ -781,10 +780,10 @@ h4.page-subheader {
 
 /* Text */
 .forum-topic .text blockquote {
-    padding: 0px;
+    padding: 0;
     margin-bottom: 10px;
-    -webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
 }
 
 .forum-topic .text blockquote .quote-head {
@@ -832,7 +831,7 @@ h4.page-subheader {
 .spoiler-head,
 .spoiler-body {
     border: solid #F0EC9F;
-    border-width: 0px;
+    border-width: 0;
     clear: both
 }
 

@@ -79,7 +79,6 @@ ls.forum.admin = (function ($) {
         $('#moder_form_forum').val(sForumId);
         $('#moder_forum_id').val(sForumId);
         $('#moder_name').val(sModerName);
-        $('#moder_form_options').hide();
         $('#moder_opt_viewip').attr('checked', bOptViewip);
         $('#moder_opt_editpost').attr('checked', bOptEditPost);
         $('#moder_opt_edittopic').attr('checked', bOptEditTopic);
@@ -90,7 +89,12 @@ ls.forum.admin = (function ($) {
         $('#moder_opt_openclosetopic').attr('checked', bOptOpencloseTopic);
         $('#moder_opt_pintopic').attr('checked', bOptPinTopic);
         $('#moder_form_action').val(sAction);
-        if (sAction == 'update') $('#moder_form_options').show();
+        var formOptions = $('#moder_form_options');
+        if (sAction == 'update') {
+            formOptions.show();
+        } else {
+            formOptions.hide();
+        }
         $('#moder_form_modal').jqmShow();
     };
 
@@ -108,7 +112,7 @@ ls.forum.admin = (function ($) {
     };
 
     this.addModerator = function (sForumId) {
-        var data = {sForumId: sForumId}
+        var data = { sForumId: sForumId };
         this.showModerForm(data, 'add');
         return false;
     };
@@ -144,7 +148,7 @@ ls.forum.admin = (function ($) {
             var s = $(v).attr('id');
             var a = s.replace(/^(.+?)_.+?$/, "$1");
             if (a == perm) {
-                $(v).attr('checked', (invert) ? false : true);
+                $(v).attr('checked', (!invert));
             }
         });
     };
@@ -154,7 +158,7 @@ ls.forum.admin = (function ($) {
             var s = $(v).attr('id');
             var a = s.replace(/[^0-9]/gi, "");
             if (a == id) {
-                $(v).attr('checked', (invert) ? false : true);
+                $(v).attr('checked', (!invert));
             }
         });
     };
@@ -189,7 +193,7 @@ ls.tools = (function ($) {
         var charCode = String.fromCharCode(code);
         var allowed = '0123456789';
         if (allowed.indexOf(charCode) == -1) return false;
-    }
+    };
 
     /**
      * Проверка чисел с плавающей точкой
@@ -205,7 +209,7 @@ ls.tools = (function ($) {
         var charCode = String.fromCharCode(code);
         var allowed = '0123456789.-';
         if (allowed.indexOf(charCode) == -1) return false;
-    }
+    };
 
     /**
      * Проверка латинских символов
@@ -213,11 +217,8 @@ ls.tools = (function ($) {
     this.latinecFilter = function (e) {
         e = e || window.event;
         var code = e.charCode || e.keyCode;
-        if (/[a-zA-Z_]*$/.test(String.fromCharCode(code))) {
-            return true;
-        }
-        return false;
-    }
+        return (/[a-zA-Z_]*$/.test(String.fromCharCode(code)));
+    };
 
     return this;
 }).call(ls.tools || {}, jQuery);

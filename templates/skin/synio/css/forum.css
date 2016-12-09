@@ -195,13 +195,13 @@
 .forums-note {
     padding: 20px 40px;
     color: #82aabe;
-    border-width: 1px 0px 0px;
+    border-width: 1px 0 0;
     border-style: solid;
     border-color: #d0e8f2
 }
 
 .forum-legend {
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #ebf0f4;
     background: #F7F7F7;
@@ -219,7 +219,7 @@
 }
 
 .table-forum-stats, .table-forums, .table-topics {
-    margin: 0px;
+    margin: 0;
 }
 
 .table-forum-stats th, .table-forums th, .table-topics th {
@@ -320,7 +320,7 @@
     font-size: 14px;
     font-weight: normal;
     line-height: 135%;
-    margin: 0px;
+    margin: 0;
 }
 
 .table-topics h4 a {
@@ -349,9 +349,9 @@
 }
 
 .fLayout-content {
-    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
     z-index: 900;
     float: none
 }
@@ -614,8 +614,8 @@
 }
 
 .forum-post-content.no-side {
-    margin-left: 0px;
-    border-left: 0px
+    margin-left: 0;
+    border-left: 0;
 }
 
 .forum-post-header {
@@ -825,17 +825,17 @@
     content: "";
     z-index: 1;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     right: 0;
     bottom: 0;
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     -webkit-background-clip: padding-box;
-    box-shadow: inset rgba(0, 0, 0, 0.3) 0px 1px 5px, inset rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    -moz-box-shadow: inset rgba(0, 0, 0, 0.3) 0px 1px 5px, inset rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    -webkit-box-shadow: inset rgba(0, 0, 0, 0.3) 0px 1px 5px, inset rgba(0, 0, 0, 0.08) 0px 0px 0px 1px
+    box-shadow: inset rgba(0, 0, 0, 0.3) 0 1px 5px, inset rgba(0, 0, 0, 0.08) 0 0 0 1px;
+    -moz-box-shadow: inset rgba(0, 0, 0, 0.3) 0 1px 5px, inset rgba(0, 0, 0, 0.08) 0 0 0 1px;
+    -webkit-box-shadow: inset rgba(0, 0, 0, 0.3) 0 1px 5px, inset rgba(0, 0, 0, 0.08) 0 0 0 1px
 }
 
 .forums .author img {
@@ -881,7 +881,7 @@
     font-weight: bold;
     text-transform: uppercase;
     color: #fff;
-    text-shadow: rgba(0, 0, 0, 0.2) 0px -1px 0px;
+    text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0;
     background-color: #4ace56;
     background-image: url(../images/highlight.png);
     background-repeat: repeat-x;
@@ -954,7 +954,7 @@ span.yesno_no {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     -moz-border-radius-topright: 6px;
-    moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomright: 6px;
     -webkit-border-top-right-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
     -webkit-background-clip: padding-box
@@ -1155,11 +1155,11 @@ h4.page-subheader {
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
     background: url(../images/write.png) no-repeat;
-    background-position: 0px 0
+    background-position: 0 0
 }
 
 .modal.modal-write .write-list li.write-item-type-forum:hover .write-item-image {
-    background-position: 0px -115px
+    background-position: 0 -115px
 }
 
 .modal.modal-files {

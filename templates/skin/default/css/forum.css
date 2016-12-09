@@ -71,7 +71,6 @@
     border: 1px solid #eee;
     border-radius: 10px;
     -moz-border-radius: 10px;
-    -khtml-border-radius: 10px;
     -webkit-border-radius: 10px;
     -webkit-background-clip: padding-box
 }
@@ -157,14 +156,14 @@
 .forums-note {
     padding: 20px 40px;
     color: #999;
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #DCE1E6;
     margin-bottom: 10px
 }
 
 .forum-legend {
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: #ebf0f4;
     background: #F7F7F7;
@@ -226,7 +225,6 @@
     height: 20px;
     border-radius: 4px;
     -moz-border-radius: 4px;
-    -khtml-border-radius: 4px;
     -webkit-border-radius: 4px;
     -webkit-background-clip: padding-box;
 }
@@ -294,7 +292,7 @@
     font-size: 14px;
     font-weight: normal;
     line-height: 135%;
-    margin: 0px;
+    margin: 0;
 }
 
 .table-topics h4 a {
@@ -531,7 +529,6 @@
     font-size: 11px;
     border-radius: 3px;
     -moz-border-radius: 3px;
-    -khtml-border-radius: 3px;
     -webkit-border-radius: 3px;
     -webkit-background-clip: padding-box
 }
@@ -547,7 +544,6 @@
 .forum-post-side section.avatar img {
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
     -webkit-border-radius: 5px;
     -webkit-background-clip: padding-box
 }
@@ -564,8 +560,8 @@
 }
 
 .forum-post-content.no-side {
-    margin-left: 0px;
-    border-left: 0px
+    margin-left: 0;
+    border-left: 0;
 }
 
 .forum-post-header {
@@ -789,7 +785,7 @@
     font-weight: bold;
     text-transform: uppercase;
     color: #fff;
-    text-shadow: rgba(0, 0, 0, 0.2) 0px -1px 0px;
+    text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0;
     background-color: #5055b2;
     background-image: url(../images/highlight.png);
     background-repeat: repeat-x;
@@ -797,7 +793,6 @@
     vertical-align: middle;
     border-radius: 3px;
     -moz-border-radius: 3px;
-    -khtml-border-radius: 3px;
     -webkit-border-radius: 3px;
     -webkit-background-clip: padding-box
 }
@@ -863,7 +858,7 @@ span.yesno_no {
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     -moz-border-radius-topright: 6px;
-    moz-border-radius-bottomright: 6px;
+    -moz-border-radius-bottomright: 6px;
     -webkit-border-top-right-radius: 6px;
     -webkit-border-bottom-right-radius: 6px;
     -webkit-background-clip: padding-box
