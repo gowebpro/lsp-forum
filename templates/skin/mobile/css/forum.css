@@ -671,7 +671,7 @@
 }
 
 .topic-icon.poll.hot {
-    background-image: url(../icons/topic_poll_hot.png)
+    background-image: url(../icons/topic_poll.png)
 }
 
 .unread .topic-icon {
@@ -716,9 +716,6 @@
     color: #fff;
     text-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0;
     background-color: #5055b2;
-    background-image: url(../images/highlight.png);
-    background-repeat: repeat-x;
-    background-position: 0 -1px;
     vertical-align: middle;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -934,7 +931,6 @@ h4.page-subheader {
 }
 
 .modal.modal-write .write-list li.write-item-type-forum .write-item-image {
-    *background: url(../images/write.png) no-repeat;
     background-position: -230px 0
 }
 

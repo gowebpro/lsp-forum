@@ -23,10 +23,7 @@
     height: 25px;
     background: #149bdf;
     background: -moz-linear-gradient(top, #149bdf 0%, #0480be 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, #149bdf), color-stop(100%, #0480be));
     background: -webkit-linear-gradient(top, #149bdf 0%, #0480be 100%);
-    background: -o-linear-gradient(top, #149bdf 0%, #0480be 100%);
-    background: -ms-linear-gradient(top, #149bdf 0%, #0480be 100%);
     background: linear-gradient(to bottom, #149bdf 0%, #0480be 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#149bdf', endColorstr='#0480be', GradientType=0);
 }
@@ -791,7 +788,7 @@
 }
 
 .topic-item.poll.hot .topic-icon {
-    background-image: url(../icons/topic_poll_hot.png);
+    background-image: url(../icons/topic_poll.png);
 }
 
 .topic-item.close .topic-icon {
@@ -1042,7 +1039,6 @@ h4.page-subheader {
     border: 1px solid #f0f0f0
 }
 
-
 .text .spoiler-wrap {
     width: 98%;
     clear: both;
@@ -1081,6 +1077,7 @@ h4.page-subheader {
     text-align: left !important;
     cursor: pointer
 }
+
 .text .spoiler-head::before {
     position: absolute;
     top: 7px;
@@ -1092,6 +1089,7 @@ h4.page-subheader {
     transition: transform 0.2s;
     content: "";
 }
+
 .text .spoiler-head.unfolded::before {
     transform: rotate(90deg);
 }
