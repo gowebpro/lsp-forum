@@ -54,10 +54,6 @@ class PluginForum_ModuleForum extends ModuleORM
      */
     protected $oUserCurrent = null;
     /**
-     * Объект текущей связи пользователя с форумом
-     */
-    protected $oUserForum = null;
-    /**
      * Объект маппера форума
      */
     protected $oMapperForum = null;
@@ -76,10 +72,6 @@ class PluginForum_ModuleForum extends ModuleORM
          * Получаем текущего пользователя
          */
         $this->oUserCurrent = $this->User_GetUserCurrent();
-
-        if ($this->oUserCurrent) {
-            $this->oUserForum = $this->GetUserByUserId($this->oUserCurrent->getId());
-        }
     }
 
     /**
@@ -1136,7 +1128,7 @@ class PluginForum_ModuleForum extends ModuleORM
              * Подцепляем ForumUser
              */
             if (isset($aAllowData['user']) && $aUsersId) {
-                $aForumUsers = $this->GetUserItemsByArrayUserId($aUsersId);
+                $aForumUsers = $this->PluginForum_User_GetUsersByArrayId($aUsersId);
             }
             /**
              * Подцепляем пользователей
@@ -1581,21 +1573,6 @@ class PluginForum_ModuleForum extends ModuleORM
 
         return false;
     }
-
-    /**
-     * Синхронизация
-     *
-     */
-    public function SyncIn()
-    {
-        $this->SaveMarkers();
-    }
-
-    public function SyncOut()
-    {
-        $this->LoadMarkers();
-    }
-
 }
 
 ?>

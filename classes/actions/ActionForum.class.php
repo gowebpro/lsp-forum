@@ -1016,7 +1016,7 @@ class PluginForum_ActionForum extends ActionPlugin
          */
         if (getRequestStr('markread') === 'all') {
             //todo: alert
-            $this->PluginForum_Forum_MarkAll();
+        //    $this->PluginForum_Forum_MarkAll();
             Router::Location(Router::GetPath('forum'));
         }
         /**
@@ -1065,7 +1065,7 @@ class PluginForum_ActionForum extends ActionPlugin
         /**
          * Маркируем форум
          */
-        $this->PluginForum_Forum_MarkForum($oForum);
+     //   $this->PluginForum_Forum_MarkForum($oForum);
         /**
          * Редирект
          */
@@ -1318,7 +1318,7 @@ class PluginForum_ActionForum extends ActionPlugin
             /**
              * Маркировка
              */
-            $this->PluginForum_Forum_MarkTopic($oTopic, $aPosts ? end($aPosts) : $oHeadPost);
+      //      $this->PluginForum_Forum_MarkTopic($oTopic, $aPosts ? end($aPosts) : $oHeadPost);
             /**
              * Просмотры
              */
@@ -2103,7 +2103,7 @@ class PluginForum_ActionForum extends ActionPlugin
             /**
              * Обновляем инфу о пользователе
              */
-            $this->PluginForum_Forum_increaseUserPosts($this->oUserCurrent);
+         //   $this->PluginForum_Forum_increaseUserPosts($this->oUserCurrent);
 
             /**
              * Список емайлов на которые не нужно отправлять уведомление
