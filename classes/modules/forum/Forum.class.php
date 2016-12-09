@@ -52,6 +52,10 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	protected $oUserCurrent=null;
 	/**
+	 * Объект текущей связи пользователя с форумом
+	 */
+	protected $oUserForum=null;
+	/**
 	 * Объект маппера форума
 	 */
 	protected $oMapperForum=null;
@@ -62,13 +66,17 @@ class PluginForum_ModuleForum extends ModuleORM {
 	public function Init() {
 		parent::Init();
 		/**
+		 * Инициализируем вспомогательный маппер
+		 */
+		$this->oMapperForum = Engine::GetMapper(__CLASS__);
+		/**
 		 * Получаем текущего пользователя
 		 */
-		$this->oUserCurrent=$this->User_GetUserCurrent();
-		/**
-		 * Получаем объект маппера
-		 */
-		$this->oMapperForum=Engine::GetMapper(__CLASS__);
+		$this->oUserCurrent = $this->User_GetUserCurrent();
+
+		if ($this->oUserCurrent) {
+			$this->oUserForum = $this->GetUserByUserId($this->oUserCurrent->getId());
+		}
 	}
 
 	/**
@@ -1195,8 +1203,13 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	PluginForum_ModuleForum_EntityForum	$oForum
 	 * @return	boolean
 	 */
-	public function CheckForumMarking(PluginForum_ModuleForum_EntityForum $oForum) {
-		$sForumId = $oForum->getId();
+	public function CheckForumMarking($sForumId) {
+		if ($sForumId instanceof Entity) {
+			$oForum = $sForumId;
+			$sForumId = $oForum->getId();
+		} else {
+			$oForum = $this->GetForumById($sForumId);
+		}
 		/**
 		 * Таблица маркировки
 		 */
@@ -1280,17 +1293,16 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 * @param	PluginForum_ModuleForum_EntityTopic $oTopic
 	 * @return	boolean
 	 */
-	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic,$oLastPost=null) {
-		if ($oUser=$this->User_GetUserCurrent()) {
-			$sUserId=$oUser->getId();
-			$sTopicId=$oTopic->getId();
-			$sForumId=$oTopic->getForumId();
-			$aMark=$this->GetMarking();
+	public function MarkTopic(PluginForum_ModuleForum_EntityTopic $oTopic, $oLastPost=null) {
+		if ($oUser = $this->User_GetUserCurrent()) {
+			$sTopicId = $oTopic->getId();
+			$sForumId = $oTopic->getForumId();
+			$aMark = $this->GetMarking();
 			if (!isset($aMark[self::MARKER_TOPIC][$sTopicId])) {
-				$aMark[self::MARKER_TOPIC_FORUM][$sForumId][$sTopicId]=true;
+				$aMark[self::MARKER_TOPIC_FORUM][$sForumId][$sTopicId] = true;
 			}
-			$aMark[self::MARKER_TOPIC][$sTopicId]=$oLastPost ? $oLastPost->getDateAdd() : $oTopic->getLastPostDate();
-			return $this->SetMarking($aMark);
+			$aMark[self::MARKER_TOPIC][$sTopicId] = $oLastPost ? $oLastPost->getDateAdd() : $oTopic->getLastPostDate();
+			return ($this->SetMarking($aMark) && $this->CheckForumMarking($sForumId));
 		}
 		return false;
 	}
@@ -1320,7 +1332,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 					$oMarker->setUserId($sUserId);
 					$oMarker->setForumId($sForumId);
 					$oMarker->setMarkDate((string)$sMarkDate);
-					$this->AddMarker($oMarker);
+					$oMarker->Save();
 				}
 			}
 			/**
@@ -1336,7 +1348,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 							$oMarker->setForumId($sForumId);
 							$oMarker->setTopicId($sTopicId);
 							$oMarker->setMarkDate((string)$sMarkDate);
-							$this->AddMarkerTopic($oMarker);
+							$oMarker->Save();
 						}
 					}
 				}
@@ -1348,16 +1360,16 @@ class PluginForum_ModuleForum extends ModuleORM {
 				$oUserForum=Engine::GetEntity('PluginForum_Forum_User');
 				$oUserForum->setUserId($sUserId);
 			}
-			//синхрнизаци не было, делаем пересчет постовпостов
+			//синхрнизаци не было, делаем пересчет постов
 			if (!$oUserForum->getLastSync()) {
-				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByUserId($sUserId, array('#where'=>array('post_new_topic = ?'=>array(0))));
+				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByFilter(array('user_id' => $sUserId, 'post_new_topic' => 0));
 				$oUserForum->setPostCount(count($aUserPosts));
 			}
 			if (isset($aMark[self::MARKER_USER])) {
 				$oUserForum->setLastMark((string)$aMark[self::MARKER_USER]);
 			}
 		//	if (isset($aMark[self::MARKER_CNTS])){
-			//	$oUserForum->setPostCount((int)$aMark[self::MARKER_CNTS]);
+		//		$oUserForum->setPostCount((int)$aMark[self::MARKER_CNTS]);
 		//	}
 			$oUserForum->setLastSync(date('Y-m-d H:i:s'));
 			$this->SaveUser($oUserForum);
@@ -1389,7 +1401,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 			if ($oUserForum) {
 				$aMarkData[self::MARKER_USER]=$oUserForum->getLastMark();
-				$aMarkData[self::MARKER_CNTS]=$oUserForum->getPostCount();
+			//	$aMarkData[self::MARKER_CNTS]=$oUserForum->getPostCount();
 			}
 			return $this->SetMarking($aMarkData);
 		}
@@ -1473,7 +1485,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 			}
 			//если синхрнизаци не было, делаем пересчет постов
 			if (!$oUserForum->getLastSync()) {
-				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByUserId($sUserId, array('#where'=>array('post_new_topic = ?'=>array(0))));
+				$aUserPosts=$this->PluginForum_Forum_GetPostItemsByFilter(array('user_id' => $sUserId, 'post_new_topic' => 0));
 				$oUserForum->setPostCount(count($aUserPosts));
 			} else {
 				$oUserForum->setPostCount($oUserForum->getPostCount()+$iVal);
@@ -1503,7 +1515,7 @@ class PluginForum_ModuleForum extends ModuleORM {
 	 */
 	public function recountUsersPosts() {
 		$aSorted=array();
-		$aAllPosts=$this->PluginForum_Forum_GetPostItemsAll(array('#where'=>array('post_new_topic = ?'=>array(0))));
+		$aAllPosts=$this->PluginForum_Forum_GetPostItemsAll(array('post_new_topic' => 0));
 		foreach ($aAllPosts as $oPost) {
 			$aSorted[$oPost->getUserId()][]=$oPost->getId();
 		}
