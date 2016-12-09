@@ -208,7 +208,7 @@ class PluginForum_ActionForum extends ActionPlugin
          */
         if ($oForum->getCanPost() == 1) {
             $this->Message_AddError($this->Lang_Get('plugin.forum.moderator_action_error_forum_cat'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Получаем юзера по имени
@@ -315,7 +315,7 @@ class PluginForum_ActionForum extends ActionPlugin
         $sModeratorId = xxtea_decrypt(base64_decode(rawurldecode($sHash)), Config::Get('plugin.forum.encrypt'));
         if (!$sModeratorId) {
             $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         list($sForumId, $sUserId) = explode('_', $sModeratorId);
         /**
@@ -384,7 +384,7 @@ class PluginForum_ActionForum extends ActionPlugin
         $sModeratorId = xxtea_decrypt(base64_decode(rawurldecode($sHash)), Config::Get('plugin.forum.encrypt'));
         if (!$sModeratorId) {
             $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         list($sForumId, $sUserId) = explode('_', $sModeratorId);
         /**
@@ -746,7 +746,7 @@ class PluginForum_ActionForum extends ActionPlugin
                 $this->PluginForum_Forum_DeleteAttach($oFile);
             }
             $this->Message_AddNotice($this->Lang_Get('plugin.forum.attach_file_deleted'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         $this->Message_AddError($this->Lang_Get('system_error'), $this->Lang_Get('error'));
     }
@@ -831,35 +831,35 @@ class PluginForum_ActionForum extends ActionPlugin
          */
         if (!$this->User_IsAuthorization()) {
             $this->Message_AddErrorSingle($this->Lang_Get('need_authorization'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Сообщение существует?
          */
         if (!($oPost = $this->PluginForum_Forum_GetPostById(getRequestStr('idPost', null, 'post')))) {
             $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Голосует автор топика?
          */
         if ($oPost->getUserId() == $this->oUserCurrent->getId()) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_self'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         /**
          * Пользователь уже голосовал?
          */
         if ($oVote = $this->Vote_GetVote($oPost->getId(), 'forum_post', $this->oUserCurrent->getId())) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_already'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         /**
          * Время голосования истекло?
          */
         if (strtotime($oPost->getDateAdd()) <= time() - Config::Get('plugin.forum.acl.vote.post.time')) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_time'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         /**
          * Как проголосовал пользователь
@@ -867,14 +867,14 @@ class PluginForum_ActionForum extends ActionPlugin
         $iValue = getRequestStr('value', null, 'post');
         if (!in_array($iValue, array('1', '-1', '0'))) {
             $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         /**
          * Права на голосование
          */
         if (!$this->ACL_CanVoteForumPost($this->oUserCurrent, $oPost) and $iValue) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.vote_error_acl'), $this->Lang_Get('attention'));
-            return;
+            return false;
         }
         /**
          * Голосуем
@@ -907,7 +907,7 @@ class PluginForum_ActionForum extends ActionPlugin
             $this->Viewer_AssignAjax('iRating', $oPost->getRating());
         } else {
             $this->Message_AddErrorSingle($this->Lang_Get('system_error'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
     }
 
@@ -973,11 +973,11 @@ class PluginForum_ActionForum extends ActionPlugin
             $sPassword = getRequestStr('f_password');
             if (!func_check($sPassword, 'text', 1, 32)) {
                 $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_blank'));
-                return;
+                return false;
             }
             if ($sPassword != $oForum->getPassword()) {
                 $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.password_wrong'));
-                return;
+                return false;
             }
             fSetCookie('CfFP' . $oForum->getId(), md5($sPassword));
             $sBackUrl = $oForum->getUrlFull();
@@ -1504,7 +1504,7 @@ class PluginForum_ActionForum extends ActionPlugin
          * Проверка доступа
          */
         if (!(($this->oUserCurrent && $this->oUserCurrent->isAdministrator()) || ($oForumOld->isModerator() && $oForumOld->getModMoveTopic()))) {
-            return;
+            return false;
         }
         if ($oForumNew = $this->PluginForum_Forum_GetForumById(getRequestStr('topic_move_id'))) {
             /**
@@ -1512,14 +1512,14 @@ class PluginForum_ActionForum extends ActionPlugin
              */
             if ($oForumNew->getId() == $oForumOld->getId()) {
                 $this->Message_AddError($this->Lang_Get('plugin.forum.topic_move_error_self'), $this->Lang_Get('error'));
-                return;
+                return false;
             }
             /**
              * Если выбранный форум является категорией
              */
             if ($oForumNew->getCanPost() == 1) {
                 $this->Message_AddError($this->Lang_Get('plugin.forum.topic_move_error_category'), $this->Lang_Get('error'));
-                return;
+                return false;
             }
             /**
              * Обновляем свойства топика
@@ -1577,7 +1577,7 @@ class PluginForum_ActionForum extends ActionPlugin
          */
         if ($oTopicNew->getId() == $oTopicOld->getId()) {
             $this->Message_AddError($this->Lang_Get('plugin.forum.topic_move_posts_error_self'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Список сообщений
@@ -2011,21 +2011,21 @@ class PluginForum_ActionForum extends ActionPlugin
          */
         if (!$this->ACL_CanAddForumPost($this->oUserCurrent)) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_not_allow'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Проверяем разрешено ли постить по времени
          */
         if (!$this->ACL_CanAddForumPostTime($this->oUserCurrent)) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_time_limit'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Проверяем не закрыто ли обсуждение
          */
         if ($oTopic->getState() == 1 and !$this->ACL_CanAddForumPostClose($this->oUserCurrent)) {
             $this->Message_AddErrorSingle($this->Lang_Get('plugin.forum.reply_not_allow_close'), $this->Lang_Get('error'));
-            return;
+            return false;
         }
         /**
          * Создаём
@@ -2461,7 +2461,7 @@ class PluginForum_ActionForum extends ActionPlugin
         $aPostsRight = $this->PluginForum_Forum_GetPostItemsByFilter($aPostsRightFilter);
         if (!$aPostsRight) {
             Router::Location($oTopic->getUrlFull() . 'lastpost');
-            return;
+            return false;
         }
         $oPost = array_shift($aPostsRight);
         /**
@@ -2622,7 +2622,7 @@ class PluginForum_ActionForum extends ActionPlugin
          * Проверяем корректность полей
          */
         if (!$this->checkForumFields($oForum)) {
-            return;
+            return false;
         }
         /**
          * Вызов хуков
@@ -2718,7 +2718,7 @@ class PluginForum_ActionForum extends ActionPlugin
          * Проверяем корректность полей
          */
         if (!$this->checkForumFields($oForum)) {
-            return;
+            return false;
         }
         /**
          * Вызов хуков
@@ -2926,28 +2926,28 @@ class PluginForum_ActionForum extends ActionPlugin
             if ($sForumIdNew = getRequestStr('forum_move_id_topics') and ($sForumIdNew != -1) and is_array($aTopics) and count($aTopics)) {
                 if (!$oForumNew = $this->PluginForum_Forum_GetForumById($sForumIdNew)) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_error'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
                 /**
                  * Если выбранный форум является удаляемым форум
                  */
                 if ($sForumIdNew == $sForumId) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_items_error_self'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
                 /**
                  * Если выбранный форум является одним из подфорумов удаляемого форум
                  */
                 if (in_array($sForumIdNew, $aDescendantsIds)) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_items_error_descendants'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
                 /**
                  * Если выбранный форум является категорией, возвращаем ошибку
                  */
                 if ($oForumNew->getCanPost()) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_items_error_category'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
             }
             /**
@@ -2956,21 +2956,21 @@ class PluginForum_ActionForum extends ActionPlugin
             if ($sForumIdNew = getRequestStr('forum_delete_move_childrens') and is_array($aSubForums) and count($aSubForums)) {
                 if (!$oForumNew = $this->PluginForum_Forum_GetForumById($sForumIdNew)) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_error'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
                 /**
                  * Если выбранный форум является удаляемым форум
                  */
                 if ($sForumIdNew == $sForumId) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_childrens_error_self'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
                 /**
                  * Если выбранный форум является одним из подфорумов удаляемого форум
                  */
                 if (in_array($sForumIdNew, $aDescendantsIds)) {
                     $this->Message_AddError($this->Lang_Get('plugin.forum.delete_move_childrens_error_descendants'), $this->Lang_Get('error'));
-                    return;
+                    return false;
                 }
             }
             /**
@@ -3084,7 +3084,7 @@ class PluginForum_ActionForum extends ActionPlugin
                 }
             } else {
                 $this->Message_AddErrorSingle($this->Lang_Get('system_error'));
-                return;
+                return false;
             }
         } else {
             $aPermissions = unserialize(stripslashes($oForum->getPermissions()));
