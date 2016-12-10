@@ -1227,8 +1227,8 @@ class PluginForum_ModuleForum extends ModuleORM
      * Получаем список ID всех топиков форума
      * @param $sForumId
      */
-    public function GetTopicsIdByForumId($sForumId)
+    public function GetTopicsIdByForumId($sForumId, $aFilter = array())
     {
-        return $this->oMapperForum->GetTopicsIdByForumId($sForumId);
+        return $this->oMapperForum->GetTopicsIdByForumId($sForumId, $aFilter);
     }
 }

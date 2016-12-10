@@ -126,12 +126,15 @@ class PluginForum_ModuleForum_MapperForum extends Mapper
      * Получаем список ID всех топиков форума
      * @param $sForumId
      */
-    public function GetTopicsIdByForumId($sForumId) {
+    public function GetTopicsIdByForumId($sForumId, $aFilter) {
         $sql = 'SELECT topic_id
 				FROM ' . Config::Get('db.table.forum_topic') . '
-				WHERE forum_id = ?';
+				WHERE forum_id = ?
+				{ and last_post_date > ? }';
         $aResult = array();
-        if ($aRows = $this->oDb->select($sql, $sForumId)) {
+        if ($aRows = $this->oDb->select($sql, $sForumId,
+                !isset($aFilter['last_post_date_gt']) ? DBSIMPLE_SKIP : $aFilter['last_post_date_gt']
+            )) {
             foreach ($aRows as $aRow) {
                 $aResult[] = $aRow['topic_id'];
             }
