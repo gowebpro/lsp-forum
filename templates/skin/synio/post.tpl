@@ -172,12 +172,14 @@
 	{if $oUserCurrent && !$noFooter}
 	<footer class="forum-post-footer clearfix">
 		<section class="fl-r">
-			<a href="#" class="button js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
-				<i class="icon-leaf"></i> {$aLang.plugin.forum.button_quote}
-			</a>
-			<a href="{$oTopic->getUrlFull()}reply" class="button js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
-				<i class="icon-comment"></i> {$aLang.plugin.forum.button_reply}
-			</a>
+            {if (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getAllowReply() && $oForum->getQuickReply()}
+				<a href="#" class="button js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
+					<i class="icon-leaf"></i> {$aLang.plugin.forum.button_quote}
+				</a>
+				<a href="{$oTopic->getUrlFull()}reply" class="button js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">
+					<i class="icon-comment"></i> {$aLang.plugin.forum.button_reply}
+				</a>
+			{/if}
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
 				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="button button-orange js-post-edit" data-post-id="{$oPost->getId()}">
 					<i class="icon-white icon-edit"></i> {$aLang.plugin.forum.button_edit}

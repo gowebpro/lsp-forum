@@ -79,25 +79,27 @@
 	<footer class="forum-post-footer clearfix">
 		<ul class="slide slide-post-info-extra" id="post-extra-target-{$oPost->getId()}">
 			{if $oUserCurrent && $oUser}
-			<li>
-				<a href="{router page='talk'}add/?talk_users={$oUser->getLogin()|escape:'html'}">{$aLang.send_message_to_author}</a>
-			</li>
+				<li>
+					<a href="{router page='talk'}add/?talk_users={$oUser->getLogin()|escape:'html'}">{$aLang.send_message_to_author}</a>
+				</li>
 			{/if}
-			<li>
-				<a href="#" class="js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_quote}</a>
-			</li>
-			<li>
-				<a href="{$oTopic->getUrlFull()}reply" class="js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_reply}</a>
-			</li>
+			{if (!$oTopic->getState() || $oUserCurrent->isAdministrator()) && $oForum->getAllowReply() && $oForum->getQuickReply()}
+				<li>
+					<a href="#" class="js-post-quote" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_quote}</a>
+				</li>
+				<li>
+					<a href="{$oTopic->getUrlFull()}reply" class="js-post-reply" data-name="{if $oUser}{$oUser->getLogin()|escape:'html'}{/if}" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_reply}</a>
+				</li>
+            {/if}
 			{if $LS->ACL_IsAllowEditForumPost($oPost,$oUserCurrent)}
-			<li>
-				<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="js-post-edit" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_edit}</a>
-			</li>
+				<li>
+					<a href="{router page='forum'}topic/edit/{$oPost->getId()}" class="js-post-edit" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_edit}</a>
+				</li>
 			{/if}
 			{if $LS->ACL_IsAllowDeleteForumPost($oPost,$oUserCurrent)}
-			<li>
-				<a href="{router page='forum'}topic/delete/{$oPost->getId()}" class="js-post-delete" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_delete}</a>
-			</li>
+				<li>
+					<a href="{router page='forum'}topic/delete/{$oPost->getId()}" class="js-post-delete" data-post-id="{$oPost->getId()}">{$aLang.plugin.forum.button_delete}</a>
+				</li>
 			{/if}
 		</ul>
 	</footer>

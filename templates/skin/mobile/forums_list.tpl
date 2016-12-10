@@ -57,7 +57,7 @@
 					</p>
 				{/if}
 				{/if}
-				{if !$oForum->getAllowRead() || !$oForum->getAutorization()}}
+				{if !$oForum->getAllowRead() || !$oForum->getAutorization()}
 					<i title="{$aLang.plugin.forum.forum_closed}" class="icon-blog-private"></i>
 				{/if}
 			</li>
