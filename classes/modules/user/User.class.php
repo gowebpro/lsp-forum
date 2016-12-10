@@ -172,25 +172,30 @@ class PluginForum_ModuleUser extends ModuleORM
      */
     public function SetMarkForum(PluginForum_ModuleForum_EntityForum $oForum)
     {
-        if ($this->oUserCurrent && $oForum->getLastPostDate()) {
-            $iMarkAll = $this->oUserCurrent->getMarkAll();
-            $aMarkForum = $this->oUserCurrent->getMarkForum();
-
-            $sForumLastPostDate = strtotime($oForum->getLastPostDate());
+        if ($this->oUserCurrent) {
             $bForumReadStatus = false;
-            /**
-             * Глобальный маркер свежее последнего поста в форуме
-             */
-            if ($iMarkAll >= $sForumLastPostDate) {
+
+            if (!$oForum->getLastPostDate()) {
                 $bForumReadStatus = true;
-            }
-            /**
-             * Маркер форума свежее последнего поста
-             */
-            if (!$bForumReadStatus) {
-                if (isset($aMarkForum[$oForum->getId()])) {
-                    if ($aMarkForum[$oForum->getId()] >= $sForumLastPostDate) {
-                        $bForumReadStatus = true;
+            } else {
+                $iMarkAll = $this->oUserCurrent->getMarkAll();
+                $aMarkForum = $this->oUserCurrent->getMarkForum();
+
+                $sForumLastPostDate = strtotime($oForum->getLastPostDate());
+                /**
+                 * Глобальный маркер свежее последнего поста в форуме
+                 */
+                if ($iMarkAll >= $sForumLastPostDate) {
+                    $bForumReadStatus = true;
+                }
+                /**
+                 * Маркер форума свежее последнего поста
+                 */
+                if (!$bForumReadStatus) {
+                    if (isset($aMarkForum[$oForum->getId()])) {
+                        if ($aMarkForum[$oForum->getId()] >= $sForumLastPostDate) {
+                            $bForumReadStatus = true;
+                        }
                     }
                 }
             }
