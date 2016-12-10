@@ -52,11 +52,14 @@
 {/if}
 
 <footer class="forum-legend">
-	<div class="fl-r">
-		{include file="$sTemplatePathForum/jumpmenu.tpl"}
+	<div class="forum-legend-row">
+		<div class="forum-legend-col">
+            {hook run='forum_show_legend' oForum=$oForum}
+		</div>
+		<div class="forum-legend-col">
+            {include file="$sTemplatePathForum/jumpmenu.tpl"}
+		</div>
 	</div>
-
-	{hook run='forum_show_legend' oForum=$oForum}
 </footer>
 
 {include file='footer.tpl'}

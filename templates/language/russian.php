@@ -309,8 +309,8 @@ return array(
     /**
      * Сессии
      */
-    'sessions_event_forum_title' => 'Количество посетителей, просматривающих этот форум',
-    'sessions_event_topic_title' => 'Количество посетителей, читающих эту тему',
+    'sessions_event_forum_title' => 'Посетители, просматривающие этот форум',
+    'sessions_event_topic_title' => 'Посетители, читающие эту тему',
     /**
      * Админка
      */

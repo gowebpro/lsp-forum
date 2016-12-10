@@ -1,12 +1,13 @@
 {if $aPageSessions}
 <div class="forum-sess">
-	{if $sEvent == 'topic'}
-		{$sShowMode = 'topic'}
-	{else}
-		{$sShowMode = 'forum'}
-	{/if}
-	{$sLang = 'sessions_event_'|cat:{$sShowMode}|cat:'_title'}
-	<h4>{$aLang.plugin.forum[$sLang]}: {$iPageSessions}</h4>
+	<h4>
+		{if $sEvent == 'topic'}
+    	    {$aLang.plugin.forum.sessions_event_topic_title}
+		{else}
+    	    {$aLang.plugin.forum.sessions_event_forum_title}
+		{/if}
+	</h4>
+
 	<p>
 		{if $iPageUsers}
 			{$iPageUsers|number_format:0:'.':$oConfig->Get('plugin.forum.number_format')} {$iPageUsers|declension:$aLang.plugin.forum.users_declension:'russian'|lower}

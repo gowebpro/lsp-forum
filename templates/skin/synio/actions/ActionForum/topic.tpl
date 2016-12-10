@@ -119,11 +119,14 @@
 {/if}
 
 <footer class="forum-legend">
-	<div class="fl-r">
-		{include file="$sTemplatePathForum/jumpmenu.tpl"}
+	<div class="forum-legend-row">
+		<div class="forum-legend-col">
+            {hook run='forum_topic_show_legend' oTopic=$oTopic}
+		</div>
+		<div class="forum-legend-col">
+            {include file="$sTemplatePathForum/jumpmenu.tpl"}
+		</div>
 	</div>
-
-	{hook run='forum_topic_show_legend' oTopic=$oTopic}
 </footer>
 
 {include file='footer.tpl'}
