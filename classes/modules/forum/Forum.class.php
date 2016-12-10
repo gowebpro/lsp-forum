@@ -1224,78 +1224,6 @@ class PluginForum_ModuleForum extends ModuleORM
     }
 
     /**
-     * Увеличить счетчик постов пользователя
-     *
-     * @params    object    $oUser
-     * @params    integer    $iVal
-     * @return    boolean
-     */
-    public function increaseUserPosts($sUserId, $iVal = 1)
-    {
-        if ($sUserId) {
-            //	$aMark=$this->GetMarking();
-            //	$aMark[self::MARKER_CNTS]=(isset($aMark[self::MARKER_CNTS])?$aMark[self::MARKER_CNTS]:0)+$iVal;
-            //	return $this->SetMarking($aMark);
-            if ($sUserId instanceof Entity) {
-                $sUserId = $sUserId->getId();
-            }
-            if (!$oUserForum = $this->GetUserById($sUserId)) {
-                $oUserForum = Engine::GetEntity('PluginForum_Forum_User');
-                $oUserForum->setUserId($sUserId);
-            }
-            //если синхрнизаци не было, делаем пересчет постов
-            if (!$oUserForum->getLastSync()) {
-                $aUserPosts = $this->PluginForum_Forum_GetPostItemsByFilter(array('user_id' => $sUserId, 'post_new_topic' => 0));
-                $oUserForum->setPostCount(count($aUserPosts));
-            } else {
-                $oUserForum->setPostCount($oUserForum->getPostCount() + $iVal);
-            }
-            $oUserForum->setLastSync(date('Y-m-d H:i:s'));
-            return $oUserForum->Save();
-            //да сделай ты кеш
-        }
-        return false;
-    }
-
-    /**
-     * Уменьшить счетчик постов пользователя
-     *
-     * @params    object    $oUser
-     * @params    integer    $iVal
-     * @return    boolean
-     */
-    public function decreaseUserPosts($oUser, $iVal = 1)
-    {
-        return $this->increaseUserPosts($oUser, -$iVal);
-    }
-
-    /**
-     * Посчитать счетчик постов всех пользователей
-     *
-     * @params    object    $oUser
-     * @params    integer    $iVal
-     * @return    boolean
-     */
-    public function recountUsersPosts()
-    {
-        $aSorted = array();
-        $aAllPosts = $this->PluginForum_Forum_GetPostItemsAll(array('post_new_topic' => 0));
-        foreach ($aAllPosts as $oPost) {
-            $aSorted[$oPost->getUserId()][] = $oPost->getId();
-        }
-        foreach ($aSorted as $sUserId => $aPostsId) {
-            if (!$oUserForum = $this->GetUserById($sUserId)) {
-                $oUserForum = Engine::GetEntity('PluginForum_Forum_User');
-                $oUserForum->setUserId($sUserId);
-            }
-            $oUserForum->setPostCount(count($aPostsId));
-            $oUserForum->Save();
-        }
-
-        return false;
-    }
-
-    /**
      * Получаем список ID всех топиков форума
      * @param $sForumId
      */
@@ -1304,5 +1232,3 @@ class PluginForum_ModuleForum extends ModuleORM
         return $this->oMapperForum->GetTopicsIdByForumId($sForumId);
     }
 }
-
-?>

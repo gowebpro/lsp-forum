@@ -2101,7 +2101,7 @@ class PluginForum_ActionForum extends ActionPlugin
             /**
              * Обновляем инфу о пользователе
              */
-         //   $this->PluginForum_Forum_increaseUserPosts($this->oUserCurrent);
+            $this->PluginForum_User_IncreasePosts();
 
             /**
              * Список емайлов на которые не нужно отправлять уведомление

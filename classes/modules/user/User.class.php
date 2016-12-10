@@ -250,4 +250,48 @@ class PluginForum_ModuleUser extends ModuleORM
         }
         return $oTopic;
     }
+
+    /**
+     * Увеличивает счетчик постов пользователя
+     * @param int $iCount
+     */
+    public function IncreasePosts($iCount = 1)
+    {
+        if ($this->oUserCurrent) {
+            $this->oUserCurrent->setPostCount($this->oUserCurrent->getPostCount() + $iCount);
+            $this->oUserCurrent->Save();
+        }
+    }
+
+    /**
+     * Уменьшает счетчик постов пользователя
+     * @param int $iCount
+     */
+    public function DecreasePosts($iCount = 1)
+    {
+        $this->IncreasePosts($iCount);
+    }
+
+    /**
+     * Посчитать счетчики постов всех пользователей
+     * @return bool
+     */
+    public function RecountUsersPosts()
+    {
+        $aSorted = array();
+        $aAllPosts = $this->PluginForum_Forum_GetPostItemsAll(array('post_new_topic' => 0));
+        foreach ($aAllPosts as $oPost) {
+            $aSorted[$oPost->getUserId()][] = $oPost->getId();
+        }
+        foreach ($aSorted as $sUserId => $aPostsId) {
+            if (!$oUserForum = $this->GetUserById($sUserId)) {
+                $oUserForum = Engine::GetEntity('PluginForum_Forum_User');
+                $oUserForum->setUserId($sUserId);
+            }
+            $oUserForum->setPostCount(count($aPostsId));
+            $oUserForum->Save();
+        }
+        return true;
+    }
+
 }
