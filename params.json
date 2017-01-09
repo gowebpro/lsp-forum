@@ -1,7 +1,0 @@
-{
-  "name": "LS Plugin - Forum",
-  "tagline": "Форум на базе LiveStreet CMS",
-  "body": "# [GoWeb Studio](//goweb.pro/ \"goweb.pro\")\r\n\r\n***\r\n\r\n## О проекте\r\nФорум на базе LiveStreet CMS.\r\n- Форумная структура бесконечной вложенности;\r\n- Форумы различных типов ( обычный / категория / ссылка );\r\n- Гибкая настройка прав доступа к каждому форуму;\r\n- Функции модератора;\r\n- Функции подписки на форумы и топики;\r\n- Прикрепление файлов к постам;\r\n- и многое другое.\r\n\r\n***\r\n\r\n## Системные требования\r\nДля работы плагина нужна версия [LiveStreet CMS](//livestreetcms.com/ \"LiveStreet CMS\") не ниже 1.0\r\n\r\n***\r\n\r\n## Установка\r\n* Загрузить\r\n* Распаковать\r\n* Переименовать папку `lsp-forum` в `forum`\r\n* Залить на FTP в папку plugins\r\n* Активировать через админпанель\r\n\r\n***\r\n\r\n## История версий\r\n**1.0.3:**\r\n- Релиз.\r\n\r\n***\r\n\r\n## Лицензия\r\n[ ![CC BY-NC](//i.creativecommons.org/l/by-nc/4.0/88x31.png \"CC BY-NC\") ](//creativecommons.org/licenses/by-nc/4.0/ \"CC BY-NC\")",
-  "google": "",
-  "note": "Don't delete this file! It's used internally to help with page regeneration."
-}
