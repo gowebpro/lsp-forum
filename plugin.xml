@@ -7,16 +7,16 @@
 	<author>
 		<lang name="default">Chiffa</lang>
 	</author>
-	<homepage>http://xmk.github.io/lsplugin-forum</homepage>
-	<version>1.0.8</version>
-	<settings>{forum}admin/</settings>
+	<homepage>https://gowebpro.github.io/lsp-forum</homepage>
+	<version>1.1</version>
+	<settings>{forum}admin</settings>
 	<requires>
 		<livestreet>1.0</livestreet>
 		<plugins>
 		</plugins>
 	</requires>
 	<description>
-		<lang name="default">Forum for Livestreet Framework\CMS</lang>
-		<lang name="russian">Форум для Livestreet Framework\CMS</lang>
+		<lang name="default">Forum for LiveStreet CMS</lang>
+		<lang name="russian">Форум для LiveStreet CMS</lang>
 	</description>
 </plugin>
