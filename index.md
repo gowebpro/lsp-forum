@@ -1,6 +1,9 @@
 # [GoWeb Studio](//goweb.pro/ "goweb.pro")
 
-[ ![PhpStorm](http://goweb.pro/phpstorm/icon_PhpStorm.png "Powered by PhpStorm") ](//www.jetbrains.com/phpstorm/ "PhpStorm")
+Developed with
+
+[ ![PhpStorm](https://resources.jetbrains.com/assets/banners/jetbrains-com/phpstorm/phpstorm234x60_white.gif "Developed with") ](//www.jetbrains.com/phpstorm/ "PhpStorm")
+
 ***
 
 ## О проекте
@@ -16,7 +19,7 @@
 ***
 
 ## Системные требования
-Для работы плагина нужна версия [LiveStreet CMS](//livestreetcms.com/ "LiveStreet CMS") не ниже 1.0
+Для работы плагина нужна версия [LiveStreet CMS](//livestreetcms.com/ "LiveStreet CMS") не ниже 1.0.3
 
 ***
 
