@@ -1,6 +1,6 @@
 # [GoWeb Studio](//goweb.pro/ "goweb.pro")
 
-[ ![PhpStorm](//goweb.pro/phpstorm/icon_PhpStorm.png =200px "PhpStorm") ](//www.jetbrains.com/phpstorm/ "PhpStorm")
+[ ![PhpStorm](//goweb.pro/phpstorm/icon_PhpStorm.png "PhpStorm") ](//www.jetbrains.com/phpstorm/ "PhpStorm")
 ***
 
 ## О проекте
