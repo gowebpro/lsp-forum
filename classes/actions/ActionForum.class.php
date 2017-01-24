@@ -2439,7 +2439,7 @@ class PluginForum_ActionForum extends ActionPlugin
         /**
          * Получаем топик по ID
          */
-        if (!($oTopic = $this->PluginForum_Forum_GetTopicById($sId))) {
+        if (!($oTopic = $this->PluginForum_Forum_GetTopicById($sTopicId))) {
             return parent::EventNotFound();
         }
         /**
