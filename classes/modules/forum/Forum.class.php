@@ -306,7 +306,7 @@ class PluginForum_ModuleForum extends ModuleORM
         foreach ($aForums as $oForum) {
             $aStats[$oForum->getId()] = array();
             //считаем активность
-            $iActivity = (100 / $iCountPosts) * ($oForum->getCountPost());
+            $iActivity = $iCountPosts ? ((100 / $iCountPosts) * ($oForum->getCountPost())) : 0;
             $iActivity = rtrim(rtrim(number_format(round($iActivity, 2), 2, '.', ''), '0'), '.');
             $aStats[$oForum->getId()]['activity'] = $iActivity;
             //последний топик
