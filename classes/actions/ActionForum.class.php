@@ -2372,7 +2372,7 @@ class PluginForum_ActionForum extends ActionPlugin
             /**
              * Обновляем инфу о пользователе
              */
-            $this->PluginForum_Forum_decreaseUserPosts($oPost->getUserId());
+            $this->PluginForum_User_DecreasePosts();
             /**
              * Обновляем счетчик форума
              */
