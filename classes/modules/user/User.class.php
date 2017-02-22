@@ -318,7 +318,7 @@ class PluginForum_ModuleUser extends ModuleORM
         }
         foreach ($aSorted as $sUserId => $aPostsId) {
             if (!$oUserForum = $this->GetUserById($sUserId)) {
-                $oUserForum = Engine::GetEntity('PluginForum_Forum_User');
+                $oUserForum = Engine::GetEntity('PluginForum_User_User');
                 $oUserForum->setUserId($sUserId);
             }
             $oUserForum->setPostCount(count($aPostsId));
