@@ -22,7 +22,10 @@ class PluginForum_ModuleUser extends ModuleORM
     {
         parent::Init();
         if ($oUserCurrent = $this->User_GetUserCurrent()) {
-            $this->oUserCurrent = $this->GetUserById($oUserCurrent->getId());
+            if (!$this->oUserCurrent = $this->GetUserById($oUserCurrent->getId())) {
+                $this->oUserCurrent = Engine::GetEntity('PluginForum_User_User');
+                $this->oUserCurrent->setUserId($oUserCurrent->getId());
+            }
         }
     }
 
