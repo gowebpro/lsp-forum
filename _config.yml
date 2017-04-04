@@ -1,8 +1,8 @@
-title: LS Plugin - Forum
+title: LS Plugin Forum
 description: Форум на базе LiveStreet CMS
 google_analytics: 
 show_downloads: true
-theme: jekyll-theme-hacker
+theme: jekyll-theme-slate
 
 gems:
   - jekyll-mentions
