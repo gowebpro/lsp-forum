@@ -770,10 +770,6 @@ ls.forum.toolbar = (function ($) {
             }
             this.goNextPost();
         }
-        if (vars.post !== undefined) {
-            this.iCurrentPost = $('#post-' + vars.post).prevAll().length;
-            this.goNextPost();
-        }
     };
     /**
      * Дефолтные настройки

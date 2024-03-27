@@ -20,11 +20,11 @@
 <div class="forums">
 	<div class="fBox forum-acp">
 		<header class="forums-header">
-		{if $sType == 'edit'}
-			<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title|escape:'html'}&raquo;</h3>
-		{else}
-			<h3>{$aLang.plugin.forum["create_"|cat:$sNewType]}</h3>
-		{/if}
+			{if $sType == 'edit'}
+				<h3>{$aLang.plugin.forum["edit_"|cat:$sNewType]} &laquo;{$_aRequest.forum_title|escape:'html'}&raquo;</h3>
+			{else}
+				<h3>{$aLang.plugin.forum["create_"|cat:$sNewType]}</h3>
+			{/if}
 		</header>
 
 		<div class="forums-content">
@@ -81,10 +81,10 @@
 								<label for="forum_parent"><strong>{$aLang.plugin.forum.create_parent}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<select id="forum_parent" name="forum_parent">
-								{foreach from=$aForumsList item=aItem}
-									<option value="{$aItem.id}"{if $_aRequest.forum_parent==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
-								{/foreach}
+								<select id="forum_parent" name="forum_parent" class="input-width-400">
+									{foreach $aForumsList as $aItem}
+										<option value="{$aItem.id}"{if $_aRequest.forum_parent==$aItem.id} selected{/if}>{$aItem.title|escape:'html'}</option>
+									{/foreach}
 								</select>
 							</td>
 						</tr>
@@ -93,9 +93,9 @@
 								<label for="forum_perms"><strong>{$aLang.plugin.forum.create_perms}:</strong></label>
 							</td>
 							<td class="cell-labeled">
-								<select id="forum_perms" name="forum_perms">
+								<select id="forum_perms" name="forum_perms"  class="input-width-400">
 									<option value="">{$aLang.plugin.forum.create_perms_not}</option>
-									{foreach from=$aForumsList item=aItem}
+									{foreach $aForumsList as $aItem}
 										<option value="{$aItem.id}"{if $_aRequest.forum_perms==$aItem.id} selected{/if}>{$aItem.title}</option>
 									{/foreach}
 								</select>
@@ -126,12 +126,14 @@
 							</td>
 							<td class="cell-labeled">
 								{if $oForumEdit and $oForumEdit->getIcon()}
-								<div class="avatar-edit">
-									{foreach from=$oConfig->GetValue('plugin.forum.icon_size') item=iSize}
-										{if $iSize}<img src="{$oForumEdit->getIconPath({$iSize})}">{/if}
-									{/foreach}
-									<label><input type="checkbox" id="forum_icon_delete" name="forum_icon_delete" value="on" class="input-checkbox"> {$aLang.plugin.forum.create_icon_delete}</label>
-								</div>
+									<div class="avatar-edit">
+										{foreach $oConfig->GetValue('plugin.forum.icon_size') as $iSize}
+											{if $oForumEdit->getIconPath($iSize)}
+												<img src="{$oForumEdit->getIconPath($iSize)}">
+											{/if}
+										{/foreach}
+										<label><input type="checkbox" id="forum_icon_delete" name="forum_icon_delete" value="on" class="input-checkbox"> {$aLang.plugin.forum.create_icon_delete}</label>
+									</div>
 								{/if}
 								<input type="file" name="forum_icon" id="forum_icon">
 								<span class="note">{$aLang.plugin.forum.create_icon_notice}</span>
@@ -270,10 +272,10 @@
 							<th colspan="2">
 								<div class="ta-c">
 									{if $sType == 'edit'}
-									<button type="submit" name="submit_forum_save" class="button button-orange">{$aLang.plugin.forum.edit_submit}</button>
-									<button type="submit" name="submit_forum_save_next_perms" class="button">{$aLang.plugin.forum.edit_submit_next_perms}</button>
+										<button type="submit" name="submit_forum_save" class="button button-orange">{$aLang.plugin.forum.edit_submit}</button>
+										<button type="submit" name="submit_forum_save_next_perms" class="button">{$aLang.plugin.forum.edit_submit_next_perms}</button>
 									{else}
-									<button type="submit" name="submit_forum_add" class="button button-primary">{$aLang.plugin.forum.create_submit}</button>
+										<button type="submit" name="submit_forum_add" class="button button-primary">{$aLang.plugin.forum.create_submit}</button>
 									{/if}
 								</div>
 							</th>

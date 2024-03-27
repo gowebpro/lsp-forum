@@ -29,14 +29,13 @@ class PluginForum_BlockForum extends Block
         if ($aForumsId) {
             $aLastTopics = $this->PluginForum_Forum_GetTopicItemsAll(
                 array(
-                    '#where' => array('forum_id IN (?a)' => array($aForumsId)),
+                    'forum_id IN' => $aForumsId,
                     '#order' => array('last_post_id' => 'desc'),
-                    '#page' => array(1, Config::Get('block.stream.row'))
+                    '#limit' => Config::Get('block.stream.row')
                 )
             );
-            if (!empty($aLastTopics['collection'])) {
-                $this->Viewer_Assign('aLastTopics', $aLastTopics['collection']);
-            }
+            $aLastTopics = $this->PluginForum_Forum_GetTopicsAdditionalData($aLastTopics);
+            $this->Viewer_Assign('aLastTopics', $aLastTopics);
         }
     }
 }

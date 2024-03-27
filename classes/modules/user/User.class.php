@@ -22,7 +22,10 @@ class PluginForum_ModuleUser extends ModuleORM
     {
         parent::Init();
         if ($oUserCurrent = $this->User_GetUserCurrent()) {
-            $this->oUserCurrent = $this->GetUserById($oUserCurrent->getId());
+            if (!$this->oUserCurrent = $this->GetUserById($oUserCurrent->getId())) {
+                $this->oUserCurrent = Engine::GetEntity('PluginForum_User_User');
+                $this->oUserCurrent->setUserId($oUserCurrent->getId());
+            }
         }
     }
 
@@ -315,7 +318,7 @@ class PluginForum_ModuleUser extends ModuleORM
         }
         foreach ($aSorted as $sUserId => $aPostsId) {
             if (!$oUserForum = $this->GetUserById($sUserId)) {
-                $oUserForum = Engine::GetEntity('PluginForum_Forum_User');
+                $oUserForum = Engine::GetEntity('PluginForum_User_User');
                 $oUserForum->setUserId($sUserId);
             }
             $oUserForum->setPostCount(count($aPostsId));
